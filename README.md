@@ -102,3 +102,21 @@ This repository is currently a specification-first artifact repository.
 ## Copyright
 
 (c) Jesús Vilela Jato, 16 April 2026. All rights reserved.
+
+---
+
+## Thesis iteration and local auto-research
+
+This repository now includes a thesis-style iteration and local validation tooling:
+
+- `THESIS.md` — formal narrative and postulates.
+- `research/auto_research.yaml` — local research/validation configuration.
+- `tools/validate_typecast.py` — structural validation + semantic typecasting.
+- `tools/plot_principles.py` — principle-based SVG imaging.
+
+Run locally:
+
+```bash
+python3 tools/validate_typecast.py
+python3 tools/plot_principles.py
+```

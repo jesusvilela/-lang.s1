@@ -1,0 +1,22 @@
+project: §-LANG v1.2.0 unified geometry
+auto_research:
+  mode: local
+  objective:
+    - validate structural well-formedness
+    - typecast semantic blocks into computational strata
+    - verify geometric boundary constraints in Poincare coordinates
+    - derive a sectional thesis framing from geometric information theory
+  inputs:
+    source_file: LANG.v1.2.0.unified_geometry.lang
+  outputs:
+    validation_json: research/validation_report.json
+    validation_markdown: research/validation_report.md
+    imaging_svg: figures/sectional_hyperbolic_topos.svg
+  checks:
+    - block_headers_present
+    - section_vectors_dimension_8
+    - section_norm_below_0_999
+    - salience_positive
+  execution:
+    - python3 tools/validate_typecast.py
+    - python3 tools/plot_principles.py
