@@ -1,0 +1,38 @@
+# Validation and Typecast Report
+
+## Status
+- Source: `LANG.v1.2.0.unified_geometry.lang`
+- Lines: 368
+- Blocks discovered: 18 (18 unique)
+- Section nodes discovered: 19
+
+## Checks
+- ✅ `block_headers_present`
+- ✅ `section_vectors_dimension_8`
+- ✅ `section_norm_below_0_999`
+- ✅ `salience_positive`
+
+## Geometric Boundary
+- Max section norm: 0.683667
+- Margin to invariant 0.999: 0.315333
+
+## Typecast Map
+- `SOURCE` → `meta_binding`
+- `AXIOMS` → `logical_foundation`
+- `OUTPUT` → `operational_contract`
+- `SORTS` → `type_universe`
+- `FUNCTORS` → `categorical_morphisms`
+- `SEMANTICS` → `topos_semantics`
+- `REDUCTION_BETA` → `geometric_computation`
+- `TURING_ENCODING` → `computability_bridge`
+- `SPECTRAL_PIPELINE` → `frequency_semantics`
+- `FISHER_UPDATE` → `information_geometry_learning`
+- `INTER_MANIFOLD` → `cross_bundle_exchange`
+- `GRAMMAR` → `surface_syntax`
+- `NOTATION_MAP` → `notation_lowering`
+- `SEMANTICS_TOPOS` → `classifier_topos_layer`
+- `AML_DEFINITION` → `autonomous_agent_layer`
+- `CONCLUSIONS` → `theory_closure`
+
+## Postulate
+A fully sectional hyperbolic self-referential computer is admissible when section norms remain strictly interior to the Poincaré boundary and recursion is mediated by reversible transport over the bundle.
