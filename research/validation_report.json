@@ -1,10 +1,11 @@
 {
   "source": "LANG.v1.2.0.unified_geometry.lang",
-  "num_lines": 368,
-  "num_blocks": 18,
+  "num_lines": 383,
+  "num_blocks": 19,
   "unique_blocks": [
     "AML_DEFINITION",
     "AXIOMS",
+    "BASES",
     "COMPARISON",
     "CONCLUSIONS",
     "EXAMPLE_BETA",
@@ -38,6 +39,7 @@
     "SOURCE": "meta_binding",
     "AXIOMS": "logical_foundation",
     "OUTPUT": "operational_contract",
+    "BASES": "geometric_and_logical_base_layers",
     "SORTS": "type_universe",
     "FUNCTORS": "categorical_morphisms",
     "SEMANTICS": "topos_semantics",

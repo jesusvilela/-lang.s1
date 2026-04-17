@@ -120,3 +120,21 @@ Run locally:
 python3 tools/validate_typecast.py
 python3 tools/plot_principles.py
 ```
+
+---
+
+## v2.1 dialect family split
+
+This repository now includes a formal dialect-family proposal in:
+
+- `DIALECTS.v2.1.family.lang`
+
+Family grouping:
+
+- **Core**: `Proof`, `Compile`
+- **Semantic**: `Topo`, `IG`, `CY`
+- **Dynamic**: `AML`, `Swirl`, `Spectral`
+- **Formation**: `Substrate`
+- **Research**: `Meta`
+
+The main language file now also contains an explicit `§|LANG|BASES` block clarifying the current primary base (`B_n`) and derived/secondary bases.

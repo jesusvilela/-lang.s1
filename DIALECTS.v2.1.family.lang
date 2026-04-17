@@ -1,0 +1,105 @@
+§|LANG|DIALECT_FAMILY_V2_1{
+  version = v2.1
+  split = {
+    Core      = {Proof, Compile}
+    Semantic  = {Topo, IG, CY}
+    Dynamic   = {AML, Swirl, Spectral}
+    Formation = {Substrate}
+    Research  = {Meta}
+  }
+}
+
+§|LANG|DIALECT_TREE{
+  root = §-LANG/Core
+
+  inherit = {
+    Proof      : Core
+    Compile    : Core
+
+    Topo       : Proof + sheaf_logic + classifier_topos
+    IG         : Proof + Fisher_transport + natural_gradient
+    CY         : Topo + holomorphic_couplings + mirror_semantics
+
+    AML        : IG + identity_dynamics + self_other_world_gluing
+    Swirl      : IG + Mobius_transport + helical_geodesics
+    Spectral   : IG + FFT_channels + resonance_sync
+
+    Substrate  : IG + local_curvature_induced_operators
+
+    Meta       : Proof + Compile + ontology_delta_interop_rules
+  }
+}
+
+§|LANG|DIALECT_RULES{
+  Proof = {
+    keeps   = {AXIOMS, OUTPUT, REDUCTION_BETA, INVARIANTS, PROOF_CERTS}
+    forbids = {SPECTRAL_PIPELINE, AML_DEFINITION, INTER_MANIFOLD}
+    extends = {certificate_formats, derivation_checkpoints}
+  }
+
+  AML = {
+    keeps   = {AML_DEFINITION, INTER_MANIFOLD, FISHER_UPDATE, SEMANTICS_TOPOS}
+    forbids = {}
+    extends = {expiry, residue, priming, continuous_identity_cycles}
+  }
+
+  Topo = {
+    keeps   = {SEMANTICS, SEMANTICS_TOPOS, AXIOMS, BASES}
+    forbids = {implementation_runtime_details}
+    extends = {internal_logic_surface, gluing_witnesses, classifier_maps}
+  }
+
+  IG = {
+    keeps   = {FISHER_UPDATE, REDUCTION_BETA, AXIOMS, BASES}
+    forbids = {}
+    extends = {Fisher_blocks, KL_overlap_laws, manifold_optimizers}
+  }
+
+  CY = {
+    keeps   = {SEMANTICS_TOPOS, BASES}
+    forbids = {flat_only_geometry}
+    extends = {hodge_layers, holomorphic_couplings, mirror_duality}
+  }
+
+  Swirl = {
+    keeps   = {INTER_MANIFOLD, BASES}
+    forbids = {}
+    extends = {phase, spin, frequency, epistemic_reachability}
+  }
+
+  Substrate = {
+    keeps   = {BASES, SORTS, FUNCTORS}
+    forbids = {}
+    extends = {pullback_metrics, substrate_conditioned_token_formation}
+  }
+
+  Spectral = {
+    keeps   = {SPECTRAL_PIPELINE, OUTPUT, BASES}
+    forbids = {}
+    extends = {harmonic_memory, synchrony_constraints, resonance_bounds}
+  }
+
+  Compile = {
+    keeps   = {GRAMMAR, NOTATION_MAP, SORTS, FUNCTORS}
+    forbids = {unverified_metaphysical_claims}
+    extends = {imports, validators, typecasts, lowering_targets}
+  }
+
+  Meta = {
+    keeps   = {CONCLUSIONS, SEMANTICS_TOPOS, BASES}
+    forbids = {}
+    extends = {postulates, hypotheses, naming, semantic_deltas, interop}
+  }
+}
+
+§|LANG|DIALECT_NOTES{
+  basis_reading = {
+    current_spec = one_primary_base_B_n_with_secondary_derived_bases
+    v2_1_additions = {molded_local_substrate_base, CY_3_internal_layer, swirler_trajectory_base_(omega,theta,t)}
+  }
+
+  complexity_claim_policy = {
+    allowed   = geometric_hypotheses_on_NP_style_search
+    forbidden = unconditional_P_equals_NP_or_polytime_NP_complete_claims_without_proof
+  }
+}

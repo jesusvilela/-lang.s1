@@ -38,6 +38,21 @@
   invariants.σ10 = prototype_matrices_nonneg
 }
 
+§|LANG|BASES{
+  primary_base      = B_n_hyperbolic_manifold_Poincare_disk
+  bundle_base       = base_of_projection_pi_E_n_to_B_n
+  statistical_base  = coordinate_substrate_for_Fisher_IG_updates
+  context_base      = logical_typing_context_for_term_formation
+  holo_screen_base  = inter_manifold_projection_screen_for_exchange
+
+  basis.section_vectors = dim_8_node_embeddings_for_sections
+  basis.spectral        = FFT_frequency_channel_basis
+  basis.prototype_ops   = nonnegative_operator_and_prototype_matrices
+  basis.sheaf_patches   = local_semantic_patches_for_gluing
+
+  summary = one_dominant_base_B_n_plus_secondary_derived_bases
+}
+
 §|LANG|SORTS{
   sort.B_n    = hyperbolic_base_Poincare_disk_dim_n
   sort.E_n    = total_space_fiber_bundle_over_B_n

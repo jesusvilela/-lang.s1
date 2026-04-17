@@ -2,8 +2,8 @@
 
 ## Status
 - Source: `LANG.v1.2.0.unified_geometry.lang`
-- Lines: 368
-- Blocks discovered: 18 (18 unique)
+- Lines: 383
+- Blocks discovered: 19 (19 unique)
 - Section nodes discovered: 19
 
 ## Checks
@@ -20,6 +20,7 @@
 - `SOURCE` → `meta_binding`
 - `AXIOMS` → `logical_foundation`
 - `OUTPUT` → `operational_contract`
+- `BASES` → `geometric_and_logical_base_layers`
 - `SORTS` → `type_universe`
 - `FUNCTORS` → `categorical_morphisms`
 - `SEMANTICS` → `topos_semantics`
