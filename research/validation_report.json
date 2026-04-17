@@ -1,0 +1,57 @@
+{
+  "source": "LANG.v1.2.0.unified_geometry.lang",
+  "num_lines": 383,
+  "num_blocks": 19,
+  "unique_blocks": [
+    "AML_DEFINITION",
+    "AXIOMS",
+    "BASES",
+    "COMPARISON",
+    "CONCLUSIONS",
+    "EXAMPLE_BETA",
+    "FISHER_UPDATE",
+    "FUNCTORS",
+    "GRAMMAR",
+    "INTER_MANIFOLD",
+    "NOTATION_MAP",
+    "OUTPUT",
+    "REDUCTION_BETA",
+    "SEMANTICS",
+    "SEMANTICS_TOPOS",
+    "SORTS",
+    "SOURCE",
+    "SPECTRAL_PIPELINE",
+    "TURING_ENCODING"
+  ],
+  "missing_required_blocks": [],
+  "num_sections": 19,
+  "checks": {
+    "block_headers_present": true,
+    "section_vectors_dimension_8": true,
+    "section_norm_below_0_999": true,
+    "salience_positive": true
+  },
+  "geometry": {
+    "max_section_norm": 0.683667,
+    "margin_to_boundary_0_999": 0.315333
+  },
+  "typecast": {
+    "SOURCE": "meta_binding",
+    "AXIOMS": "logical_foundation",
+    "OUTPUT": "operational_contract",
+    "BASES": "geometric_and_logical_base_layers",
+    "SORTS": "type_universe",
+    "FUNCTORS": "categorical_morphisms",
+    "SEMANTICS": "topos_semantics",
+    "REDUCTION_BETA": "geometric_computation",
+    "TURING_ENCODING": "computability_bridge",
+    "SPECTRAL_PIPELINE": "frequency_semantics",
+    "FISHER_UPDATE": "information_geometry_learning",
+    "INTER_MANIFOLD": "cross_bundle_exchange",
+    "GRAMMAR": "surface_syntax",
+    "NOTATION_MAP": "notation_lowering",
+    "SEMANTICS_TOPOS": "classifier_topos_layer",
+    "AML_DEFINITION": "autonomous_agent_layer",
+    "CONCLUSIONS": "theory_closure"
+  }
+}
