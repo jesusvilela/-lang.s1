@@ -2,8 +2,8 @@
 
 ## Status
 - Source: `LANG.v1.2.0.unified_geometry.lang`
-- Lines: 383
-- Blocks discovered: 19 (19 unique)
+- Lines: 411
+- Blocks discovered: 22 (22 unique)
 - Section nodes discovered: 19
 
 ## Checks
@@ -33,6 +33,9 @@
 - `NOTATION_MAP` → `notation_lowering`
 - `SEMANTICS_TOPOS` → `classifier_topos_layer`
 - `AML_DEFINITION` → `autonomous_agent_layer`
+- `NMATRIX_SELFREF` → `self_referential_operator_dynamics`
+- `FIBER_BUNDLE_POSSIBILITY_SPACE` → `global_section_possibility_geometry`
+- `ADIABATIC_MOBIUS_FLOW` → `reversible_cross_manifold_information_flow`
 - `CONCLUSIONS` → `theory_closure`
 
 ## Postulate

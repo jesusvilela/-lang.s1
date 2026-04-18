@@ -3,7 +3,7 @@
   split = {
     Core      = {Proof, Compile}
     Semantic  = {Topo, IG, CY}
-    Dynamic   = {AML, Swirl, Spectral}
+    Dynamic   = {AML, Swirl, Spectral, Tower}
     Formation = {Substrate}
     Research  = {Meta}
   }
@@ -79,6 +79,13 @@
     extends = {harmonic_memory, synchrony_constraints, resonance_bounds}
   }
 
+
+  Tower = {
+    keeps   = {INTER_MANIFOLD, ADIABATIC_MOBIUS_FLOW, FIBER_BUNDLE_POSSIBILITY_SPACE}
+    forbids = {platform_or_runtime_specific_blocks}
+    extends = {vertical_disk_stacks, double_fibration_F_mix, sigma22_sigma23}
+  }
+
   Compile = {
     keeps   = {GRAMMAR, NOTATION_MAP, SORTS, FUNCTORS}
     forbids = {unverified_metaphysical_claims}
@@ -101,5 +108,16 @@
   complexity_claim_policy = {
     allowed   = geometric_hypotheses_on_NP_style_search
     forbidden = unconditional_P_equals_NP_or_polytime_NP_complete_claims_without_proof
+  }
+}
+
+§|LANG|DIALECT_EXTENSIONS_V2_1_1{
+  new_blocks = {NMATRIX_SELFREF, FIBER_BUNDLE_POSSIBILITY_SPACE, ADIABATIC_MOBIUS_FLOW}
+
+  mapping = {
+    AML      : extends_with_NMATRIX_SELFREF
+    Swirl    : extends_with_ADIABATIC_MOBIUS_FLOW
+    Topo     : extends_with_FIBER_BUNDLE_POSSIBILITY_SPACE
+    Meta     : tracks_claim_status_for_new_blocks
   }
 }

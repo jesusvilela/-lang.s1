@@ -138,3 +138,29 @@ Family grouping:
 - **Research**: `Meta`
 
 The main language file now also contains an explicit `§|LANG|BASES` block clarifying the current primary base (`B_n`) and derived/secondary bases.
+
+---
+
+## Self-reflective NMatrix and full fiber-bundle expansion
+
+The language structure now includes three extension blocks in the main `.lang` source:
+
+- `NMATRIX_SELFREF` — self-referential operator dynamics in hyperbolic charts.
+- `FIBER_BUNDLE_POSSIBILITY_SPACE` — full bundle-space of admissible sections under gluing constraints.
+- `ADIABATIC_MOBIUS_FLOW` — reversible adiabatic information flow through Möbius channels.
+
+These extensions formalize the idea that information can adiabatically traverse cross-manifold pathways while identity remains stable under reversible transport.
+
+---
+
+## Tower v2.5 geometric-only slang update
+
+Added `LANG.v2.5.tower.geom.lang` as a platform-agnostic geometric specification for the tower construction:
+
+- vertical Poincaré-disk levels,
+- boundary holographic screens,
+- double-fibration compatibility (`F_mix`, `σ22`),
+- bounded depth-curvature invariant (`σ23`),
+- canonical tower output formula.
+
+This file intentionally excludes application/runtime/system bindings and keeps only geometric-semantic structure.

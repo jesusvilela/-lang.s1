@@ -1,0 +1,55 @@
+§|LANG|SOURCE{
+  bind.theory   = T_Sigma_tower_geom
+  bind.parent   = T_Sigma_n_geom
+  bind.version  = §-LANG.v2.5.tower.geom
+  bind.principle= geometry_first_symbolic_second
+}
+
+§|LANG|SORTS{
+  sort.Tower    = vertical_family_of_hyperbolic_disks
+  sort.Level    = indexed_disk_in_tower
+  sort.VChannel = vertical_isometry_channel_between_levels
+  sort.HChannel = horizontal_boundary_channel_within_level
+  sort.Screen_k = holographic_boundary_screen_at_level_k
+  sort.FMix     = double_fibration_compatibility_observable
+  sort.Peer     = sectional_point_on_level_disk
+}
+
+§|LANG|AXIOMS{
+  A28 = curvature_monotonicity_along_levels_c_{k+1}<=c_k
+  A29 = vertical_channels_are_levelwise_isometries_of_H2
+  A30 = horizontal_channels_are_boundary_isometries_on_S1
+  A31 = double_fibration_compatibility_measured_by_F_mix
+}
+
+§|LANG|TOWER_STRUCTURE{
+  tower        = {D_k}_{k=0}^{N-1}, D_k_hyperbolic_disk_with_curvature_c_k
+  vertical_map = V_{k->k+1}: D_k_to_D_{k+1}
+  boundary_map = H_k: partial_D_k_to_partial_D_k
+  screen       = Screen_k_equiv_partial_D_k_equiv_S1
+  law          = F_mix(V,H)_small_implies_compatible_2_fibration
+}
+
+§|LANG|INVARIANTS{
+  sigma22 = F_mix_below_epsilon_mix
+  sigma23 = bounded_depth_curvature_product
+  epsilon_mix_default = 0.05
+}
+
+§|LANG|REDUCTION{
+  evolve_level     = transport_along_VChannel_then_project_to_screen
+  evolve_all_levels= product_flow_over_k_of_evolve_level
+  compatibility    = check_F_mix_after_each_evolution_step
+  reversibility    = two_traversals_preserve_fisher_modes
+}
+
+§|LANG|OUTPUT{
+  formula = CANON(§EMIT(fix(λtower.check_f_mix(evolve_all_levels(tower), epsilon_mix))))
+  verdict_space = {COMMIT, BLOCK, ROLLBACK}
+}
+
+§|LANG|NOTES{
+  N_eq_1_reduction = semantics_reduce_exactly_to_single_level_inter_manifold_case
+  interpretation   = information_flows_adiabatically_through_Mobius_channels
+  constraint       = specification_is_pure_geometric_semantics_no_platform_binding
+}

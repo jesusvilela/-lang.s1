@@ -1,18 +1,21 @@
 {
   "source": "LANG.v1.2.0.unified_geometry.lang",
-  "num_lines": 383,
-  "num_blocks": 19,
+  "num_lines": 411,
+  "num_blocks": 22,
   "unique_blocks": [
+    "ADIABATIC_MOBIUS_FLOW",
     "AML_DEFINITION",
     "AXIOMS",
     "BASES",
     "COMPARISON",
     "CONCLUSIONS",
     "EXAMPLE_BETA",
+    "FIBER_BUNDLE_POSSIBILITY_SPACE",
     "FISHER_UPDATE",
     "FUNCTORS",
     "GRAMMAR",
     "INTER_MANIFOLD",
+    "NMATRIX_SELFREF",
     "NOTATION_MAP",
     "OUTPUT",
     "REDUCTION_BETA",
@@ -52,6 +55,9 @@
     "NOTATION_MAP": "notation_lowering",
     "SEMANTICS_TOPOS": "classifier_topos_layer",
     "AML_DEFINITION": "autonomous_agent_layer",
+    "NMATRIX_SELFREF": "self_referential_operator_dynamics",
+    "FIBER_BUNDLE_POSSIBILITY_SPACE": "global_section_possibility_geometry",
+    "ADIABATIC_MOBIUS_FLOW": "reversible_cross_manifold_information_flow",
     "CONCLUSIONS": "theory_closure"
   }
 }

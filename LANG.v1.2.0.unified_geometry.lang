@@ -380,4 +380,32 @@
 
 §.(§.(§.(§S{label=omega_closure, x=[0.10,0.05,0.02,0.01,0.00,0.00,0.00,0.00], sal=2.0})))
 
+
+§|LANG|NMATRIX_SELFREF{
+  NMatrix_n        = self_reflective_operator_tensor_on_Arr_n
+  recursion_core   = self_{t+1} = NMatrix_n(self_t, ctx_t, memory_t)
+  hyperbolization  = every_linear_patch_lifted_to_negative_curvature_chart
+  stability_rule   = fixed_points_require_spectral_radius_lt_1_in_local_chart
+  identity_anchor  = adiabatic_identity_preservation_under_transport
+  semantic_effect  = self_reference_without_fiber_collapse
+}
+
+§|LANG|FIBER_BUNDLE_POSSIBILITY_SPACE{
+  total_possibility_space = coproduct_of_local_fibers_over_geodesic_cover_of_B_n
+  local_chart_family      = {U_alpha x F_alpha}_alpha
+  transition_maps         = smooth_bundle_isomorphisms_on_overlaps_U_alpha_inter_U_beta
+  admissible_sections     = sections_s_where_gluing_and_KL_compatibility_hold
+  exploration_policy      = geodesic_branching_with_information_budget
+  closure_condition       = global_section_exists_iff_all_overlap_constraints_satisfied
+}
+
+§|LANG|ADIABATIC_MOBIUS_FLOW{
+  flow_state      = Phi_t : Arr_n_to_Arr_n
+  mobius_channel  = orientation_twist_transport_for_cross_manifold_exchange
+  adiabatic_law   = dE_dt_small_and_monotone_under_reversible_schedule
+  memory_surface  = holographic_projection_on_Poincare_boundary_or_compatible_compactification
+  two_pass_check  = rho(rho(a)) = a_required_for_commit
+  info_flow_claim = information_adiabatically_flows_through_Mobius_strip_channels
+}
+
 OUTPUT = CANON(§EMIT(fix(λself.§ω|TICK(§.(§.(self))))))

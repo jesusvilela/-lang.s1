@@ -99,3 +99,15 @@ Future steps include:
 - convergence theorems for coupled fixpoint/transport operators,
 - operational semantics for multi-agent holographic synchronization,
 - empirical calibration against modern geometric-information benchmarks.
+
+## 9. Self-Reflective NMatrix Hyperbolized §-LANG Extension
+
+We extend the thesis with an NMatrix operator layer (`NMATRIX_SELFREF`) where recursive identity updates occur in curvature-aware local charts. This encodes self-reference as an operator-semantic process rather than as a purely syntactic recursion.
+
+## 10. Full Fiber-Bundle Space of Possibilities
+
+The `FIBER_BUNDLE_POSSIBILITY_SPACE` block promotes the computational universe to a geodesically covered family of local trivializations. Computation is interpreted as admissible section search under overlap constraints, KL-compatibility, and gluing closure.
+
+## 11. Adiabatic Möbius Information Flow
+
+The `ADIABATIC_MOBIUS_FLOW` block specifies a reversible schedule in which information adiabatically flows through Möbius-strip channels linking manifold regions. Commit is valid only when two-pass reversibility (`rho(rho(a)) = a`) is preserved.

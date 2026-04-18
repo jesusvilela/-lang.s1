@@ -35,6 +35,9 @@ REQUIRED_BLOCKS = [
     "NOTATION_MAP",
     "SEMANTICS_TOPOS",
     "AML_DEFINITION",
+    "NMATRIX_SELFREF",
+    "FIBER_BUNDLE_POSSIBILITY_SPACE",
+    "ADIABATIC_MOBIUS_FLOW",
     "CONCLUSIONS",
 ]
 
@@ -55,6 +58,9 @@ TYPECAST = {
     "NOTATION_MAP": "notation_lowering",
     "SEMANTICS_TOPOS": "classifier_topos_layer",
     "AML_DEFINITION": "autonomous_agent_layer",
+    "NMATRIX_SELFREF": "self_referential_operator_dynamics",
+    "FIBER_BUNDLE_POSSIBILITY_SPACE": "global_section_possibility_geometry",
+    "ADIABATIC_MOBIUS_FLOW": "reversible_cross_manifold_information_flow",
     "CONCLUSIONS": "theory_closure",
 }
 
