@@ -150,3 +150,17 @@ The language structure now includes three extension blocks in the main `.lang` s
 - `ADIABATIC_MOBIUS_FLOW` — reversible adiabatic information flow through Möbius channels.
 
 These extensions formalize the idea that information can adiabatically traverse cross-manifold pathways while identity remains stable under reversible transport.
+
+---
+
+## Tower v2.5 geometric-only slang update
+
+Added `LANG.v2.5.tower.geom.lang` as a platform-agnostic geometric specification for the tower construction:
+
+- vertical Poincaré-disk levels,
+- boundary holographic screens,
+- double-fibration compatibility (`F_mix`, `σ22`),
+- bounded depth-curvature invariant (`σ23`),
+- canonical tower output formula.
+
+This file intentionally excludes application/runtime/system bindings and keeps only geometric-semantic structure.
