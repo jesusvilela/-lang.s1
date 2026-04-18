@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-"""Validate and typecast §-LANG v1.2.0 source locally."""
+"""Validate and typecast §-LANG sources locally."""
 
 from __future__ import annotations
 
 import json
 import math
 import re
+import argparse
 from dataclasses import dataclass
 from pathlib import Path
 
-SRC = Path("LANG.v1.2.0.unified_geometry.lang")
 OUT_JSON = Path("research/validation_report.json")
 OUT_MD = Path("research/validation_report.md")
 
@@ -18,7 +18,7 @@ SECTION_RE = re.compile(
     r"^§S\{label=([^,]+), x=\[([^\]]+)\], sal=([0-9.]+)\}$"
 )
 
-REQUIRED_BLOCKS = [
+REQUIRED_BLOCKS_UNIFIED_GEOMETRY = [
     "SOURCE",
     "AXIOMS",
     "OUTPUT",
@@ -41,7 +41,18 @@ REQUIRED_BLOCKS = [
     "CONCLUSIONS",
 ]
 
-TYPECAST = {
+REQUIRED_BLOCKS_TOWER_GEOM = [
+    "SOURCE",
+    "SORTS",
+    "AXIOMS",
+    "TOWER_STRUCTURE",
+    "INVARIANTS",
+    "REDUCTION",
+    "OUTPUT",
+    "NOTES",
+]
+
+TYPECAST_UNIFIED_GEOMETRY = {
     "SOURCE": "meta_binding",
     "AXIOMS": "logical_foundation",
     "OUTPUT": "operational_contract",
@@ -64,6 +75,17 @@ TYPECAST = {
     "CONCLUSIONS": "theory_closure",
 }
 
+TYPECAST_TOWER_GEOM = {
+    "SOURCE": "meta_binding",
+    "SORTS": "tower_type_universe",
+    "AXIOMS": "geometric_laws",
+    "TOWER_STRUCTURE": "vertical_horizontal_transport_layout",
+    "INVARIANTS": "stability_constraints",
+    "REDUCTION": "tower_evolution_dynamics",
+    "OUTPUT": "operational_contract",
+    "NOTES": "semantic_interpretation_and_scope",
+}
+
 
 @dataclass
 class SectionPoint:
@@ -76,8 +98,33 @@ class SectionPoint:
         return math.sqrt(sum(v * v for v in self.x))
 
 
+def infer_profile(source: Path) -> str:
+    if "tower.geom" in source.name:
+        return "tower_geom"
+    return "unified_geometry"
+
+
+def get_profile_config(profile: str) -> tuple[list[str], dict[str, str]]:
+    if profile == "tower_geom":
+        return REQUIRED_BLOCKS_TOWER_GEOM, TYPECAST_TOWER_GEOM
+    return REQUIRED_BLOCKS_UNIFIED_GEOMETRY, TYPECAST_UNIFIED_GEOMETRY
+
+
 def main() -> None:
-    text = SRC.read_text(encoding="utf-8").splitlines()
+    parser = argparse.ArgumentParser(description="Validate and typecast §-LANG sources.")
+    parser.add_argument(
+        "--source",
+        type=Path,
+        default=Path("LANG.v1.2.0.unified_geometry.lang"),
+        help="Path to the .lang source file to validate.",
+    )
+    args = parser.parse_args()
+
+    src = args.source
+    profile = infer_profile(src)
+    required_blocks, typecast_map = get_profile_config(profile)
+
+    text = src.read_text(encoding="utf-8").splitlines()
 
     blocks: list[str] = []
     sections: list[SectionPoint] = []
@@ -95,7 +142,7 @@ def main() -> None:
             sections.append(SectionPoint(label=label, x=vec, sal=sal))
 
     block_set = set(blocks)
-    missing = [b for b in REQUIRED_BLOCKS if b not in block_set]
+    missing = [b for b in required_blocks if b not in block_set]
 
     dim_ok = all(len(p.x) == 8 for p in sections)
     norm_ok = all(p.norm < 0.999 for p in sections)
@@ -105,7 +152,8 @@ def main() -> None:
     min_margin = 0.999 - max_norm
 
     report = {
-        "source": str(SRC),
+        "source": str(src),
+        "profile": profile,
         "num_lines": len(text),
         "num_blocks": len(blocks),
         "unique_blocks": sorted(block_set),
@@ -121,7 +169,7 @@ def main() -> None:
             "max_section_norm": round(max_norm, 6),
             "margin_to_boundary_0_999": round(min_margin, 6),
         },
-        "typecast": {k: TYPECAST[k] for k in REQUIRED_BLOCKS},
+        "typecast": {k: typecast_map[k] for k in required_blocks},
     }
 
     OUT_JSON.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
@@ -130,7 +178,8 @@ def main() -> None:
         "# Validation and Typecast Report",
         "",
         "## Status",
-        f"- Source: `{SRC}`",
+        f"- Source: `{src}`",
+        f"- Profile: `{profile}`",
         f"- Lines: {report['num_lines']}",
         f"- Blocks discovered: {report['num_blocks']} ({len(report['unique_blocks'])} unique)",
         f"- Section nodes discovered: {report['num_sections']}",
@@ -152,8 +201,8 @@ def main() -> None:
         ]
     )
 
-    for block in REQUIRED_BLOCKS:
-        lines.append(f"- `{block}` → `{TYPECAST[block]}`")
+    for block in required_blocks:
+        lines.append(f"- `{block}` → `{typecast_map[block]}`")
 
     lines.extend(
         [

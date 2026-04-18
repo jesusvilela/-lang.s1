@@ -114,11 +114,17 @@ This repository now includes a thesis-style iteration and local validation tooli
 - `tools/validate_typecast.py` — structural validation + semantic typecasting.
 - `tools/plot_principles.py` — principle-based SVG imaging.
 
-Run locally:
+Run locally (unified geometry profile):
 
 ```bash
 python3 tools/validate_typecast.py
 python3 tools/plot_principles.py
+```
+
+Run validation against the tower geometry slang source:
+
+```bash
+python3 tools/validate_typecast.py --source LANG.v2.5.tower.geom.lang
 ```
 
 ---
