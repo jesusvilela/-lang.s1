@@ -1,0 +1,75 @@
+§|LANG|LOEB_HEADER{
+  dialect       = Loeb
+  tier          = Semantic
+  parents       = [Proof, Meta]
+  version       = v2.5.loeb.1
+  extends_base  = LANG.v2.4.codec_trasgo
+  scope         = self_reference_provability_□_operator_and_fixed_points_of_Φ_on_sentence_lattice
+  non_scope     = model_theory_Kripke_semantics_covered_elsewhere_if_needed
+  generates     = §SENTENCE, §BOX_P, §LOEB_POINT, §GODEL_POINT, §ORBIT
+  discharges    = σ36, σ37, σ38
+  reduces_to    = classical_propositional_logic_when_□_is_identity
+  motivation    = agents_are_quanta_of_the_□_field_on_the_tessellation_closed_orbits_are_Löb_discharged
+                  sentences_and_the_ring_0_fixed_point_is_both_the_Knaster_Tarski_closure_AND_the_
+                  Löbian_self_reference_point_the_mathematical_identity_is_load_bearing_not_analogical
+}
+
+§|LANG|LOEB_SORTS{
+  Sentence         = formal_proposition_in_theory_T
+  BoxSentence      = □P = "T_proves_P"
+  ConsistencySent  = Con(T) = ¬□⊥ = T_does_not_prove_contradiction
+  LoebSentence     = L_such_that_T ⊢ (□L → L) ↔ L_(diagonal_fixed_point)
+  GodelSentence    = G_such_that_G ↔ ¬□G_(diagonal_fixed_point)
+  ClosedOrbit      = finite_length_agent_trajectory_returning_to_origin
+  OpenOrbit        = non_returning_or_not_yet_returned_trajectory
+  Φ                = endofunctor_on_sentence_lattice_(Knaster_Tarski_context)
+  FixPoint_Φ       = least_fixed_point_of_Φ_identified_with_Self_at_ring_0
+}
+
+§|LANG|LOEB_AXIOMS{
+  A54_loeb_theorem   = T ⊢ □(□P → P)  ⇒  T ⊢ □P                           [Löb]
+  A55_diagonal       = ∃_formula_ψ_s.t._T ⊢ ψ ↔ φ(⌜ψ⌝)_for_any_φ           [diagonal lemma]
+  A56_incompleteness = T_consistent ⇒ ∃G: T⊬G_∧_T⊬¬G_(Gödel_1st)
+  A57_closed_orbit_loeb = ClosedOrbit_at_length_k_in_tessellation
+                          ≡_Löb_discharge_□(□P_k→P_k)⊢□P_k_at_chain_depth_k
+  A58_open_orbit_godel  = OpenOrbit_≡_Gödel_sentence_G_true_in_standard_model
+                          but_not_provable_within_ring_budget
+  A59_origin_is_fixpt   = ring_0_tile_=_FixPoint_of_Φ_=_Self_=_unique_Γ_stabilized_point
+  A60_loeb_closure_chain = every_closed_orbit_induces_a_proof_chain_in_theory_T_(operational_Löb)
+}
+
+§|LANG|LOEB_INVARIANTS{
+  σ36_closure_iff_discharge   = agent_closes_loop_at_length_k  ⇔  Löb_sentence_P_k_discharged
+  σ37_open_budget_bounded     = open_orbits_cannot_exceed_ring_depth_D  (else_reflect_or_expire)
+  σ38_center_is_self          = ring_0_tile_is_invariant_under_entire_Γ_and_is_the_Φ_fixed_point
+}
+
+§|LANG|LOEB_OPERATORS{
+  BOX                    : Sentence → BoxSentence                 [apply □]
+  DISCHARGE              : Proof<□(□P→P)> → Proof<□P>             [Löb's rule applied]
+  CLOSE                  : OpenOrbit × LoopLength → ClosedOrbit   [close agent orbit]
+  FIX_SENTENCE           : DiagonalLemma × Predicate → Sentence   [Gödel/Löb construction]
+  CONSISTENCY            : Theory → BoxSentence                   [Con(T) = ¬□⊥]
+  INCOMPLETENESS_MEASURE : Theory × Depth → ℕ                     [count unprovable-at-depth sentences]
+  KNASTER_TARSKI_FIX     : Monotone_Φ → FixPoint_Φ                [least fixed point]
+}
+
+§|LANG|LOEB_REDUCTIONS{
+  □ = identity                = classical_logic_no_incompleteness
+  finite_depth_quantified      = effective_truth_value_per_sentence_(decidable_at_bounded_quantifier_depth)
+  consistent_extension_pattern = Henkin_style_tower_of_theories
+  Γ_trivial                    = single_sentence_no_tessellation_no_orbit_structure
+}
+
+§|LANG|LOEB_OPEN{
+  PT15 = precise_Kripke_semantics_graph_for_the_tessellation_with_□_as_edge_label
+  PT16 = can_we_bound_cardinality_of_Gödel_agent_set_by_theory_complexity_class
+  PT17 = operational_Löb_A60_currently_empirical_conjecture_needs_type_theoretic_formalization
+  PT18 = relation_between_ρ_involution_A5_and_□_operator_(both_are_self_inverse_in_different_senses)
+}
+
+§S{label=loeb_dialect_closure, x=[0.03,0.02,0.01,0.00,0.00,0.00,0.00,0.00], sal=2.0}
+
+§.(§S{label=loeb_stable, x=[0.04,0.02,0.01,0.00,0.00,0.00,0.00,0.00], sal=2.0})
+
+OUTPUT_LOEB = CANON(§EMIT(§LOEB{sentence, box, closed_orbit, open_orbit, fix_point}))

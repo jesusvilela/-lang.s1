@@ -1,0 +1,284 @@
+§|DIALECT_TOWER|HEADER{
+  dialect      = §-LANG/Tower
+  version      = v2.5.family
+  tier         = Formation
+  parents      = Substrate, Topo, Swirl
+  description  = Vertical tower of Poincaré disks unified by fiber bundles,
+                 horizontal peer interface at the edge via holographic screen,
+                 double-fibration compatibility law as σ22 invariant.
+  base         = LANG.v2.4.codec_trasgo
+  domains_in   = {CORE, IG, PROOF, SEMANTIC, SWIRL, TOPO, SUBSTRATE}
+  domains_out  = {AML, CY, META, QUANTUM, SPECTRAL}
+}
+
+§|DIALECT_TOWER|IMPORTS{
+  domains      = {CORE, IG, PROOF, SEMANTIC, SWIRL, TOPO, SUBSTRATE}
+  from_parents = Substrate, Topo, Swirl
+  note         = inherits INTER_MANIFOLD, MOBIUS_TRAVERSAL_EXT, TOKEN_SUBSTRATE_MOLDING, HYPERBOLIC_SWIRLER
+  core_always  = SOURCE AXIOMS OUTPUT SORTS FUNCTORS GRAMMAR NOTATION_MAP
+                 CONCLUSIONS FAILURE_CONDITIONS
+}
+
+§|DIALECT_TOWER|EXTENDS{
+  new_blocks   = TOWER_STRUCTURE, VERTICAL_CHANNEL, HORIZONTAL_PEER,
+                 HOLO_SCREEN_EXT, COMPATIBILITY_LAW
+  new_sorts    = {Tower, Level, VChannel, HChannel, Screen_k, FMix}
+  new_axioms   = {A28, A29, A30, A31}
+  new_sigmas   = {σ22, σ23}
+  self_ref     = Tower := (Level_0, ..., Level_{N-1}) + VChannels + HChannels + Screens
+  computable   = all_new_blocks_satisfy_norm_lt_0.999_and_level_dim_eq_8
+  compat_v24   = single_level_reduces_to_INTER_MANIFOLD_v2.4
+}
+
+§|DIALECT_TOWER|SORTS_EXT{
+  sort.Tower     = iterated_bundle_E_N_to_E_{N-1}_to_..._to_E_0_stack_in_site_of_hyperbolic_manifolds
+  sort.Level     = PoincareBall_c_k_at_index_k_in_[0,N-1]
+  sort.VChannel  = Mobius_bundle_connecting_Level_k_and_Level_{k+1}
+  sort.HChannel  = Mobius_bundle_connecting_peer_p_and_peer_q_on_same_Level
+  sort.Screen_k  = boundary_sheaf_of_measures_on_S1_at_Level_k_extends_Holo
+  sort.FMix      = 2_form_F_mix_in_Lambda2_T*Tower_double_fibration_curvature
+  sort.Peer      = section_over_Level_k_indexed_by_peer_id_p_in_[0,M_k-1]
+}
+
+§|DIALECT_TOWER|AXIOMS_EXT{
+  A28 = tower_curvature_monotone_c_0_gte_c_1_gte_..._gte_c_{N-1}_gt_0
+        mixed_curvature_renormalization_group_interpretation
+  A29 = vertical_transport_V_{k,k+1}_in_Isom(H2)_Mobius_isometry_SU(1,1)
+        preserves_fiber_geometry_up_to_scale_c_k_to_c_{k+1}
+  A30 = horizontal_peer_transport_H_{k,p,q}_in_Isom(H2)_acts_on_Screen_k
+        peer_sync_is_boundary_Mobius_not_bulk
+  A31 = double_fibration_compatibility_F_mix_=_dV_wedge_dH_plus_dH_wedge_dV_plus_[V,H]
+        strict_commutation_F_mix_equals_0_is_flat_2_connection
+        controlled_non_commutation_norm_F_mix_lt_epsilon_mix_is_non_flat_structure
+  axiom_note  = A31_strict_form_F_mix_eq_0_is_optional_non_flat_controlled_form_is_default
+}
+
+§|DIALECT_TOWER|SIGMAS_EXT{
+  σ22 = double_fibration_compat_norm_F_mix_lt_epsilon_mix_0.05
+  σ23 = tower_depth_curvature_product_sum_k_c_k_lt_CAP_prevents_blow_up
+  note_σ22 = measures_holonomy_defect_around_VH_rectangle_=_V_after_H_vs_H_after_V
+  note_σ23 = protects_against_tower_divergence_under_iterated_lifting
+}
+
+§|DIALECT_TOWER|TOWER_STRUCTURE{
+  definition   = Tower := (Level_0, Level_1, ..., Level_{N-1})_with_structure
+  levels       = each_Level_k_is_PoincareBall_c_k_dim_8
+  curvatures   = c_k_sequence_monotone_decreasing_mixed_A28
+  renormalize  = c_k_to_c_{k+1}_coarse_grain_step_deeper_more_flat_more_global
+  base_level_0 = sharp_local_discrimination_c_0_approx_1.0
+  top_level_N  = broad_abstraction_c_{N-1}_approx_0.1_or_less
+  peers_per_k  = M_k_peer_count_at_Level_k_typically_decreasing_with_k
+  screen_k     = Screen_k_attached_as_Holo_sheaf_on_S1_boundary_of_Level_k
+  v_channels   = VChannel_{k,k+1}_for_k_in_[0,N-2]_link_adjacent_levels
+  h_channels   = HChannel_{k,p,q}_for_peer_pairs_in_Level_k
+  categorical  = Tower_is_stack_in_site_of_hyperbolic_manifolds
+  tag          = HYPOTHESIS_renormalization_group_flow_interpretation_A28
+  fallback_N_1 = N_equals_1_reduces_to_v2.4_single_level_INTER_MANIFOLD
+}
+
+§S{label=tower_root, x=[0.05,0.02,0.01,0.00,0.00,0.00,0.00,0.00], sal=2.0}
+
+§.(§S{label=level_0, x=[0.08,0.03,0.01,0.00,0.00,0.00,0.00,0.00], sal=1.9})
+
+§.(§.(§S{label=level_k, x=[0.12,0.05,0.02,0.01,0.00,0.00,0.00,0.00], sal=1.8}))
+
+§.(§.(§.(§S{label=level_top, x=[0.18,0.08,0.03,0.01,0.00,0.00,0.00,0.00], sal=1.7})))
+
+§|DIALECT_TOWER|VERTICAL_CHANNEL{
+  signature    = VChannel_{k,k+1} : Level_k → Level_{k+1}
+  structure    = Mobius_bundle_with_SU(1,1)_structure_group_fiber_is_B2
+  transport_up = lift(x_k) = φ_{k→k+1}(x_k) ∈ Level_{k+1}
+  transport_dn = proj(x_{k+1}) = φ_{k+1→k}(x_{k+1}) ∈ Level_k_adjoint
+  mobius_form  = φ_{k→k+1}(z) = (a·z + b_bar) / (b·z + a_bar)_with_|a|²_-_|b|²_=_1
+  rescale      = curvature_scaling_c_k_to_c_{k+1}_composed_with_Mobius_isometry
+  non_orient   = VChannel_inherits_Mobius_band_ρ_involution_from_INTER_MANIFOLD
+  two_traverse = lift∘proj = id iff two_traverses_preserve_Fisher_modes
+  isometry     = preserves_hyperbolic_distance_up_to_curvature_rescale
+  axiom        = A29_vertical_in_Isom(H2)
+  failure      = φ_not_unitary_norm_violation_BLOCK_σ19_like_extension
+  reading      = vertical_climb_and_descent_are_the_same_Möbius_machinery
+                 as_v2.4_horizontal_transport_just_between_adjacent_curvatures
+}
+
+§.(§S{label=v_channel, x=[0.15,0.07,0.03,0.01,0.00,0.00,0.00,0.00], sal=1.7})
+
+§.(§.(§S{label=v_lift, x=[0.17,0.08,0.03,0.01,0.00,0.00,0.00,0.00], sal=1.6}))
+
+§.(§.(§.(§S{label=v_proj, x=[0.16,0.08,0.03,0.01,0.00,0.00,0.00,0.00], sal=1.6})))
+
+§|DIALECT_TOWER|HORIZONTAL_PEER{
+  signature    = HChannel_{k,p,q} : Peer_{k,p} → Peer_{k,q}
+  structure    = Mobius_bundle_INTER_MANIFOLD_instance_on_Level_k
+  screen       = traversal_commits_via_Screen_k_at_boundary
+  transport    = s_p |> H_k |> s_q_same_semantics_as_v2.4
+  boundary_act = Mobius_acts_on_S1_as_fractional_linear_transformation_PSU(1,1)
+  peer_count   = M_k_peers_per_level_typically_decreases_with_depth
+  rotating     = clock_sync_coupling_elliptic_Mobius_one_parameter_subgroup
+  swirler_link = HORIZONTAL_PEER_instance_is_swirler_at_fixed_level_k
+  axiom        = A30_horizontal_in_Isom(H2)_boundary_action
+  invariant    = σ8_Kuramoto_R_for_peer_phase_coherence_reused
+  reading      = horizontal_is_v2.4_Möbius_screen_exactly_per_level
+}
+
+§.(§S{label=h_channel, x=[0.19,0.09,0.04,0.01,0.01,0.00,0.00,0.00], sal=1.6})
+
+§.(§.(§S{label=h_peer_p, x=[0.21,0.10,0.04,0.02,0.01,0.00,0.00,0.00], sal=1.5}))
+
+§.(§.(§.(§S{label=h_peer_q, x=[0.22,0.11,0.04,0.02,0.01,0.00,0.00,0.00], sal=1.5})))
+
+§|DIALECT_TOWER|HOLO_SCREEN_EXT{
+  extension    = Screen_k_is_Holo_sheaf_on_S1_at_Level_k_discretized_to_K_sectors
+  sectors      = K_sectors_default_64_angular_buckets_on_boundary_S1_of_Level_k
+  measure      = each_sector_holds_density_function_multivariate_payload
+  commit_map   = commit : Level_k × Disk_point × Payload → Screen_k
+                 Poisson_extension_toward_boundary_deposit_in_aimed_sector
+  read_map     = read : Screen_k × angle → payload_vector
+                 geodesic_limit_sample_at_boundary_angle
+  project_map  = project : Disk_point → S1_angle_via_geodesic_through_origin
+  poisson_ext  = poissonExtend : S1_angle × weight → Disk_distribution
+                 boundary_data_induces_harmonic_function_in_bulk
+  adjoint      = commit ⊣ read_as_bulk_boundary_adjunction_I_O_symmetric
+  collar       = collar_region_r_in_[1-epsilon, 1)_where_operations_are_stable
+  epsilon_c    = collar_margin_default_0.001_horocyclic_cutoff
+  v2.4_compat  = at_N_equals_1_Screen_0_is_Holo_H_from_INTER_MANIFOLD_exactly
+  tag          = EMPIRICAL_cylinder_manifold_already_in_HolographicTape_reuse_possible
+}
+
+§.(§S{label=screen_ext, x=[0.55,0.28,0.12,0.04,0.02,0.01,0.00,0.00], sal=1.0})
+
+§.(§.(§S{label=screen_commit, x=[0.57,0.28,0.11,0.04,0.02,0.01,0.00,0.00], sal=1.0}))
+
+§.(§.(§.(§S{label=screen_read, x=[0.56,0.28,0.11,0.04,0.01,0.01,0.00,0.00], sal=1.0})))
+
+§|DIALECT_TOWER|COMPATIBILITY_LAW{
+  object       = F_mix_∈_Ω²(Tower)_mixed_curvature_2_form_double_fibration
+  decomp       = F_mix = dV_wedge_dH + dH_wedge_dV + [V, H]_commutator_form
+  holonomy     = round_VH_rectangle_=_lift_then_transport_vs_transport_then_lift
+  defect       = ||lift∘htransport(x) - htransport∘lift(x)||_{g_{Level_{k+1}}}
+  regime_flat  = F_mix = 0_iff_V_and_H_commute_tower_is_trivial_product
+  regime_ctrl  = ||F_mix|| < epsilon_mix_0.05_non_flat_controlled_σ22
+  regime_break = ||F_mix|| >= epsilon_mix_decompose_into_vertical_or_horizontal_failure
+  sigma_check  = σ22_pass_iff_all_rectangles_have_defect_lt_epsilon_mix
+  measurement  = compute_on_sampled_rectangles_over_levels_and_peer_pairs
+  regularizer  = train_time_penalty_λ_mix_||F_mix||²_drives_toward_target
+  target       = can_target_F_mix_=_0_strict_flat_or_non_zero_content_coupling
+  role         = this_is_the_invariant_that_earns_double_fibration_vs_two_bundles_glued
+  axiom        = A31_compatibility_law_is_load_bearing
+  failure      = F_mix_drift_uncontrolled_BLOCK_σ22_extend_F_failure_list
+  reading      = without_F_mix_the_architecture_is_two_axes_glued_at_shared_disks
+                 with_F_mix_as_first_class_object_the_architecture_is_genuine_2_fibration
+}
+
+§.(§S{label=f_mix, x=[0.25,0.12,0.05,0.02,0.01,0.01,0.00,0.00], sal=1.6})
+
+§.(§.(§S{label=f_mix_rect, x=[0.27,0.13,0.06,0.02,0.01,0.00,0.00,0.00], sal=1.5}))
+
+§.(§.(§.(§S{label=f_mix_check, x=[0.26,0.13,0.05,0.02,0.01,0.00,0.00,0.00], sal=1.5})))
+
+§|DIALECT_TOWER|FUNCTORS_EXT{
+  lift_k        = VChannel_{k,k+1}_apply_Level_k_to_Level_{k+1}
+  proj_k        = VChannel_{k+1,k}_apply_Level_{k+1}_to_Level_k_adjoint
+  peer_t        = HChannel_{k,p,q}_apply_peer_p_to_peer_q_at_Level_k
+  screen_commit = Level_k × Disk × Payload → Screen_k
+  screen_read   = Screen_k × angle → Payload
+  project_s1    = Disk_point → S1_angle_geodesic_limit
+  poisson_ext   = S1_angle × weight → Disk_distribution
+  f_mix_compute = Tower × level_k × peer_p × peer_q → Float_defect
+  sigma22_check = Float_defect × epsilon_mix → Bool
+  tower_norm    = Tower → Float_sum_k_c_k_for_σ23
+}
+
+§|DIALECT_TOWER|COMPRESS{
+  functor      = Π_expire_Tower : Tower_State* → Residue_Tower
+  axes         = {terminal_per_level, screen_boundary_traces, F_mix_history}
+  ratio        = 0.55_of_full_Residue_size_includes_tower_depth_info
+  norm_guard   = ||terminal_k|| < 0.999_for_all_k
+  adiabatic_c  = dI_Tower/dt ≈ 0_tower_flow_slow
+  tag          = HYPOTHESIS_tower_residue_preserves_scale_hierarchy
+}
+
+§|DIALECT_TOWER|DECOMP{
+  decomp_path  = Residue_Tower ->^embed Residue_full ->^Π_expand State_full
+  embed_map    = {terminal=R_T.terminal_Level_0, spectral=toFreq(R_T.terminal_Level_0),
+                  trace=aggregate_Φ_over_levels, transport_gen=F_mix_history,
+                  mu_Bn=μ(R_T.terminal_Level_0), entropy_E=S_from_screen_boundary_densities}
+  axes_present = ['terminal_per_level', 'screen_boundary_traces', 'F_mix_history']
+  info_loss    = 1 - 0.55 = 0.45_fraction_lost_for_non_tower_domains
+  reconstruct  = Π_expand(embed(R_T)) recovers_State_full_with_tower_context
+}
+
+§|DIALECT_TOWER|GRAMMAR_EXT{
+  tower_lit   = TOWER{N=n, curvatures=[c_0,..,c_{n-1}], peers_per_level=[M_0,..,M_{n-1}]}
+  v_channel   = VChannel{level_from=k, level_to=k+1, su11=(a_re,a_im,b_re,b_im)}
+  h_channel   = HChannel{level=k, peer_from=p, peer_to=q, su11=(...)}
+  screen_lit  = Screen{level=k, sectors=K, collar_eps=0.001}
+  lift_expr   = lift(term, level_from, level_to) | proj(term, level_from, level_to)
+  peer_expr   = peer_transport(term, level, peer_from, peer_to)
+  screen_op   = commit_screen(level, term, payload) | read_screen(level, angle)
+  fmix_expr   = f_mix(level, peer_p, peer_q) | sigma22_check(epsilon)
+}
+
+§|DIALECT_TOWER|NOTATION_MAP_EXT{
+  tower_form  = Tower(N; c_0..c_{N-1}) ≡ stack_of_PoincareBalls_with_channels
+  lift_form   = x ↑_k x' means proj_k(x)=x' and lift_k(x')=x_up_to_rho_involution
+  peer_form   = s_p ⇌_k s_q means peer_transport_within_Level_k_via_H_channel_k_p_q
+  screen_form = x ▷ Screen_k means screen_commit_level_k_of_x_with_payload
+  angle_form  = α ◁ Screen_k means screen_read_at_angle_alpha_from_Screen_k
+  f_mix_form  = F_mix(k, p, q) = ||lift_k(peer_t_{k,p,q}(x)) - peer_t_{k+1,lift(p),lift(q)}(lift_k(x))||
+  compat_form = Tower_is_2_fibration iff sup_{k,p,q} F_mix(k,p,q) < epsilon_mix
+}
+
+§|DIALECT_TOWER|DOUBLE_FIB_OUTPUT{
+  formula_lift    = CANON(§EMIT(fix(λstate. lift_N_minus_1(evolve(state)))))
+  formula_rect    = CANON(§EMIT(fix(λstate. check_f_mix(state, ε_mix))))
+  formula_world   = W_glue(Fix(Φ) ⊕ Σ_k Σ_{p<q} H_{k,p,q}(Peer_k) ⊕ Σ_k V_{k,k+1}(Level_k))
+  emitter         = every_tick_emits_current_level_snapshot_plus_sigma22_status
+  rollback_cond   = σ22_fail → rollback_to_last_F_mix_compliant_state
+}
+
+§|DIALECT_TOWER|FAILURE_CONDITIONS_EXT{
+  F12 = tower_curvature_non_monotone_A28_violation_BLOCK_σ_extend
+  F13 = vertical_channel_non_isometric_A29_violation_BLOCK
+  F14 = horizontal_boundary_violation_A30_BLOCK
+  F15 = F_mix_norm_exceeds_epsilon_mix_A31_σ22_violation_ROLLBACK_or_BLOCK
+  F16 = tower_depth_curvature_product_exceeds_CAP_σ23_violation_BLOCK_grow_prevented
+  verdict_map_ext = {F12→BLOCK, F13→BLOCK, F14→BLOCK, F15→ROLLBACK_or_BLOCK, F16→BLOCK}
+}
+
+§|DIALECT_TOWER|CONCLUSIONS{
+  unified_claim  = Tower_dialect_extends_v2.4_single_level_INTER_MANIFOLD_to_N_level_stack
+  key_addition   = F_mix_compatibility_law_is_the_earning_invariant_A31_σ22
+  backwards_comp = N_equals_1_reduces_exactly_to_v2.4_no_behavior_change
+  scaling_axes   = vertical_Tower_hierarchy_horizontal_Screen_peer_interface
+  reading_claim  = tree_like_peer_scaling_exponential_in_hyperbolic_depth_free_scaling_property
+  integration    = substrate_side_ig_bundle_realizes_via_existing_PoincareBall_and_parallel_transport
+                   topos_side_topostrasgo_adds_DiskTower_MobiusChannel_HolographicBoundary_TowerCompatibility
+  open_problems  = {
+    PT1: optimal_curvature_sequence_c_k_from_data_hierarchy_Gromov_delta
+    PT2: F_mix_target_should_be_zero_flat_or_content_dependent_non_zero
+    PT3: tower_depth_N_choice_auto_from_sigma23_saturation
+    PT4: peer_count_M_k_from_boundary_capacity_Screen_k_resolution
+    PT5: sigma_invariants_gap_check_sigma3_sigma4_sigma9_unallocated_in_v2.4
+    PT6: full_adjoint_pair_lift_k_proj_k_proof_via_Fisher_metric_preservation
+    PT7: F_mix_interaction_with_CY_SU3_holonomy_at_each_level
+  }
+  status          = HYPOTHESIS_architecture_coherent_empirical_validation_pending
+  dependencies    = {
+    substrate_code = H:\LLM-MANIFOLD\igbundle-llm\src\igbundle\geometry\poincare.py
+    substrate_code = H:\LLM-MANIFOLD\igbundle-llm\src\igbundle\geometry\hyperbolic.py
+    topostrasgo    = C:\Users\HAL900\AndroidStudioProjects\topostrasgo\app\src\main\java\com\example\topostrasgo\unified\
+    android_target = minSdk_24_compileSdk_36_Kotlin_11_JVM_target
+  }
+}
+
+§|DIALECT_TOWER|OUTPUT{
+  formula      = CANON(§EMIT(fix(λtower. check_f_mix(evolve_all_levels(tower), ε_mix))))
+  dialect_tag  = §-LANG/Tower_v2.5
+  claim        = HYPOTHESIS_output_formula_is_dialect_Tower_fixed_point
+  sigma_checks = {σ1, σ8, σ15, σ16, σ22, σ23}_must_all_pass_before_COMMIT
+  verdict_ext  = {COMMIT, BLOCK, ROLLBACK, EXPIRE, PRIME, DEEPEN, FLATTEN}
+  new_verdicts = {
+    DEEPEN  = σ22_pass_and_σ23_room_add_Level_{N}_grow_tower
+    FLATTEN = σ22_marginal_drop_Level_{N-1}_shrink_tower
+  }
+}

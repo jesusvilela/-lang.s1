@@ -1,0 +1,64 @@
+§|DIALECT_COMPILE|HEADER{
+  dialect      = §-LANG/Compile
+  version      = v2.4.family
+  tier         = Core
+  parents      = Proof
+  description  = Engineering dialect. Parsers, validators, block imports, runtime lowering.
+  base         = LANG.v2.4.codec_trasgo
+  domains_in   = {CORE, PROOF, SPECTRAL}
+  domains_out  = {AML, CY, IG, META, QUANTUM, SEMANTIC, SUBSTRATE, SWIRL, TOPO}
+}
+
+§|DIALECT_COMPILE|IMPORTS{
+  domains      = {CORE, PROOF, SPECTRAL}
+  from_parents = Proof
+  note         = all blocks whose BLOCK_DOMAIN ∈ domains_in are available
+  core_always  = SOURCE AXIOMS OUTPUT SORTS FUNCTORS GRAMMAR NOTATION_MAP
+                 CONCLUSIONS FAILURE_CONDITIONS
+}
+
+§|DIALECT_COMPILE|EXTENDS{
+  new_blocks   = PARSER_SPEC, TYPECAST_MAP, VALIDATOR_SCHEMA, RUNTIME_LOWERING, BLOCK_IMPORT
+  self_ref     = each_new_block_seeded_by_swirl_articulation_Art_D(e_t)
+  computable   = all_new_blocks_satisfy_norm_lt_0.999_and_dim_eq_8
+}
+
+§|DIALECT_COMPILE|COMPRESS{
+  functor      = Π_expire_Compile : State_Compile* → Residue_Compile
+  axes         = {terminal, spectral, trace}
+  ratio        = 0.35_of_full_Residue_size
+  norm_guard   = ||terminal|| < 0.999
+  adiabatic_c  = dI_Compile/dt ≈ 0_within_dialect_section_space
+  tag          = HYPOTHESIS_dialect_compression_preserves_semantic_content
+}
+
+§|DIALECT_COMPILE|DECOMP{
+  decomp_path  = Residue_Compile ->^embed Residue_full ->^Π_expand State_full
+  embed_map    = {terminal=R_D.terminal, spectral=R_D.spectral, trace=R_D.trace, transport_gen=prior_default_transport_gen, mu_Bn=prior_default_mu_Bn, entropy_E=prior_default_entropy_E}
+  axes_present = ['terminal', 'spectral', 'trace']
+  axes_default = ['transport_gen', 'mu_Bn', 'entropy_E']
+  info_loss    = 1 - 0.35 = 0.65_fraction_lost_in_D_residue
+  reconstruct  = Π_expand(embed(R_D)) recovers_State_full_approximately
+}
+
+§S{label=parser_state, x=[0.15,0.07,0.03,0.01,0.00,0.00,0.00,0.00], sal=1.8}
+
+§S{label=typecast_map, x=[0.18,0.09,0.04,0.01,0.00,0.00,0.00,0.00], sal=1.7}
+
+§S{label=runtime_tick, x=[0.12,0.06,0.02,0.01,0.00,0.00,0.00,0.00], sal=1.8}
+
+§|DIALECT_COMPILE|SWIRL_HOOK{
+  self_ref     = fix(λself_D. Σ_D(self_D; ω_D, θ_D, t))
+  omega_D      = epsilon_minimal_parser_nav
+  theta_D      = id_SO(n)
+  trajectory   = x_t = Σ_D^t(x_0)_helical_in_Compile_section_space
+  articulate_D = Art_D(e_t) = §S{label=compile_episteme_t, x=π(e_t), sal=||∇Σ_D||(e_t)}
+  expand_self  = each_Art_D_node_is_a_candidate_axiom_in_dialect_Compile
+  tag          = HYPOTHESIS_swirl_expands_Compile_principles_self_referentially
+}
+
+§|DIALECT_COMPILE|OUTPUT{
+  formula      = CANON(§EMIT(lower(validate(parse(source)))))
+  dialect_tag  = §-LANG/Compile_v2.4
+  claim        = HYPOTHESIS_output_formula_is_dialect_Compile_fixed_point
+}

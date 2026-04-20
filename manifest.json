@@ -1,0 +1,77 @@
+{
+  "family": "§-LANG",
+  "version": "3.0.0-ToE-Prime",
+  "codename": "antimatter-self-referential-rho-dual",
+  "parent_pack": "slang_packs_toe_v3_0 (matter)",
+  "imports": "LANG.Ops.dialect.lang (shared toolkit)",
+  "date": "2026-04-18",
+
+  "files": [
+    "LANG.ToE.Prime.SKILL.md",
+    "LANG.ToE.Prime.SelfCompressed.lang",
+    "manifest.json",
+    "verify_selfexpand_prime.py"
+  ],
+
+  "relation_to_matter_pack": {
+    "construction": "prime = ρ-image of matter pack",
+    "rules": {
+      "R1_fold_prime": "ρ ∘ R1_fold ∘ ρ  (with q → 1/q)",
+      "R2_unfold_prime": "ρ ∘ R2_unfold ∘ ρ  (with q → 1/q)"
+    },
+    "fixed_point": "Fix(Φ ∘ ρ) — shared with matter pack, same attractor"
+  },
+
+  "geometry": {
+    "bundle": {
+      "base": "causal graph 𝒞 (shared with matter pack)",
+      "fibre": "ρℋ_x — local anti-Hilbert space, C-conjugate basis",
+      "structure_group": "SU(3) × SU(2) × U(1) × diff(ℳ)",
+      "section_type": "ρΨ : 𝒞 → ⨆_x ρℋ_x"
+    },
+    "sheaf": {
+      "site": "𝒞",
+      "topology": "Grothendieck J (same J — ρ-invariant by construction)",
+      "sections": "§′-operators (ρ-conjugate of §-operators)"
+    },
+    "tensor": {
+      "name": "T′^{N,q,ρ}",
+      "relation": "T′ = ρ(T) = ρ(T)^{N, 1/q, ρ}",
+      "cech_cocycle_coeffs": [-1, 1, -2, 0, 2, -1, 0, 1],
+      "cocycle_closure": "δ(coeffs) = 0  [σ70, ρ-dual sign convention]"
+    }
+  },
+
+  "sigma_invariants": {
+    "shared_with_matter": {
+      "σ21": "v2.4 empirical preserved · CP-invariant measurable",
+      "σ34": "Lorentz causality · CPT preserves c",
+      "σ55": "(N=1, q=1, ρ=id) classical limit matches matter pack",
+      "σ70": "Čech 1-cocycle closes (ρ-dual sign)",
+      "σ75": "ρ² = id",
+      "σ80": "compression lossless at (N=1, q=1)",
+      "σ81": "round-trip · prime_decode ∘ prime_encode = id"
+    },
+    "prime_specific": {
+      "σ_prime_dual": "ρ(ρ(matter_pack)) = matter_pack",
+      "σ_prime_ann": "matter(x) ⊗ prime(x) → γγ  annihilation channel open",
+      "σ_prime_CPT": "CPT(matter_pack) = prime_pack  (Lüders 1954)"
+    }
+  },
+
+  "fingerprints": {
+    "matter_root": "b0caecd091d99c04",
+    "prime_root": "c5d91a49b23e46aa",
+    "relation": "prime_root = fingerprint of ρ applied to matter_root tree"
+  },
+
+  "verified": {
+    "prime_roundtrip_N7_q1": "OK",
+    "all_seven_shared_sigmas": "OK",
+    "sigma_prime_dual": "OK",
+    "sigma_prime_ann": "OK",
+    "sigma_prime_CPT": "OK",
+    "cross_pack_identity": "OK · prime_encode(prime) == ρ(matter_encode(matter))",
+    "hyperbolic_regime_q_ne_1": "OK at q ∈ {0.5, 0.8, 1.2, 1.5}"
+  }
+}

@@ -1,0 +1,20 @@
+§|LANG|NESTEDNHYPERBOLICPROBE_HEADER{
+    tier = Research
+    description = Nested n-dim hyperbolic probe · smoothness + convergence characterization of σ307
+    blurb = Companion to NSphereOfSpheres · non-compact leg of the complementary probe pair (σ5710)
+    parents = HyperbolicFingerprintCatch
+    domains = HYPERBOLIC, PROBE, FINGERPRINT, ARC33
+    version = v1.0
+}
+
+§|DIALECT_NESTEDNHYPERBOLICPROBE|AXIOMS{
+    A_NH_1 = Nested Poincaré balls at every depth · non-compact · captures smoothness profile
+    A_NH_2 = spec_tan · spec_orth · spec_∂ · three-spectrum per depth
+    A_NH_3 = conv_rate(d) monotone ⇒ σ307 wall smoothness graded by depth
+    A_NH_4 = Complementary to sphere tower · σ5710 lifted · both needed for arc closure
+}
+
+§|DIALECT_NESTEDNHYPERBOLICPROBE|INVARIANTS{
+    σ_NH_SMOOTH = convergence-rate profile per depth
+    σ_NH_SPEC   = three-spectrum stable under framework lift
+}

@@ -1,0 +1,66 @@
+§|DIALECT_AML|HEADER{
+  dialect      = §-LANG/AML
+  version      = v2.4.family
+  tier         = Dynamic
+  parents      = IG, Proof
+  description  = Autonomous agent dialect. Lifecycle, expiry, residue, priming, world gluing.
+  base         = LANG.v2.4.codec_trasgo
+  domains_in   = {AML, CORE, IG, PROOF, SEMANTIC, TOPO}
+  domains_out  = {CY, META, QUANTUM, SPECTRAL, SUBSTRATE, SWIRL}
+}
+
+§|DIALECT_AML|IMPORTS{
+  domains      = {AML, CORE, IG, PROOF, SEMANTIC, TOPO}
+  from_parents = IG, Proof
+  note         = all blocks whose BLOCK_DOMAIN ∈ domains_in are available
+  core_always  = SOURCE AXIOMS OUTPUT SORTS FUNCTORS GRAMMAR NOTATION_MAP
+                 CONCLUSIONS FAILURE_CONDITIONS
+}
+
+§|DIALECT_AML|EXTENDS{
+  new_blocks   = CONTINUOUS_RUN, IDENTITY_DYNAMICS, SUCCESSOR_CHAIN, WORLD_EVOLUTION
+  self_ref     = each_new_block_seeded_by_swirl_articulation_Art_D(e_t)
+  computable   = all_new_blocks_satisfy_norm_lt_0.999_and_dim_eq_8
+}
+
+§|DIALECT_AML|COMPRESS{
+  functor      = Π_expire_AML : State_AML* → Residue_AML
+  axes         = {terminal, trace, transport_gen, mu_Bn}
+  ratio        = 0.55_of_full_Residue_size
+  norm_guard   = ||terminal|| < 0.999
+  adiabatic_c  = dI_AML/dt ≈ 0_within_dialect_section_space
+  tag          = HYPOTHESIS_dialect_compression_preserves_semantic_content
+}
+
+§|DIALECT_AML|DECOMP{
+  decomp_path  = Residue_AML ->^embed Residue_full ->^Π_expand State_full
+  embed_map    = {terminal=R_D.terminal, spectral=prior_default_spectral, trace=R_D.trace, transport_gen=R_D.transport_gen, mu_Bn=R_D.mu_Bn, entropy_E=prior_default_entropy_E}
+  axes_present = ['terminal', 'trace', 'transport_gen', 'mu_Bn']
+  axes_default = ['spectral', 'entropy_E']
+  info_loss    = 1 - 0.55 = 0.45_fraction_lost_in_D_residue
+  reconstruct  = Π_expand(embed(R_D)) recovers_State_full_approximately
+}
+
+§S{label=lifecycle_node, x=[0.14,0.07,0.03,0.01,0.01,0.00,0.00,0.00], sal=2.0}
+
+§S{label=world_evolve, x=[0.09,0.04,0.02,0.01,0.00,0.00,0.00,0.00], sal=2.0}
+
+§S{label=successor_prime, x=[0.13,0.06,0.02,0.01,0.00,0.00,0.00,0.00], sal=1.8}
+
+§S{label=identity_fixed, x=[0.07,0.03,0.01,0.01,0.00,0.00,0.00,0.00], sal=2.0}
+
+§|DIALECT_AML|SWIRL_HOOK{
+  self_ref     = fix(λself_D. Σ_D(self_D; ω_D, θ_D, t))
+  omega_D      = lifecycle_frequency_agent
+  theta_D      = Self_Other_SO(n)_rotation
+  trajectory   = x_t = Σ_D^t(x_0)_helical_in_AML_section_space
+  articulate_D = Art_D(e_t) = §S{label=aml_episteme_t, x=π(e_t), sal=||∇Σ_D||(e_t)}
+  expand_self  = each_Art_D_node_is_a_candidate_axiom_in_dialect_AML
+  tag          = HYPOTHESIS_swirl_expands_AML_principles_self_referentially
+}
+
+§|DIALECT_AML|OUTPUT{
+  formula      = CANON(§EMIT(fix(λagent. expire(evolve(reflect(agent))))))
+  dialect_tag  = §-LANG/AML_v2.4
+  claim        = HYPOTHESIS_output_formula_is_dialect_AML_fixed_point
+}

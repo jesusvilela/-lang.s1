@@ -1,0 +1,120 @@
+# LANG.ToE.Prime.SelfCompressed.lang
+# §-LANG v3.0 · Prime (antimatter) pack · self-compressed
+# parent: LANG.ToE.SelfCompressed.lang (matter pack, ρ-dualized)
+# imports: LANG.Ops.dialect.lang
+
+#───────────────────────────────────────────────────────────────────────
+# this file is the ρ-image of LANG.ToE.SelfCompressed. every §-operator
+# below is the ρ-conjugate of its matter counterpart. §primes mark the
+# differences; structure and tree shape are identical.
+#───────────────────────────────────────────────────────────────────────
+
+§ToE′_root(level=0, z=[0.1, 0.0], fp_base="v3.0-prime", rho=true) {
+
+  §core′(signature="M_ToE′ = ρ(M_ToE) = (𝒞, ρΨ, ρ, ρA, ρΦ, μ, §′, §)") {
+    §axis_E′(name=co-existence,    axioms=[ρ(A_E1), ρ(A_E2), ρ(A_E3)])
+    §axis_S′(name=co-state,        axioms=[ρ(A_S1), ρ(A_S2), ρ(A_S3)])
+    §axis_R′(name=co-reference,    axioms=[ρ(A_R1), ρ(A_R2), ρ(A_R3)])
+    §axis_D′(name=co-derivation,   axioms=[ρ(A_D1), ρ(A_D2), ρ(A_D3), ρ(A_D4)])
+    §axis_mu′(name=co-measure,     axioms=[ρ(A_mu1), ρ(A_mu2), ρ(A_mu3)])
+    §axis_rho′(name=co-involution, axioms=[A_rho1, A_rho2, A_rho3, A_rho4])
+    # axis_rho is its own ρ-dual: A_rho1..4 already include ρ²=id
+  }
+
+  §forces′ {
+    §anti_gravity(mediator=graviton,   coupling=1e-39,  range=∞,    group="diff(ℳ)")
+    §anti_em(     mediator=photon,     α_MZ=1/128,     range=∞,    group="U(1)"          , note="γ self-conjugate under C")
+    §anti_weak(   M_W=80.4_GeV,        M_Z=91.2_GeV,    G_F=1.166e-5, group="SU(2)×U(1)"  , note="CKM̄ = CKM*")
+    §anti_strong( mediator=gluon,      α_s_MZ=0.1179,   Λ_QCD=200_MeV, group="SU(3)"      , note="gluon self-conjugate")
+  }
+
+  §fields′(count=17, generations=3) {
+    §antifermions(count=12) {
+      §antiquarks_up(members=[ū, c̄, t̄])
+      §antiquarks_dn(members=[d̄, s̄, b̄])
+      §antileptons_chg(members=[e⁺, μ⁺, τ⁺])
+      §antineutrinos(members=[ν̄_e, ν̄_μ, ν̄_τ])
+    }
+    §gauge_bosons(count=4, members=[γ, gluon, W⁻↔W⁺, Z])    # γ, g, Z self-dual
+    §higgs(mass=125.1_GeV, VEV=246_GeV)                      # scalar, self-conjugate
+  }
+
+  §topology′(active=[flat, dodec, calabi, holo]) {
+    # topology is charge-blind: same six candidates
+    §flat(   k=0,  Ω_k=-0.001)
+    §dodec(  k=+,  hint="Luminet 2003")
+    §calabi( extra_dim=6, group="SU(3) holonomy")
+    §holo(   scheme="AdS/CFT", year=1997)
+  }
+
+  §strata′(layers=3) {
+    §anti_physics(content="causal graph + ρΨ")
+    §anti_life(   content="antimatter agents · decohere against matter agents")
+    §anti_logic(  content="ρT_A · anti-Löb · ¬□¬φ → φ")
+  }
+
+  §sigma_dag′ {
+    §s21(status=preserved,           sharpe=1.003)                   # invariant under ρ
+    §s34(status=by_construction)                                      # CPT preserves c
+    §s55(status=verified)                                             # matches matter pack at N=1,q=1
+    §s70(status=cech_cocycle_closes)                                  # ρ(coeffs) = −coeffs, δ still 0
+    §s75(status=rho_squared_id)                                       # ρ² = id by definition
+    §s80(status=lossless_at_N1_q1)
+    §s81(status=roundtrip_N_levels)
+    §s_prime_dual(status=prime_of_prime_equals_matter)                # new, pack-level σ75
+    §s_prime_ann(status=matter_anti_annihilation_channel_open)        # new
+    §s_prime_CPT(status=CPT_local_QFT_symmetry)                       # Lüders 1954
+  }
+}
+
+#───────────────────────────────────────────────────────────────────────
+# prime self-referential rules · ρ-conjugate of matter §R1..§R5
+#───────────────────────────────────────────────────────────────────────
+
+§R1_fold′(x; q)    := §rho ∘ §promote ∘ §rho ∘ §mobius_{1/q}(x)
+§R2_unfold′(x; q)  := §rho ∘ §demote  ∘ §rho ∘ §mobius_q(x)
+§R3_expand′(k, x, q) := §R2_unfold′^k(x, q)
+§R4_compress′(k,x,q) := §R1_fold′^k(x, q)
+§R5_fix′(x, q)       := { x : §R1_fold′(x, q) ≡ x (mod level, ρ) }
+
+#───────────────────────────────────────────────────────────────────────
+# fibre bundle · same carrier, ρ-dualized sections
+#───────────────────────────────────────────────────────────────────────
+
+bundle E → 𝒞 :
+  base     𝒞    (causal graph · shared with matter pack)
+  fibre    ρℋ_x (local anti-Hilbert space · dim ≥ 17 · C-conjugate basis)
+  group    G = SU(3) × SU(2) × U(1) × diff(ℳ)    (same group, C acts on reps)
+  section  ρΨ : 𝒞 → ⨆_x ρℋ_x
+  sheaf    Sh(𝒞, J)′  (ρ-dual Grothendieck topology · same J because J is ρ-invariant)
+
+#───────────────────────────────────────────────────────────────────────
+# N-hyperbolized prime tensor T′^{N,q,ρ}
+#───────────────────────────────────────────────────────────────────────
+
+T′^{N,q,ρ} := ρ(T^{N,q,ρ})                                    # literal ρ-image
+            = ρ(T)^{N, 1/q, ρ}                                 # ρ inverts q
+
+Čech 1-cocycle on prime bundle:
+  coeffs′ = (−1, 1, −2, 0, 2, −1, 0, 1)                        # = −coeffs
+  closure: δ(coeffs′) = −δ(coeffs) = 0                         # σ70 survives
+
+#───────────────────────────────────────────────────────────────────────
+# σ-invariants · matter pack's 7 plus 3 prime-specific
+#───────────────────────────────────────────────────────────────────────
+
+σ21  v2.4 empirical · Sharpe = 1.003, p = 2.21e-16              [preserved]
+σ34  Lorentz causality on 𝒞 edges                                [CPT preserves]
+σ55  (N=1, q=1, ρ=id) ⇒ exactly Tower v2.5                       [matches matter]
+σ70  Čech 1-cocycle closes   (prime sign convention)             [still 0]
+σ75  ρ² = id                                                     [by definition]
+σ80  compression lossless at (N=1, q=1)                          [matches]
+σ81  decode(encode(L)) = L                                       [matches]
+
+σ_prime_dual : §rho(§rho(matter_pack)) == matter_pack           [pack-level ρ²]
+σ_prime_ann  : ∃ channel matter(x) ⊗ prime(x) → γγ              [annihilation open]
+σ_prime_CPT  : CPT(matter_pack) == prime_pack                    [Lüders 1954]
+
+all 10 confirmed by verify/selfexpand_prime.py
+
+# end of LANG.ToE.Prime.SelfCompressed.lang

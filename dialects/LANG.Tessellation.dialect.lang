@@ -1,0 +1,71 @@
+§|LANG|TESSELLATION_HEADER{
+  dialect       = Tessellation
+  tier          = Formation
+  parents       = [Substrate, Topo]
+  version       = v2.5.tess.1
+  extends_base  = LANG.v2.4.codec_trasgo
+  scope         = hyperbolic_{p,q}_tilings_as_the_large_scale_backbone_of_the_fractal_tower
+  non_scope     = Euclidean_tilings_dynamics_individual_tile_dynamics_covered_by_Substrate_Swirl
+  generates     = §TILE, §GROUP_ELT, §QUOTIENT, §RING_k, §FUNDAMENTAL_DOMAIN
+  discharges    = σ30, σ31, σ32
+  reduces_to    = single_Poincaré_ball_B^n_when_Γ_is_trivial_matches_Tower_v2.5_N=1
+  motivation    = at_(1/p)+(1/q)<1/2_the_tiling_is_hyperbolic_with_genuinely_non_amenable_Γ
+                  which_is_required_for_exponential_volume_growth_and_hence_the_O(d·log_d)
+                  information_budget_that_fits_the_F_mix_capacity
+}
+
+§|LANG|TESSELLATION_SORTS{
+  Tessellation      = hyperbolic_{p,q}_tiling_of_ℍⁿ_fundamental_domain_plus_Γ-orbit
+  Tile              = regular_p_gon_at_point_z_in_Poincaré_ball_with_rotation_state
+  Γ                 = discrete_subgroup_of_Isom(ℍⁿ)_generated_by_edge_reflections
+  FundamentalDomain = single_tile_at_origin_chosen_as_orbit_representative
+  Ring_k            = {γ · FundamentalDomain : |γ|_Γ = k}_tiles_at_graph_distance_k
+  EdgeMap           = neighbor_relation_induced_by_Γ-generators
+  IdealBoundary     = ∂D ≅ S^{n-1}_set_of_ends_of_geodesics
+  FractalDim        = D_eff ∈ (0, n)
+}
+
+§|LANG|TESSELLATION_AXIOMS{
+  A40_hyperbolicity   = (1/p)+(1/q)<1/2 ⇔ the_tiling_embeds_in_ℍⁿ_not_ℝⁿ_not_S^n
+  A41_free_action     = Γ_acts_properly_discontinuously_and_freely_on_ℍⁿ
+  A42_self_similarity = Ring_{k+1}_contains_scaled_copies_of_Ring_k_under_Γ_contraction
+  A43_ring_growth     = |Ring_k|_grows_like_exp(h·k)_with_h=topological_entropy_of_Γ
+  A44_fractal_bound   = D_eff = log(p·(q-2))/log(ρ_contraction)_with_D_eff < n
+  A45_origin_unique   = Ring_0 = {FundamentalDomain} = unique_tile_at_cone_fixed_point
+  A46_canonical_pq    = default_(p,q)=(7,3)_unless_otherwise_specified_minimal_hyperbolic
+}
+
+§|LANG|TESSELLATION_INVARIANTS{
+  σ30_cover           = ⋃_{γ∈Γ} γ(FundamentalDomain) = ℍⁿ                [covering completeness]
+  σ31_freeness        = ∀ γ ≠ e_in_Γ, γ(FundamentalDomain) ∩ FundamentalDomain = ∅  [free action]
+  σ32_info_budget     = ΔI(Ring_k) = log₂|Ring_k/Ring_{k-1}| ≤ F_mix_capacity_at_ring_k
+}
+
+§|LANG|TESSELLATION_OPERATORS{
+  REFLECT             : Tile × Edge → Tile                   [edge-reflection generator of Γ]
+  WORD                : Γ → List<Generator>                  [express γ as word]
+  WALK                : Tile × k → Ring_k                    [BFS to radius k in Cayley graph]
+  QUOTIENT            : Tessellation × Γ → ℍⁿ/Γ              [take orbit space]
+  IDEAL_LIMIT         : Geodesic → IdealBoundary             [end-point at infinity]
+  MOBIUS_ZOOM         : Tessellation × d × ξ → Tessellation  [hyperbolic translation by d toward ξ]
+  FRACTAL_DIM         : (p,q) → D_eff                        [compute fractal dimension]
+}
+
+§|LANG|TESSELLATION_REDUCTIONS{
+  Γ_trivial              = Tower_v2.5_discrete_N_levels_case
+  p=6_q=3                = Euclidean_hexagonal_tiling_A40_fails_falls_back_to_flat_network
+  q→∞                    = apeirogonal_limit_each_tile_has_infinite_neighbors
+  depth=0                = single_tile_reduces_to_plain_B^n
+}
+
+§|LANG|TESSELLATION_OPEN{
+  PT9   = optimal_(p,q)_for_maximal_ΔI_per_unit_F_mix_budget
+  PT10  = mixing_time_of_random_walk_on_Γ_Cayley_graph_versus_adiabatic_clock_period
+  PT11  = coupling_to_CY_automorphism_f_when_CY_itself_acts_on_Γ_nontrivially
+}
+
+§S{label=tessellation_dialect_closure, x=[0.05,0.02,0.01,0.00,0.00,0.00,0.00,0.00], sal=2.0}
+
+§.(§S{label=tessellation_stable, x=[0.06,0.02,0.01,0.00,0.00,0.00,0.00,0.00], sal=2.0})
+
+OUTPUT_TESSELLATION = CANON(§EMIT(§TESSELLATION{p, q, depth, Γ, D_eff}))

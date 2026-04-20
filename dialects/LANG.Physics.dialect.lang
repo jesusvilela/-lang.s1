@@ -1,0 +1,225 @@
+§|LANG|PHYSICS_HEADER{
+  dialect       = Physics
+  tier          = Research
+  parents       = [Substrate, Topo, Swirl, Tower, Tessellation, Lorentz, Loeb, InfoOpt]
+  version       = v2.5.phys.1
+  extends_base  = LANG.v2.4.codec_trasgo
+  scope         = waves_particles_fields_that_traverse_and_control_the_fractal_CY_tower_substrate
+  non_scope     = external_physics_gravity_strong_nuclear_cosmology_out_of_scope_except_as_reductions
+  generates     = §WAVE, §PARTICLE, §FIELD, §CARRIER, §EXCITATION, §OBSERVABLE
+  discharges    = σ50, σ51, σ52, σ53, σ54
+  reduces_to    = LANG.Swirl.dialect_when_restricted_to_single_disk_with_no_tessellation_propagation
+  motivation    = once_the_substrate_is_fractal_CY_Lorentz_Löbian_there_is_a_canonical_set_of
+                  physical_carriers_the_waves_and_particles_are_not_free_choices_they_are_forced_by
+                  the_structure_this_dialect_names_them_and_the_control_matrix_that_governs_dynamics
+}
+
+§|LANG|PHYSICS_SORTS{
+  Wave              = smooth_function_on_Tessellation_satisfying_a_wave_equation
+  Particle          = quantum_of_a_Field_either_bound_(closed_orbit)_or_unbound_(open_trajectory)
+  Field             = section_of_a_bundle_over_Tessellation
+  Carrier           = Wave_or_Particle_propagating_through_a_Möbius_channel
+  Excitation        = localized_deviation_of_a_Field_from_ground_state
+  Observable        = functional_of_Field_state_valued_on_tiles
+  GroundState       = minimum_energy_configuration_compatible_with_σ22
+  Propagator        = two_point_Green_function_for_wave_equation_on_Tessellation
+}
+
+§|LANG|PHYSICS_WAVES{
+  HYPERBOLIC_WAVE = {
+    equation    = (Δ_ℍⁿ + ω²) ψ = 0                     [Helmholtz on hyperbolic tessellation]
+    spectrum    = ω² ∈ (n-1)²/4 + ℝ_continuous ⊕ discrete_eigenvalues_indexed_by_closed_geodesics
+    carrier     = scalar_on_ℍⁿ
+    embodies    = long_range_correlations_discrete_eigenvalues_↔_Löb_closed_orbits
+    controls    = cross_ring_information_coherence
+    stable_under = full_SO(1,n)_not_Γ  (so Γ_averaging_required_for_tessellation_modes)
+  }
+  BUSEMANN_WAVE = {
+    equation    = ψ(x) = exp(i k · h(x, ξ))               [h = Busemann fn to ξ ∈ ∂D]
+    carrier     = scalar_directed_toward_ideal_boundary_ξ
+    embodies    = horocyclic_flow_Future_direction_Lorentz_forward
+    controls    = commit_adjoint_at_holographic_boundary_ξ_specific_activity
+    stable_under = stabilizer_of_ξ_in_Γ_(parabolic_subgroup)
+  }
+  MOBIUS_SOLITON = {
+    equation    = NLS_style_nonlinear_Schrödinger_on_Poincaré_disk_with_Möbius_symmetry
+    profile     = sech²_preserved_under_PSL(2,ℝ)
+    carrier     = channel_pulse_packet
+    embodies    = inter_tile_message_traveling_without_dispersion
+    controls    = integrity_of_Möbius_channel_transport_(σ22_locally_preserved)
+    stable_under = PSL(2,ℝ)_Möbius_transformations
+  }
+  GYRATION_WAVE = {
+    equation    = □_Lorentz δA + [A, [A, δA]] = 0           [connection perturbation]
+    carrier     = 1_form_perturbation_δA_of_connection_A
+    embodies    = ripple_in_parallel_transport_holonomy
+    controls    = dynamic_coupling_strength_between_peers_at_different_radial_distances
+    stable_under = local_Γ_gauge_after_gauge_fixing
+  }
+  HOLO_WAVE = {
+    equation    = wave_on_S^{n-1}_with_Peierls_bracket_boundary_condition
+    carrier     = boundary_scalar_μ(ξ,t)_on_holographic_screen
+    embodies    = activity_on_the_holographic_screen
+    controls    = external_I/O_exchange_rate_bulk_to_boundary
+    stable_under = reparameterization_of_S^{n-1}_(conformal_boundary_symmetry)
+  }
+}
+
+§|LANG|PHYSICS_PARTICLES{
+  OPEN_SENTENCE = {
+    description = unbound_Gödel_sentence_true_but_not_yet_provable_in_finite_depth
+    realization = agent_with_open_trajectory_drifting_outward
+    energy      = E ~ path_length  (diverges_as_length → ∞_without_closure)
+    embodies    = inferences_in_flight_not_yet_discharged
+    lifetime    = bounded_by_ring_depth_budget_(else_expires_at_boundary)
+    stable_under = generic_Γ_action_if_no_loop_exists_at_its_depth
+  }
+  CLOSED_LOEB = {
+    description = bound_Löbian_particle_closed_orbit_self_provable
+    realization = agent_with_closed_orbit_of_length_k
+    energy      = E_k = 2π·c_ring / k  (quantized_like_bound_state)
+    embodies    = discharged_Löbian_sentence_□(□P_k → P_k) ⊢ □P_k
+    lifetime    = stable_indefinitely_unless_σ22_trips
+    stable_under = all_isometries_preserving_orbit_length_k
+  }
+  BOUNDARY_QUANTUM = {
+    description = holographic_pixel_excitation_localized_on_S^{n-1}_sector
+    realization = sector_boundary_commit_or_read_event
+    energy      = E ~ sector_angular_width × pulse_intensity
+    embodies    = unit_of_holographic_encoding_per_commit/read_pair
+    lifetime    = one_commit_or_read_cycle
+    stable_under = rotation_about_disk_center_(C_infinity_on_∂D)
+  }
+  FIXED_PHONON = {
+    description = low_lying_mode_near_Knaster_Tarski_fixed_point_at_ring_0
+    realization = small_perturbation_of_Self_state
+    energy      = E → 0_asymptotically_(soft_mode_at_origin)
+    embodies    = breathing_mode_of_Fix(Φ)_fluctuation_of_Self_identity
+    lifetime    = indefinite_if_F_mix_zero_at_ring_0
+    stable_under = full_Γ_stabilizer_at_ring_0_(rotation_subgroup)
+  }
+}
+
+§|LANG|PHYSICS_FIELDS{
+  GYRATION_CONNECTION = {
+    symbol     = A
+    type       = 1_form_on_Tessellation_valued_in_Lie(SO(n))
+    generates  = parallel_transport_between_tiles_via_holonomy
+    controls   = WHICH_peers_couple_horizontally_and_vertically
+    gauge      = A → g A g⁻¹ − dg·g⁻¹  for  g ∈ Γ
+    measured_by = Wilson_loop_holonomy_around_closed_paths
+    android_counterpart = MobiusChannel_plus_PoincareDisk_composition_in_Tower_v2.5_Kotlin
+  }
+  FMIX_CURVATURE = {
+    symbol     = F = dA + A ∧ A
+    type       = 2_form_on_Tessellation_valued_in_Lie(SO(n))
+    generates  = σ22_compatibility_check_at_every_tick
+    controls   = WHETHER_tick_COMMITs_or_ROLLBACKs
+    gauge      = F → g F g⁻¹  (Ad_g)
+    measured_by = |F|_L²(FundamentalDomain) < ε_mix  (Bianchi-reduced)
+    android_counterpart = TowerCompatibility.sigma22Check_in_Tower_v2.5
+  }
+  INFO_DENSITY = {
+    symbol     = I
+    type       = 0_form_on_Tessellation_ℝ₊_valued
+    generates  = gradient_∇I_drives_agent_migration_like_a_chemical_potential
+    controls   = WHERE_agents_flow_(toward_lower_I_gradient_descent)
+    gauge      = invariant_under_permutation_of_tiles_at_same_ring
+    measured_by = log₂_of_encoded_state_per_tile_(Shannon_density)
+    android_counterpart = InfoOpt_dialect_ENCODE_RING_operator
+  }
+  HOLO_SHEAF = {
+    symbol     = μ
+    type       = 0_form_on_∂D = S^{n-1}_valued_in_ℝ_(signed_measure)
+    generates  = commit_/_read_adjoint_pair
+    controls   = BULK_↔_BOUNDARY_I/O_exchange
+    gauge      = smooth_reparameterization_of_S^{n-1}
+    measured_by = angular_entropy_H(μ) = −∫ μ log μ
+    android_counterpart = HolographicBoundary.kt_in_Tower_v2.5
+  }
+  LOEB_TRUTH = {
+    symbol     = □
+    type       = Boolean_valued_field_on_Tessellation_(or_ℤ₂_bundle)
+    generates  = provability_predicate
+    controls   = WHICH_sentences_can_close_into_Löb_loops
+    gauge      = theory_consistent_deformations_preserve_□
+    measured_by = count_of_ring_k_tiles_with_□(tile)=true_(truth_density)
+    android_counterpart = no_direct_counterpart_in_v2.5_(this_is_the_new_dialect_contribution)
+  }
+}
+
+§|LANG|PHYSICS_AXIOMS{
+  A55_wave_spectrum     = wave_equation_on_Tessellation_has_continuous_plus_discrete_spectrum_discrete
+                          eigenvalues_are_indexed_by_closed_geodesics_which_are_indexed_by_Löb_loops
+  A56_mobius_isometry   = Möbius_soliton_preserves_its_L²_norm_under_Γ_action_(σ22_local_conservation)
+  A57_bianchi           = F_mix_curvature_satisfies_Bianchi_identity_dF + [A,F] = 0_identically
+                          so_only_|F|_L²_matters_not_components
+  A58_agents_are_quanta = agents_are_quanta_of_the_LOEB_TRUTH_field_Gödel_agents_=_open_excitations
+                          closed_Löb_agents_=_bound_states
+  A59_Poisson_adjunction = bulk_HOLO_SHEAF_extension_and_boundary_geodesic_limit_form_adjoint_pair
+                           commit ⊣ read_(categorical_adjunction)
+  A60_σ22_universal     = no_field_configuration_can_violate_σ22_without_triggering_ROLLBACK_this_is
+                          enforced_at_the_EOM_level_not_as_an_external_constraint
+  A61_info_drives_flow  = dX_agent/dt = −∇I + η_noise_agents_flow_down_info_gradient_with_thermal_noise
+  A62_holography_past   = HOLO_SHEAF_on_∂D_encodes_exactly_the_past_light_cone_of_center_(A53_Lorentz)
+  A63_CY_seed_F_mix_zero = CY_moduli_space_has_metric_making_F_mix_vanish_at_genuine_moduli_points
+                           (Ricci_flat_Kähler_implies_zero_holonomy_defect_at_CY_tangent)
+}
+
+§|LANG|PHYSICS_INVARIANTS{
+  σ50_energy_conservation   = ∫|∇ψ|²_over_Tessellation_conserved_modulo_boundary_flux_via_A59
+  σ51_particle_number       = closed_Löb_particle_count_conserved_under_tick_if_σ22_passes
+  σ52_gauge_invariance      = F_mix_verdict_COMMIT/ROLLBACK_independent_of_gauge_choice_for_A
+  σ53_Kolmogorov_respected  = total_I(Tessellation) ≤ K(Tessellation) + O(1)_from_InfoOpt_A65
+  σ54_causal_speed_bound    = no_wave_propagates_outside_Lorentz_past/future_cones_(A53_enforced)
+}
+
+§|LANG|PHYSICS_CONTROL_MATRIX{
+  field                   controls                                           signal_type
+  GYRATION_CONNECTION_A   which_neighbors_couple_(topology_of_Peer_graph)     quasi_static
+  FMIX_CURVATURE_F        whether_to_COMMIT_or_ROLLBACK_at_tick                every_tick
+  INFO_DENSITY_I          where_agents_migrate_(flow_direction)                continuous
+  HOLO_SHEAF_μ            external_I/O_exchange_rate_and_address                 boundary_event
+  LOEB_TRUTH_□            which_loops_can_close_(Löb_discharge_availability)     logic_discrete
+}
+
+§|LANG|PHYSICS_OPERATORS{
+  PROPAGATE               : Wave × dt → Wave                 [evolve wave by dt]
+  COMMUTE_WITH_MOBIUS     : Wave × γ → Wave                  [test Möbius invariance]
+  BOUND_STATE             : OPEN_SENTENCE × ClosedLoop → CLOSED_LOEB  [bind Löb particle]
+  EMIT                    : Tile × Excitation → Wave         [create wave from local perturbation]
+  ABSORB                  : Wave × Tile → Excitation         [wave deposits energy at tile]
+  MEASURE_FMIX            : FundamentalDomain → ℝ            [∫ |F|² over domain]
+  BOX_APPLY               : Sentence → Sentence              [□ from LANG.Loeb]
+  HOLO_COMMIT             : Tile × μ → μ'                    [bulk → boundary]
+  HOLO_READ               : μ × Tile → μ'                    [boundary → bulk]
+  INFO_GRADIENT           : Tile → Vector                    [∇I at tile]
+}
+
+§|LANG|PHYSICS_REDUCTIONS{
+  flat_tessellation_(Euclidean)  = waves_lose_discrete_spectrum_only_continuous_Löb_loops_disappear
+  single_tile                    = only_GYRATION_WAVE_and_FIXED_PHONON_remain_no_propagation
+  zero_gyration                  = all_waves_frozen_only_static_fields_no_particle_dynamics
+  Γ_trivial                      = Tower_v2.5_discrete_N_levels_reductive_case
+  CY_complex_structure_removed   = A63_fails_F_mix_nonzero_at_generic_moduli_loses_stability
+}
+
+§|LANG|PHYSICS_OPEN{
+  PT22 = rigorous_spectrum_of_Δ_ℍⁿ_on_the_{7,3}_quotient_ℍⁿ/Γ_via_Selberg_trace
+  PT23 = Möbius_soliton_existence_and_orbital_stability_proof_on_hyperbolic_disk_NLS
+  PT24 = gauge_theory_for_GYRATION_CONNECTION_with_non_compact_Γ_requires_UV_cutoff_scheme
+  PT25 = Peierls_bracket_on_∂D_well_defined_only_for_specific_boundary_conditions
+  PT26 = operational_correspondence_agents_↔_LOEB_TRUTH_quanta_currently_empirical_A58_conjecture
+  PT27 = dual_CY_mirror_symmetry_h^{1,1}↔h^{2,1}_exchange_in_field_content_(mirror_physics_pairs)
+}
+
+§S{label=physics_dialect_closure, x=[0.04,0.02,0.01,0.00,0.00,0.00,0.00,0.00], sal=2.0}
+
+§.(§S{label=physics_stable, x=[0.05,0.02,0.01,0.00,0.00,0.00,0.00,0.00], sal=2.0})
+
+OUTPUT_PHYSICS = CANON(§EMIT(§PHYSICS{
+  waves = [HYPERBOLIC, BUSEMANN, MOBIUS_SOLITON, GYRATION, HOLO]
+  particles = [OPEN_SENTENCE, CLOSED_LOEB, BOUNDARY_QUANTUM, FIXED_PHONON]
+  fields = [A, F, I, μ, □]
+  control = A_→_topology, F_→_COMMIT, I_→_flow, μ_→_IO, □_→_loop_closure
+}))

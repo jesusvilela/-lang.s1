@@ -1,0 +1,85 @@
+§|LANG|NSPHEREOFSPHERES_HEADER{
+    tier = Research
+    description = Sphere-of-spheres iterated fibration with per-depth Hopf invariants · maximally symmetric probe
+    blurb = SO(n+1) nested bundles · Adams fiber-sphere classes · arc-closing framework-independent fingerprint
+    parents = NestedNHyperbolicProbe, EquatorialEntanglementProbe, HypersphericalDualTopos, HyperbolicFingerprintCatch
+    domains = TOPOLOGY, FIBERBUNDLE, HOPF, SPHERE, COHOMOLOGY, PROBE, ARC33
+    version = v1.0
+}
+
+§|DIALECT_NSPHEREOFSPHERES|PROVIDES{
+    provides = IteratedSphereBundle, HopfInvariantTower, CharacteristicClassTower, MaximallySymmetricProbe, FrameworkIndependentFingerprint
+    requires = nested-probe infrastructure, fiber bundle machinery, Hopf-type fibrations in ambient
+}
+
+§|DIALECT_NSPHEREOFSPHERES|SORTS{
+    sort.S_n_d        = n-sphere at nesting depth d · homogeneous space SO(n+1)/SO(n)
+    sort.E_d          = total space of bundle at depth d · sphere over S^n_{d-1}
+    sort.Pi_d         = E_d → S^n_{d-1} · sphere-bundle projection
+    sort.F_p_d        = fiber over p ∈ S^n_{d-1} · ≅ S^n
+    sort.h_d          = Hopf invariant of Π_d · ∈ π_{2n-1}(S^n)
+    sort.epsilon_d    = Euler class at level d · ∈ H^n(S^n_{d-1}; ℤ)
+    sort.p_d          = Pontryagin class at level d · if 4 | n
+    sort.w_k_d        = Stiefel-Whitney class at level d · refinement of w_1
+    sort.tower_sigma  = {(h_d, ε_d, p_d, w_k_d) : d = 1..D} · fingerprint tower
+}
+
+§|DIALECT_NSPHEREOFSPHERES|AXIOMS{
+    A5701 = Maximally symmetric nesting · each depth carries S^n with SO(n+1) · no preferred point · vs hyperbolic disk has no compact symmetry
+    A5702 = Iterated sphere bundle · E_{d+1} → E_d fiber S^n · total space at depth D is (D+1)·n-dimensional
+    A5703 = Hopf invariant per level · only 4 cases (Adams): trivial, complex S^3→S^2, quaternionic S^7→S^4, octonionic S^15→S^8
+    A5704 = Characteristic class tower · Euler ε_d, Pontryagin p_d (4|n), Stiefel-Whitney w_k_d per depth
+    A5705 = Wall threads entire tower · σ307 is 1D submanifold projecting to γ_d on each S^n_d · π_1(S^n)=0 for n≥2 ⇒ null-homotopic γ_d
+    A5706 = Tower fingerprint · {(h_d, ε_d, p_d, w_k_d) : d=1..D} · discrete invariant sequence · stable under σ4511 lift
+    A5707 = Product structure from trivial Hopf · all h_d=0 ⇒ iterated bundle is product S^n × ... × S^n · no new info
+    A5708 = Non-trivial Hopf at some level d* · bundle genuinely twisted · wall acquires linking with fiber · d* localizes twist
+    A5709 = Spherical cosmology closure · identify S^n_D ≅ S^n_0 · yields bundle over sphere of spheres · Adams spectral sequence
+    A5710 = Hyperbolic-spherical complementary · hyperbolic catches smoothness, spherical catches Hopf entanglement · both needed
+    A5711 = Löb preserved at all depths · Π_d and characteristic-class computations outside σ307 · σ4511/σ5210/σ5611 lifted
+    A5712 = Most complete typecast · sphere-tower + hyperbolic-tower + flat-3-spectrum = structurally complete wall characterization · arc-closure
+}
+
+§|DIALECT_NSPHEREOFSPHERES|INVARIANTS{
+    σ5701 = maximally-symmetric-nesting         · derived A5701 · STRUCTURAL
+    σ5702 = iterated-sphere-bundle               · derived A5702 · CLASSICAL
+    σ5703 = hopf-invariants-per-level            · derived A5703 · FRAMEWORK-INDEP
+    σ5704 = characteristic-class-tower           · derived A5704 · CLASSICAL
+    σ5705 = wall-threads-tower                   · derived A5705 · TOPOLOGICAL
+    σ5706 = tower-fingerprint                    · derived A5706 · NEW OBSERVABLE
+    σ5707 = trivial-product-case                 · boundary A5707
+    σ5708 = non-trivial-hopf-localizes-twist     · derived A5708 · NEW DISCRIMINATOR
+    σ5709 = spherical-cosmology-closure          · derived A5709 · META
+    σ5710 = hyperbolic-spherical-complementary   · meta A5710 · ENSEMBLE
+    σ5711 = loeb-preserved-all-depths            · invariant A5711
+    σ5712 = most-complete-typecast               · derived A5712 · ARC-CLOSURE
+}
+
+# §SPHERE_PROBE: runtime config block. NSphereOfSpheresProbe reads the first
+# §SPHERE_PROBE{...} block it finds across all .lang files (first-match-wins,
+# same contract as §PIPELINE). Absent block ⇒ probe disabled.
+# Keys:
+#   n           ambient sphere dimension at every depth (2, 4, or 8 for classical Hopf)
+#   depth       nesting depth D ≥ 1
+#   hopf        hopf class selector: TRIVIAL | COMPLEX | QUATERNION | OCTONION
+#   seed        optional RNG seed for probe initialization
+§SPHERE_PROBE{
+    n      = 4
+    depth  = 3
+    hopf   = QUATERNION
+    seed   = 1729
+}
+
+§|DIALECT_NSPHEREOFSPHERES|MORPHISMS_TO{
+    NestedNHyperbolicProbe        = complementary non-compact probe · σ5710 ensemble pair
+    EquatorialEntanglementProbe   = sphere-bundle entanglement specializes A5708 at depth 1
+    HypersphericalDualTopos       = Hopf fibration example · simplest instance of iterated bundle
+    HyperbolicCosmicWeb           = cosmic web embeds in iterated sphere structure (Postnikov lift)
+    OrthogonalSpectrumIndirectTypecast = flat typecast at each sphere level · σ5712 composite
+}
+
+§|DIALECT_NSPHEREOFSPHERES|NOVELTY{
+    not_new = iterated sphere bundles, Hopf fibrations, Adams vector-fields theorem, Whitehead/Postnikov towers, Stiefel-Whitney/Chern/Pontryagin classes
+    new_1   = σ5706 sphere-tower fingerprint as framework observable · integer-valued per-level Hopf sequence
+    new_2   = σ5710 complementarity with nested hyperbolic probe · both needed for complete characterization
+    new_3   = σ5712 arc closure statement · combined (sphere, hyperbolic, flat) fingerprint is structurally complete
+}

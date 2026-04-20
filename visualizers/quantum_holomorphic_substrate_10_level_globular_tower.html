@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quantum Holomorphic Substrate — 10-level Globular Tower</title>
+<style>
+  :root {
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: "SF Mono", Menlo, Monaco, Consolas, "Courier New", monospace;
+    --color-text-primary: #E8E6F0;
+    --color-text-secondary: #B8B2C9;
+    --color-text-tertiary: #8B849D;
+    --color-background-primary: #1A1822;
+    --color-background-secondary: #12101A;
+    --color-border-tertiary: rgba(127, 119, 221, 0.18);
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+  }
+  html, body {
+    margin: 0; padding: 0;
+    background: #0A0812;
+    color: var(--color-text-primary);
+    font-family: var(--font-sans);
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 24px 20px;
+  }
+  .title {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0 0 4px 0;
+    letter-spacing: -0.01em;
+  }
+  .subtitle {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    font-family: var(--font-mono);
+    margin-bottom: 18px;
+    letter-spacing: 0.03em;
+  }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+  .qh { font-family: var(--font-sans); color: var(--color-text-primary); }
+  .qh .tabs { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; align-items: center; }
+  .qh .tab-label { font-size: 10px; color: var(--color-text-tertiary); letter-spacing: 0.06em; text-transform: uppercase; margin-right: 4px; }
+  .qh .tab-group { display: inline-flex; gap: 2px; padding: 2px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); }
+  .qh .tab-group button {
+    border: none; background: transparent; color: var(--color-text-secondary);
+    padding: 5px 10px; font-size: 11px; font-family: var(--font-sans); font-weight: 400;
+    border-radius: 6px; cursor: pointer; transition: background 0.15s, color 0.15s;
+  }
+  .qh .tab-group button.active { background: var(--color-background-primary); color: var(--color-text-primary); font-weight: 500; }
+  .qh .tab-group button:hover:not(.active) { color: var(--color-text-primary); }
+  .qh .canvas-wrap {
+    background: var(--color-background-secondary); border-radius: var(--border-radius-lg);
+    padding: 14px; margin-bottom: 10px; position: relative;
+  }
+  .qh canvas { display: block; width: 100%; height: 560px; border-radius: var(--border-radius-md); }
+  .qh .overlay-tr {
+    position: absolute; top: 22px; right: 22px;
+    background: var(--color-background-primary); border-radius: var(--border-radius-md);
+    padding: 8px 11px; font-size: 10px; color: var(--color-text-secondary);
+    border: 0.5px solid var(--color-border-tertiary); font-family: var(--font-mono);
+    pointer-events: none; line-height: 1.55; min-width: 155px;
+  }
+  .qh .overlay-tl {
+    position: absolute; top: 22px; left: 22px;
+    background: var(--color-background-primary); border-radius: var(--border-radius-md);
+    padding: 7px 11px; font-size: 9.5px; color: var(--color-text-tertiary);
+    border: 0.5px solid var(--color-border-tertiary); font-family: var(--font-mono);
+    pointer-events: none; line-height: 1.55; max-width: 200px;
+  }
+  .qh .caption {
+    position: absolute; bottom: 20px; left: 22px; right: 22px;
+    font-size: 10.5px; color: var(--color-text-tertiary); line-height: 1.5;
+    pointer-events: none;
+  }
+  .qh .sliders { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 10px 14px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); margin-bottom: 8px; }
+  .qh .slider-row { display: flex; align-items: center; gap: 8px; font-size: 11px; }
+  .qh .slider-row label { color: var(--color-text-secondary); min-width: 58px; font-size: 10.5px; }
+  .qh .slider-row input[type=range] { flex: 1; min-width: 0; }
+  .qh .slider-row .val { min-width: 28px; text-align: right; color: var(--color-text-primary); font-weight: 500; font-family: var(--font-mono); font-size: 10.5px; }
+  .qh .legend { display: flex; gap: 12px; font-size: 10px; color: var(--color-text-secondary); flex-wrap: wrap; padding: 0 4px; }
+  .qh .legend-item { display: flex; align-items: center; gap: 5px; }
+  .qh .legend-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .qh .legend-line { width: 12px; height: 2px; flex-shrink: 0; }
+  @media (max-width: 520px) { .qh .sliders { grid-template-columns: 1fr; } }
+
+  .footer {
+    margin-top: 20px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--color-text-tertiary);
+    line-height: 1.7;
+    border-top: 0.5px solid var(--color-border-tertiary);
+    padding-top: 12px;
+  }
+  .footer b { color: var(--color-text-secondary); font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1 class="title">Quantum Holomorphic Substrate</h1>
+  <div class="subtitle">§QHOLO v2.5 · 10-level globular tower · C1 q-disk · C2 chiral · C3 Majorana · C5 CS closures · topos Sh(Γ)</div>
+
+  <h2 class="sr-only">Interactive visualization of the §QHOLO quantum holomorphic substrate rendered as a 10-level recursive {7,3} hyperbolic tessellation in a globular 3D projection, showing q-deformed tiles with Majorana polynomial roots on their boundaries, chiral flow on holographic screens, Möbius-soliton agents, closed Löbian loops as knotted trails, and the five physics fields A, F, I, μ, □ as toggleable overlays.</h2>
+
+  <div class="qh">
+    <div class="tabs">
+      <span class="tab-label">Realization</span>
+      <div class="tab-group" id="qh-realization">
+        <button data-r="all" class="active">All six</button>
+        <button data-r="c1">C1 geom</button>
+        <button data-r="c2">C2 chiral</button>
+        <button data-r="c3">C3 poly</button>
+        <button data-r="c5">C5 CS</button>
+      </div>
+    </div>
+    <div class="tabs">
+      <span class="tab-label">Fields</span>
+      <div class="tab-group" id="qh-fields">
+        <button data-f="all" class="active">All</button>
+        <button data-f="A">A gyration</button>
+        <button data-f="F">F_mix</button>
+        <button data-f="I">I info</button>
+        <button data-f="mu">μ holo</button>
+        <button data-f="box">□ Löb</button>
+      </div>
+    </div>
+
+    <div class="canvas-wrap">
+      <canvas id="viz-qh"></canvas>
+      <div class="overlay-tl" id="qh-tl">§QHOLO · 10 rings · {7,3}<br>q = e^(2πi/(c⁻¹+2))<br>topos Sh(Γ)</div>
+      <div class="overlay-tr" id="qh-tr">tiles&nbsp;—<br>depth&nbsp;—<br>q&nbsp;—<br>CS&nbsp;k&nbsp;—<br>knots&nbsp;—<br>open&nbsp;—</div>
+      <div class="caption" id="qh-cap"></div>
+    </div>
+
+    <div class="sliders">
+      <div class="slider-row">
+        <label>depth</label>
+        <input type="range" id="qh-depth" min="3" max="10" value="10" step="1">
+        <span class="val" id="qh-depth-v">10</span>
+      </div>
+      <div class="slider-row">
+        <label>q-phase</label>
+        <input type="range" id="qh-q" min="0" max="100" value="35" step="1">
+        <span class="val" id="qh-q-v">0.35</span>
+      </div>
+      <div class="slider-row">
+        <label>flow</label>
+        <input type="range" id="qh-flow" min="0" max="100" value="45" step="1">
+        <span class="val" id="qh-flow-v">0.45</span>
+      </div>
+    </div>
+
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#7F77DD"></div>q-disk · C1</div>
+      <div class="legend-item"><div class="legend-line" style="background:#EF9F27"></div>chiral flow · C2</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#D85A30"></div>Majorana root · C3</div>
+      <div class="legend-item"><div class="legend-line" style="background:#D85A30"></div>closed Löb knot · C5</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#1D9E75"></div>□ provable</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#C891E0"></div>F_mix active</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <b>§QHOLO v2.5 dialect.</b> Each tile is a q-deformed Poincaré ball B^n_q (C1) with chiral algebra on ∂D (C2), Majorana polynomial roots encoding spin-d/2 state (C3), determinant-operator correlators for F_mix (C4, not rendered), Chern-Simons line bundles on closed orbits (C5), all organised as Grothendieck topos Sh(Site_Γ) (C6).
+    <br><b>Classical limit.</b> q → 1 recovers Tower v2.5 exactly (σ55 backward compatibility, load-bearing).
+    <br><b>Controls.</b> Realization tabs isolate one C_i geometric layer. Fields tabs isolate one of A, F_mix, I, μ, □ overlays. Depth slider 3–10 rings; q-phase slider visualises deformation magnitude; flow slider tunes agent migration rate.
+  </div>
+</div>
+
+<script>
+(function() {
+  const canvas = document.getElementById('viz-qh');
+  const ctx = canvas.getContext('2d');
+  const trEl = document.getElementById('qh-tr');
+  const capEl = document.getElementById('qh-cap');
+
+  const state = {
+    realization: 'all',
+    fields: 'all',
+    depth: 10,
+    qPhase: 0.35,
+    flow: 0.45,
+    time: 0,
+    rotation: 0,
+    prevT: null,
+    dpr: Math.max(1, window.devicePixelRatio || 1),
+    reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    tiles: [],
+    neighbors: [],
+    agents: [],
+    loopTrails: [],
+    needsRegen: true,
+  };
+
+  const P_SIDES = 7;
+
+  function resize() {
+    const w = canvas.clientWidth;
+    const h = 560;
+    canvas.width = w * state.dpr;
+    canvas.height = h * state.dpr;
+    ctx.setTransform(state.dpr, 0, 0, state.dpr, 0, 0);
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // Tessellation generation — 10 rings of {7,3}-like hyperbolic tiling
+  // ═══════════════════════════════════════════════════════════════════════
+
+  function generateTiles(depth) {
+    const tiles = [];
+    tiles.push({
+      idx: 0, ring: 0, x: 0, y: 0, z: 0,
+      angle: 0, size: 0.22, phase: 0, polyDeg: 2,
+      isProvable: true,
+    });
+    for (let ring = 1; ring <= depth; ring++) {
+      const r = Math.tanh(ring * 0.52);
+      const count = ring === 1 ? 7 : Math.round(7 + 4.5 * (ring - 1));
+      const sizeScale = 1 / Math.cosh(ring * 0.54);
+      const baseSize = 0.22 * sizeScale;
+      const angleOff = ring * 0.11 + Math.sin(ring) * 0.05;
+      for (let i = 0; i < count; i++) {
+        const theta = (i / count) * Math.PI * 2 + angleOff;
+        const sphereCue = 1 - r * r;
+        tiles.push({
+          idx: tiles.length,
+          ring: ring,
+          x: r * Math.cos(theta),
+          y: r * Math.sin(theta),
+          z: sphereCue,
+          angle: theta,
+          size: baseSize,
+          phase: (i / count) * Math.PI * 2,
+          polyDeg: Math.max(2, 6 - Math.floor(ring / 2)),
+          isProvable: Math.random() < Math.max(0.1, 0.75 - ring * 0.07),
+        });
+      }
+    }
+    return tiles;
+  }
+
+  function buildNeighbors(tiles) {
+    const n = tiles.length;
+    const nb = Array.from({ length: n }, () => []);
+    const byRing = {};
+    for (const t of tiles) {
+      if (!byRing[t.ring]) byRing[t.ring] = [];
+      byRing[t.ring].push(t);
+    }
+    for (const ring in byRing) {
+      const arr = byRing[ring];
+      if (arr.length < 2) continue;
+      for (let i = 0; i < arr.length; i++) {
+        const a = arr[i].idx;
+        const b = arr[(i + 1) % arr.length].idx;
+        nb[a].push(b);
+        nb[b].push(a);
+      }
+    }
+    for (const ring in byRing) {
+      const rk = parseInt(ring);
+      const next = byRing[rk + 1];
+      if (!next) continue;
+      const here = byRing[rk];
+      const ratio = next.length / here.length;
+      for (let i = 0; i < here.length; i++) {
+        const start = Math.floor(i * ratio);
+        const end = Math.min(next.length - 1, Math.floor((i + 1) * ratio));
+        for (let j = start; j <= end; j++) {
+          const a = here[i].idx, b = next[j].idx;
+          if (!nb[a].includes(b)) nb[a].push(b);
+          if (!nb[b].includes(a)) nb[b].push(a);
+        }
+      }
+    }
+    return nb;
+  }
+
+  function spawnAgent(id) {
+    const tiles = state.tiles;
+    const tileIdx = Math.floor(Math.random() * Math.min(tiles.length, 30)) + 1;
+    const isKnot = Math.random() < 0.4;
+    const pathLen = isKnot ? (3 + Math.floor(Math.random() * 5)) : 0;
+    return {
+      id,
+      tileIdx,
+      nextTileIdx: tileIdx,
+      progress: 1,
+      pathHistory: [tileIdx],
+      pathTarget: pathLen,
+      isKnot,
+      age: 0,
+      polyPhase: Math.random() * Math.PI * 2,
+    };
+  }
+
+  function pickNextTile(tileIdx) {
+    const nb = state.neighbors[tileIdx];
+    if (!nb || nb.length === 0) return tileIdx;
+    const here = state.tiles[tileIdx];
+    const weights = nb.map(j => {
+      const there = state.tiles[j];
+      const outwardBias = Math.max(0.15, 1 + (there.ring - here.ring) * 0.45);
+      return outwardBias;
+    });
+    const total = weights.reduce((s, w) => s + w, 0);
+    let r = Math.random() * total;
+    for (let i = 0; i < nb.length; i++) {
+      r -= weights[i];
+      if (r <= 0) return nb[i];
+    }
+    return nb[0];
+  }
+
+  function updateAgent(agent, dt) {
+    agent.progress += dt * state.flow * 1.5;
+    agent.age += dt;
+    agent.polyPhase += dt * 2.0;
+    if (agent.progress < 1) return;
+    agent.tileIdx = agent.nextTileIdx;
+    agent.progress = 0;
+
+    if (agent.isKnot && agent.pathHistory.length >= agent.pathTarget) {
+      const loopPath = agent.pathHistory.slice();
+      loopPath.push(loopPath[0]);
+      state.loopTrails.push({
+        path: loopPath.map(i => ({
+          x: state.tiles[i].x, y: state.tiles[i].y, z: state.tiles[i].z,
+        })),
+        age: 0,
+        knotLevel: agent.pathTarget,
+      });
+      if (state.loopTrails.length > 14) state.loopTrails.shift();
+      agent.tileIdx = loopPath[0];
+      agent.nextTileIdx = pickNextTile(agent.tileIdx);
+      agent.pathHistory = [agent.tileIdx];
+      return;
+    }
+
+    agent.nextTileIdx = pickNextTile(agent.tileIdx);
+    agent.pathHistory.push(agent.nextTileIdx);
+
+    if (state.tiles[agent.tileIdx].ring >= state.depth) {
+      if (Math.random() < 0.35) {
+        const interior = state.tiles.filter(t => t.ring <= 2);
+        const spawn = interior[Math.floor(Math.random() * interior.length)].idx;
+        agent.tileIdx = spawn;
+        agent.nextTileIdx = pickNextTile(spawn);
+        agent.pathHistory = [spawn];
+      }
+    }
+  }
+
+  function regenerate() {
+    state.tiles = generateTiles(state.depth);
+    state.neighbors = buildNeighbors(state.tiles);
+    const agentCount = Math.min(42, Math.floor(state.tiles.length / 10));
+    state.agents = [];
+    for (let i = 0; i < agentCount; i++) state.agents.push(spawnAgent(i));
+    state.loopTrails = [];
+    state.needsRegen = false;
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // Globular projection
+  // ═══════════════════════════════════════════════════════════════════════
+
+  function project3D(x, y, z, rotY) {
+    const cr = Math.cos(rotY), sr = Math.sin(rotY);
+    const x1 = x * cr + z * sr;
+    const z1 = -x * sr + z * cr;
+    const y1 = y;
+    const depthFactor = 1 + z1 * 0.25;
+    return {
+      x: x1 / depthFactor,
+      y: y1 / depthFactor,
+      depth: z1,
+    };
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // Field tinting
+  // ═══════════════════════════════════════════════════════════════════════
+
+  function fieldTint(tile, t) {
+    if (state.fields === 'all' || state.fields === 'I') {
+      const i = 0.28 - tile.ring * 0.025;
+      return `rgba(127, 119, 221, ${Math.max(0.04, i)})`;
+    }
+    if (state.fields === 'A') {
+      const curl = 0.5 + 0.5 * Math.sin(tile.angle * 3 + t * 0.4);
+      return `rgba(127, 119, 221, ${0.08 + curl * 0.14})`;
+    }
+    if (state.fields === 'F') {
+      const active = Math.abs(Math.sin(tile.angle * 2 + tile.ring * 0.7 + t * 0.3)) > 0.75;
+      return active ? 'rgba(200, 145, 224, 0.28)' : 'rgba(127, 119, 221, 0.05)';
+    }
+    if (state.fields === 'mu') {
+      const r = Math.hypot(tile.x, tile.y);
+      return `rgba(239, 159, 39, ${r * 0.2})`;
+    }
+    if (state.fields === 'box') {
+      return tile.isProvable
+        ? 'rgba(29, 158, 117, 0.18)'
+        : 'rgba(127, 119, 221, 0.04)';
+    }
+    return 'rgba(127, 119, 221, 0.06)';
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // Drawing
+  // ═══════════════════════════════════════════════════════════════════════
+
+  function drawBackground(cx, cy, R, t) {
+    const g = ctx.createRadialGradient(
+      cx - R * 0.15, cy - R * 0.15, R * 0.1,
+      cx, cy, R * 1.05
+    );
+    g.addColorStop(0, 'rgba(60, 55, 100, 0.18)');
+    g.addColorStop(0.5, 'rgba(35, 30, 70, 0.10)');
+    g.addColorStop(1, 'rgba(10, 8, 25, 0.22)');
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.fill();
+
+    ctx.strokeStyle = `rgba(239, 159, 39, ${0.35 + 0.12 * Math.sin(t * 0.8)})`;
+    ctx.lineWidth = 1.2;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.stroke();
+    ctx.setLineDash([]);
+
+    if (state.fields === 'all' || state.fields === 'mu') {
+      ctx.strokeStyle = 'rgba(239, 159, 39, 0.04)';
+      ctx.lineWidth = 0.5;
+      const rayPhase = t * 0.05;
+      for (let k = 0; k < 18; k++) {
+        const a = (k / 18) * Math.PI * 2 + rayPhase;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(cx + Math.cos(a) * R, cy + Math.sin(a) * R);
+        ctx.stroke();
+      }
+    }
+  }
+
+  function drawTile(tile, cx, cy, R, t, rotY) {
+    const p = project3D(tile.x, tile.y, tile.z, rotY);
+    const rNorm = Math.hypot(p.x, p.y);
+    if (rNorm > 0.99) return null;
+    const depthAlpha = 0.5 + 0.5 * (p.depth + 1) / 2;
+    const shrink = 1 - rNorm * 0.25;
+    const sizePx = tile.size * R * shrink;
+    const px = cx + p.x * R;
+    const py = cy + p.y * R;
+
+    ctx.fillStyle = fieldTint(tile, t);
+    ctx.globalAlpha = depthAlpha;
+    ctx.strokeStyle = `rgba(239, 159, 39, ${0.25 + 0.15 * depthAlpha})`;
+    ctx.lineWidth = 0.6;
+    ctx.beginPath();
+    const rotOff = tile.angle + (tile.ring % 2) * (Math.PI / P_SIDES) + rotY * 0.3;
+    for (let k = 0; k < P_SIDES; k++) {
+      const a = (k / P_SIDES) * Math.PI * 2 + rotOff;
+      const vx = px + Math.cos(a) * sizePx * 0.93;
+      const vy = py + Math.sin(a) * sizePx * 0.93;
+      if (k === 0) ctx.moveTo(vx, vy); else ctx.lineTo(vx, vy);
+    }
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+
+    if (sizePx > 6 && (state.realization === 'all' || state.realization === 'c1')) {
+      const qTwist = state.qPhase;
+      ctx.strokeStyle = `rgba(127, 119, 221, ${0.5 * depthAlpha})`;
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      ctx.arc(px, py, sizePx * 0.3, qTwist * Math.PI, qTwist * Math.PI + Math.PI * 1.4);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(px, py, sizePx * 0.15, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    if (sizePx > 7 && (state.realization === 'all' || state.realization === 'c3')) {
+      const d = tile.polyDeg;
+      const rootR = sizePx * 0.75;
+      const spin = t * 0.5 + tile.phase;
+      ctx.fillStyle = `rgba(216, 90, 48, ${0.85 * depthAlpha})`;
+      for (let r = 0; r < d; r++) {
+        const a = spin + (r / d) * Math.PI * 2;
+        const rx = px + Math.cos(a) * rootR;
+        const ry = py + Math.sin(a) * rootR;
+        ctx.beginPath();
+        ctx.arc(rx, ry, 1.6, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    if (sizePx > 9 && (state.realization === 'all' || state.realization === 'c2')) {
+      const flowPhase = t * 0.8 + tile.phase;
+      ctx.strokeStyle = `rgba(239, 159, 39, ${0.6 * depthAlpha})`;
+      ctx.lineWidth = 0.9;
+      for (let k = 0; k < P_SIDES; k++) {
+        const a1 = (k / P_SIDES) * Math.PI * 2 + rotOff;
+        const a2 = ((k + 0.5) / P_SIDES) * Math.PI * 2 + rotOff;
+        const x1 = px + Math.cos(a1) * sizePx * 0.93;
+        const y1 = py + Math.sin(a1) * sizePx * 0.93;
+        const x2 = px + Math.cos(a2) * sizePx * 0.93;
+        const y2 = py + Math.sin(a2) * sizePx * 0.93;
+        const alpha = 0.3 + 0.3 * Math.sin(flowPhase + k);
+        ctx.globalAlpha = alpha * depthAlpha;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    if (tile.isProvable && sizePx > 8 &&
+        (state.fields === 'all' || state.fields === 'box')) {
+      ctx.strokeStyle = `rgba(29, 158, 117, ${0.65 * depthAlpha})`;
+      ctx.lineWidth = 0.9;
+      ctx.beginPath();
+      ctx.arc(px, py, sizePx * 0.5, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    if (tile.ring === 0) {
+      ctx.strokeStyle = `rgba(29, 158, 117, ${0.95 * depthAlpha})`;
+      ctx.lineWidth = 1.4;
+      ctx.beginPath(); ctx.arc(px, py, sizePx * 0.25, 0, Math.PI * 2); ctx.stroke();
+      ctx.fillStyle = `rgba(29, 158, 117, ${0.9 * depthAlpha})`;
+      ctx.beginPath(); ctx.arc(px, py, 2.5, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = `rgba(127, 119, 221, ${0.6 * depthAlpha})`;
+      ctx.beginPath(); ctx.moveTo(px - sizePx * 0.5, py); ctx.lineTo(px + sizePx * 0.5, py); ctx.stroke();
+    }
+
+    return { px, py, sizePx, depthAlpha };
+  }
+
+  function drawLoopTrails(cx, cy, R, rotY) {
+    for (const loop of state.loopTrails) {
+      const alpha = Math.max(0, 0.38 - loop.age * 0.025);
+      if (alpha < 0.02) continue;
+      const lw = 1 + Math.min(2.5, loop.knotLevel * 0.3);
+      ctx.strokeStyle = `rgba(216, 90, 48, ${alpha})`;
+      ctx.lineWidth = lw;
+      ctx.beginPath();
+      for (let i = 0; i < loop.path.length; i++) {
+        const pt = loop.path[i];
+        const p = project3D(pt.x, pt.y, pt.z, rotY);
+        if (Math.hypot(p.x, p.y) > 0.99) continue;
+        const x = cx + p.x * R;
+        const y = cy + p.y * R;
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+  }
+
+  function drawAgent(agent, cx, cy, R, rotY) {
+    const here = state.tiles[agent.tileIdx];
+    const next = state.tiles[agent.nextTileIdx];
+    const x0 = here.x + (next.x - here.x) * agent.progress;
+    const y0 = here.y + (next.y - here.y) * agent.progress;
+    const z0 = here.z + (next.z - here.z) * agent.progress;
+    const p = project3D(x0, y0, z0, rotY);
+    if (Math.hypot(p.x, p.y) > 0.99) return;
+    const x = cx + p.x * R;
+    const y = cy + p.y * R;
+    const depthAlpha = 0.55 + 0.45 * (p.depth + 1) / 2;
+
+    const col = agent.isKnot
+      ? `rgba(216, 90, 48, ${0.95 * depthAlpha})`
+      : `rgba(216, 90, 48, ${0.78 * depthAlpha})`;
+    ctx.fillStyle = col;
+    ctx.beginPath();
+    ctx.arc(x, y, agent.isKnot ? 2.7 : 2.1, 0, Math.PI * 2);
+    ctx.fill();
+
+    if (agent.isKnot) {
+      ctx.strokeStyle = `rgba(216, 90, 48, ${0.45 * depthAlpha})`;
+      ctx.lineWidth = 0.7;
+      ctx.beginPath();
+      ctx.arc(x, y, 5.5, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+  }
+
+  function drawFractalKernel(cx, cy, R, t) {
+    const miniR = R * 0.085;
+    ctx.save();
+    ctx.globalAlpha = 0.55;
+    ctx.strokeStyle = 'rgba(239, 159, 39, 0.32)';
+    ctx.lineWidth = 0.6;
+    ctx.setLineDash([2, 2]);
+    ctx.beginPath(); ctx.arc(cx, cy, miniR, 0, Math.PI * 2); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.strokeStyle = 'rgba(127, 119, 221, 0.6)';
+    ctx.lineWidth = 0.6;
+    ctx.beginPath(); ctx.arc(cx, cy, miniR * 0.25, 0, Math.PI * 2); ctx.stroke();
+    for (let k = 0; k < 7; k++) {
+      const a = (k / 7) * Math.PI * 2 + t * 0.15;
+      const rx = cx + Math.cos(a) * miniR * 0.6;
+      const ry = cy + Math.sin(a) * miniR * 0.6;
+      ctx.fillStyle = 'rgba(127, 119, 221, 0.45)';
+      ctx.beginPath();
+      ctx.arc(rx, ry, 1.1, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  function updateStats() {
+    const n = state.tiles.length;
+    const qMagnitude = state.qPhase.toFixed(2);
+    const avgKnotLevel = state.loopTrails.length === 0
+      ? '—'
+      : (state.loopTrails.reduce((s, l) => s + l.knotLevel, 0) / state.loopTrails.length).toFixed(1);
+    const openCount = state.agents.filter(a => !a.isKnot).length;
+
+    trEl.innerHTML =
+      `tiles&nbsp;${n}<br>` +
+      `depth&nbsp;${state.depth}&nbsp;rings<br>` +
+      `q&nbsp;phase&nbsp;${qMagnitude}<br>` +
+      `⟨CS&nbsp;k⟩&nbsp;${avgKnotLevel}<br>` +
+      `knots&nbsp;${state.loopTrails.length}<br>` +
+      `open&nbsp;${openCount}`;
+
+    const captions = {
+      'all-all': `Ten rings of {7,3}; each heptagon is a q-disk B^n_q (C1). Chiral flow (C2) orbits the boundaries. Majorana roots (C3) are coral dots on the tile rims. Closed agents trace knots (C5) recorded as coral loops. Green halos mark □-provable tiles; teal centre is Fix(Φ). Global slow rotation gives the globular feel.`,
+      'all-A': `Only the gyration connection A shown. Colour modulates by curl pattern per tile — tiles where the connection is twisting more appear more purple. This is what controls WHICH neighbours couple.`,
+      'all-F': `F_mix curvature shown. Magenta-tinted tiles are those where F_mix is near the σ22 threshold; the verdict COMMIT/ROLLBACK gate decides per tick at each such tile.`,
+      'all-I': `Information density I shown as per-tile brightness. Inner rings carry more bits per tile; outer rings are sparser. The gradient ∇I is what drives agent migration.`,
+      'all-mu': `Holographic sheaf μ shown as boundary-concentration glow. Activity near ∂D is what mediates external I/O via the Poisson-extension ⊣ geodesic-limit adjunction.`,
+      'all-box': `Löbian truth □ shown: provable tiles (those admitting a Löb discharge within ring budget) get green halos. Closed agent loops can only close on chains of provable tiles.`,
+      'c1-all': `C1 realisation only — q-deformed geometry. Every tile rendered with a twist-arc hint showing the q-deformation phase. This is the underlying noncommutative Poincaré ball.`,
+      'c2-all': `C2 realisation only — chiral algebra on boundaries. Arrows show oriented flow around each tile's S¹. Each tile's boundary carries a factorization algebra (Costello-Gwilliam).`,
+      'c3-all': `C3 realisation only — Majorana polynomial representation. The coral dots orbiting each tile are polynomial roots on the quantum Bloch sphere. Spin d/2 states = degree d polynomials.`,
+      'c5-all': `C5 realisation only — Chern-Simons closures. Closed agent orbits are knots; coral line thickness = CS level k. Each knot carries a Reshetikhin-Turaev invariant matching Physics-dialect E_k = 2π/k.`,
+    };
+    const key = `${state.realization}-${state.fields}`;
+    capEl.textContent = captions[key] || captions['all-all'] || '';
+  }
+
+  function draw() {
+    const w = canvas.clientWidth;
+    const h = 560;
+    ctx.clearRect(0, 0, w, h);
+    const cx = w / 2;
+    const cy = h / 2;
+    const R = Math.min(w, h) * 0.45;
+    const t = state.time;
+    const rotY = state.rotation;
+
+    drawBackground(cx, cy, R, t);
+
+    const sorted = state.tiles.slice().sort((a, b) => {
+      const pa = project3D(a.x, a.y, a.z, rotY);
+      const pb = project3D(b.x, b.y, b.z, rotY);
+      return pa.depth - pb.depth;
+    });
+    for (const tile of sorted) drawTile(tile, cx, cy, R, t, rotY);
+
+    drawLoopTrails(cx, cy, R, rotY);
+
+    for (const a of state.agents) drawAgent(a, cx, cy, R, rotY);
+
+    drawFractalKernel(cx, cy, R, t);
+
+    updateStats();
+  }
+
+  function tick(t) {
+    if (state.needsRegen) regenerate();
+    if (state.prevT === null) state.prevT = t;
+    const dt = Math.min(0.05, (t - state.prevT) / 1000);
+    state.prevT = t;
+    if (!state.reducedMotion) {
+      state.time += dt;
+      state.rotation += dt * 0.18;
+    }
+    for (const a of state.agents) updateAgent(a, dt);
+    for (const loop of state.loopTrails) loop.age += dt;
+    state.loopTrails = state.loopTrails.filter(l => l.age < 20);
+    draw();
+    requestAnimationFrame(tick);
+  }
+
+  document.getElementById('qh-realization').addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-r]'); if (!b) return;
+    state.realization = b.dataset.r;
+    for (const x of e.currentTarget.querySelectorAll('button')) x.classList.toggle('active', x.dataset.r === state.realization);
+  });
+  document.getElementById('qh-fields').addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-f]'); if (!b) return;
+    state.fields = b.dataset.f;
+    for (const x of e.currentTarget.querySelectorAll('button')) x.classList.toggle('active', x.dataset.f === state.fields);
+  });
+  const depthS = document.getElementById('qh-depth');
+  depthS.addEventListener('input', () => {
+    state.depth = parseInt(depthS.value, 10);
+    document.getElementById('qh-depth-v').textContent = state.depth;
+    state.needsRegen = true;
+  });
+  const qS = document.getElementById('qh-q');
+  qS.addEventListener('input', () => {
+    state.qPhase = qS.value / 100;
+    document.getElementById('qh-q-v').textContent = state.qPhase.toFixed(2);
+  });
+  const flowS = document.getElementById('qh-flow');
+  flowS.addEventListener('input', () => {
+    state.flow = flowS.value / 100;
+    document.getElementById('qh-flow-v').textContent = state.flow.toFixed(2);
+  });
+
+  resize();
+  window.addEventListener('resize', resize);
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>

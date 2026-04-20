@@ -1,0 +1,275 @@
+§|LANG|QHOLO_HEADER{
+  dialect        = QuantumHoloSurface
+  tier           = Research
+  parents        = [Substrate, Topo, IG, CY, Tower, Tessellation, Lorentz, Loeb, InfoOpt, Physics]
+  version        = v2.5.qholo.1
+  extends_base   = LANG.v2.4.codec_trasgo
+  scope          = quantum_holomorphic_substrate_for_the_fractal_CY_tower_each_tile_is_a_q_deformed
+                   noncommutative_Poincaré_ball_with_chiral_boundary_polynomial_states_determinant
+                   observables_Chern_Simons_closures_organized_as_a_Grothendieck_topos
+  non_scope      = full_quantum_gravity_or_string_theory_limits_those_are_out_of_current_dialect_family
+  generates      = §QUANTUM_TILE, §CHIRAL_BOUNDARY, §POLYNOMIAL_STATE, §DETERMINANT_OP,
+                   §CS_LINE_BUNDLE, §QUANTUM_TOPOS
+  discharges     = σ55, σ56, σ57, σ58, σ59, σ60
+  reduces_to     = LANG.Physics.dialect_at_q_eq_1_(classical_limit_exact_backward_compatibility)
+  motivation     = the_Physics_dialect_named_waves_particles_fields_without_specifying_what_the
+                   disks_themselves_were_made_of_this_dialect_fills_that_in_the_substrate_is_not
+                   a_classical_manifold_it_is_a_q_deformed_noncommutative_object_living_in_a_topos
+                   and_every_object_from_the_Physics_dialect_acquires_a_quantum_interpretation
+                   for_free_F_mix_becomes_a_Hochschild_cocycle_agents_become_polynomial_roots_
+                   closed_Löb_loops_become_knots_the_classical_picture_is_the_q_to_1_shadow
+}
+
+§|LANG|QHOLO_CANDIDATES_INDEX{
+  note = the_six_candidates_listed_by_jesús_are_not_alternatives_they_are_layered_aspects_of_one_object
+  C1_quantum_projective_line   = base_geometry_per_tile_q_deformed_B^n_q_with_Podleś_sphere_when_n=2
+  C2_holomorphic_QFT           = boundary_structure_chiral_algebra_factorization_algebra_on_S^{n-1}
+  C3_polynomial_quantum_state  = state_representation_qubit_as_polynomial_roots_on_∂B^n_q_Majorana
+  C4_determinant_correlators   = observable_algebra_F_mix_eigenvalues_as_det(M)_matrix_chiral_correlators
+  C5_quantum_modular_forms     = orbit_invariants_closed_Löb_knots_via_Chern_Simons_line_bundles
+  C6_grothendieck_topos        = organizing_category_topos_of_sheaves_makes_the_whole_thing_AI_friendly
+  synthesis_claim              = C1_is_the_geometry_C6_is_the_category_C2_through_C5_are_structures_on_C1_in_C6
+}
+
+§|LANG|QHOLO_SORTS{
+  QuantumTile          = noncommutative_algebra_A_q(B^n)_with_holomorphic_structure_defined_by_twisted_
+                         positive_Hochschild_2_cocycle_q_deformation_parameter_q_=_exp(2πi/(k+2))_at_level_k
+  HolomorphicStructure = twisted_positive_element_ω_∈_HC²(A_q)_(Hochschild_cohomology_degree_2)
+                         with_ω*ω_=_ω (twisted positivity in Connes-Landi sense)
+  ChiralAlgebra        = vertex_operator_algebra_or_factorization_algebra_on_boundary_∂QuantumTile
+                         with_holomorphic_correlation_functions_Z(z_1,...,z_n)
+  PolynomialState      = degree_d_polynomial_p(z)_∈_ℂ[z]_whose_d_roots_on_∂B^n_q_encode_the_qubit_state
+                         Majorana_representation_for_spin_d/2
+  DeterminantOp        = O_det_N = det(M_ij + z_i z_j^-1)_for_N×N_matrix_M_as_chiral_correlator
+  CSLineBundle         = Chern_Simons_line_bundle_L_k_at_level_k_over_moduli_M_of_flat_connections
+  QuantumTopos         = Grothendieck_topos_Sh(Site_Γ)_of_sheaves_over_tessellation_site
+  q                    = deformation_parameter_complex_number_usually_root_of_unity_or_formal_ℏ-expansion
+  HochschildCohomology = HC^•(A)_=_cyclic_cohomology_of_noncommutative_algebra_A
+  KnotInvariant        = Reshetikhin_Turaev_or_Kauffman_bracket_polynomial_associated_to_closed_Löb_loop
+}
+
+§|LANG|QHOLO_AXIOMS{
+  A64_q_from_level       = q_k = exp(2πi/(c_k^{-1} + 2)) at level k
+                           q → 1 as c_k → 0 (deep tower level classical limit)
+                           q ≠ 1 at shallow levels where curvature is sharp
+  A65_twisted_positivity = holomorphic_structure_on_A_q_equivalent_to_existence_of_twisted_positive
+                           Hochschild_2_cocycle_ω_satisfying_σ(ω*)_=_ω_for_modular_automorphism_σ
+  A66_chiral_boundary    = ∂QuantumTile_carries_factorization_algebra_F_such_that_Commit=holomorphic_ext_
+                           and_Read=boundary_value_form_adjoint_pair_of_functors (Costello-Gwilliam)
+  A67_polynomial_rep     = every_PolynomialState_of_degree_d_is_spin_d/2_representation_of_SU(2)_q
+                           with_roots_on_∂B^n_q_as_Bloch_sphere_points (Majorana stellar rep)
+  A68_determinant_match  = F_mix_eigenvalues_at_tile_k_equal_det-operator_correlators_⟨O_det⟩_at_same_k
+                           (dictionary_between_geometric_holonomy_and_matrix_model_correlators)
+  A69_closed_orbit_is_knot = ClosedLöb_orbit_of_length_k_in_tessellation_is_knot_K_in_S^3_(ambient)
+                             with_Reshetikhin_Turaev_invariant_Z_k(K)_=_E_k_energy_from_Physics_dialect
+  A70_topos_is_AI_friendly = QuantumTopos_is_locally_presentable_Grothendieck_topos_with_computable_
+                             internal_language_equivalent_to_Löb_provability_logic_(intuitionistic+□)
+  A71_yoneda_gives_agents  = every_agent_is_Yoneda_embedded_in_QuantumTopos_so_tile_state_=_hom(−, tile)
+  A72_classical_limit      = at_q=1_all_axioms_A64-A71_reduce_to_Physics_dialect_axioms_A55-A63_exactly
+                             (rigorous_classical_limit_not_metaphorical)
+}
+
+§|LANG|QHOLO_INVARIANTS{
+  σ55_classical_limit     = q→1_limit_recovers_Tower_v2.5_exactly_backward_compatibility_non_negotiable
+  σ56_twisted_positivity  = Hochschild_2_cocycle_ω_=_F_mix_quantum_lift_satisfies_twisted_positivity
+                            this_is_the_quantum_replacement_for_σ22_|F_mix|<ε_mix
+  σ57_chiral_no_anomaly   = chiral_algebra_on_boundary_has_no_conformal_or_gauge_anomalies
+                            (central_charge_c_integer_consistent)
+  σ58_born_rule           = PolynomialState_norm_∫|p(z)|²_dμ_=_1_for_canonical_quantum_measure
+  σ59_topos_consistency   = internal_language_of_QuantumTopos_is_consistent_no_⊥_derivable
+                            (equivalent_to_σ37_open_budget_bounded_in_Löb_dialect)
+  σ60_modular_invariance  = partition_function_Z(τ)_of_chiral_algebra_is_modular_form_under_Γ_action
+                            (so_quantum_modular_forms_of_C5_are_canonical_objects_not_imposed)
+}
+
+§|LANG|QHOLO_REALIZATIONS{
+  R1_quantum_2_sphere = {
+    applies_to    = tiles_at_n_=_2_i.e._Podleś_sphere_for_2D_slices_of_tower
+    structure     = S²_q_with_coordinate_algebra_⟨A,A*,B,B*⟩/relations_involving_q
+    q_role        = q_=_e^{iℏ}_Planckian_deformation_near_classical_2_sphere
+    coming_from   = Connes_Landi_noncommutative_geometry_program
+    android_hook  = PoincareDisk_when_dim=2_wraps_S²_q_via_deformed_mobiusAdd
+  }
+  R2_holomorphic_QFT = {
+    applies_to    = every_holographic_boundary_∂B^n_q_in_tower
+    structure     = factorization_algebra_of_observables_on_∂B^n_q
+    role          = replaces_HolographicBoundary_sheaf_with_chiral_VOA
+    coming_from   = Costello_Gwilliam_factorization_algebras_Beilinson_Drinfeld_chiral_algebras
+    android_hook  = HolographicBoundary.commit_becomes_holomorphic_extension_of_boundary_data
+                    HolographicBoundary.read_becomes_boundary_value_of_bulk_holomorphic_function
+  }
+  R3_polynomial_states = {
+    applies_to    = every_tile_state_that_encodes_finite_dim_quantum_info
+    structure     = polynomial_p(z)_∈_ℂ[z]_with_d_roots_on_∂B^n_q_for_spin_d/2_state
+    role          = makes_agents_MobiusChannel_manifestly_conformal_(polynomials_transform_rationally)
+    coming_from   = Majorana_1932_stellar_representation_of_spin_states
+    android_hook  = future_QubitPolynomialState.kt_class_stores_d_complex_roots_per_tile_state
+                    MobiusChannel.traverse_acts_by_fractional_linear_on_each_root_independently
+  }
+  R4_determinant_correlators = {
+    applies_to    = F_mix_measurement_across_tower_rectangles
+    structure     = ⟨det(M_ij)⟩_in_N_by_N_matrix_chiral_correlator_for_F_mix_eigenvalue
+    role          = σ22_check_becomes_matrix_integral_evaluation_O(N²)_per_rectangle
+    coming_from   = Kapustin_Rozansky_matrix_valued_free_chiral_algebras
+    android_hook  = TowerCompatibility.surveyFMix_optionally_computes_det_correlators_for_large_N_peer_clusters
+  }
+  R5_cs_line_bundles = {
+    applies_to    = closed_Löb_loops_from_Loeb_dialect
+    structure     = Chern_Simons_line_bundle_L_k_at_level_k_over_moduli_space_M_flat
+                    holomorphic_sections_are_quantum_knot_invariants
+    role          = energy_E_k_~_2π/k_of_CLOSED_LOEB_particle_from_Physics_dialect_is_CS_level_k_invariant
+    coming_from   = Witten_Chern_Simons_Reshetikhin_Turaev_quantum_knot_invariants
+    android_hook  = future_LoopCSInvariant.kt_computes_Jones_polynomial_or_Kauffman_bracket_of_closed_orbit
+                    stores_invariant_alongside_each_CLOSED_LOEB_quantum_number
+  }
+  R6_grothendieck_topos = {
+    applies_to    = the_entire_dialect_as_organizing_meta_category
+    structure     = topos_Sh(Site_Γ)_sheaves_over_tessellation_site_with_Γ_covering_Grothendieck_topology
+    role          = provides_internal_language_types_compositionality_Yoneda_embedding_for_agents
+    coming_from   = Grothendieck_SGA4_Lawvere_Tierney_Joyal_topos_theory
+    android_hook  = topostrasgo_already_named_for_this_runtime_scheduler_organizes_tiles_as_topos_objects
+                    Sigma_checks_become_internal_Heyting_algebra_operations_in_the_topos
+  }
+}
+
+§|LANG|QHOLO_AI_FRIENDLY_VIEW{
+  claim = item_(C6)_is_what_makes_the_whole_structure_tractable_for_AI_systems
+  why   = a_topos_is_locally_presentable_so_finite_colimit_data_determines_everything
+          every_agent_operation_is_a_morphism_in_a_typed_category_hence_composable
+          internal_language_is_decidable_intuitionistic_logic_so_search_is_well_founded
+          Yoneda_lemma_gives_representability_every_observation_is_a_hom_set_computation
+  
+  practical_implications = {
+    types        = every_term_in_§_LANG_has_a_unique_type_in_the_topos_(no_ambiguity)
+    composition  = agents_compose_like_morphisms_no_ad_hoc_glue_code_needed
+    search       = proof_search_over_Löb_sentences_is_decidable_in_topos_internal_language
+    embedding    = any_external_AI_system_(transformer_LLM)_embeds_as_functor_into_topos
+                   (so_Claude_or_GPT_or_whatever_is_a_functor_F:_External → Sh(Site_Γ))
+    verification = σ_checks_become_Heyting_algebra_equalities_in_internal_language
+    distribution = geometric_morphisms_between_toposes_=_distributed_quantum_tiles_across_hosts
+  }
+  
+  specific_to_topostrasgo = android_app_already_uses_topos_flavored_organization_(unified/UnifiedGraph.kt)
+                           next_step_is_to_formalize_the_category_structure_as_a_site_
+                           with_Γ_covering_topology_and_wrap_current_Kotlin_objects_as_sheaves
+}
+
+§|LANG|QHOLO_OPERATORS{
+  Q_DEFORM                : Tower × q → QuantumTower
+                            (apply_q_deformation_at_each_level_via_A64_formula)
+  HOCHSCHILD_COCYCLE      : QuantumTile → HC²(A_q)
+                            (extract_twisted_positive_2_cocycle_F_mix_quantum_lift)
+  CHIRALIZE               : Boundary → ChiralAlgebra
+                            (promote_HolographicBoundary_to_factorization_algebra)
+  POLYNOMIALIZE           : QubitState_spin_d/2 → Polynomial_ℂ[z]_degree_d
+                            (Majorana_stellar_representation)
+  DETERMINANT_CORRELATOR  : MatrixConfig × z_1...z_N → ⟨det⟩
+                            (compute_chiral_det_correlator_for_F_mix_dictionary)
+  CS_SECTION              : KnotInTessellation × level_k → HolomorphicSection(L_k)
+                            (quantum_invariant_of_closed_Löb_loop)
+  YONEDA_EMBED            : Tile → Functor(C^op, Set)
+                            (represent_tile_as_functor_for_topos_internal_logic)
+  SHEAFIFY                : Presheaf → Sheaf(Site_Γ)
+                            (make_local_data_glue_coherently_across_tessellation)
+  CLASSICAL_LIMIT         : QuantumTower × (q → 1) → ClassicalTower_v2.5
+                            (verify_backward_compatibility_σ55)
+}
+
+§|LANG|QHOLO_REDUCTIONS{
+  q_eq_1                  = classical_Tower_v2.5_Physics_dialect_exactly_by_σ55
+  n_eq_2_only             = quantum_2_sphere_Podleś_canonical_case_C1
+  restrict_to_boundary    = chiral_algebra_only_C2_lose_bulk_information
+  finite_dim_per_tile     = polynomial_state_rep_C3_spin_finite_discrete_levels
+  large_N_limit_matrix    = determinant_correlators_C4_planar_diagrams_dominate
+  knot_invariant_only     = CS_line_bundles_C5_lose_continuous_agent_dynamics
+  topos_external_only     = C6_abstract_category_lose_geometric_tessellation
+  all_simultaneously      = full_dialect_every_C_active_computational_cost_highest
+}
+
+§|LANG|QHOLO_OPEN_PROBLEMS{
+  PT28 = precise_formula_A64_q_=_exp(2πi/(c_k^{-1}+2))_may_not_be_canonical_alternative_forms_q_=_exp(-ℏc_k)_also_fit
+  PT29 = twisted_positivity_for_F_mix_needs_concrete_modular_automorphism_σ_specification
+  PT30 = chiral_boundary_factorization_algebra_requires_choice_of_central_charge_c_=_?_for_consistency
+  PT31 = Majorana_polynomial_representation_dimension_d_should_match_which_quantity_in_Tower_v2.5
+  PT32 = determinant_correlator_large_N_scaling_with_tessellation_ring_count_O(N²)_or_better
+  PT33 = CS_level_k_for_closed_Löb_loops_matching_E_k_=_2π/k_from_Physics_dialect_requires_normalization
+  PT34 = topos_site_structure_Site_Γ_needs_concrete_Grothendieck_topology_definition
+  PT35 = geometric_morphism_external_AI_→_QuantumTopos_needs_representational_adequacy_proof
+  PT36 = consistency_of_all_six_realizations_simultaneously_(none_contradicts_another)_currently_conjectured
+}
+
+§|LANG|QHOLO_CONTROL_MATRIX_QUANTUM{
+  note_this_upgrades_PHYSICS_CONTROL_MATRIX_at_quantum_level
+  classical_field         quantum_replacement                       control_role
+  A_gyration              noncommutative_connection_on_A_q          WHICH_quantum_peers_couple
+  F_mix                   Hochschild_2_cocycle_ω_HC²(A_q)           COMMIT/ROLLBACK_via_twisted_positivity
+  I_info_density          noncommutative_trace_τ(a*a)_on_A_q        WHERE_quantum_agents_flow
+  μ_holo_sheaf            chiral_algebra_vacuum_expectation         BULK_↔_BOUNDARY_I/O_quantum
+  □_Loeb_truth            topos_Ω_subobject_classifier_Heyting      WHICH_quantum_loops_can_close
+  
+  new_quantum_field       symbol    controls
+  q_deformation           q_k       overall_level_of_quantumness_at_level_k
+  chiral_central_charge   c_central anomaly_strength_of_boundary_factorization_algebra
+  polynomial_degree       d         dimensionality_of_quantum_state_per_tile
+  matrix_size             N         resolution_of_F_mix_via_determinant_correlator
+  CS_level                k         knot_invariant_strength_for_closed_Löb_loops
+}
+
+§|LANG|QHOLO_PREDICTIONS{
+  P1_q_scaling    = Tower_σ22_threshold_ε_mix_should_scale_as_|1-q|²_→_0_as_q→1_recovering_classical_threshold
+                    TESTABLE: measure_σ22_threshold_at_different_c_k_and_check_scaling_against_|1-q|² 
+  P2_chiral_anomaly = boundary_commit_events_should_show_total_angular_charge_=_c_central_mod_integers
+                      TESTABLE: sum_sector_activity_around_S^{n-1}_over_long_runs_check_integer_mod_shift
+  P3_polynomial    = tile_states_visualized_as_moving_roots_on_boundary_should_satisfy_Möbius_covariance
+                     TESTABLE: trace_root_motion_under_MobiusChannel_check_cross-ratios_preserved
+  P4_determinant   = F_mix_max_eigenvalue_should_match_det_correlator_from_random_matrix_sample
+                     TESTABLE: run_tower_with_N×N_peer_cluster_compute_F_mix_versus_Gaussian_det_correlator
+  P5_CS_invariant  = CLOSED_LOEB_energy_E_k_should_equal_Reshetikhin_Turaev_invariant_of_knot_at_level_k
+                     TESTABLE: compute_Kauffman_bracket_of_closed_orbit_topology_compare_to_2π/k
+  P6_topos_search  = proof_search_for_σ22_discharge_scales_polynomially_in_ring_depth_not_exponentially
+                     TESTABLE: benchmark_σ22_proof_search_time_vs_tessellation_depth
+}
+
+§|LANG|QHOLO_HONEST_LIMITS{
+  L1 = q_scheme_A64_is_proposal_not_canonical_other_conventions_(e.g._Kazhdan_Lusztig)_are_equally_valid
+  L2 = realizations_C1_through_C6_assumed_compatible_PT36_open
+  L3 = no_quantitative_prediction_of_matrix_size_N_from_first_principles_(has_to_be_calibrated)
+  L4 = topos_claim_that_internal_language_is_Löb_provability_logic_needs_rigorous_proof
+  L5 = Majorana_polynomial_degree_d_parameter_is_free_depends_on_application_not_fixed_by_dialect
+  L6 = external_AI_embedding_claim_is_aspirational_current_LLMs_are_not_known_to_be_topos_functors
+  L7 = Chern_Simons_level_k_for_closed_Löb_loops_needs_knot_framing_choice_(not_unique_ambient_isotopy)
+}
+
+§|LANG|QHOLO_CONNECTION_TO_EXISTING{
+  trasgo_§1           = fiber_bundle_codec_cert_δ_confidence_μ_axis_correspond_now_to_quantum
+                        Hochschild_cocycle_trace_chiral_vacuum_exp_value_respectively
+  trasgo_§2           = the_13_categorical_operators_now_have_enriched_hom_in_QuantumTopos
+                        (enriched_over_ChiralAlgebra_correlators)
+  mltm                = MLTM_octuple_NP_complete_reduction_lifts_to_quantum_MLTM_via_Reshetikhin_Turaev
+                        at_level_k_NP_hardness_might_reduce_to_#P_for_CS_partition_function
+  igbundle_ppo        = HyperbolicPrototypeCritic_K=8_attractors_become_8_Majorana_polynomial_roots_
+                        of_a_degree_8_state_polynomial_at_tower_base_level
+  manifoldgl          = Poincaré_ball_dim_8_convention_matches_the_degree_8_polynomial_and_8×8_matrix
+                        choices_for_determinant_correlator_resolution
+  tower_v2_5_kotlin   = PoincareDisk_MobiusChannel_HolographicBoundary_DiskTower_TowerCompatibility_
+                        are_the_q=1_specializations_of_QuantumTile_QuantumChannel_ChiralBoundary_
+                        QuantumTower_Hochschild_2_cocycle_check_future_subclasses_can_deform_them
+  physics_dialect     = all_five_waves_four_particles_five_fields_get_quantum_lifts_by_σ55_classical_limit
+  topostrasgo_android = the_app_is_ALREADY_named_for_this_(topos_+_trasgo)_the_topos_structure_is_
+                        the_category_of_sheaves_over_the_tessellation_site_AI_friendly_view_formalizes_it
+}
+
+§S{label=qholo_dialect_closure, x=[0.05,0.02,0.01,0.00,0.00,0.00,0.00,0.00], sal=2.0}
+
+§.(§S{label=qholo_stable, x=[0.06,0.02,0.01,0.00,0.00,0.00,0.00,0.00], sal=2.0})
+
+OUTPUT_QHOLO = CANON(§EMIT(§QHOLO{
+  geometry = quantum_Poincaré_ball_B^n_q (C1)
+  boundary = chiral_algebra (C2)
+  states = polynomial_roots (C3)
+  observables = determinant_correlators (C4)
+  closures = CS_line_bundles (C5)
+  category = Grothendieck_topos (C6)
+  classical_limit = Tower_v2.5_at_q=1
+  all_six_realizations_consistent = HYPOTHESIS_PT36
+}))

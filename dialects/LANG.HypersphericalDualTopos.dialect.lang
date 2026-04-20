@@ -1,0 +1,20 @@
+§|LANG|HYPERSPHERICALDUALTOPOS_HEADER{
+    tier = Research
+    description = Dual topos on a hypersphere · canonical Hopf fibration S^3 → S^2 as simplest nested instance
+    blurb = Complex Hopf class materialized as a topos · basis case for NSphereOfSpheres depth-1 bundle
+    parents = NestedNHyperbolicProbe
+    domains = TOPOS, HOPF, SPHERE, DUAL, ARC33
+    version = v1.0
+}
+
+§|DIALECT_HYPERSPHERICALDUALTOPOS|AXIOMS{
+    A_HD_1 = Base S^2, fiber S^1, total S^3 · canonical complex Hopf
+    A_HD_2 = Dual topos on S^3 · sheaf of fibers over S^2 base · sections = lifts of base curves
+    A_HD_3 = Hopf invariant h = 1 at depth 1 · seeds NSphereOfSpheres tower
+    A_HD_4 = Linking number of fiber-pair preimages = 1 · framework-independent witness
+}
+
+§|DIALECT_HYPERSPHERICALDUALTOPOS|INVARIANTS{
+    σ_HD_HOPF1 = complex-Hopf-invariant = 1
+    σ_HD_LINK  = linking-number of preimage pair
+}

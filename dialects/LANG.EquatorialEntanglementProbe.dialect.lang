@@ -1,0 +1,20 @@
+§|LANG|EQUATORIALENTANGLEMENTPROBE_HEADER{
+    tier = Research
+    description = Equatorial entanglement probe · depth-1 specialization of sphere-bundle Hopf twist
+    blurb = Two-sphere base + S^n fiber · linking number at the equator as entanglement witness
+    parents = HyperbolicFingerprintCatch
+    domains = ENTANGLEMENT, SPHERE, PROBE, ARC33
+    version = v1.0
+}
+
+§|DIALECT_EQUATORIALENTANGLEMENTPROBE|AXIOMS{
+    A_EE_1 = Equator of S^n_{0} hosts base points · each carries S^n fiber attachment
+    A_EE_2 = Linking number ℓ(p, q) on the equator = entanglement witness for (p, q)
+    A_EE_3 = Non-zero ℓ ⇒ non-separable fiber pair · specializes A5708 at depth 1
+    A_EE_4 = ℓ stable under SO(n) equatorial rotation · framework-independent
+}
+
+§|DIALECT_EQUATORIALENTANGLEMENTPROBE|INVARIANTS{
+    σ_EE_LINK = equatorial-linking-number integer
+    σ_EE_NONSEP = non-separability flag when ℓ ≠ 0
+}

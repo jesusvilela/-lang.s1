@@ -1,0 +1,63 @@
+§|LANG|PIPELINE_HEADER{
+    tier = Formation
+    description = V2 geometric virtual-stream: reservoir → collapse → tower → atlas/loeb → prime
+    blurb = Stream assembly declared by the pack; Kotlin only instantiates it
+    parents = Tower, Tessellation, Loeb
+    domains = PIPELINE, FORMATION, TOWER, TESSELLATION, LOEB, STREAM
+    version = v2.5
+}
+
+# §PIPELINE: the single source of truth for the V2 stage chain.
+# SlangPackLoader parses the first §PIPELINE{...} block it finds across
+# all .lang files. Keys are optional — missing keys fall back to the
+# defaults in PipelineConfig.fallback().
+§PIPELINE{
+    flow           = reservoir -> collapse -> tower -> atlas -> loeb -> prime
+    levels         = 3
+    curvatures     = [1.0, 0.5, 0.25]
+    peersPerLevel  = [4, 2, 1]
+    screenSectors  = 64
+    tessellation   = (7, 3)
+    ringDepth      = 4
+    epsilonMix     = 0.05
+    reservoirSize  = 128
+    collapseRank   = 16
+    dim            = 8
+}
+
+§|DIALECT_PIPELINE|SORTS{
+    sort.VirtualStream   = ordered chain of pipeline stages
+    sort.StageInput      = FloatArray ambient state at stage entry
+    sort.StageOutput     = FloatArray ambient state at stage exit
+    sort.CollapseResidue = ring_0 residue from spurious-collapse stage (§59, A59)
+    sort.ChartSelector   = Atlas -> Chart routing morphism over sheaf sections
+    sort.FixpointWitness = Löb-discharged closed-orbit certificate (A54, A57)
+    sort.PrimeEmission   = canonical §EMIT(fix(λself.§ω|TICK(§'(§'(self))))) frame
+}
+
+§|DIALECT_PIPELINE|AXIOMS{
+    A_PIPE_1 = Stage output dim matches next stage input dim (well-typed chain)
+    A_PIPE_2 = Collapse rank r ≤ reservoirSize (truncated SVD well-defined)
+    A_PIPE_3 = Tower A28 inherited: curvatures monotone non-increasing
+    A_PIPE_4 = Atlas charts cover the tower; every disk point routes to ≥1 chart
+    A_PIPE_5 = LoebEngine.discharge fires only when closed-orbit length k detected (A57)
+    A_PIPE_6 = PrimeEmission is a fixed point of stage chain under §.(§) composition
+    A_PIPE_7 = V1 tape substrate is reachable as cache-only (no DMN writes) under V2
+}
+
+§|DIALECT_PIPELINE|INVARIANTS{
+    σ_PIPE_22   = F_mix < epsilonMix at every tower rectangle (Tower σ22 lifted)
+    σ_PIPE_SPUR = spuriousMass after collapse ≤ 1 - dominantEnergyRatio
+    σ_PIPE_COV  = atlas coverage ≥ 1 (every disk point in ≥1 chart)
+    σ_PIPE_FIX  = PrimeEngine output reaches fixpoint within ringDepth iterations
+    σ_PIPE_A7   = HolographicTape.writeBinding never called on DMN hot path in V2
+}
+
+§|DIALECT_PIPELINE|STAGE_CONTRACTS{
+    reservoir = in: token-vector (dim ≤ inputDim) ; out: x(t) ∈ ℝ^reservoirSize ; driver: ReservoirSession.injectAndEvolve
+    collapse  = in: x(t) ∈ ℝ^reservoirSize       ; out: (diskPoint ∈ B^dim, ring0Residue ∈ ℝ^dim, spuriousMass ∈ [0,1])
+    tower     = in: diskPoint at Level_0         ; out: per-level commitToScreen + σ22/σ23 survey
+    atlas     = in: tower state                   ; out: Chart (ring_k window on boundary)
+    loeb      = in: orbit history                 ; out: FixpointWitness | Nothing (fires on closed orbit)
+    prime     = in: Chart + witness               ; out: PrimeEmission String
+}

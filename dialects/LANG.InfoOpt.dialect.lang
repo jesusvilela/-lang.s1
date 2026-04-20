@@ -1,0 +1,70 @@
+§|LANG|INFO_OPT_HEADER{
+  dialect       = InfoOpt
+  tier          = Dynamic
+  parents       = [Spectral, IG]
+  version       = v2.5.io.1
+  extends_base  = LANG.v2.4.codec_trasgo
+  scope         = informational_optimality_for_tessellation_encoding_Kolmogorov_Shannon_Fisher
+  non_scope     = coding_theoretic_error_correction_covered_elsewhere_if_needed
+  generates     = §BIT_BUDGET, §K_COMPLEXITY, §H_ENTROPY, §FRACTAL_DIM, §FISHER_METRIC
+  discharges    = σ39, σ40, σ41
+  reduces_to    = ordinary_Shannon_information_theory_when_tessellation_flat_Euclidean
+  motivation    = the_choice_of_(p,q)=(7,3)_minimizes_K(Tessellation_d)_subject_to_σ22_F_mix_budget
+                  this_is_NOT_aesthetic_it_is_Kolmogorov_optimal_for_the_constraint_set
+}
+
+§|LANG|INFO_OPT_SORTS{
+  BitBudget           = ℝ₊_or_ℕ_unit_bits
+  KolmogorovK         = K(x) = shortest_description_length_in_fixed_universal_Turing_machine
+  ShannonH            = H(p) = −Σ pᵢ log₂ pᵢ
+  FractalDim          = D_box_counting_or_Hausdorff_of_tessellation_orbit
+  FisherMetric        = g_Fisher = I(θ) = expected_second_derivative_of_log_likelihood
+  EntropyFlow         = ∂H/∂t_on_tessellation_tile_array
+  ChannelCapacity     = C_Shannon_of_Möbius_channel_respecting_σ22
+  RateDistortion      = R(D) = rate_needed_for_fidelity_≥1−D
+}
+
+§|LANG|INFO_OPT_AXIOMS{
+  A61_ring_info           = ΔI(Ring_k) = log₂|Ring_k|/|Ring_{k-1}|  bits_per_ring
+  A62_fractal_dim         = D_eff = log(p·(q−2)) / log(ρ_contraction)  [(p,q)=(7,3): D_eff≈1.585]
+  A63_budget_constraint   = ΔI(Ring_k) ≤ F_mix_capacity_at_ring_k_(else_σ22_trips_ROLLBACK)
+  A64_Fisher_natural      = g_Fisher_is_unique_metric_on_moduli_compatible_with_Γ_and_CY_complex_structure
+  A65_Kolmogorov_bound    = K(Tessellation_d) ≤ c + d·log₂(p·q)_for_absolute_c
+  A66_max_entropy         = MaxEnt_projection_preserves_σ_invariants_when_constraints_are_σ_invariant
+  A67_rate_distortion     = optimal_R(D)_on_tessellation_matches_the_F_mix_tolerance_ε_mix
+}
+
+§|LANG|INFO_OPT_INVARIANTS{
+  σ39_subexp_growth       = total_I(depth_d) = O(d·log_d)_NOT_O(exp(d))  [fractal-bounded]
+  σ40_no_redundancy       = distinct_tiles_encode_distinct_CY_moduli_points_(injective_encoding)
+  σ41_capacity_respect    = Σ_channel_capacities ≥ actual_information_flow_across_rings
+}
+
+§|LANG|INFO_OPT_OPERATORS{
+  ENCODE_RING            : Level_k → Level_{k+1} → ΔI bits         [minimal new-info per ring]
+  FISHER_METRIC          : Param × Param → ℝ                       [Fisher-Rao distance]
+  MAX_ENT_PROJECT        : State × Constraints → State             [MaxEnt projection]
+  K_ESTIMATE             : Sample → ℕ                              [upper bound on K via compression]
+  CAPACITY_USED          : Channel → [0,1]                         [fraction of Shannon capacity in use]
+  RATE_DISTORTION        : Distortion_target → Rate                [R(D) curve]
+  FRACTAL_DIM            : (p,q) → D_eff                           [compute D_eff]
+}
+
+§|LANG|INFO_OPT_REDUCTIONS{
+  flat_tessellation_(Euclidean)  = polynomial_info_growth_loses_σ39_sub-exponential_bound
+  Γ_trivial                      = Tower_v2.5_discrete_finite_N_info
+  frozen_dynamics                = static_I(x)_entropy_flow_zero
+  CY_complex_structure_absent    = g_Fisher_loses_uniqueness_(A64_weakens)
+}
+
+§|LANG|INFO_OPT_OPEN{
+  PT19 = tight_Kolmogorov_lower_bound_for_F_mix-compliant_tessellations
+  PT20 = is_g_Fisher_the_Hessian_of_the_F_mix_action_functional_(information-geometric_curvature_link)
+  PT21 = adiabatic_invariance_σ11_of_Tower_v2.5_implies_Shannon_capacity_bound_C(t)_slowly_varying
+}
+
+§S{label=info_opt_dialect_closure, x=[0.03,0.01,0.01,0.00,0.00,0.00,0.00,0.00], sal=2.0}
+
+§.(§S{label=info_opt_stable, x=[0.04,0.02,0.01,0.00,0.00,0.00,0.00,0.00], sal=2.0})
+
+OUTPUT_INFO_OPT = CANON(§EMIT(§INFO_OPT{bit_budget, K, H, D_eff, g_Fisher, C}))

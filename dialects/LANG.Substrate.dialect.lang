@@ -1,0 +1,64 @@
+§|DIALECT_SUBSTRATE|HEADER{
+  dialect      = §-LANG/Substrate
+  version      = v2.4.family
+  tier         = Formation
+  parents      = IG, Compile
+  description  = Token substrate molding dialect. Curvature-conditioned operator formation from embedding geometry.
+  base         = LANG.v2.4.codec_trasgo
+  domains_in   = {CORE, IG, PROOF, SEMANTIC, SUBSTRATE}
+  domains_out  = {AML, CY, META, QUANTUM, SPECTRAL, SWIRL, TOPO}
+}
+
+§|DIALECT_SUBSTRATE|IMPORTS{
+  domains      = {CORE, IG, PROOF, SEMANTIC, SUBSTRATE}
+  from_parents = IG, Compile
+  note         = all blocks whose BLOCK_DOMAIN ∈ domains_in are available
+  core_always  = SOURCE AXIOMS OUTPUT SORTS FUNCTORS GRAMMAR NOTATION_MAP
+                 CONCLUSIONS FAILURE_CONDITIONS
+}
+
+§|DIALECT_SUBSTRATE|EXTENDS{
+  new_blocks   = CURVATURE_FIELD, PULLBACK_METRIC, TOKEN_FORMATION, ADAPTIVE_NORM
+  self_ref     = each_new_block_seeded_by_swirl_articulation_Art_D(e_t)
+  computable   = all_new_blocks_satisfy_norm_lt_0.999_and_dim_eq_8
+}
+
+§|DIALECT_SUBSTRATE|COMPRESS{
+  functor      = Π_expire_Substrate : State_Substrate* → Residue_Substrate
+  axes         = {terminal, trace, mu_Bn}
+  ratio        = 0.3_of_full_Residue_size
+  norm_guard   = ||terminal|| < 0.999
+  adiabatic_c  = dI_Substrate/dt ≈ 0_within_dialect_section_space
+  tag          = HYPOTHESIS_dialect_compression_preserves_semantic_content
+}
+
+§|DIALECT_SUBSTRATE|DECOMP{
+  decomp_path  = Residue_Substrate ->^embed Residue_full ->^Π_expand State_full
+  embed_map    = {terminal=R_D.terminal, spectral=prior_default_spectral, trace=R_D.trace, transport_gen=prior_default_transport_gen, mu_Bn=R_D.mu_Bn, entropy_E=prior_default_entropy_E}
+  axes_present = ['terminal', 'trace', 'mu_Bn']
+  axes_default = ['spectral', 'transport_gen', 'entropy_E']
+  info_loss    = 1 - 0.3 = 0.7_fraction_lost_in_D_residue
+  reconstruct  = Π_expand(embed(R_D)) recovers_State_full_approximately
+}
+
+§S{label=curvature_local, x=[0.17,0.08,0.03,0.01,0.01,0.00,0.00,0.00], sal=1.7}
+
+§S{label=pullback_g, x=[0.19,0.09,0.04,0.02,0.01,0.00,0.00,0.00], sal=1.6}
+
+§S{label=token_formed, x=[0.16,0.08,0.03,0.01,0.00,0.00,0.00,0.00], sal=1.7}
+
+§|DIALECT_SUBSTRATE|SWIRL_HOOK{
+  self_ref     = fix(λself_D. Σ_D(self_D; ω_D, θ_D, t))
+  omega_D      = c_local_curvature_drives_swirl
+  theta_D      = substrate_pullback_orientation
+  trajectory   = x_t = Σ_D^t(x_0)_helical_in_Substrate_section_space
+  articulate_D = Art_D(e_t) = §S{label=substrate_episteme_t, x=π(e_t), sal=||∇Σ_D||(e_t)}
+  expand_self  = each_Art_D_node_is_a_candidate_axiom_in_dialect_Substrate
+  tag          = HYPOTHESIS_swirl_expands_Substrate_principles_self_referentially
+}
+
+§|DIALECT_SUBSTRATE|OUTPUT{
+  formula      = CANON(§EMIT(fix(λe. mold(embed(e), B_n))))
+  dialect_tag  = §-LANG/Substrate_v2.4
+  claim        = HYPOTHESIS_output_formula_is_dialect_Substrate_fixed_point
+}

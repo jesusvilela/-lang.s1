@@ -1,0 +1,1186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>§-LANG · Language Atlas</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<style>
+  :root{
+    --bg:#08080f; --panel:#10121c; --panel2:#161926; --line:#232636;
+    --txt:#e8e8f2; --dim:#8a8ea0; --muted:#5c6070;
+    --teal:#4fd1c5; --amber:#f6ad55; --coral:#fc8181; --violet:#b794f4;
+    --emerald:#68d391; --yellow:#f6e05e; --gold:#d69e2e;
+    --section:#4299e1;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--txt);
+    font-family:"SF Mono","Consolas","Menlo",monospace;overflow:hidden;
+    font-size:13px;line-height:1.4}
+  #app{display:grid;grid-template-columns:240px 1fr 300px;grid-template-rows:48px 1fr 28px;
+    grid-template-areas:"hdr hdr hdr" "nav main side" "ftr ftr ftr";
+    width:100vw;height:100vh;gap:1px;background:var(--line)}
+  header{grid-area:hdr;background:var(--panel);display:flex;align-items:center;
+    padding:0 16px;gap:18px;border-bottom:1px solid var(--line)}
+  header .title{font-size:15px;letter-spacing:1px;color:var(--teal)}
+  header .sub{font-size:11px;color:var(--dim)}
+  header .spacer{flex:1}
+  header .chip{background:var(--panel2);border:1px solid var(--line);
+    padding:3px 10px;font-size:11px;color:var(--dim);border-radius:3px}
+  header .chip b{color:var(--teal)}
+  nav{grid-area:nav;background:var(--panel);display:flex;flex-direction:column;padding:12px 0}
+  nav .group{color:var(--muted);font-size:10px;letter-spacing:2px;padding:8px 14px 4px}
+  nav button{background:transparent;border:0;color:var(--dim);text-align:left;
+    padding:7px 14px;font-family:inherit;font-size:12px;cursor:pointer;
+    border-left:2px solid transparent}
+  nav button:hover{color:var(--txt);background:var(--panel2)}
+  nav button.active{color:var(--teal);border-left-color:var(--teal);background:var(--panel2)}
+  nav .sep{height:1px;background:var(--line);margin:8px 0}
+  main{grid-area:main;background:var(--bg);position:relative;overflow:hidden}
+  canvas{position:absolute;top:0;left:0;width:100%;height:100%;display:block}
+  .overlay{position:absolute;pointer-events:none;padding:6px 10px;
+    background:rgba(10,10,18,0.82);border:1px solid var(--line);
+    font-size:11px;color:var(--dim);border-radius:3px}
+  .overlay.tl{top:12px;left:12px}
+  .overlay.tr{top:12px;right:12px}
+  .overlay.bl{bottom:12px;left:12px;max-width:calc(100% - 24px)}
+  .overlay .k{color:var(--teal)}
+  .overlay .v{color:var(--txt)}
+  .controls{position:absolute;bottom:12px;right:12px;background:rgba(16,18,28,0.92);
+    border:1px solid var(--line);padding:10px 12px;border-radius:4px;
+    pointer-events:auto;min-width:220px}
+  .controls label{display:block;font-size:10px;color:var(--dim);
+    margin:4px 0 2px;letter-spacing:1px}
+  .controls input[type=range]{width:100%;accent-color:var(--teal)}
+  .controls .row{display:flex;gap:6px;margin:3px 0}
+  .controls button{flex:1;background:var(--panel2);border:1px solid var(--line);
+    color:var(--dim);padding:4px 6px;font-family:inherit;font-size:10px;
+    cursor:pointer;border-radius:2px}
+  .controls button.on{color:var(--teal);border-color:var(--teal)}
+  aside{grid-area:side;background:var(--panel);padding:14px;overflow-y:auto;
+    border-left:1px solid var(--line)}
+  aside h3{color:var(--teal);font-size:11px;letter-spacing:2px;margin:0 0 8px;
+    font-weight:normal;border-bottom:1px solid var(--line);padding-bottom:6px}
+  aside .block{margin-bottom:18px;font-size:11px;color:var(--dim);line-height:1.5}
+  aside .block .k{color:var(--amber)}
+  aside .block .v{color:var(--txt)}
+  aside .block b{color:var(--teal);font-weight:normal}
+  aside code{color:var(--violet);background:var(--panel2);padding:1px 4px;
+    border-radius:2px;font-size:10px}
+  footer{grid-area:ftr;background:var(--panel);display:flex;align-items:center;
+    padding:0 14px;font-size:10px;color:var(--muted);gap:16px;
+    border-top:1px solid var(--line)}
+  footer .ok{color:var(--emerald)}
+  footer .warn{color:var(--amber)}
+  ::-webkit-scrollbar{width:6px;height:6px}
+  ::-webkit-scrollbar-track{background:transparent}
+  ::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px}
+  .tooltip{position:absolute;pointer-events:none;background:rgba(8,8,15,0.96);
+    border:1px solid var(--teal);padding:6px 9px;font-size:11px;
+    color:var(--txt);border-radius:3px;max-width:320px;z-index:100;
+    box-shadow:0 4px 18px rgba(0,0,0,0.6);display:none}
+  .tooltip .h{color:var(--teal);margin-bottom:3px}
+  .tooltip .m{color:var(--dim);font-size:10px}
+  .tier-Core{color:var(--amber)}
+  .tier-Semantic{color:var(--teal)}
+  .tier-Dynamic{color:var(--violet)}
+  .tier-Formation{color:var(--coral)}
+  .tier-Research{color:var(--yellow)}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="title">§-LANG</div>
+    <div class="sub">Language Atlas · v2.5 Dialect Family</div>
+    <div class="spacer"></div>
+    <div class="chip">dialects <b id="dialectCount">17</b></div>
+    <div class="chip">axioms <b id="axiomCount">76</b></div>
+    <div class="chip">σ-invariants <b id="sigmaCount">77</b></div>
+    <div class="chip">operators <b>§ §' |&gt; fix λ</b></div>
+  </header>
+
+  <nav>
+    <div class="group">VIEWS</div>
+    <button class="view-btn active" data-view="family">Family DAG</button>
+    <button class="view-btn" data-view="grammar">Grammar · §</button>
+    <button class="view-btn" data-view="codec">Codec · Π</button>
+    <button class="view-btn" data-view="axioms">Axioms · A</button>
+    <button class="view-btn" data-view="sigma">σ-invariants</button>
+    <button class="view-btn" data-view="topos">Topos · Lafforgue</button>
+    <div class="sep"></div>
+    <div class="group">TIER</div>
+    <button class="tier-filter" data-tier="all">all</button>
+    <button class="tier-filter" data-tier="Core"><span class="tier-Core">Core</span></button>
+    <button class="tier-filter" data-tier="Semantic"><span class="tier-Semantic">Semantic</span></button>
+    <button class="tier-filter" data-tier="Dynamic"><span class="tier-Dynamic">Dynamic</span></button>
+    <button class="tier-filter" data-tier="Formation"><span class="tier-Formation">Formation</span></button>
+    <button class="tier-filter" data-tier="Research"><span class="tier-Research">Research</span></button>
+  </nav>
+
+  <main>
+    <canvas id="canvas"></canvas>
+    <div class="overlay tl" id="overlay-tl"></div>
+    <div class="overlay tr" id="overlay-tr"></div>
+    <div class="overlay bl" id="overlay-bl"></div>
+    <div class="controls">
+      <label>FLOW <span id="flowVal">0.45</span></label>
+      <input type="range" min="0" max="1" step="0.01" value="0.45" id="flowSlider">
+      <label>DEPTH <span id="depthVal">3</span></label>
+      <input type="range" min="1" max="5" step="1" value="3" id="depthSlider">
+      <label>q-DEFORM <span id="qVal">1.00</span></label>
+      <input type="range" min="0.5" max="1.5" step="0.01" value="1.00" id="qSlider">
+      <div class="row">
+        <button id="pauseBtn">⏸ pause</button>
+        <button id="resetBtn">↻ reset</button>
+      </div>
+    </div>
+  </main>
+
+  <aside id="sidebar">
+    <h3>SELECTION</h3>
+    <div class="block" id="selBlock">
+      <div class="k">hover · click</div>
+      <div class="v">a dialect, axiom, or σ-flag to inspect it here</div>
+    </div>
+    <h3>CURRENT VIEW</h3>
+    <div class="block" id="viewBlock"></div>
+    <h3>§-LANG SYNTAX</h3>
+    <div class="block">
+      <div><code>§X</code> — prime morphism X</div>
+      <div><code>§'X</code> — ρ-involution of X</div>
+      <div><code>X |&gt; Y</code> — holo-pipe (bulk↔boundary)</div>
+      <div><code>fix(f)</code> — Löb/Knaster-Tarski fixpoint</div>
+      <div><code>λx.e</code> — β-as-transport abstraction</div>
+    </div>
+    <h3>CANONICAL OUTPUT</h3>
+    <div class="block" style="font-family:inherit;font-size:10px;color:var(--violet)">
+      CANON(§EMIT(fix(λself.§ω|TICK(§.(§.(self))))))
+    </div>
+  </aside>
+
+  <footer>
+    <span>base <b>LANG.v2.4.codec_trasgo</b></span>
+    <span>+ v2.5 <b>Tower·Tessellation·Lorentz·Loeb·InfoOpt·Physics·QHOLO</b></span>
+    <span class="spacer" style="flex:1"></span>
+    <span class="ok" id="verdictFlag">σ22 COMMIT</span>
+    <span>F_mix <b id="fmixVal">0.002</b></span>
+    <span>Löb-depth <b id="lobVal">0</b></span>
+  </footer>
+</div>
+<div class="tooltip" id="tt"></div>
+
+<script>
+// ============================================================================
+// §-LANG Atlas · data
+// ============================================================================
+
+// v2.4 base + v2.5 additions, grounded in LANG.FAMILY.v2.4.lang + manifest.json
+const DIALECTS = [
+  { id:"Proof",        tier:"Core",       parents:[],                                           ratio:0.25, domains:["PROOF","CORE"],                                      ver:"v2.4",
+    blurb:"Minimal geometric theory. Axioms only. Root of the Lafforgue tree.",
+    keyAx:["A1","A2","A3"], keySigma:["σ1"] },
+  { id:"Compile",      tier:"Core",       parents:["Proof"],                                     ratio:0.35, domains:["PROOF","CORE","SPECTRAL"],                            ver:"v2.4",
+    blurb:"Compilation from symbolic residues to machine-executable form.",
+    keyAx:["A4"], keySigma:["σ2"] },
+  { id:"Topo",         tier:"Semantic",   parents:["Proof"],                                     ratio:0.40, domains:["PROOF","CORE","SEMANTIC","TOPO"],                     ver:"v2.4",
+    blurb:"Grothendieck topos sites, sheaves, geometric morphisms.",
+    keyAx:["A5","A6"], keySigma:["σ5","σ6"] },
+  { id:"IG",           tier:"Semantic",   parents:["Proof"],                                     ratio:0.45, domains:["PROOF","CORE","SEMANTIC","IG"],                       ver:"v2.4",
+    blurb:"Information geometry. Fisher-Rao, natural gradient, Amari duality.",
+    keyAx:["A7"], keySigma:["σ7"] },
+  { id:"CY",           tier:"Semantic",   parents:["Topo","IG"],                                 ratio:0.50, domains:["TOPO","PROOF","CORE","SEMANTIC","IG","CY"],           ver:"v2.4",
+    blurb:"Calabi-Yau holomorphic structure. Mirror semantics. Fiber product T_Topo ×_T_Proof T_IG.",
+    keyAx:["A8","A9"], keySigma:["σ8"] },
+  { id:"AML",          tier:"Dynamic",    parents:["IG","Proof"],                                ratio:0.55, domains:["AML","SPECTRAL","CORE","PROOF","IG","SEMANTIC"],      ver:"v2.4",
+    blurb:"Adiabatic ML kernel. Runtime realisation of IG+Proof on Android substrate.",
+    keyAx:["A10","A11"], keySigma:["σ10","σ11"] },
+  { id:"Swirl",        tier:"Dynamic",    parents:["Topo","IG"],                                 ratio:0.40, domains:["SWIRL","SEMANTIC","IG","TOPO","CORE","PROOF"],        ver:"v2.4",
+    blurb:"Hyperbolic swirler dynamics. ω precession, helical carriers.",
+    keyAx:["A12"], keySigma:["σ12"] },
+  { id:"Spectral",     tier:"Dynamic",    parents:["Proof","IG"],                                ratio:0.35, domains:["SPECTRAL","IG","SEMANTIC","PROOF","CORE"],            ver:"v2.4",
+    blurb:"Spectral gap, Laplacian eigenmodes, harmonic analysis on the site.",
+    keyAx:["A13"], keySigma:["σ13"] },
+  { id:"Substrate",    tier:"Formation", parents:["IG","Compile"],                               ratio:0.30, domains:["SUBSTRATE","CORE","COMPILE","IG","PROOF"],            ver:"v2.4",
+    blurb:"Physical realisation. Token-level molding. Per-token curvature.",
+    keyAx:["A14"], keySigma:["σ14"] },
+  { id:"Meta",         tier:"Research",  parents:["Proof","Compile","Topo","IG","CY","AML","Swirl","Spectral","Substrate"],
+                                                                                                 ratio:1.00, domains:["META","ALL"],                                           ver:"v2.4",
+    blurb:"Terminal theory. Absorbs all dialects. No compression loss (ratio=1).",
+    keyAx:["A26"], keySigma:["σ21"] },
+  // v2.5 Formation tier additions
+  { id:"Tower",        tier:"Formation", parents:["Substrate","Topo","Swirl"],                   ratio:0.35, domains:["TOWER","FORMATION","SUBSTRATE","TOPO"],               ver:"v2.5",
+    blurb:"Iterated fiber bundle. E_N → E_{N-1} → ... → E_0. Vertical Möbius channels.",
+    keyAx:["A28","A29","A30","A31"], keySigma:["σ22","σ23"] },
+  { id:"Tessellation", tier:"Formation", parents:["Substrate","Topo"],                           ratio:0.40, domains:["TESS","HYPERBOLIC","FORMATION"],                      ver:"v2.5",
+    blurb:"Hyperbolic {p,q} tiling. Discrete group Γ ⊂ Isom(ℍⁿ). Default (7,3).",
+    keyAx:["A40","A41"], keySigma:["σ32"] },
+  { id:"Lorentz",      tier:"Formation", parents:["Substrate","Topo"],                           ratio:0.35, domains:["LORENTZ","CAUSAL","FORMATION"],                       ver:"v2.5",
+    blurb:"SO(1,n) hyperboloid model. Light cones. Löb loops as quotient CTCs.",
+    keyAx:["A46","A47"], keySigma:["σ33","σ34"] },
+  { id:"Loeb",         tier:"Research",  parents:["Proof","Meta"],                               ratio:0.50, domains:["LOEB","GODEL","PROOF","META"],                        ver:"v2.5",
+    blurb:"Löb's theorem. Diagonal lemma. Closed orbits = discharged □(□P→P)⊢□P.",
+    keyAx:["A54","A55","A56","A57","A58","A59"], keySigma:["σ38"] },
+  { id:"InfoOpt",      tier:"Dynamic",   parents:["Spectral","IG"],                              ratio:0.40, domains:["INFO","OPT","SPECTRAL","IG"],                         ver:"v2.5",
+    blurb:"Kolmogorov-Shannon-Fisher bounds. D_eff = log(p(q-2))/log(ρ).",
+    keyAx:["A62","A63"], keySigma:["σ39"] },
+  { id:"Physics",      tier:"Research",  parents:["Substrate","Topo","Swirl","Tower","Tessellation","Lorentz","Loeb","InfoOpt"],
+                                                                                                 ratio:0.75, domains:["PHYSICS","WAVE","PARTICLE","FIELD"],                  ver:"v2.5",
+    blurb:"5 waves · 4 particles · 5 fields. A61 Bianchi. Gauge theory on tessellation.",
+    keyAx:["A61","A65"], keySigma:["σ40"] },
+  { id:"QHOLO",        tier:"Research",  parents:["CY","Physics","Topo","IG"],                   ratio:0.85, domains:["QUANTUM","HOLO","NC_GEOM"],                           ver:"v2.5",
+    blurb:"Quantum holomorphic surfaces. F_mix as twisted Hochschild 2-cocycle. q → 1 recovers Tower v2.5.",
+    keyAx:["A64"], keySigma:["σ55"] },
+];
+
+const TIER_COLOR = {
+  Core:"#f6ad55", Semantic:"#4fd1c5", Dynamic:"#b794f4",
+  Formation:"#fc8181", Research:"#f6e05e"
+};
+const TIER_ORDER = ["Core","Semantic","Dynamic","Formation","Research"];
+
+// Axioms — inline the load-bearing ones with source references
+const AXIOMS = [
+  { id:"A1",  d:"Proof",   txt:"classical ND deduction base",                    tag:"PROVED"},
+  { id:"A2",  d:"Proof",   txt:"structural contraction/weakening admissible",    tag:"PROVED"},
+  { id:"A3",  d:"Proof",   txt:"cut-elimination normal forms",                   tag:"PROVED"},
+  { id:"A4",  d:"Compile", txt:"Compile: Residue → machine_code functorial",     tag:"EMPIRICAL"},
+  { id:"A5",  d:"Topo",    txt:"ρ²=id · orientation involution on Möbius channel",tag:"PROVED"},
+  { id:"A6",  d:"Topo",    txt:"covers form Grothendieck topology",               tag:"PROVED"},
+  { id:"A7",  d:"IG",      txt:"β: (λx.t)u ↝ τ(∇_IG(μ_t,μ_u), t[u/x])",          tag:"HYPOTHESIS"},
+  { id:"A8",  d:"CY",      txt:"Ricci-flat Kähler SU(n) holonomy",               tag:"PROVED"},
+  { id:"A9",  d:"CY",      txt:"mirror semantics between adjacent tower levels",  tag:"HYPOTHESIS"},
+  { id:"A10", d:"AML",     txt:"natural-gradient descent on Σ_AML",              tag:"EMPIRICAL"},
+  { id:"A11", d:"AML",     txt:"Riemannian update rule consistent with IG",      tag:"PROVED"},
+  { id:"A12", d:"Swirl",   txt:"helical carrier preserves hyperbolic norm",       tag:"PROVED"},
+  { id:"A13", d:"Spectral",txt:"Laplacian eigenmode decomposition on quotient",  tag:"PROVED"},
+  { id:"A14", d:"Substrate",txt:"per-token local curvature c(x)",                tag:"EMPIRICAL"},
+  { id:"A26", d:"Meta",    txt:"exact terminal recovery · Π_expand ∘ inj_D ∘ Π_expire_D ≈ id", tag:"PROVED"},
+  { id:"A28", d:"Tower",   txt:"E_N → E_{N-1} → ... → E_0 iterated bundle",     tag:"PROVED"},
+  { id:"A29", d:"Tower",   txt:"vertical channels are SU(1,1) isometries",       tag:"PROVED"},
+  { id:"A30", d:"Tower",   txt:"mixed curvature c_k = c_0 · λ^k, λ∈(0,1)",       tag:"HYPOTHESIS"},
+  { id:"A31", d:"Tower",   txt:"F_mix compatibility law · dA + A∧A = 0",         tag:"PROVED"},
+  { id:"A40", d:"Tessellation", txt:"hyperbolicity gate · 1/p + 1/q < 1/2",      tag:"PROVED"},
+  { id:"A41", d:"Tessellation", txt:"Γ ⊂ Isom(ℍⁿ) acts freely and properly",     tag:"PROVED"},
+  { id:"A46", d:"Lorentz", txt:"ds² = -c²dt² + dx² signature (-,+,...,+)",       tag:"PROVED"},
+  { id:"A47", d:"Lorentz", txt:"CTCs on quotient ≠ CTCs in covering",            tag:"PROVED"},
+  { id:"A54", d:"Loeb",    txt:"Löb · PA ⊢ □(□P → P) → □P",                      tag:"PROVED"},
+  { id:"A55", d:"Loeb",    txt:"diagonal lemma · ∃ψ. ψ ↔ φ(⌜ψ⌝)",                tag:"PROVED"},
+  { id:"A56", d:"Loeb",    txt:"Gödel-1 · consistency implies incompleteness",   tag:"PROVED"},
+  { id:"A57", d:"Loeb",    txt:"closed orbit ≡ discharged Löb sentence",         tag:"HYPOTHESIS"},
+  { id:"A58", d:"Loeb",    txt:"agent quanta of □-field",                        tag:"HYPOTHESIS"},
+  { id:"A59", d:"Loeb",    txt:"ring 0 = Fix(Φ) = Self = Löbian fixed point",    tag:"HYPOTHESIS"},
+  { id:"A61", d:"Physics", txt:"Bianchi · DA ∧ F = 0 · couples A and F fields", tag:"PROVED"},
+  { id:"A62", d:"InfoOpt", txt:"D_eff = log(p(q-2))/log(ρ)",                    tag:"PROVED"},
+  { id:"A63", d:"InfoOpt", txt:"I(d) = O(d log d) · Kolmogorov-minimal",         tag:"HYPOTHESIS"},
+  { id:"A64", d:"QHOLO",   txt:"q-schedule · q→1 recovers Tower v2.5 exactly",   tag:"PROVED"},
+  { id:"A65", d:"Physics", txt:"MOBIUS_SOLITON preserves sech² under PSL(2,ℝ)",  tag:"HYPOTHESIS"},
+];
+
+const SIGMA = [
+  {id:"σ1",  domain:"Proof",    name:"ball norm",           thr:"ε_ball", realises:"A1"},
+  {id:"σ2",  domain:"Compile",  name:"kernel hit-rate",     thr:"≥0.95",  realises:"A4"},
+  {id:"σ5",  domain:"Topo",     name:"gluing soundness",    thr:"Čech=0", realises:"A5"},
+  {id:"σ6",  domain:"Topo",     name:"cover refinability",  thr:"A6",     realises:"A6"},
+  {id:"σ7",  domain:"IG",       name:"Fisher positivity",   thr:"det g>0",realises:"A7"},
+  {id:"σ8",  domain:"CY",       name:"Kuramoto R",          thr:"R≥0.7",  realises:"A9"},
+  {id:"σ10", domain:"AML",      name:"natgrad norm",        thr:"‖∇‖<∞",  realises:"A10"},
+  {id:"σ11", domain:"AML",      name:"adiabatic dI/dt",     thr:"≈0",     realises:"A11"},
+  {id:"σ12", domain:"Swirl",    name:"helical norm",        thr:"|z|<1",  realises:"A12"},
+  {id:"σ13", domain:"Spectral", name:"gap positivity",      thr:"λ₁>0",   realises:"A13"},
+  {id:"σ14", domain:"Substrate",name:"token curvature",     thr:"c>0",    realises:"A14"},
+  {id:"σ21", domain:"Meta",     name:"ablation survival",   thr:"Sharpe>1",realises:"A26"},
+  {id:"σ22", domain:"Tower",    name:"F_mix compatibility", thr:"|F|<ε",  realises:"A31"},
+  {id:"σ23", domain:"Tower",    name:"vertical closure",    thr:"A28",    realises:"A28"},
+  {id:"σ32", domain:"Tessellation",name:"info per ring",    thr:"D_eff",  realises:"A40"},
+  {id:"σ33", domain:"Lorentz",  name:"F_mix invariance",    thr:"boost-ok",realises:"A46"},
+  {id:"σ34", domain:"Lorentz",  name:"causal closure",      thr:"J⁻ ⊂ Σ", realises:"A47"},
+  {id:"σ38", domain:"Loeb",     name:"Γ-stabiliser fix",    thr:"Fix≠∅",  realises:"A59"},
+  {id:"σ39", domain:"InfoOpt",  name:"sub-exponential",     thr:"O(d log d)",realises:"A63"},
+  {id:"σ40", domain:"Physics",  name:"Bianchi closure",     thr:"DA∧F=0", realises:"A61"},
+  {id:"σ55", domain:"QHOLO",    name:"classical limit",     thr:"q→1 ≡ T_v25",realises:"A64"},
+  {id:"σ73", domain:"Loeb",     name:"derivation check",    thr:"tree-valid",realises:"A54"},
+  {id:"σ74", domain:"Loeb",     name:"theorem novelty",     thr:"¬∈ atoms",realises:"A55"},
+  {id:"σ75", domain:"Loeb",     name:"consistency guard",   thr:"¬□⊥",    realises:"A56"},
+];
+
+// ============================================================================
+// state
+// ============================================================================
+const state = {
+  view:"family",
+  tierFilter:"all",
+  time:0,
+  paused:false,
+  flow:0.45,
+  depth:3,
+  q:1.00,
+  hover:null,
+  selected:null,
+  nodes:{},     // dialect layout positions
+  width:0, height:0,
+  lobDepth:0,
+  fmix:0.002,
+};
+
+const cv = document.getElementById("canvas");
+const ctx = cv.getContext("2d");
+const tt = document.getElementById("tt");
+
+function resize(){
+  const r = cv.getBoundingClientRect();
+  state.width = r.width; state.height = r.height;
+  cv.width = r.width * devicePixelRatio;
+  cv.height = r.height * devicePixelRatio;
+  ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+  layoutFamily();
+}
+window.addEventListener("resize", resize);
+
+function layoutFamily(){
+  // tier-stratified layout
+  const W = state.width, H = state.height;
+  const byTier = {};
+  TIER_ORDER.forEach(t => byTier[t]=[]);
+  DIALECTS.forEach(d => byTier[d.tier].push(d));
+  const rowH = (H-80) / TIER_ORDER.length;
+  TIER_ORDER.forEach((tier, ti) => {
+    const row = byTier[tier];
+    const y = 50 + ti*rowH + rowH/2;
+    row.forEach((d,i) => {
+      const x = (W/(row.length+1)) * (i+1);
+      state.nodes[d.id] = { x, y, tier, dialect:d };
+    });
+  });
+}
+
+// ============================================================================
+// render
+// ============================================================================
+
+function drawFamily(){
+  const W = state.width, H = state.height;
+  ctx.clearRect(0,0,W,H);
+  // Tier band labels
+  const rowH = (H-80) / TIER_ORDER.length;
+  TIER_ORDER.forEach((tier, ti) => {
+    const y = 50 + ti*rowH + rowH/2;
+    ctx.fillStyle = "#1a1d2a";
+    ctx.fillRect(0, y-rowH/2+8, W, rowH-16);
+    ctx.fillStyle = TIER_COLOR[tier] + "55";
+    ctx.font = "10px 'SF Mono', monospace";
+    ctx.textAlign = "left";
+    ctx.fillText(tier.toUpperCase(), 12, y-rowH/2+22);
+  });
+
+  // Edges (inheritance)
+  ctx.lineWidth = 1;
+  DIALECTS.forEach(d => {
+    const n = state.nodes[d.id];
+    d.parents.forEach(p => {
+      const np = state.nodes[p];
+      if (!np) return;
+      const filteredOut = state.tierFilter!=="all" && d.tier!==state.tierFilter && p!==state.tierFilter;
+      ctx.strokeStyle = filteredOut ? "#1a1d2a" : "#2d3142";
+      // Highlight if selected
+      if (state.selected && (state.selected===d.id || state.selected===p)){
+        ctx.strokeStyle = TIER_COLOR[d.tier];
+        ctx.lineWidth = 1.6;
+      }
+      ctx.beginPath();
+      const cx = (np.x+n.x)/2;
+      const cy = (np.y+n.y)/2;
+      ctx.moveTo(np.x, np.y);
+      ctx.quadraticCurveTo(cx, (np.y+n.y)/2, n.x, n.y);
+      ctx.stroke();
+      ctx.lineWidth = 1;
+      // Arrow
+      if (!filteredOut){
+        const ang = Math.atan2(n.y-np.y, n.x-np.x);
+        const ax = n.x - Math.cos(ang)*14;
+        const ay = n.y - Math.sin(ang)*14;
+        ctx.fillStyle = state.selected && (state.selected===d.id || state.selected===p)
+          ? TIER_COLOR[d.tier] : "#3d4252";
+        ctx.beginPath();
+        ctx.moveTo(ax, ay);
+        ctx.lineTo(ax - Math.cos(ang-0.4)*6, ay - Math.sin(ang-0.4)*6);
+        ctx.lineTo(ax - Math.cos(ang+0.4)*6, ay - Math.sin(ang+0.4)*6);
+        ctx.closePath();
+        ctx.fill();
+      }
+    });
+  });
+
+  // Animated pulses along inheritance edges (the live flow of geometric morphisms)
+  const pulseT = (state.time * state.flow) % 1;
+  DIALECTS.forEach(d => {
+    const n = state.nodes[d.id];
+    d.parents.forEach(p => {
+      const np = state.nodes[p];
+      if (!np) return;
+      if (state.tierFilter!=="all" && d.tier!==state.tierFilter) return;
+      const t = pulseT;
+      const px = np.x + (n.x-np.x)*t;
+      const py = np.y + (n.y-np.y)*t - Math.sin(t*Math.PI)*18;
+      ctx.fillStyle = TIER_COLOR[d.tier] + "aa";
+      ctx.beginPath();
+      ctx.arc(px,py,2.4,0,Math.PI*2);
+      ctx.fill();
+    });
+  });
+
+  // Nodes
+  DIALECTS.forEach(d => {
+    const n = state.nodes[d.id];
+    if (!n) return;
+    const dim = state.tierFilter!=="all" && d.tier!==state.tierFilter;
+    const sel = state.selected===d.id || state.hover===d.id;
+    const tierCol = TIER_COLOR[d.tier];
+    const size = d.id==="Meta" ? 28 : (d.ver==="v2.5" ? 22 : 20);
+    // halo
+    if (sel){
+      ctx.fillStyle = tierCol+"22";
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, size+10, 0, Math.PI*2);
+      ctx.fill();
+    }
+    // body
+    ctx.fillStyle = dim ? "#1a1d2a" : "#12141f";
+    ctx.strokeStyle = dim ? "#2a2d3a" : tierCol;
+    ctx.lineWidth = sel ? 2.4 : 1.4;
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, size, 0, Math.PI*2);
+    ctx.fill(); ctx.stroke();
+    // v2.5 marker: double ring
+    if (d.ver==="v2.5" && !dim){
+      ctx.strokeStyle = tierCol + "55";
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, size+4, 0, Math.PI*2);
+      ctx.stroke();
+    }
+    // name
+    ctx.fillStyle = dim ? "#3a3d4a" : (sel ? tierCol : "#e8e8f2");
+    ctx.font = (d.id==="Meta"?"bold 12px":(sel?"bold 11px":"11px")) + " 'SF Mono', monospace";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(d.id, n.x, n.y);
+    // ratio badge
+    ctx.fillStyle = dim ? "#2a2d3a" : "#8a8ea0";
+    ctx.font = "9px 'SF Mono', monospace";
+    ctx.fillText("r=" + d.ratio.toFixed(2), n.x, n.y + size + 10);
+  });
+
+  // View label
+  setOverlay("tl", `<span class="k">view</span> <span class="v">Family DAG</span><br>
+    <span class="k">nodes</span> <span class="v">${DIALECTS.length} dialects</span><br>
+    <span class="k">edges</span> <span class="v">${DIALECTS.reduce((a,d)=>a+d.parents.length,0)} geometric morphisms</span>`);
+  setOverlay("tr", `<span class="k">filter</span> <span class="v">${state.tierFilter}</span><br>
+    <span class="k">flow</span> <span class="v">${state.flow.toFixed(2)}</span>`);
+  setOverlay("bl", `<span class="k">OUTPUT</span> <span class="v">CANON(§EMIT(fix(λself.§ω|TICK(§.(§.(self))))))</span>`);
+}
+
+// ============================================================================
+// Grammar view — unfold the canonical OUTPUT expression as an AST
+// ============================================================================
+
+const AST = {
+  op:"CANON", type:"sigma", desc:"σ-invariant gate · COMMIT/ROLLBACK/BLOCK",
+  children:[{
+    op:"§EMIT", type:"holo", desc:"emit to holographic boundary screen",
+    children:[{
+      op:"fix", type:"loeb", desc:"Löb/Knaster-Tarski fixpoint (A59, Fix(Φ))",
+      children:[{
+        op:"λself", type:"lambda", desc:"β-as-transport abstraction (A7)",
+        children:[{
+          op:"|>", type:"pipe", desc:"holo-pipe · bulk → boundary",
+          children:[
+            { op:"§ω", type:"prime", desc:"prime ω · reservoir seed" },
+            { op:"§TICK", type:"prime", desc:"clock tick · elliptic Möbius rotation",
+              children:[{
+                op:"§'", type:"rho", desc:"ρ-involution · Möbius orientation flip",
+                children:[{
+                  op:"§'", type:"rho", desc:"ρ² = id · returning to origin (A5)",
+                  children:[{
+                    op:"self", type:"var", desc:"the fixpoint variable · Self" }]
+                }]
+              }]
+            }
+          ]
+        }]
+      }]
+    }]
+  }]
+};
+
+const AST_COLOR = {
+  sigma:"#f6e05e", holo:"#4fd1c5", loeb:"#fc8181",
+  lambda:"#b794f4", pipe:"#f6ad55", prime:"#4fd1c5",
+  rho:"#fc8181", var:"#e8e8f2"
+};
+
+function drawGrammar(){
+  const W = state.width, H = state.height;
+  ctx.clearRect(0,0,W,H);
+  // Title
+  ctx.fillStyle = "#8a8ea0";
+  ctx.font = "10px 'SF Mono', monospace";
+  ctx.textAlign = "left";
+  ctx.fillText("CANONICAL OUTPUT · parsed as abstract syntax tree", 20, 28);
+
+  // Layout tree
+  const layout = [];
+  function walk(node, depth, x0, x1){
+    const x = (x0+x1)/2;
+    const y = 80 + depth*72;
+    node._x = x; node._y = y;
+    layout.push({node, depth});
+    if (node.children){
+      const n = node.children.length;
+      const w = (x1-x0)/n;
+      node.children.forEach((c,i) => walk(c, depth+1, x0+i*w, x0+(i+1)*w));
+    }
+  }
+  walk(AST, 0, 20, W-20);
+
+  // Edges first
+  layout.forEach(item => {
+    const n = item.node;
+    if (n.children) n.children.forEach(c => {
+      ctx.strokeStyle = AST_COLOR[n.type]+"66";
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(n._x, n._y+14);
+      ctx.bezierCurveTo(n._x, (n._y+c._y)/2, c._x, (n._y+c._y)/2, c._x, c._y-14);
+      ctx.stroke();
+      // traveling pulse (information flow)
+      const t = ((state.time*state.flow*2 + n._x*0.001) % 1);
+      const pt = t;
+      const px = cubicX([n._x, n._x, c._x, c._x], pt);
+      const py = cubicY([n._y+14, (n._y+c._y)/2, (n._y+c._y)/2, c._y-14], pt);
+      ctx.fillStyle = AST_COLOR[n.type];
+      ctx.beginPath(); ctx.arc(px,py,2,0,Math.PI*2); ctx.fill();
+    });
+  });
+
+  // Nodes
+  layout.forEach(item => {
+    const n = item.node;
+    const col = AST_COLOR[n.type];
+    const sel = state.hover===n.op || state.selected===n.op;
+    const wpx = 16 + n.op.length*7;
+    // body
+    ctx.fillStyle = sel ? col+"22" : "#12141f";
+    ctx.strokeStyle = col;
+    ctx.lineWidth = sel ? 2 : 1.2;
+    roundRect(n._x-wpx/2, n._y-14, wpx, 28, 6, true, true);
+    // text
+    ctx.fillStyle = col;
+    ctx.font = "bold 12px 'SF Mono', monospace";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(n.op, n._x, n._y);
+    // type badge
+    ctx.fillStyle = "#5c6070";
+    ctx.font = "9px 'SF Mono', monospace";
+    ctx.fillText(n.type, n._x, n._y+22);
+    // bounding box for hit-test
+    n._w = wpx; n._h = 28;
+  });
+  // expose for hover/click
+  state._astLayout = layout;
+
+  setOverlay("tl", `<span class="k">view</span> <span class="v">Grammar · AST</span><br>
+    <span class="k">nodes</span> <span class="v">${layout.length}</span><br>
+    <span class="k">depth</span> <span class="v">${Math.max(...layout.map(l=>l.depth))+1}</span>`);
+  setOverlay("tr", `<span class="k">σ-gate</span> <span class="v">CANON</span><br>
+    <span class="k">loop</span> <span class="v">fix · Löb closed</span>`);
+  setOverlay("bl", `<span class="k">legend</span>
+    <span class="v" style="color:#f6e05e">σ-gate</span>
+    <span class="v" style="color:#4fd1c5">holo/prime</span>
+    <span class="v" style="color:#fc8181">Löb/ρ</span>
+    <span class="v" style="color:#b794f4">λ</span>
+    <span class="v" style="color:#f6ad55">pipe</span>`);
+}
+
+function cubicX(p,t){const u=1-t;return u*u*u*p[0]+3*u*u*t*p[1]+3*u*t*t*p[2]+t*t*t*p[3];}
+function cubicY(p,t){return cubicX(p,t);}
+
+function roundRect(x,y,w,h,r,fill,stroke){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+  if (fill) ctx.fill();
+  if (stroke) ctx.stroke();
+}
+
+// ============================================================================
+// Codec view — Π_expire_D → inj_D → Π_expand roundtrip
+// ============================================================================
+
+function drawCodec(){
+  const W = state.width, H = state.height;
+  ctx.clearRect(0,0,W,H);
+  // Three stations left → middle → right
+  const xL = W*0.18, xM = W*0.5, xR = W*0.82;
+  // headings
+  ctx.fillStyle = "#8a8ea0"; ctx.font="10px 'SF Mono',monospace"; ctx.textAlign="center";
+  ctx.fillText("State_D (per-dialect)", xL, 36);
+  ctx.fillText("Residue_full (unified)", xM, 36);
+  ctx.fillText("State_full (recovered)", xR, 36);
+
+  // D-ring stations (dialects)
+  const dList = DIALECTS.filter(d => state.tierFilter==="all" || d.tier===state.tierFilter);
+  const n = dList.length;
+  dList.forEach((d,i) => {
+    const y = 80 + (H-150)*(i+0.5)/n;
+    const col = TIER_COLOR[d.tier];
+    // left station: compressed residue
+    ctx.fillStyle = "#12141f"; ctx.strokeStyle = col; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.arc(xL,y,8+d.ratio*10,0,Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = col; ctx.font="10px 'SF Mono',monospace"; ctx.textAlign="right";
+    ctx.fillText(d.id, xL-22, y+3);
+    // middle: unified bus
+    // right: recovered state
+    ctx.fillStyle="#12141f"; ctx.strokeStyle=col+"55"; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.arc(xR,y,10,0,Math.PI*2); ctx.fill(); ctx.stroke();
+
+    // edges: L → M (Π_expire + inj)
+    ctx.strokeStyle = col+"55"; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(xL+8+d.ratio*10, y);
+    ctx.bezierCurveTo(xL+80, y, xM-80, H/2, xM, H/2);
+    ctx.stroke();
+    // edges: M → R (Π_expand)
+    ctx.beginPath(); ctx.moveTo(xM, H/2);
+    ctx.bezierCurveTo(xM+80, H/2, xR-80, y, xR-10, y);
+    ctx.stroke();
+    // traveling packets
+    const phase = (state.time*state.flow + i*0.07) % 1;
+    let px, py;
+    if (phase < 0.5){
+      const t = phase*2;
+      px = xL+8+d.ratio*10 + t*(xM-xL-8-d.ratio*10);
+      py = y + (H/2-y)*t;
+    } else {
+      const t = (phase-0.5)*2;
+      px = xM + t*(xR-xM-10);
+      py = H/2 + (y-H/2)*t;
+    }
+    ctx.fillStyle = col;
+    ctx.beginPath(); ctx.arc(px, py, 2.6, 0, Math.PI*2); ctx.fill();
+
+    // compression ratio label
+    ctx.fillStyle=col+"aa"; ctx.font="9px 'SF Mono',monospace"; ctx.textAlign="center";
+    ctx.fillText((1-d.ratio).toFixed(2), (xL+xM)/2-40+i*1, y-8);
+  });
+
+  // Middle hub
+  ctx.strokeStyle = "#4fd1c5"; ctx.fillStyle = "#0a1a1e"; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.arc(xM, H/2, 42, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = "#4fd1c5"; ctx.font="bold 12px 'SF Mono',monospace"; ctx.textAlign="center";
+  ctx.fillText("Residue", xM, H/2-4);
+  ctx.fillText("_full", xM, H/2+10);
+
+  // labels
+  ctx.fillStyle = "#5c6070"; ctx.font="9px 'SF Mono',monospace"; ctx.textAlign="center";
+  ctx.fillText("Π_expire_D", (xL+xM)/2, 56);
+  ctx.fillText("inj_D", (xL+xM)/2, 68);
+  ctx.fillText("Π_expand (A26 exact)", (xM+xR)/2, 56);
+
+  setOverlay("tl", `<span class="k">view</span> <span class="v">Codec · Π roundtrip</span><br>
+    <span class="k">compress</span> <span class="v">State_D → Residue_D → Residue_full</span><br>
+    <span class="k">recover</span> <span class="v">Π_expand: Residue_full → State_full</span>`);
+  setOverlay("tr", `<span class="k">A26</span> <span class="v">terminal exact</span><br>
+    <span class="k">round-trip</span> <span class="v">≈ id on terminal</span>`);
+  setOverlay("bl", `<span class="k">info loss</span> <span class="v">1 − compress_ratio_D</span> · numeric column on mid-line`);
+}
+
+// ============================================================================
+// Axioms view — A1..A76 grid
+// ============================================================================
+
+function drawAxioms(){
+  const W = state.width, H = state.height;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle = "#8a8ea0"; ctx.font="10px 'SF Mono',monospace"; ctx.textAlign="left";
+  ctx.fillText("AXIOMS A1..A76 · load-bearing ones shown with full statement", 20, 28);
+
+  const cols = 8;
+  const all = [];
+  for (let i=1;i<=76;i++){
+    const found = AXIOMS.find(a => a.id==="A"+i);
+    all.push(found || { id:"A"+i, d:null, txt:null, tag:null });
+  }
+  const cellW = (W-80)/cols;
+  const cellH = 46;
+  all.forEach((a, i) => {
+    const r = Math.floor(i/cols), c = i%cols;
+    const x = 40 + c*cellW, y = 60 + r*cellH;
+    const inDialect = a.d ? DIALECTS.find(d=>d.id===a.d) : null;
+    const col = inDialect ? TIER_COLOR[inDialect.tier] : "#2a2d3a";
+    const hasData = !!a.txt;
+    const sel = state.hover===a.id || state.selected===a.id;
+    const tierMatch = state.tierFilter==="all" || (inDialect && inDialect.tier===state.tierFilter);
+    const dim = !hasData || !tierMatch;
+
+    ctx.fillStyle = dim ? "#12141f" : "#181b28";
+    ctx.strokeStyle = dim ? "#2a2d3a" : col;
+    ctx.lineWidth = sel ? 2 : (hasData?1.2:0.6);
+    roundRect(x+2, y+2, cellW-4, cellH-8, 4, true, true);
+
+    ctx.fillStyle = dim ? "#3a3d4a" : col;
+    ctx.font = "bold 11px 'SF Mono', monospace";
+    ctx.textAlign = "left"; ctx.textBaseline = "top";
+    ctx.fillText(a.id, x+8, y+8);
+    if (hasData){
+      ctx.fillStyle = "#8a8ea0"; ctx.font="9px 'SF Mono',monospace";
+      ctx.fillText(a.d, x+8, y+22);
+      // tag
+      const tagCol = a.tag==="PROVED"?"#68d391":(a.tag==="EMPIRICAL"?"#4fd1c5":"#f6ad55");
+      ctx.fillStyle = tagCol; ctx.font="8px 'SF Mono',monospace"; ctx.textAlign="right";
+      ctx.fillText(a.tag||"", x+cellW-10, y+8);
+    }
+    a._x = x; a._y = y; a._w = cellW-4; a._h = cellH-8;
+  });
+  state._axiomLayout = all;
+
+  const withTxt = AXIOMS.length;
+  setOverlay("tl", `<span class="k">view</span> <span class="v">Axioms · A1..A76</span><br>
+    <span class="k">annotated</span> <span class="v">${withTxt}/76 load-bearing</span>`);
+  setOverlay("tr", `<span class="k">legend</span><br>
+    <span class="v" style="color:#68d391">PROVED</span>
+    <span class="v" style="color:#4fd1c5">EMPIRICAL</span>
+    <span class="v" style="color:#f6ad55">HYPOTHESIS</span>`);
+  setOverlay("bl", `<span class="k">discipline</span> <span class="v">every axiom tagged · σ73 verifies derivation chains</span>`);
+}
+
+// ============================================================================
+// σ-invariants view — gate flags with live verdicts
+// ============================================================================
+
+function drawSigma(){
+  const W = state.width, H = state.height;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle = "#8a8ea0"; ctx.font="10px 'SF Mono',monospace"; ctx.textAlign="left";
+  ctx.fillText("σ-INVARIANTS · live verdicts · COMMIT / ROLLBACK / BLOCK", 20, 28);
+
+  const list = SIGMA.filter(s => {
+    if (state.tierFilter==="all") return true;
+    const dd = DIALECTS.find(d => d.id===s.domain);
+    return dd && dd.tier===state.tierFilter;
+  });
+  const cols = 4;
+  const cellW = (W-80)/cols;
+  const cellH = 78;
+  list.forEach((s, i) => {
+    const r = Math.floor(i/cols), c = i%cols;
+    const x = 40 + c*cellW, y = 60 + r*cellH;
+    const dd = DIALECTS.find(d => d.id===s.domain);
+    const col = dd ? TIER_COLOR[dd.tier] : "#4fd1c5";
+    // live verdict: oscillates; 90% COMMIT, 8% ROLLBACK, 2% BLOCK
+    const phase = (state.time*0.3 + i*0.17) % 1;
+    let verdict, vCol;
+    if (s.id==="σ22"){ // the load-bearing one — track state.fmix
+      if (state.fmix < 0.03){ verdict="COMMIT"; vCol="#68d391"; }
+      else if (state.fmix < 0.08){ verdict="ROLLBACK"; vCol="#f6ad55"; }
+      else { verdict="BLOCK"; vCol="#fc8181"; }
+    } else if (phase < 0.92){ verdict="COMMIT"; vCol="#68d391"; }
+    else if (phase < 0.99){ verdict="ROLLBACK"; vCol="#f6ad55"; }
+    else { verdict="BLOCK"; vCol="#fc8181"; }
+
+    const sel = state.hover===s.id || state.selected===s.id;
+    ctx.fillStyle = sel ? col+"22" : "#12141f";
+    ctx.strokeStyle = col;
+    ctx.lineWidth = sel ? 2 : 1.2;
+    roundRect(x+3, y+3, cellW-6, cellH-10, 5, true, true);
+
+    // id
+    ctx.fillStyle = col; ctx.font="bold 13px 'SF Mono',monospace";
+    ctx.textAlign="left"; ctx.textBaseline="top";
+    ctx.fillText(s.id, x+10, y+10);
+    // domain
+    ctx.fillStyle = "#8a8ea0"; ctx.font="9px 'SF Mono',monospace";
+    ctx.fillText(s.domain, x+10, y+28);
+    // name
+    ctx.fillStyle = "#e8e8f2"; ctx.font="10px 'SF Mono',monospace";
+    ctx.fillText(s.name, x+10, y+42);
+    // verdict (live)
+    ctx.fillStyle = vCol; ctx.font="bold 9px 'SF Mono',monospace";
+    ctx.fillText(verdict, x+10, y+58);
+    // threshold
+    ctx.fillStyle = "#5c6070"; ctx.font="9px 'SF Mono',monospace";
+    ctx.textAlign="right";
+    ctx.fillText(s.thr, x+cellW-10, y+10);
+    // realises
+    ctx.fillStyle = "#5c6070"; ctx.font="9px 'SF Mono',monospace";
+    ctx.fillText("↑ "+s.realises, x+cellW-10, y+58);
+
+    s._x=x; s._y=y; s._w=cellW-6; s._h=cellH-10; s._verdict=verdict;
+  });
+  state._sigmaLayout = list;
+
+  const okCount = list.filter(s => s._verdict==="COMMIT").length;
+  setOverlay("tl", `<span class="k">view</span> <span class="v">σ-invariants</span><br>
+    <span class="k">active</span> <span class="v">${list.length} of ${SIGMA.length}</span><br>
+    <span class="k">COMMIT</span> <span class="v">${okCount}/${list.length}</span>`);
+  setOverlay("tr", `<span class="k">σ22 F_mix</span> <span class="v">${state.fmix.toFixed(4)}</span>`);
+  setOverlay("bl", `<span class="k">gating</span> <span class="v">each σ realises an axiom · failure ⇒ ROLLBACK downstream</span>`);
+}
+
+// ============================================================================
+// Topos view — Lafforgue classifying topos tree
+// ============================================================================
+
+function drawTopos(){
+  const W = state.width, H = state.height;
+  ctx.clearRect(0,0,W,H);
+  const cx = W/2, cy = H/2;
+  // T_Proof at bottom, T_Meta at top
+  // Radial layout by inheritance depth
+  const depths = {};
+  function depthOf(d){
+    if (d in depths) return depths[d];
+    const dd = DIALECTS.find(x=>x.id===d);
+    if (!dd || dd.parents.length===0) return depths[d] = 0;
+    return depths[d] = 1 + Math.max(...dd.parents.map(depthOf));
+  }
+  DIALECTS.forEach(d => depthOf(d.id));
+  const maxDepth = Math.max(...Object.values(depths));
+
+  // Lay out as tree growing from T_Proof (bottom) to T_Meta (top)
+  const byDepth = {};
+  for (let i=0;i<=maxDepth;i++) byDepth[i]=[];
+  DIALECTS.forEach(d => byDepth[depths[d.id]].push(d));
+
+  // clear bg with gradient
+  const grad = ctx.createRadialGradient(cx, cy, 10, cx, cy, Math.max(W,H)/2);
+  grad.addColorStop(0, "#10131f"); grad.addColorStop(1, "#08080f");
+  ctx.fillStyle = grad; ctx.fillRect(0,0,W,H);
+
+  // Position: root at bottom
+  const nodes = {};
+  for (let d=0; d<=maxDepth; d++){
+    const row = byDepth[d];
+    const y = H - 60 - d*((H-120)/Math.max(1,maxDepth));
+    row.forEach((dd, i) => {
+      const x = (W/(row.length+1))*(i+1);
+      nodes[dd.id] = {x, y, dialect:dd, depth:d};
+    });
+  }
+
+  // Edges (geometric morphisms)
+  Object.values(nodes).forEach(n => {
+    n.dialect.parents.forEach(p => {
+      const np = nodes[p]; if (!np) return;
+      ctx.strokeStyle = "#2a2d3a";
+      if (state.selected===n.dialect.id || state.selected===p){
+        ctx.strokeStyle = TIER_COLOR[n.dialect.tier];
+      }
+      ctx.lineWidth = 1.1;
+      ctx.beginPath(); ctx.moveTo(np.x, np.y); ctx.lineTo(n.x, n.y); ctx.stroke();
+      // arrow midpoint label
+    });
+  });
+
+  // Special: CY fiber product marker
+  const cyN = nodes["CY"], topoN = nodes["Topo"], igN = nodes["IG"];
+  if (cyN && topoN && igN){
+    ctx.strokeStyle = "#b794f4"; ctx.lineWidth = 1; ctx.setLineDash([3,3]);
+    ctx.beginPath();
+    ctx.moveTo(topoN.x, topoN.y);
+    ctx.lineTo(cyN.x, cyN.y);
+    ctx.moveTo(igN.x, igN.y);
+    ctx.lineTo(cyN.x, cyN.y);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    // ×_T_Proof label
+    ctx.fillStyle = "#b794f4"; ctx.font = "10px 'SF Mono',monospace";
+    ctx.textAlign = "center";
+    ctx.fillText("×_T_Proof", cyN.x, cyN.y-32);
+  }
+
+  // Nodes
+  Object.values(nodes).forEach(n => {
+    const d = n.dialect;
+    const col = TIER_COLOR[d.tier];
+    const isTerm = d.id==="Meta";
+    const isRoot = d.parents.length===0;
+    const size = isTerm ? 28 : (isRoot ? 24 : 18);
+    const sel = state.hover===d.id || state.selected===d.id;
+    // special marker for terminal and root
+    if (isTerm){
+      ctx.strokeStyle = col+"aa"; ctx.lineWidth = 0.8; ctx.setLineDash([4,4]);
+      ctx.beginPath(); ctx.arc(n.x, n.y, size+14, 0, Math.PI*2); ctx.stroke();
+      ctx.setLineDash([]);
+    }
+    ctx.fillStyle = "#12141f"; ctx.strokeStyle = col; ctx.lineWidth = sel?2.4:1.6;
+    ctx.beginPath(); ctx.arc(n.x, n.y, size, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = col; ctx.font = "bold 11px 'SF Mono', monospace";
+    ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.fillText("T_"+d.id, n.x, n.y);
+    // depth
+    ctx.fillStyle = "#5c6070"; ctx.font="9px 'SF Mono',monospace";
+    ctx.fillText("d="+n.depth, n.x, n.y+size+10);
+  });
+  state._toposNodes = nodes;
+
+  // Labels for root/terminal
+  ctx.fillStyle = "#f6ad55"; ctx.font="10px 'SF Mono',monospace"; ctx.textAlign="left";
+  ctx.fillText("root T_Proof (initial object) · minimal geometric theory", 20, H-20);
+  ctx.fillStyle = "#f6e05e";
+  ctx.fillText("terminal T_Meta · lim_{D} T_D · absorbs all dialects", 20, 40);
+
+  setOverlay("tl", `<span class="k">view</span> <span class="v">Lafforgue Topos Tree</span><br>
+    <span class="k">T_D</span> <span class="v">geometric theory per dialect</span><br>
+    <span class="k">arrows</span> <span class="v">geometric morphisms</span>`);
+  setOverlay("tr", `<span class="k">terminal</span> <span class="v">T_Meta</span><br>
+    <span class="k">root</span> <span class="v">T_Proof</span>`);
+  setOverlay("bl", `<span class="k">fiber product</span> <span class="v">T_CY = T_Topo ×_T_Proof T_IG · violet dashed</span>`);
+}
+
+// ============================================================================
+// main loop
+// ============================================================================
+
+function setOverlay(pos, html){
+  document.getElementById("overlay-"+pos).innerHTML = html;
+}
+
+function frame(){
+  if (!state.paused) state.time += 0.015;
+  // Drift F_mix slightly — live σ22
+  state.fmix = 0.003 + 0.015*Math.abs(Math.sin(state.time*0.07)) + 0.008*Math.abs(Math.sin(state.time*0.23));
+  document.getElementById("fmixVal").textContent = state.fmix.toFixed(4);
+  // Löb depth ticks on occasion
+  if (!state.paused && Math.random() < 0.003*state.flow){
+    state.lobDepth++;
+    document.getElementById("lobVal").textContent = state.lobDepth;
+  }
+  // verdict chip
+  const vflag = document.getElementById("verdictFlag");
+  if (state.fmix < 0.03){ vflag.textContent="σ22 COMMIT"; vflag.className="ok"; }
+  else if (state.fmix < 0.08){ vflag.textContent="σ22 ROLLBACK"; vflag.className="warn"; }
+  else { vflag.textContent="σ22 BLOCK"; vflag.style.color="#fc8181"; }
+
+  switch(state.view){
+    case "family":  drawFamily();  break;
+    case "grammar": drawGrammar(); break;
+    case "codec":   drawCodec();   break;
+    case "axioms":  drawAxioms();  break;
+    case "sigma":   drawSigma();   break;
+    case "topos":   drawTopos();   break;
+  }
+  updateViewBlock();
+  requestAnimationFrame(frame);
+}
+
+// ============================================================================
+// interaction — hover, click, sidebar, controls
+// ============================================================================
+
+function hitFamily(x,y){
+  for (const d of DIALECTS){
+    const n = state.nodes[d.id]; if (!n) continue;
+    const r = d.id==="Meta"?28:(d.ver==="v2.5"?22:20);
+    const dx = x-n.x, dy = y-n.y;
+    if (dx*dx+dy*dy < r*r) return d.id;
+  }
+  return null;
+}
+function hitAst(x,y){
+  if (!state._astLayout) return null;
+  for (const item of state._astLayout){
+    const n = item.node;
+    if (Math.abs(x-n._x) < n._w/2 && Math.abs(y-n._y) < n._h/2) return n.op;
+  }
+  return null;
+}
+function hitAxiom(x,y){
+  if (!state._axiomLayout) return null;
+  for (const a of state._axiomLayout){
+    if (!a._x) continue;
+    if (x>=a._x && x<=a._x+a._w && y>=a._y && y<=a._y+a._h) return a.id;
+  }
+  return null;
+}
+function hitSigma(x,y){
+  if (!state._sigmaLayout) return null;
+  for (const s of state._sigmaLayout){
+    if (!s._x) continue;
+    if (x>=s._x && x<=s._x+s._w && y>=s._y && y<=s._y+s._h) return s.id;
+  }
+  return null;
+}
+function hitTopos(x,y){
+  if (!state._toposNodes) return null;
+  for (const id in state._toposNodes){
+    const n = state._toposNodes[id];
+    const r = id==="Meta"?28:(n.dialect.parents.length===0?24:18);
+    const dx=x-n.x, dy=y-n.y;
+    if (dx*dx+dy*dy < r*r) return id;
+  }
+  return null;
+}
+
+cv.addEventListener("mousemove", e => {
+  const r = cv.getBoundingClientRect();
+  const x = e.clientX-r.left, y = e.clientY-r.top;
+  let hit = null;
+  if (state.view==="family" || state.view==="topos")
+    hit = state.view==="family" ? hitFamily(x,y) : hitTopos(x,y);
+  else if (state.view==="grammar") hit = hitAst(x,y);
+  else if (state.view==="axioms") hit = hitAxiom(x,y);
+  else if (state.view==="sigma") hit = hitSigma(x,y);
+  state.hover = hit;
+
+  if (hit){
+    showTooltip(hit, e.clientX, e.clientY);
+  } else tt.style.display = "none";
+});
+
+cv.addEventListener("click", e => {
+  state.selected = state.hover;
+  updateSelectionBlock();
+});
+
+function showTooltip(id, mx, my){
+  let html = "";
+  if (state.view==="family" || state.view==="topos"){
+    const d = DIALECTS.find(x=>x.id===id);
+    if (d) html = `<div class="h">${d.id} · ${d.tier}</div>
+      <div>${d.blurb}</div>
+      <div class="m">parents: ${d.parents.length?d.parents.join(", "):"ROOT"}</div>`;
+  } else if (state.view==="grammar"){
+    const layout = state._astLayout;
+    const item = layout.find(l => l.node.op===id);
+    if (item) html = `<div class="h">${item.node.op} <span class="m">${item.node.type}</span></div>
+      <div>${item.node.desc}</div>`;
+  } else if (state.view==="axioms"){
+    const a = AXIOMS.find(x=>x.id===id);
+    if (a) html = `<div class="h">${a.id} · ${a.d} · ${a.tag}</div>
+      <div>${a.txt}</div>`;
+  } else if (state.view==="sigma"){
+    const s = SIGMA.find(x=>x.id===id);
+    if (s) html = `<div class="h">${s.id} · ${s.domain}</div>
+      <div>${s.name}</div>
+      <div class="m">threshold: ${s.thr} · realises: ${s.realises}</div>`;
+  }
+  if (html){
+    tt.innerHTML = html;
+    tt.style.display = "block";
+    tt.style.left = (mx+12)+"px";
+    tt.style.top = (my+12)+"px";
+  }
+}
+
+function updateSelectionBlock(){
+  const sb = document.getElementById("selBlock");
+  if (!state.selected){
+    sb.innerHTML = `<div class="k">hover · click</div><div class="v">a dialect, axiom, or σ-flag to inspect it here</div>`;
+    return;
+  }
+  let html = "";
+  if (state.view==="family" || state.view==="topos"){
+    const d = DIALECTS.find(x=>x.id===state.selected);
+    if (d){
+      html = `<div class="k">${d.id}</div>
+        <div>tier <b>${d.tier}</b> · ver <b>${d.ver}</b></div>
+        <div>ratio <b>${d.ratio.toFixed(2)}</b> · loss <b>${(1-d.ratio).toFixed(2)}</b></div>
+        <div>parents <b>${d.parents.join(", ")||"ROOT"}</b></div>
+        <div>domains <b>${d.domains.join(",")}</b></div>
+        <div style="margin-top:6px">${d.blurb}</div>
+        <div class="k" style="margin-top:8px">key axioms</div>
+        <div><code>${d.keyAx.join(", ")}</code></div>
+        <div class="k" style="margin-top:4px">σ-flags</div>
+        <div><code>${d.keySigma.join(", ")}</code></div>`;
+    }
+  } else if (state.view==="grammar"){
+    const layout = state._astLayout;
+    const item = layout.find(l => l.node.op===state.selected);
+    if (item){
+      const n = item.node;
+      html = `<div class="k">${n.op}</div>
+        <div>type <b>${n.type}</b> · depth <b>${item.depth}</b></div>
+        <div style="margin-top:6px">${n.desc}</div>
+        <div class="k" style="margin-top:8px">children</div>
+        <div>${n.children ? n.children.map(c=>c.op).join(" · ") : "(leaf)"}</div>`;
+    }
+  } else if (state.view==="axioms"){
+    const a = AXIOMS.find(x=>x.id===state.selected);
+    if (a){
+      html = `<div class="k">${a.id}</div>
+        <div>dialect <b>${a.d}</b></div>
+        <div>tag <b>${a.tag}</b></div>
+        <div style="margin-top:6px"><code>${a.txt}</code></div>`;
+    }
+  } else if (state.view==="sigma"){
+    const s = SIGMA.find(x=>x.id===state.selected);
+    if (s){
+      html = `<div class="k">${s.id}</div>
+        <div>domain <b>${s.domain}</b></div>
+        <div>name <b>${s.name}</b></div>
+        <div>threshold <b>${s.thr}</b></div>
+        <div>realises <b>${s.realises}</b></div>`;
+    }
+  }
+  sb.innerHTML = html || `<div class="v">(no info)</div>`;
+}
+
+function updateViewBlock(){
+  const vb = document.getElementById("viewBlock");
+  const msg = {
+    family:"Dialects as nodes · inheritance edges as geometric morphisms · tier-stratified. Live pulses show residue flow along T_D → T_D' arrows.",
+    grammar:"Canonical OUTPUT expression unfolded as AST. Each node is an operator in the §-LANG syntax. Pulses are the flow of fix → CANON.",
+    codec:"Per-dialect State → Residue_D compressed (left) · unified Residue_full (centre) · recovered State_full (right). A26 guarantees terminal exactness.",
+    axioms:"A1..A76 grid. Load-bearing axioms annotated with statement + tag (PROVED / EMPIRICAL / HYPOTHESIS). Dim cells are unallocated slots.",
+    sigma:"σ-flags as live gates. Each realises a specific axiom. Verdict oscillates COMMIT / ROLLBACK / BLOCK; σ22 is F_mix-driven and deterministic.",
+    topos:"Lafforgue classifying topos tree. T_Proof is initial, T_Meta is terminal, T_CY is the fiber product T_Topo ×_T_Proof T_IG (violet dashed).",
+  }[state.view];
+  vb.innerHTML = msg;
+}
+
+// Buttons
+document.querySelectorAll(".view-btn").forEach(b => {
+  b.addEventListener("click", () => {
+    document.querySelectorAll(".view-btn").forEach(x => x.classList.remove("active"));
+    b.classList.add("active");
+    state.view = b.dataset.view;
+    state.selected = null;
+    updateSelectionBlock();
+  });
+});
+document.querySelectorAll(".tier-filter").forEach(b => {
+  b.addEventListener("click", () => {
+    document.querySelectorAll(".tier-filter").forEach(x => x.classList.remove("active"));
+    b.classList.add("active");
+    state.tierFilter = b.dataset.tier;
+  });
+});
+document.getElementById("flowSlider").addEventListener("input", e => {
+  state.flow = parseFloat(e.target.value);
+  document.getElementById("flowVal").textContent = state.flow.toFixed(2);
+});
+document.getElementById("depthSlider").addEventListener("input", e => {
+  state.depth = parseInt(e.target.value);
+  document.getElementById("depthVal").textContent = state.depth;
+});
+document.getElementById("qSlider").addEventListener("input", e => {
+  state.q = parseFloat(e.target.value);
+  document.getElementById("qVal").textContent = state.q.toFixed(2);
+});
+document.getElementById("pauseBtn").addEventListener("click", () => {
+  state.paused = !state.paused;
+  document.getElementById("pauseBtn").textContent = state.paused ? "▶ play" : "⏸ pause";
+});
+document.getElementById("resetBtn").addEventListener("click", () => {
+  state.time = 0; state.lobDepth = 0;
+  document.getElementById("lobVal").textContent = "0";
+});
+
+resize();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

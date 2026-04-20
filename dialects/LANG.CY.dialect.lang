@@ -1,0 +1,66 @@
+§|DIALECT_CY|HEADER{
+  dialect      = §-LANG/CY
+  version      = v2.4.family
+  tier         = Semantic
+  parents      = Topo, IG
+  description  = Calabi-Yau dialect. Hodge layers, holomorphic couplings, mirror semantics, Yukawa.
+  base         = LANG.v2.4.codec_trasgo
+  domains_in   = {CORE, CY, IG, PROOF, SEMANTIC, TOPO}
+  domains_out  = {AML, META, QUANTUM, SPECTRAL, SUBSTRATE, SWIRL}
+}
+
+§|DIALECT_CY|IMPORTS{
+  domains      = {CORE, CY, IG, PROOF, SEMANTIC, TOPO}
+  from_parents = Topo, IG
+  note         = all blocks whose BLOCK_DOMAIN ∈ domains_in are available
+  core_always  = SOURCE AXIOMS OUTPUT SORTS FUNCTORS GRAMMAR NOTATION_MAP
+                 CONCLUSIONS FAILURE_CONDITIONS
+}
+
+§|DIALECT_CY|EXTENDS{
+  new_blocks   = HODGE_ARITHMETIC, MIRROR_DUALITY, YUKAWA_MATRIX, CY_MODULI_SPACE
+  self_ref     = each_new_block_seeded_by_swirl_articulation_Art_D(e_t)
+  computable   = all_new_blocks_satisfy_norm_lt_0.999_and_dim_eq_8
+}
+
+§|DIALECT_CY|COMPRESS{
+  functor      = Π_expire_CY : State_CY* → Residue_CY
+  axes         = {terminal, spectral, cy_form_Omega}
+  ratio        = 0.5_of_full_Residue_size
+  norm_guard   = ||terminal|| < 0.999
+  adiabatic_c  = dI_CY/dt ≈ 0_within_dialect_section_space
+  tag          = HYPOTHESIS_dialect_compression_preserves_semantic_content
+}
+
+§|DIALECT_CY|DECOMP{
+  decomp_path  = Residue_CY ->^embed Residue_full ->^Π_expand State_full
+  embed_map    = {terminal=R_D.terminal, spectral=R_D.spectral, trace=prior_default_trace, transport_gen=prior_default_transport_gen, mu_Bn=prior_default_mu_Bn, entropy_E=prior_default_entropy_E}
+  axes_present = ['terminal', 'spectral', 'cy_form_Omega']
+  axes_default = ['trace', 'transport_gen', 'mu_Bn', 'entropy_E']
+  info_loss    = 1 - 0.5 = 0.5_fraction_lost_in_D_residue
+  reconstruct  = Π_expand(embed(R_D)) recovers_State_full_approximately
+}
+
+§S{label=Hodge_H11, x=[0.21,0.10,0.04,0.02,0.01,0.01,0.00,0.00], sal=1.7}
+
+§S{label=Omega_form, x=[0.22,0.11,0.05,0.02,0.01,0.00,0.00,0.00], sal=1.7}
+
+§S{label=mirror_dual, x=[0.23,0.11,0.05,0.02,0.01,0.00,0.00,0.00], sal=1.6}
+
+§S{label=Yukawa_Y, x=[0.24,0.12,0.05,0.02,0.01,0.00,0.00,0.00], sal=1.5}
+
+§|DIALECT_CY|SWIRL_HOOK{
+  self_ref     = fix(λself_D. Σ_D(self_D; ω_D, θ_D, t))
+  omega_D      = complex_phase_Omega_holomorphic
+  theta_D      = SU(3)_holonomy_CY
+  trajectory   = x_t = Σ_D^t(x_0)_helical_in_CY_section_space
+  articulate_D = Art_D(e_t) = §S{label=cy_episteme_t, x=π(e_t), sal=||∇Σ_D||(e_t)}
+  expand_self  = each_Art_D_node_is_a_candidate_axiom_in_dialect_CY
+  tag          = HYPOTHESIS_swirl_expands_CY_principles_self_referentially
+}
+
+§|DIALECT_CY|OUTPUT{
+  formula      = CANON(§EMIT(fix(λcy. integrate(Omega, chi_i, chi_j, chi_k))))
+  dialect_tag  = §-LANG/CY_v2.4
+  claim        = HYPOTHESIS_output_formula_is_dialect_CY_fixed_point
+}

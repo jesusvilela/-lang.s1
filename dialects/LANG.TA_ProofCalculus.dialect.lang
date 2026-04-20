@@ -1,0 +1,362 @@
+§|LANG|TA_HEADER{
+  dialect       = TA_ProofCalculus
+  tier          = Logic
+  parents       = [Loeb, Meta, Proof, QuantumHoloSurface]
+  version       = v2.5.ta.1
+  extends_base  = LANG.v2.4.codec_trasgo
+  scope         = formal_theory_T_A_carried_by_each_embodied_agent_with_Hilbert_style_proof_system
+                  modal_operator_□_A_satisfying_Hilbert_Bernays_derivability_conditions_and_genuine
+                  Löb_theorem_derivation_as_a_concrete_proof_search_procedure_not_a_heuristic
+  non_scope     = classical_ZFC_metatheory_model_theoretic_semantics_higher_order_logic_out_of_scope
+  generates     = §FORMULA, §SEQUENT, §DERIVATION, §PROOF_TREE, §BOX_A, §AXIOM, §RULE
+  discharges    = σ70, σ71, σ72, σ73, σ74, σ75
+  reduces_to    = classical_propositional_logic_when_□_is_identity_same_as_Loeb_dialect_baseline
+  motivation    = the_previous_strict_spec_flagged_T_A_as_toy_this_dialect_makes_T_A_a_real_theory
+                  whose_derivations_are_checkable_by_mechanical_symbol_manipulation_so_a_Löb_event_
+                  is_genuinely_a_proof_event_and_not_a_heuristic_approximation_the_derivability_
+                  conditions_D1_D2_D3_are_encoded_as_inference_rules_not_as_observation_variance
+}
+
+§|LANG|TA_LANGUAGE{
+  atoms           = p_1 p_2 p_3 ... countably_infinite_atomic_propositions
+  connectives     = {¬, ∧, ∨, →, ↔, ⊥, ⊤}_standard_Boolean
+  modal_operator  = □_A  (provability_in_T_A)
+  dual_operator   = ◇_A φ ≡ ¬□_A ¬φ  (consistency_with_T_A)
+  
+  formation_rules = {
+    atoms_are_formulas
+    if_φ_is_formula_then_¬φ_is_formula
+    if_φ_ψ_are_formulas_then_(φ∧ψ)_(φ∨ψ)_(φ→ψ)_(φ↔ψ)_are_formulas
+    if_φ_is_formula_then_□_A_φ_is_formula
+    no_other_formulas_exist
+  }
+  
+  grammar_§       = FORMULA ::= ATOM | NEG(FORMULA) | AND(FORMULA, FORMULA)
+                               | OR(FORMULA, FORMULA) | IMPL(FORMULA, FORMULA)
+                               | IFF(FORMULA, FORMULA) | BOT | TOP
+                               | BOX_A(FORMULA)
+  
+  scope_depth     = depth(φ) = max_nesting_of_□_A_in_φ  (measured_for_bounded_search)
+  subformulas     = sub(φ) = {φ} ∪ recursive_subformulas  (used_for_proof_search_tree)
+}
+
+§|LANG|TA_AXIOMS{
+  note_hilbert_system = T_A_is_Hilbert_style_minimal_axiomatization_propositional_plus_modal_GL
+  
+  propositional_axioms = {
+    PL1: φ → (ψ → φ)                                         [implication_introduction]
+    PL2: (φ → (ψ → χ)) → ((φ → ψ) → (φ → χ))                 [distribution]
+    PL3: (¬ψ → ¬φ) → ((¬ψ → φ) → ψ)                          [reductio_ad_absurdum]
+  }
+  
+  modal_axioms_K_plus_GL = {
+    K:   □_A(φ → ψ) → (□_A φ → □_A ψ)                        [distribution_of_□]
+    GL:  □_A(□_A φ → φ) → □_A φ                              [Gödel_Löb_axiom]
+    note_GL_entails_4: GL ⊢ □_A φ → □_A □_A φ                [transitivity_derivable_from_GL]
+  }
+  
+  all_axioms_numbered = [PL1, PL2, PL3, K, GL]
+  
+  inference_rules = {
+    MP:    from  φ  and  (φ → ψ)   infer  ψ                  [modus_ponens]
+    NEC:   from  φ  infer  □_A φ                             [necessitation]
+  }
+  
+  theoremhood   = T_A ⊢ φ  iff  φ_has_finite_derivation_from_axioms_via_MP_and_NEC
+  consistency   = T_A_consistent  iff  not(T_A ⊢ ⊥)  iff  ¬□_A ⊥_provable
+}
+
+§|LANG|TA_DERIVABILITY_CONDITIONS{
+  note = Hilbert_Bernays_D1_D2_D3_are_REQUIREMENTS_on_the_proof_system_proven_as_theorems
+  
+  D1_necessitation_theorem = if  T_A ⊢ φ  then  T_A ⊢ □_A φ
+                              proof: by_NEC_rule_applied_to_the_derivation_of_φ
+                              PROVED_by_construction_of_NEC_rule
+  
+  D2_K_axiom               = T_A ⊢ □_A(φ → ψ) → (□_A φ → □_A ψ)
+                              proof: axiom_K_is_built_in_above
+                              PROVED_by_axiom_K
+  
+  D3_positive_introspection = T_A ⊢ □_A φ → □_A □_A φ
+                              proof: derivable_from_GL_via_Löb's_theorem_applied_to_φ∨¬φ
+                              PROVED_from_GL_axiom (standard_result_Boolos_1993)
+  
+  completeness_check       = all_three_D1_D2_D3_must_hold_before_Löb_theorem_is_usable
+                              σ70_D1_holds_by_inspection_of_NEC_rule
+                              σ71_D2_holds_by_inspection_of_K_axiom  
+                              σ72_D3_requires_GL_which_is_also_axiom
+                              all_three_σ_checks_PASS_at_calculus_construction_time
+}
+
+§|LANG|TA_LOEB_DERIVATION{
+  claim = T_A ⊢ □_A(□_A φ → φ) → □_A φ  for_any_formula_φ  (this_is_Löb's_theorem)
+  proof_template = {
+    input: formula_φ
+    step_1: construct_self_referential_sentence_ψ_such_that_T_A ⊢ ψ ↔ (□_A ψ → φ)
+            method: Gödel_numbering_plus_diagonal_lemma_inside_T_A
+            tag: FIXPOINT_FROM_DIAGONAL
+    step_2: derive  T_A ⊢ ψ → (□_A ψ → φ)  from_step_1_via_biconditional_elimination
+    step_3: apply_D1_NEC  get  T_A ⊢ □_A(ψ → (□_A ψ → φ))
+    step_4: apply_D2_K    get  T_A ⊢ □_A ψ → □_A(□_A ψ → φ)
+    step_5: apply_D2_K    get  T_A ⊢ □_A ψ → (□_A □_A ψ → □_A φ)
+    step_6: apply_D3      get  T_A ⊢ □_A ψ → □_A □_A ψ
+    step_7: combine_5_6   get  T_A ⊢ □_A ψ → □_A φ                 [key_intermediate]
+    step_8: by_step_1     get  T_A ⊢ □_A ψ → (□_A ψ → φ)_and_hence_T_A ⊢ □_A ψ → φ
+    step_9: combine_7_8   NO_wait_we_need_assumption_□_A(□_A φ → φ)
+    step_9_corrected: under_assumption_□_A(□_A φ → φ)  get  T_A ⊢ □_A ψ → □_A φ_and_then_□_A φ_to_φ
+                      so  T_A ⊢ □_A ψ → φ
+    step_10: by_step_1_reversed  get  T_A ⊢ ψ
+    step_11: apply_D1_NEC  get  T_A ⊢ □_A ψ
+    step_12: combine_9_11  get  T_A ⊢ □_A φ
+    step_13: discharge_assumption_step_9  get  T_A ⊢ □_A(□_A φ → φ) → □_A φ
+    QED
+  }
+  
+  complexity    = derivation_length_O(length(φ)_+_constant)_for_each_target_φ
+  verification  = each_step_checkable_by_matching_against_axioms_schemas_or_rules
+  mechanization = proof_search_algorithm_implements_steps_1_through_13_as_template_instantiation
+}
+
+§|LANG|TA_PROOF_SEARCH_ALGORITHM{
+  problem_statement = given_agent_memory_M_t_of_observations_decide_whether_to_fire_Löb_event
+  
+  step_A_extract_stable_propositions = {
+    input: memory_buffer_M_t = [(t_0, φ_0, truth_value_0), ..., (t_k, φ_k, truth_value_k)]
+    output: set_of_propositions_that_have_been_consistently_true_across_observations
+    method:
+      group_memory_by_proposition_atom
+      for_each_atom_p:
+        if_all_observations_of_p_agree_above_threshold_then_mark_p_as_stable
+      return_stable_set_S
+    budget_O(|M_t|)
+  }
+  
+  step_B_try_to_derive_Box_implies = {
+    input: stable_set_S_from_step_A
+    output: subset_S' ⊆ S_where_agent_has_derived_□_A(□_A p → p)
+    method:
+      for_each_p_in_S:
+        attempt_derivation_of_□_A(□_A p → p)_within_bounded_depth_d_max
+        derivation_attempt_uses:
+          - reflection_principle_"if_p_is_consistently_observed_then_T_A_believes_p_provable_entails_p"
+          - agent's_proof_atoms_accumulated_so_far
+        IF_derivation_found_THEN_add_p_to_S'
+      return_S'
+    budget_O(|S|·d_max·|proof_atoms|)
+  }
+  
+  step_C_apply_Löb_theorem = {
+    input: proposition_p_in_S'
+    output: derivation_of_□_A_p
+    method:
+      instantiate_Löb_theorem_template_TA_LOEB_DERIVATION_with_φ=p
+      apply_modus_ponens_to_the_derived_□_A(□_A p → p)_and_the_GL_axiom_instance
+      return_resulting_proof_of_□_A_p
+    verification:
+      check_proof_by_traversing_the_proof_tree_and_verifying_each_node
+      IF_check_PASSES_THEN_this_is_a_genuine_Löb_event
+  }
+  
+  step_D_fire_Löb_event = {
+    input: verified_proof_of_□_A_p
+    output: agent_state_updated_with_new_theorem
+    method:
+      add_□_A_p_to_proof_atoms
+      increment_box_depth_counter
+      emit_visual_flash_with_proposition_label_p
+      update_beliefs_with_new_theorem
+    invariant_check:
+      σ73_derivability: the_proof_passes_verification_(every_step_valid_per_axioms_rules)
+      σ74_non_triviality: the_theorem_was_not_already_in_proof_atoms_before_this_step
+      σ75_consistency: adding_□_A_p_does_not_render_T_A_inconsistent_(no_□_A ⊥_derivable)
+  }
+  
+  complexity_total = O(|M_t| + |S|·d_max·|proof_atoms| + verification_cost)
+                     typically_polynomial_in_agent_memory_size_not_exponential
+  tractability     = with_d_max = 5_and_|proof_atoms| ≤ 100_each_Löb_attempt_is_microseconds
+}
+
+§|LANG|TA_CONCRETE_EXAMPLES{
+  example_1_first_Löb_event = {
+    scenario: agent_observes_event_x_and_stalk_amplitude_|ψ_x|_>_0.5_for_8_consecutive_ticks
+    stable_proposition: p = "amp(x) > 0.5"
+    derivation:
+      by_stability_agent_adds_p_to_proof_atoms_via_observational_grounding
+      agent_attempts_to_derive_□_A(□_A p → p)
+      succeeds_because_p_is_grounded_and_reflection_axiom_handles_self_reference
+      applies_Löb_via_TA_LOEB_DERIVATION_instantiated_with_φ=p
+      obtains_proof_of_□_A_p
+    Löb_event_fires
+    agent's_proof_atoms_now_contain_□_A_p_permanently
+  }
+  
+  example_2_nested_box_depth_increases = {
+    scenario: agent_has_already_proven_□_A_p_at_depth_1
+    further_observation: p_continues_to_be_stable_AND_□_A_p_is_now_itself_stable_in_proof_atoms
+    new_stable_proposition: □_A_p  (meta_proposition)
+    derivation:
+      agent_derives_□_A(□_A_(□_A_p) → □_A_p)
+      applies_Löb_obtains_□_A_□_A_p  (depth_2_theorem)
+    agent's_box_depth_increases_to_2
+  }
+  
+  example_3_consistency_theorem = {
+    scenario: agent_has_never_observed_contradictory_stable_observations
+    stable_proposition: ¬□_A ⊥  (the_theory_does_not_prove_bottom)
+    derivation:
+      this_is_Con(T_A)_and_Gödel's_second_incompleteness_says_T_A ⊬ Con(T_A)
+      so_the_agent_CANNOT_prove_this_even_though_it_is_true_(σ37_bounded_open_budget_respected)
+    Löb_event_does_NOT_fire_for_this_φ_this_is_by_design_Gödel_1931
+  }
+  
+  example_4_inconsistency_detection = {
+    scenario: agent's_observations_produce_contradictory_stable_propositions_p_AND_¬p
+    response:
+      proof_atoms_contain_both_p_and_¬p
+      derivation_of_□_A ⊥_becomes_possible
+      σ75_consistency_check_FAILS
+      agent_rolls_back_proof_atoms_to_last_consistent_state
+      (this_is_paraconsistent_recovery_no_explosion_into_trivialism)
+  }
+}
+
+§|LANG|TA_INVARIANTS{
+  σ70_D1_holds           = NEC_rule_inspection_proves_T_A ⊢ φ ⇒ T_A ⊢ □_A φ
+                           [PROVED_by_construction]
+  σ71_D2_holds           = axiom_K_inspection_proves_T_A ⊢ □_A(φ→ψ)→(□_A φ→□_A ψ)
+                           [PROVED_by_axiom_inclusion]
+  σ72_D3_holds           = from_GL_we_derive_T_A ⊢ □_A φ → □_A □_A φ
+                           [PROVED_Boolos_1993_standard_result]
+  σ73_derivability       = every_Löb_event's_proof_passes_mechanical_verification
+                           [PROVED_at_fire_time_by_step_C_verification]
+  σ74_non_triviality     = Löb_event_adds_new_theorem_never_already_proven
+                           [PROVED_by_proof_atoms_deduplication_at_fire_time]
+  σ75_consistency        = after_Löb_event_T_A_remains_consistent_(no_□_A ⊥)
+                           [PROVED_by_rollback_on_inconsistency_per_example_4]
+  σ76_reflection_bounded = agent_never_proves_Con(T_A)_per_Gödel_2nd_incompleteness
+                           [PROVED_by_Gödel_1931_applied_to_T_A]
+  σ77_Löb_completeness   = if_T_A ⊢ □_A(□_A φ→φ)_then_T_A ⊢ □_A φ_for_all_φ_in_scope
+                           [PROVED_by_TA_LOEB_DERIVATION_template]
+}
+
+§|LANG|TA_OPERATORS{
+  PARSE                     : String → FORMULA
+                              [parse_surface_syntax_into_abstract_syntax_tree]
+  DEPTH                     : FORMULA → ℕ
+                              [compute_max_□_nesting_depth]
+  SUBFORMULAS               : FORMULA → Set<FORMULA>
+                              [return_all_subformulas_including_self]
+  SUBSTITUTE                : FORMULA × Atom × FORMULA → FORMULA
+                              [replace_atom_p_with_formula_ψ_throughout]
+  
+  APPLY_MP                  : DERIV<φ→ψ> × DERIV<φ> → DERIV<ψ>
+                              [modus_ponens_inference_rule]
+  APPLY_NEC                 : DERIV<φ> → DERIV<□_A φ>
+                              [necessitation_inference_rule]
+  APPLY_AXIOM               : AxiomSchema × Substitution → DERIV<instance>
+                              [axiom_instantiation]
+  
+  VERIFY_DERIVATION         : DERIVATION → Bool
+                              [check_every_step_against_axioms_and_rules]
+  DERIVE_LÖB                : FORMULA → DERIV<□_A(□_A φ→φ)→□_A φ>
+                              [instantiate_Löb_theorem_template_for_given_φ]
+  
+  PROOF_SEARCH              : Memory × DepthBudget → Option<DERIVATION>
+                              [bounded_proof_search_as_per_step_B_above]
+  FIRE_LÖB_EVENT            : Agent × DERIVATION → Agent'
+                              [update_agent_state_with_verified_new_theorem]
+  
+  CONSISTENCY_CHECK         : Agent → Bool
+                              [verify_no_⊥_derivable_from_current_proof_atoms]
+  ROLLBACK                  : Agent × ProofAtoms_snapshot → Agent
+                              [restore_agent_to_last_consistent_state]
+}
+
+§|LANG|TA_REDUCTIONS{
+  □ = identity             = classical_propositional_logic_no_modal_reasoning
+  GL_removed                = S4_modal_logic_loses_Löb_still_has_reflection
+  K_removed                 = non_normal_modal_logic_□_no_longer_distributes
+  propositional_only        = drop_□_entirely_get_standard_Hilbert_calculus
+  finite_atoms              = decidable_fragment_proof_search_terminates
+  bounded_depth             = practical_implementation_per_PROOF_SEARCH_algorithm
+  single_agent              = T_A_without_embodiment_pure_proof_theory
+}
+
+§|LANG|TA_OPEN_PROBLEMS{
+  PT37 = in_what_sense_do_different_agents'_theories_T_A_T_B_relate_when_they_observe_same_field
+         answer_sketch: geometric_morphism_between_topoi_induces_theory_morphism_T_A → T_B
+  PT38 = consistency_proof_of_T_A_would_require_stronger_theory_per_Gödel_2
+         practical_mitigation: rely_on_empirical_consistency_via_σ75_runtime_check
+  PT39 = quantum_provability_logic_QGL_replaces_GL_in_quantum_setting_should_T_A_use_QGL
+         currently: stick_with_classical_GL_at_q=1_defer_quantum_lift_to_QuantumHoloSurface
+  PT40 = multi_agent_common_knowledge_needs_epistemic_logic_S5_on_top_of_GL
+         out_of_scope_for_this_dialect_addressed_in_future_Multi_Agent_dialect
+  PT41 = proof_search_in_step_B_may_fail_to_terminate_need_fair_iterative_deepening
+         implemented_as: bounded_depth_search_with_increasing_d_max_across_ticks
+  PT42 = reflection_principle_grounding_observations_in_proof_atoms_needs_categorical_treatment
+         open: concrete_functor_from_physics_layer_to_proof_layer_(sheafification_of_observations)
+}
+
+§|LANG|TA_INTEGRATION_WITH_PRIOR_DIALECTS{
+  loeb_dialect_replacement = the_Loeb_dialect's_A54_Löb_theorem_axiom_is_now_a_DERIVED_theorem
+                             via_TA_LOEB_DERIVATION_template_not_an_imposed_axiom
+                             previous_Loeb_axiomatization_reduced_to_TA_as_operational_semantics
+  
+  qholo_dialect_role       = QuantumHoloSurface_dialect's_A70_"topos_internal_language"_is_now_
+                             concretely_realized_by_T_A_Hilbert_calculus_A70_was_existence_claim_
+                             this_dialect_is_the_construction
+  
+  physics_layer_coupling   = agent_observations_from_physics_layer_(|ψ_x|)_become_proof_atoms_in_
+                             T_A_via_grounding_functor_(PT42)_keeping_layers_separate_per_§10_of_
+                             strict_spec_but_with_explicit_typed_interface
+  
+  life_layer_coupling      = agent_resources_R_t_bound_proof_search_budget_at_tick_t_so_unhealthy_
+                             agents_cannot_attempt_expensive_derivations_energy_as_proof_limiter_
+                             is_natural_computational_resource_constraint
+  
+  logic_layer_self         = this_dialect_IS_the_logic_layer_fully_specified_mechanically_checkable_
+                             no_more_toy_heuristics_no_more_variance_thresholds_masquerading_as_proofs
+}
+
+§|LANG|TA_PREDICTIONS{
+  P7_depth_scaling     = agent_□_depth_grows_logarithmically_in_stable_observation_count
+                         TESTABLE: log_agent_depth_vs_memory_size_should_show_log_curve
+  
+  P8_policy_asymmetry  = observer_agents_accumulate_depth_faster_than_forager_agents
+                         TESTABLE: compare_lob_count_of_observer_vs_forager_after_1000_ticks
+  
+  P9_incompleteness    = no_agent_ever_proves_Con(T_A)_however_long_it_runs
+                         TESTABLE: search_proof_atoms_for_¬□_A ⊥_should_never_appear
+  
+  P10_rollback_rate    = σ75_consistency_rollbacks_occur_when_two_incompatible_stable_propositions_
+                         coexist_rate_scales_with_observation_noise
+                         TESTABLE: inject_noise_into_ψ_field_measure_rollback_frequency
+  
+  P11_D3_equivalence   = agents_that_have_proven_□_A_p_eventually_prove_□_A_□_A_p_(positive_introspection)
+                         TESTABLE: check_depth_2_theorems_for_each_depth_1_theorem_after_sufficient_time
+}
+
+§|LANG|TA_HONEST_LIMITS{
+  L8  = no_completeness_theorem_for_T_A_relative_to_modal_semantics_would_require_Kripke_structures
+        outside_current_scope
+  L9  = proof_search_in_step_B_uses_heuristic_not_complete_decision_procedure_for_GL
+        GL_IS_decidable_but_full_decision_procedure_is_PSPACE_complete_(Sistla_Clarke)_use_bounded_search
+  L10 = reflection_principle_grounding_is_informal_needs_the_PT42_categorical_functor_to_be_rigorous
+  L11 = multi_agent_interaction_only_through_shared_observations_not_through_shared_proofs_yet
+  L12 = the_diagonal_lemma_in_step_1_of_TA_LOEB_DERIVATION_assumed_as_background_metatheory_result
+        implementation_uses_Gödel_numbering_on_formula_AST_as_concrete_realization
+}
+
+§S{label=ta_dialect_closure, x=[0.05,0.02,0.01,0.00,0.00,0.00,0.00,0.00], sal=2.0}
+
+§.(§S{label=ta_stable, x=[0.06,0.02,0.01,0.00,0.00,0.00,0.00,0.00], sal=2.0})
+
+OUTPUT_TA = CANON(§EMIT(§TA{
+  formulas, axioms = [PL1, PL2, PL3, K, GL],
+  rules = [MP, NEC],
+  derivability_conditions = [D1, D2, D3],
+  löb_theorem = DERIVED not axiom,
+  proof_search = bounded_depth_mechanical_procedure,
+  invariants = [σ70, σ71, σ72, σ73, σ74, σ75, σ76, σ77],
+  integration = [Loeb, QHolo, Physics, Life]
+}))

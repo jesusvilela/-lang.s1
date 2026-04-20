@@ -1,0 +1,583 @@
+<h2 class="sr-only">A dense 10-ring {7,3} hyperbolic tessellation of the Poincaré disk, rendered as a globular structure with five physics fields (gyration connection, F_mix curvature, info density, holographic sheaf, Löb truth), four particle types (open Gödel, closed Löb, boundary quantum, fixed phonon), and three wave types (hyperbolic, Busemann, Möbius soliton) overlaid and animated.</h2>
+
+<style>
+  .gf { font-family: var(--font-sans); color: var(--color-text-primary); }
+  .gf .row { display: flex; gap: 16px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
+  .gf .label { font-size: 11px; color: var(--color-text-tertiary); letter-spacing: 0.04em; text-transform: uppercase; }
+  .gf .tabset { display: inline-flex; gap: 2px; padding: 2px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); }
+  .gf .tabset button {
+    border: none; background: transparent; color: var(--color-text-secondary);
+    padding: 5px 10px; font-size: 11px; font-family: var(--font-sans); font-weight: 400;
+    border-radius: 6px; cursor: pointer; transition: background 0.15s, color 0.15s;
+  }
+  .gf .tabset button.on { background: var(--color-background-primary); color: var(--color-text-primary); font-weight: 500; }
+  .gf .tabset button:hover:not(.on) { color: var(--color-text-primary); }
+  .gf .canvas-wrap {
+    background: var(--color-background-secondary); border-radius: var(--border-radius-lg);
+    padding: 16px; margin: 8px 0; position: relative;
+  }
+  .gf canvas { display: block; width: 100%; height: 540px; border-radius: var(--border-radius-md); }
+  .gf .overlay {
+    position: absolute; background: var(--color-background-primary);
+    border-radius: var(--border-radius-md); padding: 7px 11px;
+    font-size: 10.5px; font-family: var(--font-mono);
+    border: 0.5px solid var(--color-border-tertiary);
+    line-height: 1.55; color: var(--color-text-secondary); pointer-events: none;
+  }
+  .gf .tl { top: 24px; left: 24px; max-width: 230px; color: var(--color-text-tertiary); }
+  .gf .tr { top: 24px; right: 24px; min-width: 150px; }
+  .gf .caption {
+    position: absolute; bottom: 24px; left: 24px; right: 24px;
+    font-size: 11px; color: var(--color-text-tertiary); line-height: 1.5;
+  }
+  .gf .controls { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 10px 14px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); }
+  .gf .ctrl { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+  .gf .ctrl label { color: var(--color-text-secondary); min-width: 56px; font-size: 11px; }
+  .gf .ctrl input[type=range] { flex: 1; min-width: 0; }
+  .gf .ctrl .v { min-width: 30px; text-align: right; color: var(--color-text-primary); font-weight: 500; font-family: var(--font-mono); font-size: 11px; }
+  .gf .legend { display: flex; gap: 12px; font-size: 11px; color: var(--color-text-secondary); flex-wrap: wrap; padding: 8px 4px 0; }
+  .gf .leg { display: flex; align-items: center; gap: 5px; }
+  .gf .leg .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .gf .leg .ln { width: 13px; height: 2px; flex-shrink: 0; }
+  @media (max-width: 500px) { .gf .controls { grid-template-columns: 1fr; } }
+</style>
+
+<div class="gf">
+  <div class="row">
+    <span class="label">fields</span>
+    <div class="tabset" id="gf-fields">
+      <button data-f="A" class="on">A gyration</button>
+      <button data-f="F" class="on">F_mix</button>
+      <button data-f="I" class="on">info I</button>
+      <button data-f="mu" class="on">holo μ</button>
+      <button data-f="box" class="on">□ truth</button>
+    </div>
+  </div>
+  <div class="row">
+    <span class="label">particles</span>
+    <div class="tabset" id="gf-particles">
+      <button data-p="open" class="on">open Gödel</button>
+      <button data-p="closed" class="on">closed Löb</button>
+      <button data-p="bound" class="on">∂ quantum</button>
+      <button data-p="phonon" class="on">fix phonon</button>
+    </div>
+    <span class="label">waves</span>
+    <div class="tabset" id="gf-waves">
+      <button data-w="hyp" class="on">hyperbolic</button>
+      <button data-w="bus" class="on">Busemann</button>
+      <button data-w="sol">soliton</button>
+    </div>
+  </div>
+
+  <div class="canvas-wrap">
+    <canvas id="gf-canvas"></canvas>
+    <div class="overlay tl">{7,3} · depth 10 · 386 tiles<br>A→topology · F→gate<br>I→flow · μ→IO · □→closure</div>
+    <div class="overlay tr" id="gf-stats">ring —<br>|F|_max&nbsp;—<br>I&nbsp;bits&nbsp;—<br>Löb&nbsp;loops&nbsp;—</div>
+    <div class="caption">five fields layered on a 10-ring hyperbolic tessellation. Each heptagon is a CY moduli point; tile fill = F_mix, border glow = I, boundary ring = μ. Particles move along the tessellation edges with Lorentz-forward bias. Hyperbolic wave = concentric expansion; Busemann wave = horocyclic flow toward a boundary point.</div>
+  </div>
+
+  <div class="controls">
+    <div class="ctrl"><label>flow</label><input type="range" id="gf-speed" min="0" max="100" value="45" step="1"><span class="v" id="gf-speed-v">0.45</span></div>
+    <div class="ctrl"><label>agents</label><input type="range" id="gf-agents" min="5" max="50" value="24" step="1"><span class="v" id="gf-agents-v">24</span></div>
+  </div>
+
+  <div class="legend">
+    <div class="leg"><div class="dot" style="background:#7F77DD"></div>CY tile</div>
+    <div class="leg"><div class="dot" style="background:#E24B4A"></div>F_mix hot</div>
+    <div class="leg"><div class="dot" style="background:#EF9F27"></div>boundary μ</div>
+    <div class="leg"><div class="dot" style="background:#D85A30"></div>open Gödel</div>
+    <div class="leg"><div class="dot" style="background:#378ADD"></div>closed Löb</div>
+    <div class="leg"><div class="dot" style="background:#1D9E75"></div>Fix(Φ)</div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const canvas = document.getElementById('gf-canvas');
+  const ctx = canvas.getContext('2d');
+  const statsEl = document.getElementById('gf-stats');
+
+  const S = {
+    depth: 10,
+    fieldA: true, fieldF: true, fieldI: true, fieldMu: true, fieldBox: true,
+    pOpen: true, pClosed: true, pBound: true, pPhonon: true,
+    wHyp: true, wBus: true, wSol: false,
+    speed: 0.45, agentCount: 24,
+    time: 0, prevT: null,
+    dpr: Math.max(1, window.devicePixelRatio || 1),
+    reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    tiles: [], edges: [], nb: [], agents: [],
+    boundaryFlashes: [],
+    needsRegen: true
+  };
+
+  function resize() {
+    const w = canvas.clientWidth, h = 540;
+    canvas.width = w * S.dpr; canvas.height = h * S.dpr;
+    ctx.setTransform(S.dpr, 0, 0, S.dpr, 0, 0);
+  }
+
+  // Tessellation generator — depth 10, capped ring counts
+  function genTiles() {
+    const tiles = [{ idx: 0, ring: 0, ang: 0, x: 0, y: 0, size: 0.30 }];
+    for (let k = 1; k <= S.depth; k++) {
+      const count = Math.min(7 * (k + 1), 50);
+      const r = Math.tanh(k * 0.38);
+      const sz = 0.30 / Math.cosh(k * 0.42);
+      const off = k * 0.13;
+      for (let i = 0; i < count; i++) {
+        const th = (i / count) * Math.PI * 2 + off;
+        tiles.push({ idx: tiles.length, ring: k, ang: th, x: r * Math.cos(th), y: r * Math.sin(th), size: sz });
+      }
+    }
+    return tiles;
+  }
+
+  function genNeighbors(tiles) {
+    const byRing = {};
+    for (const t of tiles) { (byRing[t.ring] = byRing[t.ring] || []).push(t); }
+    const nb = tiles.map(() => []);
+    for (const kk in byRing) {
+      const arr = byRing[kk];
+      if (arr.length < 2) continue;
+      for (let i = 0; i < arr.length; i++) {
+        const a = arr[i].idx, b = arr[(i+1) % arr.length].idx;
+        nb[a].push(b); nb[b].push(a);
+      }
+    }
+    for (const kk in byRing) {
+      const r = parseInt(kk);
+      if (!byRing[r+1]) continue;
+      const here = byRing[r], next = byRing[r+1];
+      const ratio = next.length / here.length;
+      for (let i = 0; i < here.length; i++) {
+        const s = Math.floor(i * ratio), e = Math.floor((i+1) * ratio);
+        for (let j = s; j <= e && j < next.length; j++) {
+          const a = here[i].idx, b = next[j].idx;
+          if (!nb[a].includes(b)) { nb[a].push(b); nb[b].push(a); }
+        }
+      }
+    }
+    return nb;
+  }
+
+  // Agent state: tileIdx, nextTileIdx, progress, kind (open/closed/bound/phonon)
+  function spawnAgent(id) {
+    const kinds = [];
+    if (S.pOpen) kinds.push('open');
+    if (S.pClosed) kinds.push('closed');
+    if (S.pBound) kinds.push('bound');
+    if (S.pPhonon) kinds.push('phonon');
+    if (kinds.length === 0) kinds.push('open');
+    const kind = kinds[id % kinds.length];
+    let startIdx = 0;
+    if (kind === 'phonon') startIdx = 0;
+    else if (kind === 'bound') startIdx = Math.floor(Math.random() * Math.min(40, S.tiles.length));
+    else startIdx = Math.floor(Math.random() * S.tiles.length);
+    const loopLen = kind === 'closed' ? (3 + Math.floor(Math.random() * 4)) : 0;
+    return { id, kind, tileIdx: startIdx, nextTileIdx: startIdx, progress: 1, history: [startIdx], loopLen, age: 0 };
+  }
+
+  function pickNext(tileIdx, forward) {
+    const nbs = S.nb[tileIdx];
+    if (!nbs || nbs.length === 0) return tileIdx;
+    const here = S.tiles[tileIdx];
+    const w = nbs.map(j => {
+      const there = S.tiles[j];
+      return forward ? Math.max(0.1, 1 + (there.ring - here.ring) * 0.7) : 1;
+    });
+    const tot = w.reduce((s,x) => s+x, 0);
+    let r = Math.random() * tot;
+    for (let i = 0; i < nbs.length; i++) { r -= w[i]; if (r <= 0) return nbs[i]; }
+    return nbs[0];
+  }
+
+  function updateAgent(a, dt) {
+    a.age += dt;
+    if (a.kind === 'phonon') {
+      // Oscillate near origin; don't traverse
+      return;
+    }
+    if (a.kind === 'bound') {
+      // Live on S^{n-1} boundary: random outer ring tile, occasional jump
+      if (Math.random() < dt * 0.4) {
+        const outerStart = S.tiles.findIndex(t => t.ring >= S.depth - 1);
+        if (outerStart >= 0) {
+          a.tileIdx = outerStart + Math.floor(Math.random() * (S.tiles.length - outerStart));
+          a.nextTileIdx = a.tileIdx;
+          S.boundaryFlashes.push({ x: S.tiles[a.tileIdx].x, y: S.tiles[a.tileIdx].y, age: 0 });
+          if (S.boundaryFlashes.length > 30) S.boundaryFlashes.shift();
+        }
+      }
+      return;
+    }
+    // open / closed
+    a.progress += dt * S.speed * 1.6;
+    if (a.progress < 1) return;
+    a.tileIdx = a.nextTileIdx;
+    a.progress = 0;
+    if (a.kind === 'closed' && a.history.length >= a.loopLen) {
+      // Close the loop
+      const startIdx = a.history[0];
+      a.tileIdx = startIdx;
+      a.nextTileIdx = pickNext(startIdx, true);
+      a.history = [startIdx];
+      return;
+    }
+    a.nextTileIdx = pickNext(a.tileIdx, true);
+    a.history.push(a.nextTileIdx);
+    if (a.kind === 'open' && S.tiles[a.tileIdx].ring >= S.depth - 1 && Math.random() < 0.3) {
+      // Decay at boundary, respawn
+      a.tileIdx = 0;
+      a.nextTileIdx = pickNext(0, true);
+      a.history = [0];
+    }
+  }
+
+  function regen() {
+    S.tiles = genTiles();
+    S.nb = genNeighbors(S.tiles);
+    S.agents = [];
+    for (let i = 0; i < S.agentCount; i++) S.agents.push(spawnAgent(i));
+    S.boundaryFlashes = [];
+    S.needsRegen = false;
+  }
+
+  // Field values per tile (deterministic so visuals are stable)
+  function fieldF(tile) {
+    // F_mix intensity — sinusoidal in angle + ring
+    return 0.5 + 0.5 * Math.sin(tile.ring * 1.3 + tile.ang * 2.1 + S.time * 0.3);
+  }
+  function fieldI(tile) {
+    return 1.0 / (1 + tile.ring * 0.25) * (0.7 + 0.3 * Math.sin(tile.ang * 1.7 + S.time * 0.2));
+  }
+  function fieldBox(tile) {
+    // Löb truth: some tiles are "true" deterministically
+    const h = Math.sin(tile.ring * 2.3 + tile.ang * 3.1);
+    return h > 0.3;
+  }
+
+  function drawBackground(cx, cy, R) {
+    // Cool center → warm boundary
+    const g = ctx.createRadialGradient(cx, cy, R * 0.15, cx, cy, R);
+    g.addColorStop(0, 'rgba(29, 158, 117, 0.04)');
+    g.addColorStop(0.55, 'rgba(127, 119, 221, 0.03)');
+    g.addColorStop(1, 'rgba(239, 159, 39, 0.07)');
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.fill();
+
+    // Boundary silhouette
+    ctx.strokeStyle = 'rgba(239, 159, 39, 0.42)';
+    ctx.lineWidth = 0.8;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  function drawHoloMu(cx, cy, R) {
+    // μ field on S^{n-1}: angular energy density
+    const sectors = 48;
+    for (let i = 0; i < sectors; i++) {
+      const a0 = (i / sectors) * Math.PI * 2;
+      const a1 = ((i + 1) / sectors) * Math.PI * 2;
+      const mag = 0.5 + 0.5 * Math.sin(i * 0.73 + S.time * 0.6);
+      ctx.beginPath();
+      ctx.arc(cx, cy, R * 1.005, a0, a1);
+      ctx.strokeStyle = `rgba(239, 159, 39, ${0.2 + mag * 0.5})`;
+      ctx.lineWidth = 2.2 + mag * 1.2;
+      ctx.stroke();
+    }
+  }
+
+  function drawFieldA(cx, cy, R) {
+    // Gyration connection as faint curved streamlines between rings
+    ctx.strokeStyle = 'rgba(127, 119, 221, 0.18)';
+    ctx.lineWidth = 0.5;
+    ctx.beginPath();
+    for (let k = 1; k <= S.depth; k += 2) {
+      const r0 = Math.tanh((k-1) * 0.38) * R;
+      const r1 = Math.tanh(k * 0.38) * R;
+      for (let i = 0; i < 24; i++) {
+        const base = (i / 24) * Math.PI * 2 + S.time * 0.08;
+        // Curved streamline
+        const a0 = base;
+        const a1 = base + 0.25;
+        const x0 = cx + Math.cos(a0) * r0, y0 = cy + Math.sin(a0) * r0;
+        const cxp = cx + Math.cos((a0+a1)/2) * (r0+r1)*0.5;
+        const cyp = cy + Math.sin((a0+a1)/2) * (r0+r1)*0.5;
+        const x1 = cx + Math.cos(a1) * r1, y1 = cy + Math.sin(a1) * r1;
+        ctx.moveTo(x0, y0);
+        ctx.quadraticCurveTo(cxp, cyp, x1, y1);
+      }
+    }
+    ctx.stroke();
+  }
+
+  function drawHyperbolicWave(cx, cy, R) {
+    // Concentric expanding wave
+    const period = 4;
+    const waves = 3;
+    for (let w = 0; w < waves; w++) {
+      const phase = ((S.time / period + w / waves) % 1);
+      const rad = phase * R;
+      const alpha = (1 - phase) * 0.18;
+      ctx.strokeStyle = `rgba(127, 119, 221, ${alpha})`;
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.arc(cx, cy, rad, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+  }
+
+  function drawBusemannWave(cx, cy, R) {
+    // Horocyclic wave — circles tangent to a fixed boundary point
+    const xi = Math.PI * 0.18; // fixed direction
+    const ptX = cx + Math.cos(xi) * R;
+    const ptY = cy + Math.sin(xi) * R;
+    const period = 6;
+    const waves = 4;
+    for (let w = 0; w < waves; w++) {
+      const phase = ((S.time / period + w / waves) % 1);
+      const rr = phase * R * 0.8;
+      // Horocycle: circle through ξ with center at (ξ - rr * unit)
+      const cxh = ptX - Math.cos(xi) * rr;
+      const cyh = ptY - Math.sin(xi) * rr;
+      const alpha = Math.sin(phase * Math.PI) * 0.22;
+      ctx.strokeStyle = `rgba(239, 159, 39, ${alpha})`;
+      ctx.lineWidth = 1.1;
+      ctx.beginPath();
+      ctx.arc(cxh, cyh, rr, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+  }
+
+  function drawSoliton(cx, cy, R) {
+    // Soliton packet traveling along radial line
+    const theta = S.time * 0.4;
+    const pos = (S.time * 0.25) % 1;
+    const r = Math.tanh(pos * 3) * R * 0.95;
+    const px = cx + Math.cos(theta) * r;
+    const py = cy + Math.sin(theta) * r;
+    // sech^2 envelope
+    const sig = 12;
+    for (let dx = -24; dx <= 24; dx += 4) {
+      for (let dy = -24; dy <= 24; dy += 4) {
+        const d2 = dx*dx + dy*dy;
+        const env = 1 / Math.cosh(Math.sqrt(d2) / sig);
+        const env2 = env * env;
+        if (env2 > 0.02) {
+          ctx.fillStyle = `rgba(29, 158, 117, ${env2 * 0.45})`;
+          ctx.fillRect(px + dx - 2, py + dy - 2, 4, 4);
+        }
+      }
+    }
+  }
+
+  function drawBoundaryFlashes(cx, cy, R) {
+    for (const f of S.boundaryFlashes) {
+      const alpha = Math.max(0, 1 - f.age * 2);
+      if (alpha < 0.02) continue;
+      const x = cx + f.x * R, y = cy + f.y * R;
+      ctx.fillStyle = `rgba(250, 199, 117, ${alpha * 0.9})`;
+      ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = `rgba(250, 199, 117, ${alpha * 0.5})`;
+      ctx.lineWidth = 0.7;
+      ctx.beginPath(); ctx.arc(x, y, 4 + f.age * 20, 0, Math.PI * 2); ctx.stroke();
+    }
+  }
+
+  function drawTile(t, cx, cy, R) {
+    const px = cx + t.x * R, py = cy + t.y * R;
+    const rNorm = Math.hypot(t.x, t.y);
+    const sz = t.size * R * (1 - rNorm * 0.22);
+    if (sz < 1.2) return;
+
+    // F_mix heat fill
+    let fillR = 127, fillG = 119, fillB = 221;
+    if (S.fieldF) {
+      const f = fieldF(t);
+      fillR = Math.round(127 + (226 - 127) * f);  // blend toward red
+      fillG = Math.round(119 + (75 - 119) * f);
+      fillB = Math.round(221 + (74 - 221) * f);
+    }
+    const fillAlpha = 0.06 + (S.fieldI ? fieldI(t) * 0.13 : 0.04);
+    ctx.fillStyle = `rgba(${fillR}, ${fillG}, ${fillB}, ${fillAlpha})`;
+
+    // Heptagon shape
+    const sides = 7;
+    const rotOff = t.ang + (t.ring % 2) * (Math.PI / sides);
+    ctx.beginPath();
+    for (let k = 0; k < sides; k++) {
+      const a = (k / sides) * Math.PI * 2 + rotOff;
+      const vx = px + Math.cos(a) * sz * 0.94;
+      const vy = py + Math.sin(a) * sz * 0.94;
+      if (k === 0) ctx.moveTo(vx, vy); else ctx.lineTo(vx, vy);
+    }
+    ctx.closePath();
+    ctx.fill();
+
+    // I-field border brightness
+    const iMag = S.fieldI ? fieldI(t) : 0.3;
+    ctx.strokeStyle = `rgba(239, 159, 39, ${0.25 + iMag * 0.35})`;
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+
+    // Inner CY glyph (tiny torus) — only visible at decent size
+    if (sz > 5) {
+      const gR = sz * 0.3;
+      ctx.strokeStyle = `rgba(127, 119, 221, 0.6)`;
+      ctx.lineWidth = 0.7;
+      ctx.beginPath(); ctx.arc(px, py, gR, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.arc(px, py, gR * 0.55, 0, Math.PI * 2); ctx.stroke();
+    }
+
+    // □ truth marker — small dot
+    if (S.fieldBox && fieldBox(t) && sz > 3) {
+      ctx.fillStyle = 'rgba(29, 158, 117, 0.8)';
+      ctx.beginPath(); ctx.arc(px + sz * 0.45, py - sz * 0.45, 1.4, 0, Math.PI * 2); ctx.fill();
+    }
+
+    // Fix(Φ) marker at ring 0
+    if (t.ring === 0) {
+      ctx.strokeStyle = 'rgba(29, 158, 117, 0.9)';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath(); ctx.arc(px, py, sz * 0.16, 0, Math.PI * 2); ctx.stroke();
+      ctx.fillStyle = 'rgba(29, 158, 117, 0.95)';
+      ctx.beginPath(); ctx.arc(px, py, 2.4, 0, Math.PI * 2); ctx.fill();
+    }
+  }
+
+  function drawAgent(a, cx, cy, R) {
+    let t0, t1, x, y;
+    if (a.kind === 'phonon') {
+      // Breathing at origin
+      const phase = Math.sin(S.time * 4 + a.id);
+      const r = 0.02 * (1 + phase);
+      x = cx + r * Math.cos(S.time * 0.7 + a.id) * R;
+      y = cy + r * Math.sin(S.time * 0.7 + a.id) * R;
+    } else if (a.kind === 'bound') {
+      t0 = S.tiles[a.tileIdx];
+      x = cx + t0.x * R;
+      y = cy + t0.y * R;
+    } else {
+      t0 = S.tiles[a.tileIdx]; t1 = S.tiles[a.nextTileIdx];
+      const tx = t0.x + (t1.x - t0.x) * a.progress;
+      const ty = t0.y + (t1.y - t0.y) * a.progress;
+      x = cx + tx * R; y = cy + ty * R;
+    }
+
+    let col, sz;
+    if (a.kind === 'open') { col = 'rgba(216, 90, 48, 0.88)'; sz = 2.3; }
+    else if (a.kind === 'closed') { col = 'rgba(55, 138, 221, 0.9)'; sz = 2.5; }
+    else if (a.kind === 'bound') { col = 'rgba(250, 199, 117, 0.9)'; sz = 2.3; }
+    else { col = 'rgba(127, 119, 221, 0.85)'; sz = 2.0; }
+
+    ctx.fillStyle = col;
+    ctx.beginPath(); ctx.arc(x, y, sz, 0, Math.PI * 2); ctx.fill();
+
+    if (a.kind === 'closed') {
+      ctx.strokeStyle = 'rgba(55, 138, 221, 0.4)';
+      ctx.lineWidth = 0.7;
+      ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.stroke();
+    }
+  }
+
+  function updateStats() {
+    const maxRing = S.depth;
+    let maxF = 0, sumI = 0;
+    for (const t of S.tiles) {
+      const f = fieldF(t); if (f > maxF) maxF = f;
+      sumI += fieldI(t);
+    }
+    const loops = S.agents.filter(a => a.kind === 'closed').length;
+    statsEl.innerHTML =
+      `rings&nbsp;${maxRing}&nbsp;·&nbsp;${S.tiles.length}&nbsp;tiles<br>` +
+      `|F|_max&nbsp;${maxF.toFixed(3)}<br>` +
+      `I&nbsp;${Math.log2(S.tiles.length).toFixed(2)}&nbsp;bits<br>` +
+      `Löb&nbsp;loops&nbsp;${loops}`;
+  }
+
+  function draw() {
+    const w = canvas.clientWidth, h = 540;
+    ctx.clearRect(0, 0, w, h);
+    const cx = w / 2, cy = h / 2, R = Math.min(w, h) * 0.46;
+
+    drawBackground(cx, cy, R);
+
+    if (S.fieldA) drawFieldA(cx, cy, R);
+
+    // Tiles (draws F, I, □ encodings)
+    for (const t of S.tiles) drawTile(t, cx, cy, R);
+
+    // Waves above tiles, below particles
+    if (S.wHyp) drawHyperbolicWave(cx, cy, R);
+    if (S.wBus) drawBusemannWave(cx, cy, R);
+    if (S.wSol) drawSoliton(cx, cy, R);
+
+    // Holographic boundary overlay
+    if (S.fieldMu) drawHoloMu(cx, cy, R);
+
+    // Boundary flashes
+    drawBoundaryFlashes(cx, cy, R);
+
+    // Agents
+    for (const a of S.agents) drawAgent(a, cx, cy, R);
+
+    updateStats();
+  }
+
+  function tick(t) {
+    if (S.needsRegen) regen();
+    if (S.prevT === null) S.prevT = t;
+    const dt = Math.min(0.05, (t - S.prevT) / 1000);
+    S.prevT = t;
+    if (!S.reducedMotion) S.time += dt;
+    for (const a of S.agents) updateAgent(a, dt);
+    for (const f of S.boundaryFlashes) f.age += dt;
+    S.boundaryFlashes = S.boundaryFlashes.filter(f => f.age < 0.8);
+    draw();
+    requestAnimationFrame(tick);
+  }
+
+  // Controls
+  document.getElementById('gf-fields').addEventListener('click', e => {
+    const b = e.target.closest('button[data-f]'); if (!b) return;
+    b.classList.toggle('on');
+    const on = b.classList.contains('on');
+    const f = b.dataset.f;
+    if (f === 'A') S.fieldA = on;
+    else if (f === 'F') S.fieldF = on;
+    else if (f === 'I') S.fieldI = on;
+    else if (f === 'mu') S.fieldMu = on;
+    else if (f === 'box') S.fieldBox = on;
+  });
+  document.getElementById('gf-particles').addEventListener('click', e => {
+    const b = e.target.closest('button[data-p]'); if (!b) return;
+    b.classList.toggle('on');
+    const on = b.classList.contains('on');
+    const p = b.dataset.p;
+    if (p === 'open') S.pOpen = on;
+    else if (p === 'closed') S.pClosed = on;
+    else if (p === 'bound') S.pBound = on;
+    else if (p === 'phonon') S.pPhonon = on;
+    S.needsRegen = true;
+  });
+  document.getElementById('gf-waves').addEventListener('click', e => {
+    const b = e.target.closest('button[data-w]'); if (!b) return;
+    b.classList.toggle('on');
+    const on = b.classList.contains('on');
+    const w = b.dataset.w;
+    if (w === 'hyp') S.wHyp = on;
+    else if (w === 'bus') S.wBus = on;
+    else if (w === 'sol') S.wSol = on;
+  });
+  const spS = document.getElementById('gf-speed');
+  spS.addEventListener('input', () => { S.speed = spS.value / 100; document.getElementById('gf-speed-v').textContent = S.speed.toFixed(2); });
+  const agS = document.getElementById('gf-agents');
+  agS.addEventListener('input', () => { S.agentCount = parseInt(agS.value); document.getElementById('gf-agents-v').textContent = S.agentCount; S.needsRegen = true; });
+
+  resize();
+  window.addEventListener('resize', resize);
+  requestAnimationFrame(tick);
+})();
+</script>

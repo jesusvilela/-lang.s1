@@ -1,0 +1,584 @@
+<h2 class="sr-only">Interactive visualization of the Tower v2.5 architecture showing static structure, gyration-driven molding, and adiabatic expansion and contraction across tower and flat disk topologies.</h2>
+
+<style>
+  .tv2 { font-family: var(--font-sans); color: var(--color-text-primary); }
+  .tv2 .tabs { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; align-items: center; }
+  .tv2 .tab-label { font-size: 11px; color: var(--color-text-tertiary); letter-spacing: 0.05em; text-transform: uppercase; margin-right: 4px; }
+  .tv2 .tab-group { display: inline-flex; gap: 2px; padding: 2px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); }
+  .tv2 .tab-group button {
+    border: none; background: transparent; color: var(--color-text-secondary);
+    padding: 6px 12px; font-size: 12px; font-family: var(--font-sans); font-weight: 400;
+    border-radius: 6px; cursor: pointer; transition: background 0.15s, color 0.15s;
+  }
+  .tv2 .tab-group button.active { background: var(--color-background-primary); color: var(--color-text-primary); font-weight: 500; }
+  .tv2 .tab-group button:hover:not(.active) { color: var(--color-text-primary); }
+  .tv2 .canvas-wrap {
+    background: var(--color-background-secondary); border-radius: var(--border-radius-lg);
+    padding: 16px; margin-bottom: 12px; position: relative;
+  }
+  .tv2 canvas { display: block; width: 100%; height: 420px; border-radius: var(--border-radius-md); }
+  .tv2 .overlay-status {
+    position: absolute; top: 24px; right: 24px;
+    background: var(--color-background-primary); border-radius: var(--border-radius-md);
+    padding: 6px 10px; font-size: 11px; color: var(--color-text-secondary);
+    border: 0.5px solid var(--color-border-tertiary); font-family: var(--font-mono);
+    pointer-events: none;
+  }
+  .tv2 .overlay-caption {
+    position: absolute; bottom: 24px; left: 24px;
+    font-size: 11px; color: var(--color-text-tertiary); max-width: 360px; line-height: 1.5;
+    pointer-events: none;
+  }
+  .tv2 .controls { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; padding: 12px 16px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); margin-bottom: 8px; }
+  .tv2 .control-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+  .tv2 .control-row label { color: var(--color-text-secondary); min-width: 60px; }
+  .tv2 .control-row input[type=range] { flex: 1; min-width: 0; }
+  .tv2 .control-row .val { min-width: 32px; text-align: right; color: var(--color-text-primary); font-weight: 500; font-family: var(--font-mono); font-size: 11px; }
+  .tv2 .legend { display: flex; gap: 14px; font-size: 11px; color: var(--color-text-secondary); flex-wrap: wrap; padding: 0 4px; }
+  .tv2 .legend-item { display: flex; align-items: center; gap: 6px; }
+  .tv2 .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .tv2 .legend-line { width: 14px; height: 2px; flex-shrink: 0; }
+  @media (max-width: 500px) { .tv2 .controls { grid-template-columns: 1fr; } }
+</style>
+
+<div class="tv2">
+  <div class="tabs">
+    <span class="tab-label">Mode</span>
+    <div class="tab-group" id="mode-tabs">
+      <button data-mode="structure" class="active">Structure</button>
+      <button data-mode="mold">Gyration mold</button>
+      <button data-mode="adiabatic">Adiabatic breath</button>
+    </div>
+    <span class="tab-label" style="margin-left: 12px;">Topology</span>
+    <div class="tab-group" id="topo-tabs">
+      <button data-topo="tower" class="active">Tower</button>
+      <button data-topo="flat">Flat network</button>
+      <button data-topo="both">Both</button>
+    </div>
+  </div>
+
+  <div class="canvas-wrap">
+    <canvas id="viz" width="680" height="420"></canvas>
+    <div class="overlay-status" id="status">σ22 · idle</div>
+    <div class="overlay-caption" id="caption"></div>
+  </div>
+
+  <div class="controls">
+    <div class="control-row">
+      <label>Gyration ω</label>
+      <input type="range" id="s-gyr" min="0" max="100" value="35" step="1">
+      <span class="val" id="v-gyr">0.35</span>
+    </div>
+    <div class="control-row">
+      <label>Breath</label>
+      <input type="range" id="s-adia" min="0" max="100" value="40" step="1">
+      <span class="val" id="v-adia">0.40</span>
+    </div>
+    <div class="control-row">
+      <label>N</label>
+      <input type="range" id="s-n" min="2" max="5" value="3" step="1">
+      <span class="val" id="v-n">3</span>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#7F77DD"></div>peer state</div>
+    <div class="legend-item"><div class="legend-line" style="background:#EF9F27"></div>holographic boundary S¹</div>
+    <div class="legend-item"><div class="legend-line" style="background:#1D9E75"></div>Möbius channel</div>
+    <div class="legend-item"><div class="legend-line" style="background:#D85A30"></div>gyration trail</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#B4B2A9; border: 0.5px solid var(--color-border-secondary)"></div>disk / Poincaré ball</div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const canvas = document.getElementById('viz');
+  const ctx = canvas.getContext('2d');
+  const statusEl = document.getElementById('status');
+  const captionEl = document.getElementById('caption');
+
+  const state = {
+    mode: 'structure',
+    topo: 'tower',
+    gyr: 0.35,
+    adia: 0.40,
+    N: 3,
+    time: 0,
+    prevT: null,
+    dpr: Math.max(1, window.devicePixelRatio || 1),
+    reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    // Slow adiabatic phase: cycles in ~12s at breath=1
+    adiaPhase: 0
+  };
+
+  const COLORS = {
+    disk: getComputedStyle(document.documentElement).getPropertyValue('--color-text-tertiary').trim() || '#888',
+    peer: '#7F77DD',
+    gold: '#EF9F27',
+    teal: '#1D9E75',
+    coral: '#D85A30',
+    faint: 'rgba(127, 119, 221, 0.12)',
+    channelFaint: 'rgba(29, 158, 117, 0.38)',
+    label: getComputedStyle(document.documentElement).getPropertyValue('--color-text-secondary').trim() || '#666'
+  };
+
+  function resize() {
+    const w = canvas.clientWidth;
+    const h = 420;
+    canvas.width = w * state.dpr;
+    canvas.height = h * state.dpr;
+    ctx.setTransform(state.dpr, 0, 0, state.dpr, 0, 0);
+  }
+
+  // ─────────────────────────────────────────────
+  // Drawing primitives
+  // ─────────────────────────────────────────────
+
+  // Draw a Poincaré disk with interior structure, peers, and boundary sectors.
+  function drawDisk(cx, cy, r, opts) {
+    opts = opts || {};
+    const bundleRot = opts.bundleRot || 0;
+    const gyration = state.mode === 'structure' ? 0 : state.gyr;
+    const showTrails = state.mode !== 'structure' && gyration > 0.02;
+    const peerCount = opts.peers || 4;
+    const phase = opts.phase || 0;
+    const active = opts.active;
+
+    // Interior concentric rings (hyperbolic depth cues)
+    ctx.strokeStyle = COLORS.faint;
+    ctx.lineWidth = 0.5;
+    for (let k = 1; k <= 3; k++) {
+      const ringR = Math.tanh(k * 0.42) * r;
+      ctx.beginPath(); ctx.arc(cx, cy, ringR, 0, Math.PI * 2); ctx.stroke();
+    }
+
+    // Interior diameter geodesics (rotating with frame in mold/adiabatic)
+    ctx.strokeStyle = COLORS.faint;
+    ctx.lineWidth = 0.5;
+    for (let k = 0; k < 4; k++) {
+      const a = bundleRot + (k * Math.PI) / 4;
+      ctx.beginPath();
+      ctx.moveTo(cx + Math.cos(a) * r, cy + Math.sin(a) * r);
+      ctx.lineTo(cx - Math.cos(a) * r, cy - Math.sin(a) * r);
+      ctx.stroke();
+    }
+
+    // Boundary ring (dashed) — the holographic screen S¹
+    ctx.strokeStyle = COLORS.gold;
+    ctx.lineWidth = active ? 1.2 : 0.8;
+    ctx.setLineDash([4, 4]);
+    ctx.globalAlpha = active ? 0.9 : 0.55;
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.globalAlpha = 1;
+
+    // Holographic boundary sectors (tick marks) — commit activity
+    const sectors = 16;
+    for (let s = 0; s < sectors; s++) {
+      const a = (s / sectors) * Math.PI * 2 + bundleRot * 0.6;
+      const pulse = 0.35 + 0.45 * (0.5 + 0.5 * Math.sin(s * 0.9 + state.time * 1.3 + phase));
+      const x1 = cx + Math.cos(a) * r * 1.01;
+      const y1 = cy + Math.sin(a) * r * 1.01;
+      const x2 = cx + Math.cos(a) * r * (1.01 + 0.08 * pulse);
+      const y2 = cy + Math.sin(a) * r * (1.01 + 0.08 * pulse);
+      ctx.strokeStyle = `rgba(239, 159, 39, ${pulse * 0.8})`;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+    }
+
+    // Peers — rotate around origin with gyration, with hyperbolic speedup for radial r
+    for (let p = 0; p < peerCount; p++) {
+      const baseAngle = (p / peerCount) * Math.PI * 2 + phase;
+      const peerR_norm = 0.28 + ((p * 7 + 3) % 5) * 0.12; // spread: 0.28, 0.40, 0.52, 0.64, 0.76
+      // Hyperbolic speed factor: 1/(1 - r²) for Poincaré metric
+      const hypFactor = 1 / (1 - peerR_norm * peerR_norm * 0.9 + 0.1);
+      const spinRate = gyration * hypFactor * 0.8;
+      const angle = baseAngle + state.time * spinRate;
+
+      const px = cx + Math.cos(angle) * r * peerR_norm;
+      const py = cy + Math.sin(angle) * r * peerR_norm;
+
+      // Gyration trail — fade behind the peer
+      if (showTrails) {
+        ctx.lineWidth = 1.2;
+        const trailLen = 18;
+        for (let s = 0; s < trailLen; s++) {
+          const frac = s / trailLen;
+          const tAngle = angle - s * 0.04 * (1 + gyration);
+          const tx = cx + Math.cos(tAngle) * r * peerR_norm;
+          const ty = cy + Math.sin(tAngle) * r * peerR_norm;
+          const alpha = (1 - frac) * 0.6;
+          ctx.strokeStyle = `rgba(216, 90, 48, ${alpha})`;
+          if (s > 0) {
+            const prevAngle = angle - (s - 1) * 0.04 * (1 + gyration);
+            const prevX = cx + Math.cos(prevAngle) * r * peerR_norm;
+            const prevY = cy + Math.sin(prevAngle) * r * peerR_norm;
+            ctx.beginPath(); ctx.moveTo(prevX, prevY); ctx.lineTo(tx, ty); ctx.stroke();
+          }
+        }
+      }
+
+      // Peer dot
+      ctx.fillStyle = COLORS.peer;
+      ctx.beginPath(); ctx.arc(px, py, 3, 0, Math.PI * 2); ctx.fill();
+    }
+
+    // Origin marker (broker / fixed point of elliptic Möbius)
+    ctx.fillStyle = COLORS.label;
+    ctx.globalAlpha = 0.5;
+    ctx.beginPath(); ctx.arc(cx, cy, 1.8, 0, Math.PI * 2); ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+
+  // Draw a labeled Möbius vertical channel between two disks.
+  function drawVChannel(x, y1, y2, phase, twist) {
+    // Helical twist: two curves forming a twisted ribbon, showing non-orientability.
+    ctx.strokeStyle = COLORS.channelFaint;
+    ctx.lineWidth = 1.4;
+    const steps = 24;
+    const amp = 4;
+    for (let side = -1; side <= 1; side += 2) {
+      ctx.beginPath();
+      for (let s = 0; s <= steps; s++) {
+        const t = s / steps;
+        const y = y1 + (y2 - y1) * t;
+        const w = Math.sin(t * Math.PI * 2 + phase) * amp * side;
+        if (s === 0) ctx.moveTo(x + w, y); else ctx.lineTo(x + w, y);
+      }
+      ctx.stroke();
+    }
+    // Twist marker (small arc at midpoint) — indicates ρ involution
+    if (twist) {
+      const midY = (y1 + y2) / 2;
+      ctx.strokeStyle = COLORS.teal;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(x, midY, 5, 0, Math.PI);
+      ctx.stroke();
+    }
+  }
+
+  // Draw a horizontal peer channel (Möbius-style arc) between two disks.
+  function drawHChannel(x1, y1, x2, y2, phase, intensity) {
+    const midX = (x1 + x2) / 2;
+    const midY = (y1 + y2) / 2;
+    const dx = x2 - x1, dy = y2 - y1;
+    const len = Math.hypot(dx, dy);
+    // Perpendicular bow direction
+    const bowX = -dy / len;
+    const bowY = dx / len;
+    const bow = 16 + 6 * Math.sin(phase);
+    const ctrlX = midX + bowX * bow;
+    const ctrlY = midY + bowY * bow;
+
+    ctx.strokeStyle = `rgba(29, 158, 117, ${0.25 + 0.35 * intensity})`;
+    ctx.lineWidth = 1.3;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.quadraticCurveTo(ctrlX, ctrlY, x2, y2);
+    ctx.stroke();
+
+    // Pulse packet travelling along the arc
+    const t = (phase / (Math.PI * 2)) % 1;
+    const u = 1 - t;
+    const pulseX = u * u * x1 + 2 * u * t * ctrlX + t * t * x2;
+    const pulseY = u * u * y1 + 2 * u * t * ctrlY + t * t * y2;
+    ctx.fillStyle = `rgba(29, 158, 117, ${0.85 + 0.15 * intensity})`;
+    ctx.beginPath(); ctx.arc(pulseX, pulseY, 2.4, 0, Math.PI * 2); ctx.fill();
+  }
+
+  function drawLabel(x, y, text, opts) {
+    opts = opts || {};
+    ctx.fillStyle = COLORS.label;
+    ctx.font = '11px ' + (getComputedStyle(document.body).fontFamily || 'sans-serif');
+    ctx.textAlign = opts.align || 'start';
+    ctx.textBaseline = opts.baseline || 'middle';
+    ctx.globalAlpha = opts.alpha || 0.75;
+    ctx.fillText(text, x, y);
+    ctx.globalAlpha = 1;
+  }
+
+  // ─────────────────────────────────────────────
+  // Tower topology
+  // ─────────────────────────────────────────────
+
+  function drawTower(bounds) {
+    const { x, y, w, h } = bounds;
+    const N = state.N;
+    // Adiabatic breath: expansion/contraction modulates disk radius and gap
+    const breathPhase = state.adiaPhase;
+    const breath = state.mode === 'adiabatic'
+      ? 1 + 0.09 * state.adia * Math.sin(breathPhase)
+      : 1;
+
+    // DEEPEN / FLATTEN cycle — one slow event every ~14s at breath=1
+    let nEffective = N;
+    let topGhost = 0; // 0..1 extra level appearing at top
+    if (state.mode === 'adiabatic' && N < 5) {
+      const bigCycle = breathPhase / (Math.PI * 2);
+      const cyclePos = bigCycle - Math.floor(bigCycle);
+      if (cyclePos > 0.7 && cyclePos < 0.9) {
+        topGhost = (cyclePos - 0.7) / 0.2; // 0 → 1
+      } else if (cyclePos >= 0.9) {
+        topGhost = (1 - cyclePos) / 0.1; // 1 → 0
+      }
+    }
+
+    const nSlots = N + (topGhost > 0 ? 1 : 0);
+    const slotH = (h - 20) / nSlots;
+    const baseR = Math.min(slotH * 0.42, 52) * breath;
+    const centerX = x + w / 2;
+
+    // Draw vertical channels first (behind disks)
+    for (let k = 0; k < N - 1; k++) {
+      const y1 = y + h - 10 - (k + 0.5) * slotH + baseR * 0.9;
+      const y2 = y + h - 10 - (k + 1.5) * slotH - baseR * 0.9;
+      drawVChannel(centerX + 60, y1, y2, state.time * 1.5 + k, true);
+    }
+    if (topGhost > 0) {
+      const y1 = y + h - 10 - (N - 1 + 0.5) * slotH + baseR * 0.9;
+      const y2 = y + h - 10 - (N - 0.5 + topGhost) * slotH - baseR * 0.9 * topGhost;
+      ctx.globalAlpha = topGhost;
+      drawVChannel(centerX + 60, y1, y2, state.time * 1.5 + N, true);
+      ctx.globalAlpha = 1;
+    }
+
+    // Draw disks bottom to top — level 0 (largest c) at bottom, top has smallest c
+    for (let k = 0; k < N; k++) {
+      const c = 1.0 * Math.pow(0.6, k); // A28 monotone falloff
+      const diskR = baseR * (0.8 + 0.2 * (1 - k / Math.max(1, N - 1)));
+      const cy = y + h - 10 - (k + 0.5) * slotH;
+
+      // Bundle rotation: helical twist increases with level
+      const bundleRot = state.mode !== 'structure'
+        ? state.time * state.gyr * 0.4 + k * 0.4
+        : 0;
+
+      drawDisk(centerX, cy, diskR, {
+        peers: 4,
+        phase: k * 0.9,
+        bundleRot: bundleRot
+      });
+
+      // Level label
+      drawLabel(centerX - baseR - 12, cy - 6, `L${k}`, { align: 'end' });
+      drawLabel(centerX - baseR - 12, cy + 8, `c=${c.toFixed(2)}`, { align: 'end', alpha: 0.5 });
+    }
+
+    // Ghost level (DEEPEN event during adiabatic)
+    if (topGhost > 0) {
+      const k = N;
+      const c = 1.0 * Math.pow(0.6, k);
+      const diskR = baseR * 0.8 * topGhost;
+      const cy = y + h - 10 - (k + 0.5) * slotH;
+      const bundleRot = state.time * state.gyr * 0.4 + k * 0.4;
+      ctx.globalAlpha = topGhost;
+      drawDisk(centerX, cy, diskR, { peers: 4, phase: k * 0.9, bundleRot: bundleRot });
+      drawLabel(centerX - baseR - 12, cy - 6, `L${k}`, { align: 'end', alpha: 0.4 * topGhost });
+      drawLabel(centerX - baseR - 12, cy + 8, `c=${c.toFixed(2)}`, { align: 'end', alpha: 0.3 * topGhost });
+      ctx.globalAlpha = 1;
+    }
+
+    // Title
+    drawLabel(centerX, y - 4, 'Tower (vertical)', { align: 'center', baseline: 'top', alpha: 0.6 });
+  }
+
+  // ─────────────────────────────────────────────
+  // Flat network topology
+  // ─────────────────────────────────────────────
+
+  function drawFlatNetwork(bounds) {
+    const { x, y, w, h } = bounds;
+    const cx = x + w / 2;
+    const cy = y + h / 2;
+
+    // Adiabatic breath on disk count: add/remove one peer disk slowly
+    const breathPhase = state.adiaPhase;
+    const breath = state.mode === 'adiabatic'
+      ? 1 + 0.07 * state.adia * Math.sin(breathPhase + 1.2)
+      : 1;
+
+    const baseDiskCount = 5;
+    let newDiskFrac = 0;
+    if (state.mode === 'adiabatic') {
+      const cyc = breathPhase / (Math.PI * 2);
+      const p = cyc - Math.floor(cyc);
+      if (p > 0.4 && p < 0.6) newDiskFrac = (p - 0.4) / 0.2;
+      else if (p >= 0.6 && p < 0.8) newDiskFrac = (0.8 - p) / 0.2;
+    }
+
+    const nDisks = baseDiskCount + (newDiskFrac > 0 ? 1 : 0);
+    const radius = Math.min(w, h) * 0.36;
+    const diskR = Math.min(radius * 0.28, 38) * breath;
+
+    // Global network rotation (bundle gyration)
+    const netRot = state.mode !== 'structure'
+      ? state.time * state.gyr * 0.25
+      : 0;
+
+    // Disk positions
+    const positions = [];
+    for (let i = 0; i < nDisks; i++) {
+      const angle = (i / baseDiskCount) * Math.PI * 2 + netRot;
+      const localScale = (i === baseDiskCount) ? newDiskFrac : 1;
+      positions.push({
+        x: cx + Math.cos(angle) * radius,
+        y: cy + Math.sin(angle) * radius,
+        r: diskR * localScale,
+        angle: angle,
+        alpha: localScale
+      });
+    }
+
+    // Horizontal channels between adjacent disks
+    for (let i = 0; i < positions.length; i++) {
+      const a = positions[i];
+      const b = positions[(i + 1) % positions.length];
+      const alpha = Math.min(a.alpha, b.alpha);
+      if (alpha < 0.05) continue;
+      ctx.globalAlpha = alpha;
+      drawHChannel(a.x, a.y, b.x, b.y, state.time * 1.8 + i * 0.5, 0.5 + 0.5 * (state.mode !== 'structure' ? state.gyr : 0.3));
+      ctx.globalAlpha = 1;
+    }
+
+    // Central broker (origin — fixed point of elliptic action on the whole network)
+    ctx.fillStyle = COLORS.label;
+    ctx.globalAlpha = 0.6;
+    ctx.beginPath(); ctx.arc(cx, cy, 4, 0, Math.PI * 2); ctx.fill();
+    ctx.globalAlpha = 0.3;
+    ctx.strokeStyle = COLORS.label;
+    ctx.lineWidth = 0.5;
+    ctx.beginPath(); ctx.arc(cx, cy, 10, 0, Math.PI * 2); ctx.stroke();
+    ctx.globalAlpha = 1;
+
+    // Disks
+    positions.forEach((p, i) => {
+      if (p.alpha < 0.05) return;
+      ctx.globalAlpha = p.alpha;
+      drawDisk(p.x, p.y, p.r, {
+        peers: 3,
+        phase: i * 1.1,
+        bundleRot: state.mode !== 'structure' ? state.time * state.gyr * 0.6 + i : 0
+      });
+      ctx.globalAlpha = 1;
+    });
+
+    // Title
+    drawLabel(cx, y - 4, 'Flat network (horizontal)', { align: 'center', baseline: 'top', alpha: 0.6 });
+  }
+
+  // ─────────────────────────────────────────────
+  // Main draw
+  // ─────────────────────────────────────────────
+
+  function draw() {
+    const w = canvas.clientWidth;
+    const h = 420;
+    ctx.clearRect(0, 0, w, h);
+
+    const pad = 24;
+
+    if (state.topo === 'tower') {
+      drawTower({ x: pad, y: pad, w: w - pad * 2, h: h - pad * 2 });
+    } else if (state.topo === 'flat') {
+      drawFlatNetwork({ x: pad, y: pad, w: w - pad * 2, h: h - pad * 2 });
+    } else {
+      // Both — split vertically
+      const halfW = (w - pad * 3) / 2;
+      drawTower({ x: pad, y: pad, w: halfW, h: h - pad * 2 });
+      drawFlatNetwork({ x: pad * 2 + halfW, y: pad, w: halfW, h: h - pad * 2 });
+    }
+
+    updateStatusAndCaption();
+  }
+
+  function updateStatusAndCaption() {
+    // Simulated F_mix — increases with gyration if structural compatibility is stretched
+    const fmix = state.mode === 'structure' ? 0 : state.gyr * 0.06 * (1 + (state.N - 2) * 0.2);
+    const passed = fmix < 0.05;
+    const eps = 0.05;
+    const verdict = state.mode === 'structure' ? 'idle'
+      : (fmix < eps * 0.4 ? 'COMMIT'
+        : (fmix < eps ? 'COMMIT·tight'
+          : (fmix < eps * 2 ? 'ROLLBACK' : 'BLOCK')));
+    const label = state.mode === 'structure'
+      ? 'σ22 · idle · F_mix=0.000'
+      : `σ22 ${passed ? 'PASS' : 'FAIL'} · F_mix=${fmix.toFixed(3)} · ${verdict}`;
+    statusEl.textContent = label;
+    statusEl.style.color = state.mode === 'structure'
+      ? 'var(--color-text-secondary)'
+      : (passed ? 'var(--color-text-success)' : 'var(--color-text-warning)');
+
+    const captions = {
+      structure: 'Static Tower v2.5: Poincaré disks with holographic boundary (S¹), vertical Möbius channels between levels, peers rotating only by angular placement. No dynamics.',
+      mold: 'Gyration mold: peers precess under hyperbolic parallel-transport holonomy. Near-boundary peers spin faster by the conformal factor 1/(1−r²). The bundle itself rotates slowly.',
+      adiabatic: 'Adiabatic breath: dI/dt≈0 drives slow expansion/contraction. Tower DEEPENs/FLATTENs; flat network admits/ejects peer disks at the ring. Structure preserved under slow flow (σ11).'
+    };
+    captionEl.textContent = captions[state.mode];
+  }
+
+  // ─────────────────────────────────────────────
+  // Animation loop
+  // ─────────────────────────────────────────────
+
+  function tick(t) {
+    if (state.prevT === null) state.prevT = t;
+    const dt = Math.min(0.05, (t - state.prevT) / 1000);
+    state.prevT = t;
+    if (!state.reducedMotion) {
+      state.time += dt;
+      if (state.mode === 'adiabatic') {
+        state.adiaPhase += dt * (Math.PI * 2 / 14) * (0.3 + state.adia * 1.5);
+      }
+    }
+    draw();
+    requestAnimationFrame(tick);
+  }
+
+  // ─────────────────────────────────────────────
+  // Controls
+  // ─────────────────────────────────────────────
+
+  document.getElementById('mode-tabs').addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-mode]');
+    if (!btn) return;
+    state.mode = btn.dataset.mode;
+    for (const b of e.currentTarget.querySelectorAll('button')) {
+      b.classList.toggle('active', b.dataset.mode === state.mode);
+    }
+  });
+
+  document.getElementById('topo-tabs').addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-topo]');
+    if (!btn) return;
+    state.topo = btn.dataset.topo;
+    for (const b of e.currentTarget.querySelectorAll('button')) {
+      b.classList.toggle('active', b.dataset.topo === state.topo);
+    }
+  });
+
+  const gyrSlider = document.getElementById('s-gyr');
+  gyrSlider.addEventListener('input', () => {
+    state.gyr = gyrSlider.value / 100;
+    document.getElementById('v-gyr').textContent = state.gyr.toFixed(2);
+  });
+  const adiaSlider = document.getElementById('s-adia');
+  adiaSlider.addEventListener('input', () => {
+    state.adia = adiaSlider.value / 100;
+    document.getElementById('v-adia').textContent = state.adia.toFixed(2);
+  });
+  const nSlider = document.getElementById('s-n');
+  nSlider.addEventListener('input', () => {
+    state.N = parseInt(nSlider.value, 10);
+    document.getElementById('v-n').textContent = state.N;
+  });
+
+  // ─────────────────────────────────────────────
+  // Boot
+  // ─────────────────────────────────────────────
+
+  resize();
+  window.addEventListener('resize', resize);
+  requestAnimationFrame(tick);
+})();
+</script>

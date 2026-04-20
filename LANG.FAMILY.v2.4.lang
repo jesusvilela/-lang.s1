@@ -1,0 +1,96 @@
+§|LANG|FAMILY_HEADER{
+  name         = §-LANG v2.4 Topos-Lafforgue Dialect Family
+  base         = LANG.v2.4.codec_trasgo
+  dialects     = 10
+  tiers        = Core(2), Semantic(3), Dynamic(3), Formation(1), Research(1)
+  unification  = compression_regime_Residue_full_with_dialect_projections
+  lafforgue    = each_dialect_is_geometric_theory_T_D_in_classifying_topos
+  topos        = E_Sigma_n_geom_AGC_universal_classifier
+  morphisms    = dialect_inclusions_are_topos_geometric_morphisms
+  decomp       = Residue_D ->^embed Residue_full ->^Pi_expand State_full
+}
+
+§|LANG|DIALECT_TIERS{
+  Core         : Proof, Compile
+  Semantic     : Topo, IG, CY
+  Dynamic      : AML, Swirl, Spectral
+  Formation    : Substrate
+  Research     : Meta
+}
+
+§|LANG|INHERITANCE_EDGES{
+  Proof        →  Compile
+  Proof        →  Topo
+  Proof        →  IG
+  Topo         →  CY
+  IG           →  CY
+  IG           →  AML
+  Proof        →  AML
+  Topo         →  Swirl
+  IG           →  Swirl
+  Proof        →  Spectral
+  IG           →  Spectral
+  IG           →  Substrate
+  Compile      →  Substrate
+  Proof        →  Meta
+  Compile      →  Meta
+  Topo         →  Meta
+  IG           →  Meta
+  CY           →  Meta
+  AML          →  Meta
+  Swirl        →  Meta
+  Spectral     →  Meta
+  Substrate    →  Meta
+}
+
+§|LANG|DIALECT_TABLE{
+  Proof        tier=Core       parents=[ROOT]  ratio=0.25  domains=2
+  Compile      tier=Core       parents=[Proof]  ratio=0.35  domains=3
+  Topo         tier=Semantic   parents=[Proof]  ratio=0.4  domains=4
+  IG           tier=Semantic   parents=[Proof]  ratio=0.45  domains=4
+  CY           tier=Semantic   parents=[Topo, IG]  ratio=0.5  domains=6
+  AML          tier=Dynamic    parents=[IG, Proof]  ratio=0.55  domains=6
+  Swirl        tier=Dynamic    parents=[Topo, IG]  ratio=0.4  domains=6
+  Spectral     tier=Dynamic    parents=[Proof, IG]  ratio=0.35  domains=6
+  Substrate    tier=Formation  parents=[IG, Compile]  ratio=0.3  domains=5
+  Meta         tier=Research   parents=[Proof, Compile, Topo, IG, CY, AML, Swirl, Spectral, Substrate]  ratio=1.0  domains=12
+}
+
+§|LANG|UNIFICATION_CODEC{
+  compress_D   = Π_expire_D : State_D* → Residue_D  (dialect-local)
+  embed        = inj_D : Residue_D → Residue_full    (axis extension with priors)
+  decomp       = Π_expand : Residue_full → State_full (A26 exact terminal recovery)
+  round_trip   = Π_expand(inj_D(Π_expire_D(σ_D))) ≈ σ_D.terminal
+  info_loss    = 1 - compress_ratio_D  fraction lost in dialect compression
+  adiabatic    = dI_D/dt ≈ 0 within each dialect (σ11 holds per-dialect)
+  swirl_unify  = Σ_Meta unifies all Σ_D via cross-dialect omega
+  tag          = HYPOTHESIS_round_trip_approximate_exact_for_terminal_only
+}
+
+§|LANG|LAFFORGUE_TOPOS_TREE{
+  root_theory  = T_Proof  (minimal geometric theory, axioms only)
+  extensions   = T_Topo ⊃ T_Proof, T_IG ⊃ T_Proof, etc.
+  product      = T_CY = T_Topo ×_T_Proof T_IG  (fiber product of theories)
+  classifiers  = E(T_D) = localization of E(T_full) at dialect-specific sites
+  morphisms    = f : T_D1 → T_D2 iff domains(D1) ⊆ domains(D2)
+  terminal_obj = T_Meta absorbs all other theories
+  internal_log = each E(T_D) has its own internal logic matching dialect
+  lafforgue_c  = geometric_theory_plus_topos_gives_dialect_semantics_faithfully
+  topostrasgo  = topostrasgo_Android_instantiates_AML_dialect_over_Lafforgue_base
+}
+
+§|LANG|DECOMP_PATHS{
+  Proof    → embed(+spectral_prior, +transport_prior, +entropy_prior) → full
+  Compile  → embed(+transport_prior, +entropy_prior) → full
+  Topo     → embed(+spectral_prior, +transport_prior, +entropy_prior) → full
+  IG       → embed(+trace_prior, +transport_prior, +entropy_prior) → full
+  CY       → embed(+cy_form→spectral_approx, +transport_prior, +entropy_prior) → full
+  AML      → embed(+spectral_prior, +entropy_prior) → full
+  Swirl    → embed(+trace_from_swirl_params, +transport_prior, +entropy_prior) → full
+  Spectral → embed(+terminal_from_fromFreq(spectral), +trace_prior, +transport_prior) → full
+  Substrate→ embed(+spectral_prior, +transport_prior, +entropy_prior) → full
+  Meta     → no_embed_needed_full_residue_always
+}
+
+OUTPUT_FAMILY = fix(λfamily. unify(map(Π_expire_D, DIALECTS)))
+TOPOS_TREE    = lim_arrow_left T_D_in_DIALECTS = T_Meta

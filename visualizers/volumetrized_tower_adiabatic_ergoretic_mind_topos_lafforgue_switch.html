@@ -1,0 +1,630 @@
+<h2 class="sr-only">A 10-level volumetrized tower where each Poincaré disk becomes a 3D sphere (volumetrized). Self-Gödelian agents move inside the spheres with adiabatic, ergoretic (ergodic coverage), ergocetic (constraint-compliant), and metaphoric mind qualities, showing learning, navigation, expansion, growth, and peer relations. A Topos AI switch (Lafforgue) toggles between classical sphere rendering and a topos-theoretic view with classifying toposes T_k, geometric morphisms f* and f_*, and the Lafforgue geometric fragment.</h2>
+
+<style>
+  .vt { font-family: var(--font-sans); color: var(--color-text-primary); }
+  .vt .toprow { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 10px; }
+  .vt .switch-box { display: flex; align-items: center; gap: 10px; padding: 6px 12px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); }
+  .vt .switch-box .lbl { font-size: 11px; color: var(--color-text-tertiary); letter-spacing: 0.04em; text-transform: uppercase; }
+  .vt .switch-box .nm { font-size: 12px; color: var(--color-text-secondary); font-family: var(--font-mono); }
+  .vt .switch { position: relative; width: 40px; height: 22px; background: var(--color-border-secondary); border-radius: 11px; cursor: pointer; transition: background .2s; }
+  .vt .switch.on { background: var(--color-text-info); }
+  .vt .switch .nob { position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; background: var(--color-background-primary); border-radius: 50%; transition: transform .2s; }
+  .vt .switch.on .nob { transform: translateX(18px); }
+  .vt .canvas-wrap {
+    background: var(--color-background-secondary); border-radius: var(--border-radius-lg);
+    padding: 16px; margin-bottom: 10px; position: relative;
+  }
+  .vt canvas { display: block; width: 100%; height: 580px; border-radius: var(--border-radius-md); }
+  .vt .panel {
+    position: absolute; background: var(--color-background-primary);
+    border-radius: var(--border-radius-md); padding: 10px 13px;
+    font-size: 10.5px; font-family: var(--font-mono);
+    border: 0.5px solid var(--color-border-tertiary);
+    line-height: 1.6; color: var(--color-text-secondary); pointer-events: none;
+  }
+  .vt .pl-tl { top: 24px; left: 24px; max-width: 200px; color: var(--color-text-tertiary); }
+  .vt .pl-tr { top: 24px; right: 24px; min-width: 180px; }
+  .vt .pl-tr .k { color: var(--color-text-tertiary); display: inline-block; width: 66px; }
+  .vt .pl-tr .v { color: var(--color-text-primary); font-weight: 500; }
+  .vt .pl-bl { bottom: 24px; left: 24px; max-width: 220px; font-size: 10px; line-height: 1.5; }
+  .vt .pl-br { bottom: 24px; right: 24px; min-width: 180px; font-size: 10px; }
+  .vt .pl-br .pc { color: var(--color-text-tertiary); display: inline-block; width: 80px; }
+  .vt .pl-br .pv { color: var(--color-text-primary); font-weight: 500; font-family: var(--font-mono); }
+  .vt .controls { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 10px 14px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); }
+  .vt .ctrl { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+  .vt .ctrl label { color: var(--color-text-secondary); min-width: 64px; font-size: 11px; }
+  .vt .ctrl input[type=range] { flex: 1; min-width: 0; }
+  .vt .ctrl .v { min-width: 28px; text-align: right; color: var(--color-text-primary); font-weight: 500; font-family: var(--font-mono); font-size: 11px; }
+  .vt .legend { display: flex; gap: 12px; font-size: 11px; color: var(--color-text-secondary); flex-wrap: wrap; padding: 8px 4px 0; }
+  .vt .leg { display: flex; align-items: center; gap: 6px; }
+  .vt .leg .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .vt .leg .ln { width: 14px; height: 1.5px; flex-shrink: 0; }
+</style>
+
+<div class="vt">
+  <div class="toprow">
+    <div class="switch-box">
+      <span class="lbl">Topos AI</span>
+      <span class="nm">Lafforgue</span>
+      <div class="switch" id="vt-switch"><div class="nob"></div></div>
+      <span class="nm" id="vt-mode" style="min-width:72px">classical</span>
+    </div>
+    <div style="font-size: 11px; color: var(--color-text-tertiary); font-family: var(--font-mono);">
+      10 spheres · volumetrized B⁸ → B³-rendering · mind qualities
+    </div>
+  </div>
+
+  <div class="canvas-wrap">
+    <canvas id="vt-canvas"></canvas>
+    <div class="panel pl-tl" id="vt-tl">volumetrized tower<br>10 nested B³ spheres<br>agents: learn · navigate<br>expand · grow · relate</div>
+    <div class="panel pl-tr" id="vt-tr">
+      <div><span class="k">adiabatic</span><span class="v" id="vt-m-adi">—</span></div>
+      <div><span class="k">ergoretic</span><span class="v" id="vt-m-erg">—</span></div>
+      <div><span class="k">ergocetic</span><span class="v" id="vt-m-eco">—</span></div>
+      <div><span class="k">metaphoric</span><span class="v" id="vt-m-met">—</span></div>
+    </div>
+    <div class="panel pl-bl" id="vt-bl">agent capabilities<br><span style="color:var(--color-text-primary)">learn</span> · <span style="color:var(--color-text-primary)">navigate</span> · <span style="color:var(--color-text-primary)">expand</span> · <span style="color:var(--color-text-primary)">growth</span> · <span style="color:var(--color-text-primary)">relate</span></div>
+    <div class="panel pl-br" id="vt-br">
+      <div><span class="pc">learn (bits)</span><span class="pv" id="vt-p-learn">—</span></div>
+      <div><span class="pc">nav steps</span><span class="pv" id="vt-p-nav">—</span></div>
+      <div><span class="pc">expand %</span><span class="pv" id="vt-p-exp">—</span></div>
+      <div><span class="pc">growth</span><span class="pv" id="vt-p-gro">—</span></div>
+      <div><span class="pc">relations</span><span class="pv" id="vt-p-rel">—</span></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="ctrl"><label>speed</label><input type="range" id="vt-speed" min="0" max="100" value="50" step="1"><span class="v" id="vt-speed-v">0.50</span></div>
+    <div class="ctrl"><label>agents</label><input type="range" id="vt-agents" min="5" max="30" value="15" step="1"><span class="v" id="vt-agents-v">15</span></div>
+  </div>
+
+  <div class="legend">
+    <div class="leg"><div class="dot" style="background:#7F77DD"></div>sphere B³_k</div>
+    <div class="leg"><div class="dot" style="background:#D85A30"></div>agent</div>
+    <div class="leg"><div class="ln" style="background:#1D9E75"></div>peer relation</div>
+    <div class="leg"><div class="ln" style="background:#EF9F27"></div>metaphor link</div>
+    <div class="leg"><div class="dot" style="background:#1D9E75"></div>learning halo</div>
+    <div class="leg" id="vt-leg-topos" style="display:none"><div class="ln" style="background:#378ADD"></div>f* ⊣ f_* morphism</div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const canvas = document.getElementById('vt-canvas');
+  const ctx = canvas.getContext('2d');
+
+  const S = {
+    topos: false,
+    speed: 0.50,
+    agentCount: 15,
+    time: 0, prevT: null,
+    rotY: 0,
+    tilt: 0.42,
+    dpr: Math.max(1, window.devicePixelRatio || 1),
+    reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    spheres: [],
+    agents: [],
+    metaphorLinks: [],  // transient links
+    relations: [],
+    totalMoves: 0,
+    totalCompliantMoves: 0,
+    needsRegen: true
+  };
+
+  function resize() {
+    const w = canvas.clientWidth, h = 580;
+    canvas.width = w * S.dpr; canvas.height = h * S.dpr;
+    ctx.setTransform(S.dpr, 0, 0, S.dpr, 0, 0);
+  }
+
+  function initSpheres() {
+    S.spheres = [];
+    for (let k = 0; k < 10; k++) {
+      S.spheres.push({
+        level: k,
+        baseRadius: 0.97 - k * 0.082,
+        currentRadius: 0.97 - k * 0.082,
+        growth: 0,
+        curvature: Math.pow(0.72, k)  // A28 monotone
+      });
+    }
+  }
+
+  const BUCKETS_PER_SPHERE = 96;
+  function bucketOf(theta, phi) {
+    const tB = Math.floor(((theta % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2)) / (Math.PI * 2) * 12);
+    const pB = Math.floor(phi / Math.PI * 8);
+    return tB * 8 + pB;
+  }
+
+  function initAgents() {
+    S.agents = [];
+    for (let i = 0; i < S.agentCount; i++) {
+      const sphereIdx = i % 10;
+      S.agents.push({
+        id: i,
+        sphereIdx: sphereIdx,
+        theta: Math.random() * Math.PI * 2,
+        phi: Math.acos(2 * Math.random() - 1),
+        vTheta: 0,
+        vPhi: 0,
+        trail: [],
+        visited: new Set(),
+        knowledge: 0,        // learn
+        navSteps: 0,          // navigate
+        expansion: 0,         // expand % = visited buckets / total
+        navTarget: null,      // goal bucket for navigation
+        age: 0,
+        // Metaphoric: pattern signature (sinusoidal on trajectory)
+        signature: i * 0.37
+      });
+    }
+    S.totalMoves = 0;
+    S.totalCompliantMoves = 0;
+  }
+
+  function sphericalToCart(theta, phi, r) {
+    return {
+      x: r * Math.sin(phi) * Math.cos(theta),
+      y: r * Math.cos(phi),
+      z: r * Math.sin(phi) * Math.sin(theta)
+    };
+  }
+
+  function project3D(p, cx, cy, scale, rotY, tilt) {
+    // Rotate about Y
+    const xr = p.x * Math.cos(rotY) + p.z * Math.sin(rotY);
+    const zr = -p.x * Math.sin(rotY) + p.z * Math.cos(rotY);
+    // Tilt about X
+    const y2 = p.y * Math.cos(tilt) - zr * Math.sin(tilt);
+    const z2 = p.y * Math.sin(tilt) + zr * Math.cos(tilt);
+    // Perspective
+    const persp = 1 / (1 + z2 * 0.2);
+    return {
+      px: cx + xr * scale * persp,
+      py: cy - y2 * scale * persp,
+      depth: z2,
+      scale: persp
+    };
+  }
+
+  function drawSphere(sphere, cx, cy, scale, rotY, tilt) {
+    const R = sphere.currentRadius * scale;
+    const levelAlpha = 0.75 - sphere.level * 0.055;
+
+    // Outline circle (silhouette)
+    ctx.strokeStyle = `rgba(127, 119, 221, ${levelAlpha * 0.55})`;
+    ctx.lineWidth = 0.7;
+    ctx.beginPath();
+    ctx.arc(cx, cy, R, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Equator (circle at y=0) — ellipse after tilt
+    ctx.strokeStyle = `rgba(127, 119, 221, ${levelAlpha * 0.35})`;
+    ctx.lineWidth = 0.5;
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, R, R * Math.abs(Math.sin(tilt)), 0, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Meridians — 4 great circles through poles
+    for (let m = 0; m < 4; m++) {
+      const mTheta = m * Math.PI / 4 + rotY;
+      const wid = R * Math.abs(Math.cos(mTheta));
+      const hei = R;
+      if (wid < 0.5) continue;
+      ctx.strokeStyle = `rgba(127, 119, 221, ${levelAlpha * 0.18})`;
+      ctx.lineWidth = 0.4;
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, wid, hei, tilt, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    // Growth halo — outer glow proportional to sphere growth
+    if (sphere.growth > 0.001) {
+      ctx.strokeStyle = `rgba(29, 158, 117, ${Math.min(sphere.growth * 0.8, 0.6)})`;
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.arc(cx, cy, R * (1 + sphere.growth * 0.08), 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    // Topos mode: label
+    if (S.topos) {
+      const lbl = `T_${sphere.level}`;
+      ctx.fillStyle = `rgba(127, 119, 221, ${0.75})`;
+      ctx.font = `500 10px ${getComputedStyle(document.body).fontFamily}`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      // Place label on the right side of the sphere (on equator)
+      const labelAngle = 0.1;
+      const lp3 = sphericalToCart(labelAngle, Math.PI / 2, sphere.currentRadius);
+      const lp = project3D(lp3, cx, cy, scale, rotY, tilt);
+      ctx.fillText(lbl, lp.px + 10 - sphere.level * 0.8, lp.py);
+    }
+  }
+
+  function drawTopoMorphisms(cx, cy, scale, rotY, tilt) {
+    if (!S.topos) return;
+    // Draw morphism arrows between adjacent spheres (small indicators near top)
+    ctx.strokeStyle = 'rgba(55, 138, 221, 0.65)';
+    ctx.fillStyle = 'rgba(55, 138, 221, 0.85)';
+    ctx.lineWidth = 0.7;
+    ctx.font = `400 9px ${getComputedStyle(document.body).fontFamily}`;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+
+    // Represent as stacked labels on the far right
+    const startX = cx + Math.min(canvas.clientWidth, 680) * 0.42;
+    const startY = cy - scale * 0.5;
+    for (let k = 0; k < 9; k++) {
+      const y0 = startY + k * 18;
+      ctx.fillStyle = 'rgba(127, 119, 221, 0.8)';
+      ctx.fillText(`T_${k}`, startX, y0);
+      ctx.strokeStyle = 'rgba(55, 138, 221, 0.5)';
+      ctx.beginPath();
+      ctx.moveTo(startX + 20, y0);
+      ctx.lineTo(startX + 44, y0 + 18);
+      ctx.stroke();
+      ctx.fillStyle = 'rgba(55, 138, 221, 0.85)';
+      ctx.fillText('f*⊣f_*', startX + 20, y0 + 9);
+    }
+    ctx.fillStyle = 'rgba(127, 119, 221, 0.8)';
+    ctx.fillText('T_9', startX, startY + 9 * 18);
+  }
+
+  function drawLafforgueFragment(cx, cy) {
+    if (!S.topos) return;
+    // Small lattice diagram representing the Lafforgue geometric fragment
+    // in the top-left behind the info panel — drawn subtly
+    const ox = 32, oy = 120;
+    ctx.strokeStyle = 'rgba(55, 138, 221, 0.35)';
+    ctx.fillStyle = 'rgba(55, 138, 221, 0.7)';
+    ctx.lineWidth = 0.5;
+    ctx.font = `400 9px ${getComputedStyle(document.body).fontFamily}`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    // Lattice: ⊤ at top, ⊥ at bottom, ∧/∨ in middle, ∃ on side
+    const nodes = [
+      { x: 0, y: 0, label: '⊤' },
+      { x: -24, y: 28, label: '∧' },
+      { x: 24, y: 28, label: '∨' },
+      { x: -12, y: 56, label: '∃' },
+      { x: 12, y: 56, label: '=' },
+      { x: 0, y: 84, label: '⊥' }
+    ];
+    ctx.beginPath();
+    ctx.moveTo(ox + nodes[0].x, oy + nodes[0].y);
+    ctx.lineTo(ox + nodes[1].x, oy + nodes[1].y);
+    ctx.moveTo(ox + nodes[0].x, oy + nodes[0].y);
+    ctx.lineTo(ox + nodes[2].x, oy + nodes[2].y);
+    ctx.moveTo(ox + nodes[1].x, oy + nodes[1].y);
+    ctx.lineTo(ox + nodes[3].x, oy + nodes[3].y);
+    ctx.moveTo(ox + nodes[2].x, oy + nodes[2].y);
+    ctx.lineTo(ox + nodes[4].x, oy + nodes[4].y);
+    ctx.moveTo(ox + nodes[3].x, oy + nodes[3].y);
+    ctx.lineTo(ox + nodes[5].x, oy + nodes[5].y);
+    ctx.moveTo(ox + nodes[4].x, oy + nodes[4].y);
+    ctx.lineTo(ox + nodes[5].x, oy + nodes[5].y);
+    ctx.stroke();
+
+    for (const n of nodes) {
+      ctx.fillStyle = 'rgba(127, 119, 221, 0.2)';
+      ctx.beginPath();
+      ctx.arc(ox + n.x, oy + n.y, 7, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = 'rgba(55, 138, 221, 0.9)';
+      ctx.fillText(n.label, ox + n.x, oy + n.y);
+    }
+    ctx.fillStyle = 'rgba(127, 119, 221, 0.6)';
+    ctx.font = `400 9px ${getComputedStyle(document.body).fontFamily}`;
+    ctx.fillText('geometric fragment', ox, oy + 102);
+  }
+
+  function drawAgent(agent, cx, cy, scale, rotY, tilt) {
+    const sphere = S.spheres[agent.sphereIdx];
+    const p3 = sphericalToCart(agent.theta, agent.phi, sphere.currentRadius);
+    const proj = project3D(p3, cx, cy, scale, rotY, tilt);
+
+    // Depth fading
+    const depthNorm = (proj.depth + sphere.currentRadius) / (2 * sphere.currentRadius);
+    const depthAlpha = 0.35 + 0.55 * depthNorm;
+    const sz = (2.0 + depthNorm * 1.2) * proj.scale;
+
+    // Trail
+    if (agent.trail.length > 1) {
+      ctx.strokeStyle = `rgba(216, 90, 48, 0.18)`;
+      ctx.lineWidth = 0.7;
+      ctx.beginPath();
+      let started = false;
+      for (let i = 0; i < agent.trail.length; i++) {
+        const pt = agent.trail[i];
+        const t3 = sphericalToCart(pt.theta, pt.phi, sphere.currentRadius);
+        const tp = project3D(t3, cx, cy, scale, rotY, tilt);
+        if (!started) { ctx.moveTo(tp.px, tp.py); started = true; }
+        else ctx.lineTo(tp.px, tp.py);
+      }
+      ctx.stroke();
+    }
+
+    // Knowledge halo
+    if (agent.knowledge > 2) {
+      const haloStrength = Math.min(agent.knowledge / 30, 1);
+      ctx.strokeStyle = `rgba(29, 158, 117, ${depthAlpha * 0.45 * haloStrength})`;
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      ctx.arc(proj.px, proj.py, 4 + haloStrength * 3, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    // Agent dot
+    ctx.fillStyle = `rgba(216, 90, 48, ${depthAlpha})`;
+    ctx.beginPath();
+    ctx.arc(proj.px, proj.py, sz, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  function drawRelations(cx, cy, scale, rotY, tilt) {
+    ctx.strokeStyle = 'rgba(29, 158, 117, 0.35)';
+    ctx.lineWidth = 0.5;
+    for (const rel of S.relations) {
+      const a = S.agents[rel.a], b = S.agents[rel.b];
+      if (!a || !b) continue;
+      const sa = S.spheres[a.sphereIdx], sb = S.spheres[b.sphereIdx];
+      const p3a = sphericalToCart(a.theta, a.phi, sa.currentRadius);
+      const p3b = sphericalToCart(b.theta, b.phi, sb.currentRadius);
+      const pa = project3D(p3a, cx, cy, scale, rotY, tilt);
+      const pb = project3D(p3b, cx, cy, scale, rotY, tilt);
+      ctx.beginPath();
+      ctx.moveTo(pa.px, pa.py);
+      ctx.lineTo(pb.px, pb.py);
+      ctx.stroke();
+    }
+  }
+
+  function drawMetaphors(cx, cy, scale, rotY, tilt) {
+    for (const m of S.metaphorLinks) {
+      const alpha = Math.max(0, 0.35 - m.age * 0.4);
+      if (alpha < 0.02) continue;
+      const a = S.agents[m.a], b = S.agents[m.b];
+      if (!a || !b) continue;
+      const sa = S.spheres[a.sphereIdx], sb = S.spheres[b.sphereIdx];
+      const p3a = sphericalToCart(a.theta, a.phi, sa.currentRadius);
+      const p3b = sphericalToCart(b.theta, b.phi, sb.currentRadius);
+      const pa = project3D(p3a, cx, cy, scale, rotY, tilt);
+      const pb = project3D(p3b, cx, cy, scale, rotY, tilt);
+      ctx.strokeStyle = `rgba(239, 159, 39, ${alpha})`;
+      ctx.lineWidth = 0.6;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      ctx.moveTo(pa.px, pa.py);
+      ctx.lineTo(pb.px, pb.py);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+  }
+
+  // Update physics
+  function updateAgent(agent, dt) {
+    agent.age += dt;
+    const sphere = S.spheres[agent.sphereIdx];
+
+    // Ergoretic — navigation: pick a target bucket unvisited, move toward it
+    if (!agent.navTarget || Math.random() < dt * 0.3) {
+      // Pick random unvisited bucket; fallback random
+      const bucket = Math.floor(Math.random() * BUCKETS_PER_SPHERE);
+      const tB = Math.floor(bucket / 8);
+      const pB = bucket % 8;
+      agent.navTarget = {
+        theta: (tB + 0.5) / 12 * Math.PI * 2,
+        phi: (pB + 0.5) / 8 * Math.PI
+      };
+      agent.navSteps++;
+    }
+
+    // Ergocetic — constraint: moves must respect σ22 (F_mix check)
+    // Simulated: allow move iff local F_mix under threshold (deterministic from position)
+    const fmix = 0.5 + 0.5 * Math.sin(agent.theta * 2.1 + agent.phi * 1.7 + agent.sphereIdx * 0.8);
+    const allowed = fmix < 0.65;  // σ22 threshold
+    S.totalMoves++;
+    if (allowed) S.totalCompliantMoves++;
+
+    // Adiabatic step — slow motion
+    const stepSize = S.speed * 0.7 * dt * (allowed ? 1 : 0.3);
+    const dTheta = (agent.navTarget.theta - agent.theta);
+    // Shortest angular distance
+    let dT = dTheta;
+    if (dT > Math.PI) dT -= Math.PI * 2;
+    if (dT < -Math.PI) dT += Math.PI * 2;
+    const dP = agent.navTarget.phi - agent.phi;
+
+    agent.theta = (agent.theta + dT * stepSize + Math.PI * 2) % (Math.PI * 2);
+    agent.phi = Math.max(0.05, Math.min(Math.PI - 0.05, agent.phi + dP * stepSize));
+
+    // Track visited bucket
+    const bucket = bucketOf(agent.theta, agent.phi);
+    if (!agent.visited.has(bucket)) {
+      agent.visited.add(bucket);
+      agent.knowledge++;
+    }
+
+    // Trail
+    if (agent.trail.length === 0 || agent.age - (agent.lastTrail || 0) > 0.15) {
+      agent.trail.push({ theta: agent.theta, phi: agent.phi });
+      agent.lastTrail = agent.age;
+      if (agent.trail.length > 15) agent.trail.shift();
+    }
+
+    // Growth: sphere radius grows with collective agent learning
+    const learn = agent.knowledge / BUCKETS_PER_SPHERE;
+    if (learn > sphere.growth) sphere.growth = learn * 0.1;
+
+    // Expansion is derived from visited set
+    agent.expansion = agent.visited.size / BUCKETS_PER_SPHERE;
+  }
+
+  function updateRelations() {
+    S.relations = [];
+    // Find agent pairs on adjacent spheres with similar angular positions
+    for (let i = 0; i < S.agents.length; i++) {
+      for (let j = i + 1; j < S.agents.length; j++) {
+        const a = S.agents[i], b = S.agents[j];
+        if (Math.abs(a.sphereIdx - b.sphereIdx) !== 1) continue;
+        const dT = Math.abs(a.theta - b.theta);
+        const dT2 = Math.min(dT, Math.PI * 2 - dT);
+        const dP = Math.abs(a.phi - b.phi);
+        if (dT2 < 0.5 && dP < 0.5) {
+          S.relations.push({ a: i, b: j });
+        }
+      }
+    }
+  }
+
+  function checkMetaphors(dt) {
+    // Sample occasionally: pairs of agents with similar trajectory signature (on different spheres)
+    if (Math.random() < dt * 0.8) {
+      const i = Math.floor(Math.random() * S.agents.length);
+      const j = Math.floor(Math.random() * S.agents.length);
+      if (i === j) return;
+      const a = S.agents[i], b = S.agents[j];
+      if (a.sphereIdx === b.sphereIdx) return;
+      // Metaphor condition: similar sig + similar position structure
+      const sigDiff = Math.abs(Math.sin(a.signature + S.time * 0.5) - Math.sin(b.signature + S.time * 0.5));
+      const posDiff = Math.abs(a.theta - b.theta) + Math.abs(a.phi - b.phi);
+      if (sigDiff < 0.3 && posDiff < 1.2) {
+        S.metaphorLinks.push({ a: i, b: j, age: 0 });
+        if (S.metaphorLinks.length > 12) S.metaphorLinks.shift();
+      }
+    }
+    for (const m of S.metaphorLinks) m.age += dt;
+    S.metaphorLinks = S.metaphorLinks.filter(m => m.age < 1.0);
+  }
+
+  function updateMetrics() {
+    // Adiabatic: mean |dI/dt| — slow knowledge change rate
+    let totalKnowledge = 0;
+    let totalExpansion = 0;
+    let totalGrowth = 0;
+    for (const a of S.agents) {
+      totalKnowledge += a.knowledge;
+      totalExpansion += a.expansion;
+    }
+    for (const sp of S.spheres) totalGrowth += sp.growth;
+    const avgExpansion = totalExpansion / Math.max(1, S.agents.length);
+
+    // Adiabatic rate = 1 / (1 + dK/dt) — normalized
+    const dKdt = S.speed * 0.5;  // proxy
+    const adiabaticScore = Math.min(1, 1 / (1 + dKdt * 3));
+
+    // Ergoretic = coverage average
+    const ergoretic = avgExpansion;
+
+    // Ergocetic = compliant move ratio
+    const ergocetic = S.totalMoves > 0 ? S.totalCompliantMoves / S.totalMoves : 0;
+
+    // Metaphoric = count of active metaphor links
+    const metaphoric = S.metaphorLinks.length / 12;
+
+    document.getElementById('vt-m-adi').textContent = adiabaticScore.toFixed(2);
+    document.getElementById('vt-m-erg').textContent = (ergoretic * 100).toFixed(0) + '%';
+    document.getElementById('vt-m-eco').textContent = (ergocetic * 100).toFixed(0) + '%';
+    document.getElementById('vt-m-met').textContent = metaphoric.toFixed(2);
+
+    document.getElementById('vt-p-learn').textContent = totalKnowledge;
+    document.getElementById('vt-p-nav').textContent = S.agents.reduce((s,a) => s + a.navSteps, 0);
+    document.getElementById('vt-p-exp').textContent = (avgExpansion * 100).toFixed(0) + '%';
+    document.getElementById('vt-p-gro').textContent = totalGrowth.toFixed(2);
+    document.getElementById('vt-p-rel').textContent = S.relations.length;
+  }
+
+  function draw() {
+    if (S.needsRegen) { initSpheres(); initAgents(); S.needsRegen = false; }
+    const w = canvas.clientWidth, h = 580;
+    ctx.clearRect(0, 0, w, h);
+    const cx = w / 2, cy = h / 2;
+    const baseScale = Math.min(w, h) * 0.42;
+
+    // Background subtle gradient
+    const g = ctx.createRadialGradient(cx, cy, baseScale * 0.1, cx, cy, baseScale * 1.3);
+    g.addColorStop(0, 'rgba(29, 158, 117, 0.03)');
+    g.addColorStop(0.5, 'rgba(127, 119, 221, 0.04)');
+    g.addColorStop(1, 'rgba(239, 159, 39, 0.05)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, w, h);
+
+    // Sort spheres by depth of representative point for draw order
+    const sortedSpheres = [...S.spheres].sort((a, b) => a.currentRadius - b.currentRadius);
+
+    // Draw from outside in (largest first, so smaller nested spheres visible on top)
+    // Actually draw from outside in for overlapping visuals
+    const sortedOuterToInner = [...S.spheres].sort((a, b) => b.currentRadius - a.currentRadius);
+    for (const sp of sortedOuterToInner) {
+      drawSphere(sp, cx, cy, baseScale, S.rotY, S.tilt);
+    }
+
+    // Draw relations + metaphors
+    drawRelations(cx, cy, baseScale, S.rotY, S.tilt);
+    drawMetaphors(cx, cy, baseScale, S.rotY, S.tilt);
+
+    // Sort agents by projected depth
+    const sortedAgents = [...S.agents].map(a => {
+      const sp = S.spheres[a.sphereIdx];
+      const p3 = sphericalToCart(a.theta, a.phi, sp.currentRadius);
+      const xr = p3.x * Math.cos(S.rotY) + p3.z * Math.sin(S.rotY);
+      const zr = -p3.x * Math.sin(S.rotY) + p3.z * Math.cos(S.rotY);
+      const z2 = p3.y * Math.sin(S.tilt) + zr * Math.cos(S.tilt);
+      return { a, depth: z2 };
+    }).sort((x, y) => x.depth - y.depth);
+    for (const sa of sortedAgents) drawAgent(sa.a, cx, cy, baseScale, S.rotY, S.tilt);
+
+    // Topos overlays
+    drawTopoMorphisms(cx, cy, baseScale, S.rotY, S.tilt);
+    drawLafforgueFragment(cx, cy);
+
+    // Fix(Φ) origin marker (center)
+    ctx.fillStyle = 'rgba(29, 158, 117, 0.9)';
+    ctx.beginPath(); ctx.arc(cx, cy, 2.5, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = 'rgba(29, 158, 117, 0.5)';
+    ctx.lineWidth = 0.6;
+    ctx.beginPath(); ctx.arc(cx, cy, 5, 0, Math.PI * 2); ctx.stroke();
+
+    updateMetrics();
+  }
+
+  function tick(t) {
+    if (S.prevT === null) S.prevT = t;
+    const dt = Math.min(0.05, (t - S.prevT) / 1000);
+    S.prevT = t;
+    if (!S.reducedMotion) {
+      S.time += dt;
+      S.rotY += dt * 0.15 * (S.topos ? 0.5 : 1);
+    }
+    for (const a of S.agents) updateAgent(a, dt);
+    updateRelations();
+    checkMetaphors(dt);
+    // Sphere growth damping
+    for (const sp of S.spheres) sp.growth *= 0.995;
+    draw();
+    requestAnimationFrame(tick);
+  }
+
+  // Switch
+  const sw = document.getElementById('vt-switch');
+  sw.addEventListener('click', () => {
+    S.topos = !S.topos;
+    sw.classList.toggle('on', S.topos);
+    document.getElementById('vt-mode').textContent = S.topos ? 'topos (Lafforgue)' : 'classical';
+    document.getElementById('vt-leg-topos').style.display = S.topos ? 'flex' : 'none';
+  });
+
+  // Controls
+  const spS = document.getElementById('vt-speed');
+  spS.addEventListener('input', () => { S.speed = spS.value / 100; document.getElementById('vt-speed-v').textContent = S.speed.toFixed(2); });
+  const agS = document.getElementById('vt-agents');
+  agS.addEventListener('input', () => { S.agentCount = parseInt(agS.value); document.getElementById('vt-agents-v').textContent = S.agentCount; S.needsRegen = true; });
+
+  resize();
+  window.addEventListener('resize', resize);
+  requestAnimationFrame(tick);
+})();
+</script>

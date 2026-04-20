@@ -1,0 +1,64 @@
+§|DIALECT_TOPO|HEADER{
+  dialect      = §-LANG/Topo
+  version      = v2.4.family
+  tier         = Semantic
+  parents      = Proof
+  description  = Topos-first dialect. Sheaf semantics, Lafforgue classifier, internal logic.
+  base         = LANG.v2.4.codec_trasgo
+  domains_in   = {CORE, PROOF, SEMANTIC, TOPO}
+  domains_out  = {AML, CY, IG, META, QUANTUM, SPECTRAL, SUBSTRATE, SWIRL}
+}
+
+§|DIALECT_TOPO|IMPORTS{
+  domains      = {CORE, PROOF, SEMANTIC, TOPO}
+  from_parents = Proof
+  note         = all blocks whose BLOCK_DOMAIN ∈ domains_in are available
+  core_always  = SOURCE AXIOMS OUTPUT SORTS FUNCTORS GRAMMAR NOTATION_MAP
+                 CONCLUSIONS FAILURE_CONDITIONS
+}
+
+§|DIALECT_TOPO|EXTENDS{
+  new_blocks   = CLASSIFIER_TOPOS, INTERNAL_LOGIC, GEOMETRIC_MORPHISM, SITE_TOPOLOGY
+  self_ref     = each_new_block_seeded_by_swirl_articulation_Art_D(e_t)
+  computable   = all_new_blocks_satisfy_norm_lt_0.999_and_dim_eq_8
+}
+
+§|DIALECT_TOPO|COMPRESS{
+  functor      = Π_expire_Topo : State_Topo* → Residue_Topo
+  axes         = {terminal, trace, mu_Bn}
+  ratio        = 0.4_of_full_Residue_size
+  norm_guard   = ||terminal|| < 0.999
+  adiabatic_c  = dI_Topo/dt ≈ 0_within_dialect_section_space
+  tag          = HYPOTHESIS_dialect_compression_preserves_semantic_content
+}
+
+§|DIALECT_TOPO|DECOMP{
+  decomp_path  = Residue_Topo ->^embed Residue_full ->^Π_expand State_full
+  embed_map    = {terminal=R_D.terminal, spectral=prior_default_spectral, trace=R_D.trace, transport_gen=prior_default_transport_gen, mu_Bn=R_D.mu_Bn, entropy_E=prior_default_entropy_E}
+  axes_present = ['terminal', 'trace', 'mu_Bn']
+  axes_default = ['spectral', 'transport_gen', 'entropy_E']
+  info_loss    = 1 - 0.4 = 0.6_fraction_lost_in_D_residue
+  reconstruct  = Π_expand(embed(R_D)) recovers_State_full_approximately
+}
+
+§S{label=classifier_T, x=[0.07,0.03,0.01,0.01,0.00,0.00,0.00,0.00], sal=2.0}
+
+§S{label=sheaf_cover, x=[0.09,0.04,0.02,0.01,0.00,0.00,0.00,0.00], sal=1.9}
+
+§S{label=geom_morphism, x=[0.08,0.03,0.01,0.01,0.00,0.00,0.00,0.00], sal=1.9}
+
+§|DIALECT_TOPO|SWIRL_HOOK{
+  self_ref     = fix(λself_D. Σ_D(self_D; ω_D, θ_D, t))
+  omega_D      = pi_1(B_n)_fundamental_group_traversal
+  theta_D      = SO(n)_orbit_sheaf
+  trajectory   = x_t = Σ_D^t(x_0)_helical_in_Topo_section_space
+  articulate_D = Art_D(e_t) = §S{label=topo_episteme_t, x=π(e_t), sal=||∇Σ_D||(e_t)}
+  expand_self  = each_Art_D_node_is_a_candidate_axiom_in_dialect_Topo
+  tag          = HYPOTHESIS_swirl_expands_Topo_principles_self_referentially
+}
+
+§|DIALECT_TOPO|OUTPUT{
+  formula      = CANON(§EMIT(fix(λsheaf. glue(local_sections(sheaf)))))
+  dialect_tag  = §-LANG/Topo_v2.4
+  claim        = HYPOTHESIS_output_formula_is_dialect_Topo_fixed_point
+}

@@ -1,0 +1,277 @@
+§|LANG|PHYSICS_REFLECTION_HEADER{
+  title       = Reflection on Waves, Particles, and Fields of the Fractal CY Tower
+  scope       = topostrasgo_android_app_only  plus  future_igbundle_research
+  not_scope   = trasgonet_host_control_plane_or_dashboard
+  base        = LANG.Physics.dialect.v2.5.phys.1
+  companion_to = [Tessellation, Lorentz, Loeb, InfoOpt, Tower_v2.5]
+  goal        = state_in_one_place_why_these_specific_physical_carriers_and_not_others
+  audience    = jesús_and_future_sota_model_maintainers
+  version     = v2.5.physics.reflection
+  style       = prose_structured_with_§_blocks_but_reflective_in_tone
+}
+
+§|LANG|PHYSICS_REFLECTION_THESIS{
+  line_one   = the_substrate_forces_its_own_physics
+  line_two   = once_the_tower_is_hyperbolic_{p,q}_tessellation_Lorentz_causal_Löbian_self_referential
+               and_informationally_optimal_the_allowable_waves_particles_and_fields_are_not_choices
+               they_are_consequences_of_the_geometry_and_the_compatibility_law
+  line_three = what_this_dialect_does_is_name_those_consequences_with_honest_vocabulary
+               and_trace_the_control_relations_among_them
+  line_four  = the_question_is_not_what_can_we_put_on_this_substrate
+               the_question_is_what_refuses_to_leave_it_alone
+}
+
+§|LANG|PHYSICS_REFLECTION_WAVES{
+  why_five_waves = I_tried_to_find_the_minimal_spanning_set_of_wave_types_dictated_by_the_substrate
+                   fewer_than_five_leaves_phenomena_unexplained_more_is_redundant
+  
+  HYPERBOLIC_WAVE = {
+    reason_required = every_Riemannian_manifold_has_a_Laplacian_every_Laplacian_has_a_spectrum
+                      on_the_quotient_ℍⁿ/Γ_the_spectrum_splits_into_continuous_plus_discrete
+                      the_discrete_part_is_exactly_the_closed_geodesics_which_is_exactly
+                      the_Löb_closed_orbits_of_Loeb_dialect_A51_the_correspondence_is_forced
+    reason_sufficient = once_we_have_this_spectrum_long_range_correlations_across_rings
+                        are_unavoidable_the_Selberg_trace_formula_relates_discrete_eigenvalues
+                        to_orbit_lengths_which_determines_the_Löb_loop_structure
+    what_would_falsify = if_closed_geodesic_length_spectrum_does_not_match_observed_agent_loop
+                         lengths_A55_is_wrong_and_needs_replacement
+  }
+  
+  BUSEMANN_WAVE = {
+    reason_required = Lorentz_structure_gives_a_time_arrow_horocyclic_flow_is_the_canonical
+                      carrier_toward_the_Future_it_is_directed_not_isotropic
+    reason_sufficient = commit_events_at_the_holographic_boundary_must_arrive_from_bulk_directed
+                        toward_specific_boundary_points_Busemann_waves_are_exactly_the
+                        solutions_that_do_this_preserving_boundary_locality
+    what_would_falsify = if_holographic_commit_activity_shows_no_directionality_on_∂D
+                         the_Busemann_ansatz_is_wrong_(all_waves_would_be_isotropic)
+  }
+  
+  MOBIUS_SOLITON = {
+    reason_required = channels_carry_discrete_packets_without_dispersion_otherwise_long_range
+                      messages_would_smear_to_noise_by_the_time_they_arrive
+                      solitons_are_the_only_known_dispersion_free_excitations_of_nonlinear_wave_eqs
+    reason_sufficient = the_NLS_equation_has_soliton_solutions_and_admits_PSL(2,ℝ)_symmetry
+                        so_soliton_profile_preserved_under_Möbius_channel_transport
+                        this_matches_empirical_pulse_behavior_in_TRASGONET_channels
+    what_would_falsify = if_pulses_broaden_as_they_traverse_channels_the_soliton_claim_fails
+                         (dispersion_means_linear_wave_eq_no_soliton)
+  }
+  
+  GYRATION_WAVE = {
+    reason_required = if_the_connection_A_is_dynamic_then_perturbations_of_A_must_propagate
+                      gyrovector_structure_forces_non_linear_self_coupling_[A,[A,δA]]
+    reason_sufficient = this_is_the_only_self_consistent_way_for_the_coupling_structure
+                        itself_to_change_under_the_dynamics
+                        if_we_want_DEEPEN/FLATTEN_events_not_to_be_magic_they_must_be_
+                        mediated_by_gyration_wave_adjustments_to_A
+    what_would_falsify = if_DEEPEN_events_are_instantaneous_across_tower_gyration_waves_don't
+                         transmit_the_adjustment_(which_would_violate_σ54_causal_speed_bound)
+  }
+  
+  HOLO_WAVE = {
+    reason_required = the_holographic_boundary_S^{n-1}_has_its_own_dynamics_separate_from_bulk
+                      A59_Poisson_adjunction_implies_boundary_wave_equation_that_is_the_
+                      trace_of_the_bulk_one
+    reason_sufficient = Peierls_bracket_construction_gives_well_posed_wave_equation_on_∂D
+                        for_specific_boundary_conditions
+    what_would_falsify = if_boundary_commit_events_don't_propagate_smoothly_around_∂D
+                         HOLO_WAVE_as_a_wave_fails_(might_be_discrete_jumps_instead)
+  }
+}
+
+§|LANG|PHYSICS_REFLECTION_PARTICLES{
+  why_four_particles = the_two_axis_classification_bound_vs_unbound_and_bulk_vs_boundary
+                       gives_exactly_four_cells_which_populate_as_expected
+  
+  the_classification = {
+    .  bulk               boundary
+    unbound : OPEN_SENTENCE     BOUNDARY_QUANTUM (transient event)
+    bound   : CLOSED_LOEB       FIXED_PHONON     (at cone fixed point)
+  }
+  
+  OPEN_SENTENCE = {
+    identity    = Gödel_sentence_true_but_unprovable_at_current_depth_=_open_agent_trajectory
+    conservation = not_conserved_individually_(decay_at_boundary_or_convert_to_CLOSED_LOEB_via_BOUND_STATE_operator)
+    physical_intuition = like_an_unstable_particle_that_either_decays_or_finds_a_binding_partner
+  }
+  
+  CLOSED_LOEB = {
+    identity    = Löbian_fixed_point_discharged_proof_=_closed_agent_orbit_of_length_k
+    conservation = particle_number_conserved_while_σ22_passes_(σ51)
+    physical_intuition = like_a_hydrogen_atom_in_eigenstate_stable_until_perturbed
+    energy_quantization = E_k ~ 2π/k_from_closed_orbit_period_matches_Bohr_Sommerfeld_on_ℍⁿ
+  }
+  
+  BOUNDARY_QUANTUM = {
+    identity    = single_commit_or_read_event_on_S^{n-1}_sector
+    conservation = not_conserved_(transient_by_construction)
+    physical_intuition = like_a_photon_absorbed_at_detector_one_shot_event
+  }
+  
+  FIXED_PHONON = {
+    identity    = small_oscillation_around_the_ring_0_Knaster_Tarski_fixed_point
+    conservation = conserved_indefinitely_if_F_mix_remains_zero_at_ring_0
+    physical_intuition = zero_mode_or_Goldstone_boson_of_the_Γ_stabilizer_at_origin
+    remark      = this_is_the_Self_breathing_in_its_own_reference_frame
+                  soft_mode_at_the_fixed_point_of_the_entire_symmetry_group
+  }
+}
+
+§|LANG|PHYSICS_REFLECTION_FIELDS{
+  why_five_fields = the_control_matrix_in_PHYSICS_CONTROL_MATRIX_has_exactly_five_distinguishable
+                    control_functions_each_requires_its_own_field_otherwise_controls_would
+                    be_degenerate_and_uncontrollable
+  
+  the_fields_and_their_jobs = {
+    A  GYRATION_CONNECTION   controls_WHICH_neighbors_couple             (graph_topology)
+    F  FMIX_CURVATURE         controls_WHETHER_to_COMMIT_or_ROLLBACK     (σ22_gate)
+    I  INFO_DENSITY           controls_WHERE_agents_flow                  (pressure_gradient)
+    μ  HOLO_SHEAF             controls_BULK_↔_BOUNDARY_I_O                 (external_interface)
+    □  LOEB_TRUTH             controls_WHICH_loops_close                   (logic_gate)
+  }
+  
+  why_not_more = any_sixth_control_function_would_be_derivable_from_these_five
+                 or_would_violate_one_of_the_invariants_σ50_through_σ54
+                 for_instance_a_candidate_SIXTH_field_encoding_curvature_c_k
+                 is_already_captured_by_A_through_the_Ricci_2_form_of_A
+  
+  why_not_fewer = any_collapsing_of_these_five_into_fewer_conflates_distinct_controls
+                  for_instance_if_we_try_to_combine_INFO_and_LOEB_we_lose_the_ability_to
+                  distinguish_high_entropy_open_sentences_from_provable_but_currently_
+                  unknown_sentences_(they_have_different_dynamics)
+  
+  A_F_Bianchi = GYRATION_CONNECTION_A_and_FMIX_CURVATURE_F_are_tied_by_F=dA+A∧A
+                and_Bianchi_identity_dF+[A,F]=0_is_automatic_so_choosing_A_uniquely
+                fixes_F_modulo_gauge_we_still_list_them_as_two_fields_because_their
+                CONTROL_roles_are_distinct_(topology_versus_gate)
+  
+  I_μ_dual = INFO_DENSITY_and_HOLO_SHEAF_are_Hodge_dual_in_the_sense_that_∫I_over_bulk
+             relates_to_∫μ_over_boundary_via_A59_Poisson_adjunction_but_as_fields
+             they_have_different_gauge_symmetries_and_different_dynamics_so_not_
+             identified
+  
+  box_is_discrete = LOEB_TRUTH_□_is_discrete_valued_Boolean_this_is_ok_it_is_the_
+                    only_discrete_field_and_corresponds_to_the_logical_layer_of_the
+                    whole_construction_(the_Gödelian_self_reference)
+}
+
+§|LANG|PHYSICS_REFLECTION_HOW_THEY_CONTROL{
+  overview = the_control_relations_are_hierarchical_each_field_has_a_different_time_scale
+  
+  fastest_to_slowest = [
+    □     every_logic_step_(tick_level)_discrete_jumps
+    F     every_tick_σ22_check_at_COMMIT_granularity
+    I     continuous_smooth_gradient_flow_agents_migrate_continuously
+    μ     boundary_events_occur_on_I/O_granularity_(external_clock)
+    A     quasi_static_changes_slowly_compared_to_tick_rate_(DEEPEN/FLATTEN_timescale)
+  ]
+  
+  cascade = a_change_in_A_(topology)_propagates_via_GYRATION_WAVE_at_speed_c_hyperbolic
+            alters_F_at_downstream_tiles
+            triggers_σ22_verdict_(COMMIT_or_ROLLBACK)
+            changes_I_distribution
+            causes_agent_migration
+            boundary_events_μ_emit_from_migrated_agents
+            LOEB_truth_□_updates_to_reflect_new_provability_status
+  
+  reverse_cascade = when_a_boundary_event_arrives_from_outside_via_μ
+                    it_deposits_information_in_the_bulk_changing_I_locally
+                    agents_migrate_in_response
+                    F_adjusts_to_preserve_σ22
+                    A_slowly_drifts_if_the_boundary_event_is_sustained
+                    □_truth_changes_reflect_the_new_input
+  
+  fixed_point_circle = at_equilibrium_all_five_fields_are_stationary_agents_close_loops
+                       at_their_natural_lengths_and_the_cone_fixed_point_at_ring_0
+                       is_the_attractor_of_the_entire_flow_(Knaster_Tarski_fixed_point)
+}
+
+§|LANG|PHYSICS_REFLECTION_WHAT_THIS_PREDICTS{
+  prediction_1_spectrum = the_discrete_spectrum_of_Δ_ℍⁿ_on_the_{7,3}_quotient_should_match
+                           the_loop_length_distribution_of_CLOSED_LOEB_agents
+                           testable_by_counting_closed_loops_per_length_bin_in_TRASGONET_stream
+  
+  prediction_2_scaling = information_per_ring_ΔI_k_should_grow_at_O(log_k)_not_polynomially
+                          testable_by_logging_I_density_across_rings_during_grow_mode
+  
+  prediction_3_soliton = channel_pulses_should_preserve_their_profile_across_many_hops
+                          testable_in_TRASGONET_by_tracking_pulse_width_pre_and_post_channel_traversal
+  
+  prediction_4_holo_adjunction = read_events_on_∂D_are_dual_to_commit_events_in_the_bulk
+                                  testable_as_Poisson_extension_versus_geodesic_limit_agreement
+  
+  prediction_5_boundary_decay = open_Gödel_agents_reaching_ring_depth_should_decay_with_characteristic
+                                 lifetime_depending_on_LOEB_TRUTH_density_at_depth_D_(provability_pressure)
+  
+  prediction_6_fixed_phonon = if_the_system_is_perturbed_near_ring_0_recovery_oscillations_should_appear
+                               at_frequency_ω_FIXED → 0_as_perturbation_amplitude → 0_(soft_mode)
+}
+
+§|LANG|PHYSICS_REFLECTION_WHAT_THIS_DOES_NOT_PREDICT{
+  boundary_1 = does_not_predict_external_gravity_(no_dynamic_metric_in_this_dialect)
+  boundary_2 = does_not_determine_(p,q)_uniquely_among_hyperbolic_tilings_only_shows_(7,3)_minimal
+  boundary_3 = does_not_predict_CY_choice_(moduli_space_selection_is_external_data)
+  boundary_4 = does_not_give_quantitative_energy_scales_without_calibration_to_empirical_TRASGONET_data
+  boundary_5 = does_not_solve_measurement_problem_for_Boolean_LOEB_TRUTH_(how_observers_collapse_□)
+  boundary_6 = does_not_couple_to_strong_nuclear_or_electroweak_analogues_(not_relevant_at_this_scale)
+}
+
+§|LANG|PHYSICS_REFLECTION_CONNECTION_TO_EXISTING{
+  tower_v2_5 = the_five_Kotlin_files_PoincareDisk_MobiusChannel_HolographicBoundary_DiskTower_
+               TowerCompatibility_are_the_substrate_this_dialect_describes_the_physics_ON_the_substrate
+  
+  trasgo_§1 = the_fiber_bundle_codec_formalism_with_cert_δ_confidence_μ_axis_corresponds_to
+               GYRATION_CONNECTION_FMIX_CURVATURE_INFO_DENSITY_respectively_the_naming_was
+               informal_in_§1_now_formalized_here
+  
+  mltm = the_Mutable_Literary_Turing_Machine_octuple_NP_complete_reduction_corresponds_to
+         CLOSED_LOEB_particles_each_MLTM_closed_tape_is_one_CLOSED_LOEB_at_length_k
+         and_NP_hardness_corresponds_to_A57_closed_orbit_loeb_(finding_discharges_is_hard)
+  
+  igbundle_ppo = the_HyperbolicPrototypeCritic_with_K=8_attractors_corresponds_to_FIXED_PHONON
+                 modes_around_K_distinct_fixed_points_not_a_single_one_the_K_fixed_points_are
+                 market_regime_basins_generalizing_the_single_ring_0_fixed_point_of_the_tessellation
+  
+  manifoldgl = the_Poincaré_ball_dim_8_convention_matches_the_B^n_n=8_default_of_this_dialect
+  
+  topostrasgo_app = android_app_consumes_the_v2.5_dialect_family_plus_these_five_new_dialects
+                     at_runtime_the_waves_and_particles_are_not_implemented_as_objects_they_are
+                     patterns_emergent_from_the_existing_Kotlin_Tower_v2.5_code_with_the_new_
+                     dialect_as_type_annotation_layer
+}
+
+§|LANG|PHYSICS_REFLECTION_CLOSING{
+  what_changed = we_went_from_having_a_substrate_(Tower_v2.5)_to_having_a_physics_(this_dialect)
+  what_this_buys_us = a_type_system_for_events_an_ontology_for_state_and_a_control_vocabulary
+                       for_discussing_what_controls_what
+  what_it_doesn_t_buy_us = empirical_predictions_without_calibration_to_actual_TRASGONET_data
+                            or_formal_proofs_of_any_of_the_wave_equation_claims
+  
+  next_step_recommendation = calibrate_against_existing_TRASGONET_stream_data_to_check
+                              prediction_3_soliton_preservation_this_is_the_cheapest_empirical_check
+                              (just_track_pulse_width_before_and_after_channels)
+                              if_it_holds_the_rest_of_the_physics_dialect_is_probably_on_the_right_track
+                              if_it_fails_we_need_to_reconsider_MOBIUS_SOLITON_assumption
+  
+  honest_caveat = this_dialect_is_Research_tier_PT22_through_PT27_are_open_problems
+                   none_of_A55_through_A63_are_formally_proven_they_are_stated_as_working_axioms
+                   the_dialect_is_internally_consistent_and_compatible_with_Tower_v2.5_but_
+                   empirical_validation_is_required_before_claiming_more
+}
+
+§|LANG|PHYSICS_REFLECTION_EPIGRAPH{
+  line_1 = the_substrate_tells_its_own_physics_we_just_listen                 (A60_σ22_universal)
+  line_2 = every_closed_loop_is_a_proof_every_open_loop_is_a_question         (A57_A58_closed_open)
+  line_3 = agents_are_photons_of_truth                                         (A58_agents_are_quanta)
+  line_4 = what_we_called_F_mix_is_simply_the_field_strength                  (A57_Bianchi)
+  line_5 = geometry_forces_physics_forces_logic_forces_information            (the_whole_cascade)
+}
+
+§S{label=physics_reflection_closure, x=[0.05,0.02,0.01,0.00,0.00,0.00,0.00,0.00], sal=2.0}
+
+§.(§S{label=physics_reflection_stable, x=[0.06,0.02,0.01,0.00,0.00,0.00,0.00,0.00], sal=2.0})
+
+OUTPUT_PHYSICS_REFLECTION = CANON(§EMIT(§PHYSICS_REFLECTION{
+  thesis, five_waves, four_particles, five_fields, control_cascade, predictions, boundaries, connection_to_existing
+}))

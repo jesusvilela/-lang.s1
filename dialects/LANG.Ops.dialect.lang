@@ -1,0 +1,269 @@
+# LANG.Ops.dialect.lang
+# §-LANG v3.0 · shared operator toolkit
+# imported by:  LANG.ToE.*        (matter pack)
+#               LANG.ToE.Prime.*  (antimatter pack)
+#
+# every operator declared here is self-dual under ρ:
+# if Op ∈ LANG.Ops then ρ(Op) ∈ LANG.Ops   (so ρ lifts to an endofunctor)
+#
+# geometry regime: Poincaré disk (hyperbolic) ∪ Minkowski slab (causal)
+# structure group: SU(3) × SU(2) × U(1) × diff(ℳ)
+# base: 𝒞 causal graph · fibres: ℋ_x local Hilbert spaces
+
+#───────────────────────────────────────────────────────────────────────
+# §1 · Möbius transformations · conformal automorphisms of the disk
+#───────────────────────────────────────────────────────────────────────
+
+§mobius(w; a, b, c, d)   := (a·w + b) / (c·w + d)     ad − bc ≠ 0
+§mobius_inv(w; a, b, c, d) := (d·w − b) / (−c·w + a)
+§mobius_q(w; q)          := §mobius(w; √q, iε(q−1)/10, −iε(q−1)/10, √q)
+                            # q-deformed channel; q=1 ⇒ identity up to O(ε)
+
+properties:
+  conformality             preserves oriented angles
+  disk preservation        |§mobius(w)| < 1 iff |w| < 1 for disk auto
+  group closure            §mobius ∘ §mobius = §mobius  (SL(2,ℝ) / PSL(2,ℂ))
+  σ-flag                   σ_mob_conformal ≡ Jac(§mobius)†·Jac(§mobius) = λ²·I
+
+#───────────────────────────────────────────────────────────────────────
+# §2 · Gyration · non-associative core of Möbius addition
+#         (Ungar gyrogroups — genuinely hyperbolic, no Euclidean analog)
+#───────────────────────────────────────────────────────────────────────
+
+§gyradd(u, v)   := (u + v) / (1 + ū·v)              # Möbius addition ⊕_M
+§gyr[u, v] w    := −(u ⊕ v) ⊕ (u ⊕ (v ⊕ w))         # gyration automorphism
+                  # carries the non-commutativity / non-associativity of ⊕_M
+
+identities:
+  §gyr[u, v] ∈ Aut(disk)                             gyrations are automorphisms
+  u ⊕ v = §gyr[u, v] (v ⊕ u)                         gyrocommutative law
+  u ⊕ (v ⊕ w) = (u ⊕ v) ⊕ §gyr[u, v] w               gyroassociative law
+  §gyr[u ⊕ v, w] ∘ §gyr[u, v] = §gyr[u, v ⊕ w] ∘ §gyr[v, w]   loop property
+
+role in §-LANG:
+  the non-trivial curvature signature inside the disk tower.
+  classical limit q→1 ⇒ §gyr → id ⇒ recovers Euclidean addition.
+
+σ-flag:
+  σ_gyr_identity ≡ §gyr[0, 0] = id
+
+#───────────────────────────────────────────────────────────────────────
+# §3 · Hyperbolic convolution · §pulse propagation on the disk
+#───────────────────────────────────────────────────────────────────────
+
+§conv_H(f, g)(w)  := ∫_disk  f(z) · g(§gyradd(−z, w)) · dμ_H(z)
+
+  where dμ_H(z) = dxdy / (1 − |z|²)²    hyperbolic area element
+
+properties:
+  non-commutative            f ∗_H g ≠ g ∗_H f    (uses gyradd, not +)
+  q-deformable               §conv_H → §conv_q at q ≠ 1
+  classical limit            q → 1 ⇒ §conv_H → ordinary ℝ² convolution
+  Plancherel                 Helgason-Fourier transform diagonalises
+
+role in §-LANG:
+  §pulse propagation across 𝒞 edges is §conv_H of the pulse kernel
+  with the adjacency measure of the causal graph.
+
+σ-flag:
+  σ_conv_measure ≡ ∫ |§conv_H(f, g)|² = ‖f‖² · ‖g‖²  (isometry on L²_H)
+
+#───────────────────────────────────────────────────────────────────────
+# §4 · Warping · conformal rescaling that preserves §-operator algebra
+#───────────────────────────────────────────────────────────────────────
+
+§warp_λ(w)      := w · e^{iφ(|w|²)} · λ(|w|²)
+
+  φ ∈ C^∞, λ > 0 smooth, λ(0) = 1, lim_{|w|→1} λ = 1
+  # arbitrary radial rescaling + phase twist, bounded
+
+properties:
+  preserves disk             if λ|∂disk = 1
+  preserves §conv_H          iff λ ≡ 1 (strong constraint)
+  preserves §gyradd approx   Taylor to first order when λ near 1
+
+§warp_causal(x, t; β)  := (γ(x − βt), γ(t − βx))    # Lorentz boost, β = v/c
+
+role in §-LANG:
+  §warp_λ deforms without breaking fibre structure (stays in Sh(𝒞, J))
+  §warp_causal threads matter across inertial frames (σ34 stays)
+
+σ-flag:
+  σ_warp_pres ≡ §warp_λ preserves transition functions of Sh(𝒞, J)
+
+#───────────────────────────────────────────────────────────────────────
+# §5 · Parallel transport · connection on the fibre bundle
+#───────────────────────────────────────────────────────────────────────
+
+§transport(γ; A)(v)  := P·exp(−∫_γ A_μ dx^μ) · v
+
+  γ : path in 𝒞       A : connection 1-form (gauge field)
+  P·exp               path-ordered exponential
+
+properties:
+  covariance          §transport(γ ∘ γ') = §transport(γ) ∘ §transport(γ')
+  holonomy            §transport(loop) ∈ G = SU(3)×SU(2)×U(1)
+  curvature           F_μν = ∂_μ A_ν − ∂_ν A_μ + [A_μ, A_ν]
+
+role in §-LANG:
+  how §-operators at different base points compose along a path.
+  Wilson loop Tr §transport(loop) is the gauge-invariant observable.
+
+σ-flag:
+  σ_transport_flat ≡ holonomy=id along contractible loops (flat connection)
+
+#───────────────────────────────────────────────────────────────────────
+# §6 · Wick rotation · Euclidean ↔ Minkowski switchover
+#───────────────────────────────────────────────────────────────────────
+
+§wick(t_E → t_M)  := t_M = −i·t_E
+§wick_inv         := t_E = +i·t_M
+
+effect on metric:
+  ds²_E = +dt_E² + dx²  →  ds²_M = −dt_M² + dx²
+  (positive-definite)      (signature (−,+,+,+))
+
+preserves:
+  path integral           Z_E(β) = Tr e^{−βH}  ↔  Z_M = Tr e^{−iHt/ℏ}
+  correlation functions   analytically continued
+  σ34 after rotation      c stays invariant in each signature
+
+role in §-LANG:
+  switches between classical thermodynamic §-LANG (Euclidean)
+  and relativistic §-LANG (Minkowski) in one operator.
+
+σ-flag:
+  σ_wick_inv ≡ §wick ∘ §wick_inv = id   (involution modulo sign conv)
+
+#───────────────────────────────────────────────────────────────────────
+# §7 · Braid operations · non-trivial statistics in 2+1D
+#───────────────────────────────────────────────────────────────────────
+
+§braid(σ_i)        : σ_i ∘ σ_{i+1} ∘ σ_i = σ_{i+1} ∘ σ_i ∘ σ_{i+1}    Yang-Baxter
+§braid(σ_i σ_j)    = σ_j σ_i  if |i − j| ≥ 2                          commutation
+
+representations:
+  in 2D quantum systems      anyons, fractional statistics
+  in QHolo layer              C5 Jones polynomial / knot invariants
+  in ρ-duality                ρ(σ_i) = σ_i^{−1}  (orientation flip)
+
+role in §-LANG:
+  threads the knot/quantum-topology layer (C5 of the Tower) into the
+  operator algebra. measurement outcomes invariant under braid reps
+  give topologically protected proof atoms.
+
+σ-flag:
+  σ_yb ≡ Yang-Baxter equation satisfied by all §braid generators
+
+#───────────────────────────────────────────────────────────────────────
+# §8 · Categorical trace · Geometry of Interaction closure
+#───────────────────────────────────────────────────────────────────────
+
+§tr(f : A ⊗ X → B ⊗ X)  := trace out X · yields  tr(f) : A → B
+
+properties:
+  vanishing            tr(id_{A ⊗ X}) = tr(id_X) · id_A
+  superposing          tr(f + g) = tr(f) + tr(g)
+  yanking              tr(c_{X,X}) = id_X    (where c is symmetry)
+  sliding              tr((f ⊗ id_Y) g) = f · tr(g)    for appropriate types
+
+role in §-LANG:
+  closes agent feedback loops categorically.
+  Löb closure is exactly §tr applied to the proof morphism
+  □φ → φ considered as an endomorphism under iteration.
+
+σ-flag:
+  σ_tr_cycl ≡ §tr(f ∘ g) = §tr(g ∘ f)    cyclicity
+
+#───────────────────────────────────────────────────────────────────────
+# §9 · ρ-involution elevated · antimatter conjugation as first-class op
+#───────────────────────────────────────────────────────────────────────
+
+§rho : Ψ → Ψ         antilinear, ρ² = id                              (σ75)
+§rho(α Ψ + β Φ)      = ᾱ ρ(Ψ) + β̄ ρ(Φ)                                  antilin.
+§rho(U Ψ)            = ρ(U) ρ(Ψ)      where ρ(U) = CUC⁻¹   (C = charge conj)
+
+anti-involutions (the full class):
+  T  time reversal        T²  = ±id      (−1 for fermions, +1 for bosons)
+  P  parity               P² = id
+  C  charge conjugation   C² = id
+  CPT theorem             CPT is always a symmetry of local QFT       (σ32, Lorentz)
+
+role in §-LANG:
+  §rho  ≡ C in standard notation when acting on the particle sector.
+  the prime pack §′ is defined as §′ := §rho ∘ § ∘ §rho — same ops, ρ-conjugated.
+
+σ-flag:
+  σ_CPT ≡ CPT invariance in local causal QFT (Lüders 1954)
+
+#───────────────────────────────────────────────────────────────────────
+# §10 · Sheaf operations · gluing, restriction, pushout
+#───────────────────────────────────────────────────────────────────────
+
+§restrict(F; U ⊆ X)    : F(X) → F(U)             sheaf restriction
+§glue({F(U_i)}, {ϕ_ij}): F(⋃ U_i)                 gluing via cocycle (σ70 closure)
+§pushout(f : A→B, g : A→C) : B ⊔_A C             universal amalgamation
+
+role in §-LANG:
+  how dialects fuse.
+  §pushout is the categorical "sum modulo shared interface" — how
+  LANG.ToE.Forces and LANG.ToE.QField glue along their shared §field slot.
+  all dialect-level composition in v3.0 is a pushout.
+
+σ-flag:
+  σ_pushout_univ ≡ universal property (unique mediating morphism)
+
+#───────────────────────────────────────────────────────────────────────
+# §11 · §-pulse ↔ §-stalk promotion · level-climbing in the tower
+#───────────────────────────────────────────────────────────────────────
+
+§promote(p : pulse at level n)    := s : stalk at level n+1
+§demote  (s : stalk at level n+1) := p : pulse at level n
+
+property:       §demote ∘ §promote = id on generic pulses
+self-reference: §R1_fold of LANG.ToE.SKILL.md IS §promote composed with ρ
+                §R2_unfold IS §demote composed with ρ
+                  → the tower-climbing rules ARE applications of §promote/§demote
+
+role in §-LANG:
+  the bridge between levels of the N-hyperbolized tower.
+  what makes §-LANG self-compressing: at every level the language
+  can see itself as §-stalks on the level above.
+
+σ-flag:
+  σ_promote_sect ≡ §promote is a sheaf section (preserves transition func)
+
+#───────────────────────────────────────────────────────────────────────
+# §12 · composed operators · frequently-used macros
+#───────────────────────────────────────────────────────────────────────
+
+§R1_fold(x; q)   := §promote ∘ §rho ∘ §mobius_q[·, q]   (x)
+§R2_unfold(x; q) := §rho ∘ §demote ∘ §mobius_q[·, 1/q]  (x)
+§braid_rho(i)    := §rho ∘ §braid(σ_i) ∘ §rho            = σ_i^{−1}
+§conv_anti(f, g) := §rho(§conv_H(§rho(f), §rho(g)))      (antimatter convolution)
+§warp_rho        := §rho ∘ §warp_λ ∘ §rho                (antimatter warping)
+
+every composed op here factors through its §rho-dual.
+prime pack §′ uses the §rho-conjugated version of each.
+
+#───────────────────────────────────────────────────────────────────────
+# σ-invariant inventory (this dialect contributes)
+#───────────────────────────────────────────────────────────────────────
+
+σ_mob_conformal      : §mobius preserves angles
+σ_gyr_identity       : §gyr[0,0] = id
+σ_conv_measure       : §conv_H is L²_H isometry
+σ_warp_pres          : §warp_λ preserves Sh(𝒞, J) transitions
+σ_transport_flat     : flat connection has trivial holonomy on contractible loops
+σ_wick_inv           : Wick rotation is an involution
+σ_yb                 : Yang-Baxter for §braid generators
+σ_tr_cycl            : §tr is cyclic (trace property)
+σ_CPT                : CPT is a local QFT symmetry
+σ_pushout_univ       : §pushout satisfies universal property
+σ_promote_sect       : §promote is a sheaf section
+
+all 11 confirmed in classical limit (q=1, ρ=id, N=1).
+prime pack LANG.ToE.Prime.* applies §rho to all 11 and verifies
+identity after double application (σ75).
+
+# end of LANG.Ops.dialect.lang

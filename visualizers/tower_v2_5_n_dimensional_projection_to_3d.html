@@ -1,0 +1,704 @@
+<h2 class="sr-only">Interactive visualization of the Tower v2.5 architecture in n-dimensional Poincaré balls projected to 3D space, with auto-rotating camera, rotating n-to-3 projection that surfaces hidden dimensions, and three modes (static structure, gyration mold, adiabatic breath) across tower and flat network topologies.</h2>
+
+<style>
+  .tvn { font-family: var(--font-sans); color: var(--color-text-primary); }
+  .tvn .tabs { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; align-items: center; }
+  .tvn .tab-label { font-size: 11px; color: var(--color-text-tertiary); letter-spacing: 0.05em; text-transform: uppercase; margin-right: 4px; }
+  .tvn .tab-group { display: inline-flex; gap: 2px; padding: 2px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); }
+  .tvn .tab-group button {
+    border: none; background: transparent; color: var(--color-text-secondary);
+    padding: 6px 12px; font-size: 12px; font-family: var(--font-sans); font-weight: 400;
+    border-radius: 6px; cursor: pointer; transition: background 0.15s, color 0.15s;
+  }
+  .tvn .tab-group button.active { background: var(--color-background-primary); color: var(--color-text-primary); font-weight: 500; }
+  .tvn .tab-group button:hover:not(.active) { color: var(--color-text-primary); }
+  .tvn .canvas-wrap {
+    background: var(--color-background-secondary); border-radius: var(--border-radius-lg);
+    padding: 16px; margin-bottom: 12px; position: relative;
+  }
+  .tvn canvas { display: block; width: 100%; height: 500px; border-radius: var(--border-radius-md); }
+  .tvn .overlay-status {
+    position: absolute; top: 24px; right: 24px;
+    background: var(--color-background-primary); border-radius: var(--border-radius-md);
+    padding: 6px 10px; font-size: 11px; color: var(--color-text-secondary);
+    border: 0.5px solid var(--color-border-tertiary); font-family: var(--font-mono);
+    pointer-events: none;
+  }
+  .tvn .overlay-dims {
+    position: absolute; top: 24px; left: 24px;
+    background: var(--color-background-primary); border-radius: var(--border-radius-md);
+    padding: 6px 10px; font-size: 10px; color: var(--color-text-tertiary);
+    border: 0.5px solid var(--color-border-tertiary); font-family: var(--font-mono);
+    pointer-events: none; display: flex; align-items: center; gap: 6px;
+  }
+  .tvn .dim-dots { display: flex; gap: 3px; }
+  .tvn .dim-dot { width: 7px; height: 7px; border-radius: 50%; transition: background 0.3s; }
+  .tvn .overlay-caption {
+    position: absolute; bottom: 24px; left: 24px;
+    font-size: 11px; color: var(--color-text-tertiary); max-width: 400px; line-height: 1.5;
+    pointer-events: none;
+  }
+  .tvn .controls { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding: 12px 16px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); margin-bottom: 8px; }
+  .tvn .control-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+  .tvn .control-row label { color: var(--color-text-secondary); min-width: 42px; font-size: 11px; }
+  .tvn .control-row input[type=range] { flex: 1; min-width: 0; }
+  .tvn .control-row .val { min-width: 28px; text-align: right; color: var(--color-text-primary); font-weight: 500; font-family: var(--font-mono); font-size: 11px; }
+  .tvn .legend { display: flex; gap: 14px; font-size: 11px; color: var(--color-text-secondary); flex-wrap: wrap; padding: 0 4px; }
+  .tvn .legend-item { display: flex; align-items: center; gap: 6px; }
+  .tvn .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .tvn .legend-line { width: 14px; height: 2px; flex-shrink: 0; }
+  @media (max-width: 500px) { .tvn .controls { grid-template-columns: repeat(2, 1fr); } }
+</style>
+
+<div class="tvn">
+  <div class="tabs">
+    <span class="tab-label">Mode</span>
+    <div class="tab-group" id="mode-tabs-n">
+      <button data-mode="structure" class="active">Structure</button>
+      <button data-mode="mold">Gyration mold</button>
+      <button data-mode="adiabatic">Adiabatic breath</button>
+    </div>
+    <span class="tab-label" style="margin-left: 12px;">Topology</span>
+    <div class="tab-group" id="topo-tabs-n">
+      <button data-topo="tower" class="active">Tower</button>
+      <button data-topo="flat">Flat network</button>
+      <button data-topo="both">Both</button>
+    </div>
+  </div>
+
+  <div class="canvas-wrap">
+    <canvas id="viz3d"></canvas>
+    <div class="overlay-status" id="status-n">σ22 · idle</div>
+    <div class="overlay-dims" id="dims-n">
+      <span>B^</span><span id="dim-label">8</span><span>→ℝ³</span>
+      <div class="dim-dots" id="dim-dots"></div>
+    </div>
+    <div class="overlay-caption" id="caption-n"></div>
+  </div>
+
+  <div class="controls">
+    <div class="control-row">
+      <label>ω</label>
+      <input type="range" id="s-gyr-n" min="0" max="100" value="35" step="1">
+      <span class="val" id="v-gyr-n">0.35</span>
+    </div>
+    <div class="control-row">
+      <label>breath</label>
+      <input type="range" id="s-adia-n" min="0" max="100" value="40" step="1">
+      <span class="val" id="v-adia-n">0.40</span>
+    </div>
+    <div class="control-row">
+      <label>N</label>
+      <input type="range" id="s-N-n" min="2" max="5" value="3" step="1">
+      <span class="val" id="v-N-n">3</span>
+    </div>
+    <div class="control-row">
+      <label>n</label>
+      <input type="range" id="s-dim-n" min="3" max="10" value="8" step="1">
+      <span class="val" id="v-dim-n">8</span>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#7F77DD"></div>peer · visible orbit</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#7F77DD;opacity:0.3"></div>peer · in hidden dim</div>
+    <div class="legend-item"><div class="legend-line" style="background:#EF9F27"></div>boundary S^{n-1}</div>
+    <div class="legend-item"><div class="legend-line" style="background:#1D9E75"></div>Möbius channel</div>
+    <div class="legend-item"><div class="legend-line" style="background:#D85A30"></div>gyration trail</div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const canvas = document.getElementById('viz3d');
+  const ctx = canvas.getContext('2d');
+  const statusEl = document.getElementById('status-n');
+  const captionEl = document.getElementById('caption-n');
+  const dimDotsEl = document.getElementById('dim-dots');
+  const dimLabelEl = document.getElementById('dim-label');
+
+  const state = {
+    mode: 'structure',
+    topo: 'tower',
+    gyr: 0.35,
+    adia: 0.40,
+    N: 3,
+    dim: 8,
+    time: 0,
+    adiaPhase: 0,
+    projPhase: 0,
+    camAz: 0.5,
+    camEl: 0.22,
+    prevT: null,
+    dpr: Math.max(1, window.devicePixelRatio || 1),
+    reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    P: null,
+    peersCache: {}
+  };
+
+  function resize() {
+    const w = canvas.clientWidth;
+    const h = 500;
+    canvas.width = w * state.dpr;
+    canvas.height = h * state.dpr;
+    ctx.setTransform(state.dpr, 0, 0, state.dpr, 0, 0);
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // n-dimensional projection (P: R^n → R^3)
+  // P is a 3×n matrix. Rows 0, 1, 2 are unit vectors in R^n that define
+  // which 3-slice of R^n we currently "see". We slowly rotate these rows
+  // through different hidden dims so that hidden-dim orbits periodically
+  // surface in the 3D view.
+  // ═══════════════════════════════════════════════════════════
+
+  function buildProjection() {
+    const n = state.dim;
+    const phase = state.projPhase;
+    const P = [new Float32Array(n), new Float32Array(n), new Float32Array(n)];
+    if (n <= 3) {
+      P[0][0] = P[1][1] = P[2][2] = 1;
+      state.P = P;
+      return;
+    }
+    const nHidden = n - 3;
+    const rates = [1.0, 0.65, 1.33];
+    for (let i = 0; i < 3; i++) {
+      const hiddenDim = 3 + (i % nHidden);
+      const angle = phase * rates[i] * 0.4;
+      P[i][i] = Math.cos(angle);
+      P[i][hiddenDim] = Math.sin(angle);
+    }
+    // For n > 6 add a slower secondary mix so more dims participate
+    if (n > 6) {
+      const extra = 0.35 * Math.sin(phase * 0.25);
+      P[0][Math.min(n - 1, 6)] += extra * 0.5;
+      if (n > 7) P[1][Math.min(n - 1, 7)] += extra * 0.5;
+    }
+    state.P = P;
+  }
+
+  // Project a 2-plane orbit to 3D efficiently (only two nonzero coords).
+  function peerWorldPos(peer, sphereCenter, sphereR) {
+    const gyrationScale = state.mode === 'structure' ? 0 : state.gyr;
+    const theta = peer.phase + state.time * gyrationScale * peer.rate;
+    const r = peer.radius;
+    const cT = r * Math.cos(theta);
+    const sT = r * Math.sin(theta);
+    const P = state.P;
+    const a = peer.planeA, b = peer.planeB;
+    return [
+      sphereCenter[0] + (P[0][a] * cT + P[0][b] * sT) * sphereR,
+      sphereCenter[1] + (P[1][a] * cT + P[1][b] * sT) * sphereR,
+      sphereCenter[2] + (P[2][a] * cT + P[2][b] * sT) * sphereR
+    ];
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // 3D camera rotation (world → camera space)
+  // ═══════════════════════════════════════════════════════════
+
+  function rotateByCam(p) {
+    const ca = Math.cos(state.camAz), sa = Math.sin(state.camAz);
+    const ce = Math.cos(state.camEl), se = Math.sin(state.camEl);
+    const x1 = p[0] * ca - p[2] * sa;
+    const z1 = p[0] * sa + p[2] * ca;
+    const y1 = p[1];
+    const y2 = y1 * ce - z1 * se;
+    const z2 = y1 * se + z1 * ce;
+    return [x1, y2, z2];
+  }
+
+  function toCanvas(wp, origin, scale) {
+    const r = rotateByCam(wp);
+    return { x: origin.x + r[0] * scale, y: origin.y - r[1] * scale, depth: r[2] };
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // Drawing primitives
+  // ═══════════════════════════════════════════════════════════
+
+  function drawSphereWires(center, radius, origin, scale, pass) {
+    const centerDepth = rotateByCam(center)[2];
+    const N = 40;
+    ctx.strokeStyle = pass === 'front' ? 'rgba(127, 119, 221, 0.38)' : 'rgba(127, 119, 221, 0.12)';
+    ctx.lineWidth = 0.5;
+    for (let plane = 0; plane < 3; plane++) {
+      ctx.beginPath();
+      let drawing = false;
+      for (let i = 0; i <= N; i++) {
+        const t = (i / N) * Math.PI * 2;
+        let p;
+        if (plane === 0) p = [Math.cos(t), Math.sin(t), 0];
+        else if (plane === 1) p = [Math.cos(t), 0, Math.sin(t)];
+        else p = [0, Math.cos(t), Math.sin(t)];
+        const wp = [center[0] + p[0] * radius, center[1] + p[1] * radius, center[2] + p[2] * radius];
+        const rc = rotateByCam(wp);
+        const front = rc[2] > centerDepth;
+        if (front !== (pass === 'front')) {
+          if (drawing) { ctx.stroke(); ctx.beginPath(); drawing = false; }
+          continue;
+        }
+        const sx = origin.x + rc[0] * scale;
+        const sy = origin.y - rc[1] * scale;
+        if (!drawing) { ctx.moveTo(sx, sy); drawing = true; }
+        else ctx.lineTo(sx, sy);
+      }
+      if (drawing) ctx.stroke();
+    }
+    if (pass === 'front') {
+      const rc = rotateByCam(center);
+      const sx = origin.x + rc[0] * scale;
+      const sy = origin.y - rc[1] * scale;
+      ctx.strokeStyle = 'rgba(239, 159, 39, 0.55)';
+      ctx.lineWidth = 0.9;
+      ctx.setLineDash([3, 4]);
+      ctx.beginPath();
+      ctx.arc(sx, sy, radius * scale, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      // Holographic boundary sectors
+      const sectors = 14;
+      for (let s = 0; s < sectors; s++) {
+        const a = (s / sectors) * Math.PI * 2 + state.time * 0.3;
+        const pulse = 0.3 + 0.5 * (0.5 + 0.5 * Math.sin(s * 0.9 + state.time * 1.3));
+        const rScr = radius * scale;
+        const x1 = sx + Math.cos(a) * rScr * 1.03;
+        const y1 = sy + Math.sin(a) * rScr * 1.03;
+        const x2 = sx + Math.cos(a) * rScr * (1.03 + 0.08 * pulse);
+        const y2 = sy + Math.sin(a) * rScr * (1.03 + 0.08 * pulse);
+        ctx.strokeStyle = `rgba(239, 159, 39, ${pulse * 0.7})`;
+        ctx.lineWidth = 1.3;
+        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+      }
+    }
+  }
+
+  function drawPeer(peer, sphereCenter, sphereR, origin, scale) {
+    const wp = peerWorldPos(peer, sphereCenter, sphereR);
+    const c = toCanvas(wp, origin, scale);
+    const centerC = toCanvas(sphereCenter, origin, scale);
+
+    // Visibility: how much of the peer's orbit is in the current 3D slice.
+    // A peer in plane (a,b) has visibility = magnitude of (P[0..2][a], P[0..2][b]) in R^3.
+    const P = state.P;
+    const a = peer.planeA, b = peer.planeB;
+    const magA = P[0][a]*P[0][a] + P[1][a]*P[1][a] + P[2][a]*P[2][a];
+    const magB = P[0][b]*P[0][b] + P[1][b]*P[1][b] + P[2][b]*P[2][b];
+    const visibility = Math.min(1, Math.sqrt((magA + magB) / 2));
+
+    // Depth-based size cue
+    const relDepth = c.depth - centerC.depth;
+    const sizeMul = 1 + relDepth * 0.35;
+    const peerR_px = Math.max(1.8, 3.2 * sizeMul);
+
+    // Gyration trail (short)
+    if (state.mode !== 'structure' && state.gyr > 0.02 && visibility > 0.2) {
+      const nTrail = 14;
+      ctx.lineWidth = 1.1;
+      ctx.beginPath();
+      for (let s = 0; s < nTrail; s++) {
+        const dt = s * 0.04;
+        const theta = peer.phase + (state.time - dt) * state.gyr * peer.rate;
+        const r = peer.radius;
+        const cT = r * Math.cos(theta);
+        const sT = r * Math.sin(theta);
+        const wp2 = [
+          sphereCenter[0] + (P[0][a] * cT + P[0][b] * sT) * sphereR,
+          sphereCenter[1] + (P[1][a] * cT + P[1][b] * sT) * sphereR,
+          sphereCenter[2] + (P[2][a] * cT + P[2][b] * sT) * sphereR
+        ];
+        const tc = toCanvas(wp2, origin, scale);
+        if (s === 0) ctx.moveTo(tc.x, tc.y);
+        else ctx.lineTo(tc.x, tc.y);
+      }
+      ctx.strokeStyle = `rgba(216, 90, 48, ${0.5 * visibility})`;
+      ctx.stroke();
+    }
+
+    // Peer dot
+    const alpha = 0.35 + 0.65 * visibility;
+    ctx.fillStyle = `rgba(127, 119, 221, ${alpha})`;
+    ctx.beginPath();
+    ctx.arc(c.x, c.y, peerR_px, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Emerging-dim marker: if peer lives in a dim ≥ 3 AND visibility is rising past ~0.4,
+    // draw a coral halo — "hidden dim peeking through"
+    const livesInHidden = peer.planeA >= 3 || peer.planeB >= 3;
+    if (livesInHidden && visibility > 0.35) {
+      ctx.strokeStyle = `rgba(216, 90, 48, ${(visibility - 0.35) * 1.2})`;
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      ctx.arc(c.x, c.y, peerR_px + 2.5, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+  }
+
+  function drawVChannel(c1, c2, r1, r2, origin, scale, phase) {
+    const y1 = c1[1] + r1 * 0.9;
+    const y2 = c2[1] - r2 * 0.9;
+    const N = 20;
+    ctx.lineWidth = 1.3;
+    ctx.strokeStyle = 'rgba(29, 158, 117, 0.45)';
+    for (let side = -1; side <= 1; side += 2) {
+      ctx.beginPath();
+      for (let i = 0; i <= N; i++) {
+        const t = i / N;
+        const y = y1 + (y2 - y1) * t;
+        const twist = phase + t * Math.PI * 2 * 1.2;
+        const amp = 0.14;
+        const wp = [c1[0] + amp * Math.cos(twist) * side, y, c1[2] + amp * Math.sin(twist) * side];
+        const c = toCanvas(wp, origin, scale);
+        if (i === 0) ctx.moveTo(c.x, c.y); else ctx.lineTo(c.x, c.y);
+      }
+      ctx.stroke();
+    }
+    // ρ involution marker
+    const mid = toCanvas([c1[0], (y1 + y2) / 2, c1[2]], origin, scale);
+    ctx.strokeStyle = 'rgba(29, 158, 117, 0.85)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(mid.x, mid.y, 5, 0, Math.PI); ctx.stroke();
+  }
+
+  function drawHChannel(c1, c2, origin, scale, phase) {
+    const mid = [(c1[0]+c2[0])/2, (c1[1]+c2[1])/2 + 0.35, (c1[2]+c2[2])/2];
+    const N = 18;
+    ctx.lineWidth = 1.2;
+    ctx.strokeStyle = 'rgba(29, 158, 117, 0.42)';
+    ctx.beginPath();
+    for (let i = 0; i <= N; i++) {
+      const t = i / N; const u = 1 - t;
+      const wp = [
+        u*u*c1[0] + 2*u*t*mid[0] + t*t*c2[0],
+        u*u*c1[1] + 2*u*t*mid[1] + t*t*c2[1],
+        u*u*c1[2] + 2*u*t*mid[2] + t*t*c2[2]
+      ];
+      const c = toCanvas(wp, origin, scale);
+      if (i === 0) ctx.moveTo(c.x, c.y); else ctx.lineTo(c.x, c.y);
+    }
+    ctx.stroke();
+    // Pulse
+    const t = (phase / (Math.PI * 2)) % 1;
+    const u = 1 - t;
+    const wp = [
+      u*u*c1[0] + 2*u*t*mid[0] + t*t*c2[0],
+      u*u*c1[1] + 2*u*t*mid[1] + t*t*c2[1],
+      u*u*c1[2] + 2*u*t*mid[2] + t*t*c2[2]
+    ];
+    const p = toCanvas(wp, origin, scale);
+    ctx.fillStyle = 'rgba(29, 158, 117, 0.9)';
+    ctx.beginPath(); ctx.arc(p.x, p.y, 2.4, 0, Math.PI * 2); ctx.fill();
+  }
+
+  function cachePeers(key, count, peersPerDisk) {
+    const cacheKey = `${key}:${count}:${peersPerDisk}:${state.dim}`;
+    if (state.peersCache[cacheKey]) return state.peersCache[cacheKey];
+    const out = [];
+    for (let k = 0; k < count; k++) {
+      const levelPeers = [];
+      for (let p = 0; p < peersPerDisk; p++) {
+        const planeA = (2 * p) % state.dim;
+        const planeB = (2 * p + 1) % state.dim;
+        levelPeers.push({
+          planeA, planeB,
+          radius: 0.32 + ((p * 7 + k * 3) % 5) * 0.1,
+          phase: (k * 1.3 + p * (Math.PI * 2 / peersPerDisk)),
+          rate: 0.8 + (p * 0.25)
+        });
+      }
+      out.push(levelPeers);
+    }
+    state.peersCache[cacheKey] = out;
+    return out;
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // Tower topology
+  // ═══════════════════════════════════════════════════════════
+
+  function renderTower(bounds) {
+    const N = state.N;
+    const breath = state.mode === 'adiabatic'
+      ? 1 + 0.08 * state.adia * Math.sin(state.adiaPhase)
+      : 1;
+    let topGhost = 0;
+    if (state.mode === 'adiabatic' && N < 5) {
+      const cyc = (state.adiaPhase / (Math.PI * 2)) % 1;
+      if (cyc > 0.7 && cyc < 0.9) topGhost = (cyc - 0.7) / 0.2;
+      else if (cyc >= 0.9) topGhost = (1 - cyc) / 0.1;
+    }
+    const nVisible = N + (topGhost > 0.02 ? 1 : 0);
+    const spacing = 2.2;
+    const sphereR = 0.8 * breath;
+    const worldHeight = Math.max(1, N - 1) * spacing;
+    const scale = Math.min(
+      bounds.height * 0.85 / (worldHeight + 2 * sphereR + 0.8),
+      bounds.width * 0.42 / (2 * sphereR + 0.5)
+    );
+    const origin = { x: bounds.x + bounds.width / 2, y: bounds.y + bounds.height / 2 };
+
+    const peersAll = cachePeers('tower', 6, 4);
+    const centers = [];
+    for (let k = 0; k < nVisible; k++) {
+      const y = -worldHeight / 2 + k * spacing;
+      centers.push([0, y, 0]);
+    }
+
+    // 1. Back halves
+    for (let k = 0; k < nVisible; k++) {
+      const a = k < N ? 1 : topGhost;
+      if (a < 0.02) continue;
+      const r = k < N ? sphereR : sphereR * topGhost;
+      ctx.globalAlpha = a;
+      drawSphereWires(centers[k], r, origin, scale, 'back');
+      ctx.globalAlpha = 1;
+    }
+    // 2. Channels
+    for (let k = 0; k < nVisible - 1; k++) {
+      const a = Math.min(k < N - 1 ? 1 : topGhost, k + 1 < N ? 1 : topGhost);
+      if (a < 0.02) continue;
+      ctx.globalAlpha = a;
+      drawVChannel(centers[k], centers[k + 1], sphereR, sphereR * (k + 1 < N ? 1 : topGhost), origin, scale, state.time * 1.5 + k);
+      ctx.globalAlpha = 1;
+    }
+    // 3. Peers (depth sorted)
+    const toRender = [];
+    for (let k = 0; k < nVisible; k++) {
+      const a = k < N ? 1 : topGhost;
+      if (a < 0.02) continue;
+      const r = k < N ? sphereR : sphereR * topGhost;
+      for (const peer of peersAll[k % peersAll.length]) {
+        const wp = peerWorldPos(peer, centers[k], r);
+        const rot = rotateByCam(wp);
+        toRender.push({ peer, sphereCenter: centers[k], r, depth: rot[2], alpha: a });
+      }
+    }
+    toRender.sort((a, b) => a.depth - b.depth);
+    for (const it of toRender) {
+      ctx.globalAlpha = it.alpha;
+      drawPeer(it.peer, it.sphereCenter, it.r, origin, scale);
+      ctx.globalAlpha = 1;
+    }
+    // 4. Front halves
+    for (let k = 0; k < nVisible; k++) {
+      const a = k < N ? 1 : topGhost;
+      if (a < 0.02) continue;
+      const r = k < N ? sphereR : sphereR * topGhost;
+      ctx.globalAlpha = a;
+      drawSphereWires(centers[k], r, origin, scale, 'front');
+      ctx.globalAlpha = 1;
+    }
+    // 5. Labels
+    for (let k = 0; k < N; k++) {
+      const cVal = Math.pow(0.6, k).toFixed(2);
+      const wp = [centers[k][0] - sphereR * 1.4, centers[k][1], centers[k][2]];
+      const c = toCanvas(wp, origin, scale);
+      ctx.fillStyle = 'rgba(128, 128, 128, 0.8)';
+      ctx.font = '10px ' + getComputedStyle(document.body).fontFamily;
+      ctx.textAlign = 'end';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(`L${k} c=${cVal}`, c.x, c.y);
+      ctx.textAlign = 'start';
+    }
+    // Title
+    ctx.fillStyle = 'rgba(128, 128, 128, 0.8)';
+    ctx.font = '11px ' + getComputedStyle(document.body).fontFamily;
+    ctx.textAlign = 'center';
+    ctx.fillText(`Tower · B^${state.dim} → ℝ³`, origin.x, bounds.y + 14);
+    ctx.textAlign = 'start';
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // Flat network topology
+  // ═══════════════════════════════════════════════════════════
+
+  function renderFlat(bounds) {
+    const breath = state.mode === 'adiabatic'
+      ? 1 + 0.06 * state.adia * Math.sin(state.adiaPhase + 1.2)
+      : 1;
+    const baseDiskCount = 5;
+    let newFrac = 0;
+    if (state.mode === 'adiabatic') {
+      const cyc = (state.adiaPhase / (Math.PI * 2)) % 1;
+      if (cyc > 0.4 && cyc < 0.6) newFrac = (cyc - 0.4) / 0.2;
+      else if (cyc >= 0.6 && cyc < 0.8) newFrac = (0.8 - cyc) / 0.2;
+    }
+    const nDisks = baseDiskCount + (newFrac > 0.02 ? 1 : 0);
+    const ringR = 2.0;
+    const sphereR = 0.65 * breath;
+    const scale = Math.min(
+      bounds.width * 0.42 / (ringR + sphereR + 0.5),
+      bounds.height * 0.42 / (ringR + sphereR + 0.5)
+    );
+    const origin = { x: bounds.x + bounds.width / 2, y: bounds.y + bounds.height / 2 };
+    const netRot = state.mode !== 'structure' ? state.time * state.gyr * 0.25 : 0;
+
+    const peersAll = cachePeers('flat', 6, 3);
+    const disks = [];
+    for (let i = 0; i < nDisks; i++) {
+      const angle = (i / baseDiskCount) * Math.PI * 2 + netRot;
+      const localA = (i === baseDiskCount) ? newFrac : 1;
+      disks.push({
+        pos: [Math.cos(angle) * ringR, 0, Math.sin(angle) * ringR],
+        r: sphereR * localA,
+        alpha: localA
+      });
+    }
+
+    // Back halves
+    for (const d of disks) {
+      if (d.alpha < 0.05) continue;
+      ctx.globalAlpha = d.alpha;
+      drawSphereWires(d.pos, d.r, origin, scale, 'back');
+      ctx.globalAlpha = 1;
+    }
+    // Channels
+    for (let i = 0; i < disks.length; i++) {
+      const a = disks[i];
+      const b = disks[(i + 1) % disks.length];
+      const alp = Math.min(a.alpha, b.alpha);
+      if (alp < 0.05) continue;
+      ctx.globalAlpha = alp;
+      drawHChannel(a.pos, b.pos, origin, scale, state.time * 1.8 + i);
+      ctx.globalAlpha = 1;
+    }
+    // Broker at origin
+    const broker = toCanvas([0, 0, 0], origin, scale);
+    ctx.fillStyle = 'rgba(128, 128, 128, 0.7)';
+    ctx.beginPath(); ctx.arc(broker.x, broker.y, 4, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = 'rgba(128, 128, 128, 0.3)';
+    ctx.lineWidth = 0.5;
+    ctx.beginPath(); ctx.arc(broker.x, broker.y, 10, 0, Math.PI * 2); ctx.stroke();
+
+    // Peers depth-sorted
+    const toRender = [];
+    for (let i = 0; i < disks.length; i++) {
+      if (disks[i].alpha < 0.05) continue;
+      for (const peer of peersAll[i % peersAll.length]) {
+        const wp = peerWorldPos(peer, disks[i].pos, disks[i].r);
+        const rot = rotateByCam(wp);
+        toRender.push({ peer, sphereCenter: disks[i].pos, r: disks[i].r, depth: rot[2], alpha: disks[i].alpha });
+      }
+    }
+    toRender.sort((a, b) => a.depth - b.depth);
+    for (const it of toRender) {
+      ctx.globalAlpha = it.alpha;
+      drawPeer(it.peer, it.sphereCenter, it.r, origin, scale);
+      ctx.globalAlpha = 1;
+    }
+    // Front halves
+    for (const d of disks) {
+      if (d.alpha < 0.05) continue;
+      ctx.globalAlpha = d.alpha;
+      drawSphereWires(d.pos, d.r, origin, scale, 'front');
+      ctx.globalAlpha = 1;
+    }
+    // Title
+    ctx.fillStyle = 'rgba(128, 128, 128, 0.8)';
+    ctx.font = '11px ' + getComputedStyle(document.body).fontFamily;
+    ctx.textAlign = 'center';
+    ctx.fillText(`Flat · B^${state.dim} → ℝ³`, origin.x, bounds.y + 14);
+    ctx.textAlign = 'start';
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // Main draw & UI sync
+  // ═══════════════════════════════════════════════════════════
+
+  function draw() {
+    const w = canvas.clientWidth;
+    const h = 500;
+    ctx.clearRect(0, 0, w, h);
+    buildProjection();
+    const pad = 20;
+    if (state.topo === 'tower') {
+      renderTower({ x: pad, y: pad, width: w - 2 * pad, height: h - 2 * pad });
+    } else if (state.topo === 'flat') {
+      renderFlat({ x: pad, y: pad, width: w - 2 * pad, height: h - 2 * pad });
+    } else {
+      const halfW = (w - 3 * pad) / 2;
+      renderTower({ x: pad, y: pad, width: halfW, height: h - 2 * pad });
+      renderFlat({ x: pad * 2 + halfW, y: pad, width: halfW, height: h - 2 * pad });
+    }
+    updateOverlays();
+  }
+
+  function updateOverlays() {
+    const fmix = state.mode === 'structure' ? 0 : state.gyr * 0.05 * (1 + (state.N - 2) * 0.15);
+    const passed = fmix < 0.05;
+    statusEl.textContent = state.mode === 'structure'
+      ? 'σ22 · idle · F_mix=0.000'
+      : `σ22 ${passed ? 'PASS' : 'FAIL'} · F_mix=${fmix.toFixed(3)}`;
+    statusEl.style.color = state.mode === 'structure'
+      ? 'var(--color-text-secondary)'
+      : (passed ? 'var(--color-text-success, #0F6E56)' : 'var(--color-text-warning, #854F0B)');
+
+    const caps = {
+      structure: `Static Tower v2.5 in B^${state.dim}, projected to ℝ³ by rotating P. Sphere wires are the 3 principal great circles of each Poincaré ball; peers rest at canonical angles.`,
+      mold: `Peers orbit in their canonical 2-planes of ℝ^${state.dim}. P: ℝ^${state.dim}→ℝ³ rotates slowly; peers whose plane is currently in P's span are visible, the others shrink toward the origin.`,
+      adiabatic: `dI/dt≈0 breath. Tower DEEPENs/FLATTENs, flat network admits/ejects a disk, radii breathe. Gyration persists through the flow — σ11 adiabatic invariant preserved.`
+    };
+    captionEl.textContent = caps[state.mode];
+
+    // Dim indicator — magnitude of each dim in the current projection
+    const P = state.P;
+    if (P && dimDotsEl) {
+      dimLabelEl.textContent = state.dim;
+      let html = '';
+      for (let j = 0; j < state.dim; j++) {
+        let m = 0;
+        for (let i = 0; i < 3; i++) m += P[i][j] * P[i][j];
+        const mag = Math.min(1, Math.sqrt(m));
+        const color = mag > 0.7 ? '#7F77DD'
+          : mag > 0.3 ? 'rgba(127, 119, 221, 0.55)'
+          : 'rgba(127, 119, 221, 0.15)';
+        html += `<div class="dim-dot" style="background:${color}" title="dim ${j}: ${mag.toFixed(2)}"></div>`;
+      }
+      dimDotsEl.innerHTML = html;
+    }
+  }
+
+  function tick(t) {
+    if (state.prevT === null) state.prevT = t;
+    const dt = Math.min(0.05, (t - state.prevT) / 1000);
+    state.prevT = t;
+    if (!state.reducedMotion) {
+      state.time += dt;
+      state.camAz += dt * 0.1;
+      state.projPhase += dt * 0.4;
+      if (state.mode === 'adiabatic') {
+        state.adiaPhase += dt * (Math.PI * 2 / 14) * (0.3 + state.adia * 1.5);
+      }
+    }
+    draw();
+    requestAnimationFrame(tick);
+  }
+
+  // Controls
+  document.getElementById('mode-tabs-n').addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-mode]');
+    if (!b) return;
+    state.mode = b.dataset.mode;
+    for (const x of e.currentTarget.querySelectorAll('button')) x.classList.toggle('active', x.dataset.mode === state.mode);
+  });
+  document.getElementById('topo-tabs-n').addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-topo]');
+    if (!b) return;
+    state.topo = b.dataset.topo;
+    for (const x of e.currentTarget.querySelectorAll('button')) x.classList.toggle('active', x.dataset.topo === state.topo);
+  });
+  const gyrS = document.getElementById('s-gyr-n');
+  gyrS.addEventListener('input', () => { state.gyr = gyrS.value / 100; document.getElementById('v-gyr-n').textContent = state.gyr.toFixed(2); });
+  const adiaS = document.getElementById('s-adia-n');
+  adiaS.addEventListener('input', () => { state.adia = adiaS.value / 100; document.getElementById('v-adia-n').textContent = state.adia.toFixed(2); });
+  const NS = document.getElementById('s-N-n');
+  NS.addEventListener('input', () => { state.N = parseInt(NS.value, 10); document.getElementById('v-N-n').textContent = state.N; state.peersCache = {}; });
+  const dimS = document.getElementById('s-dim-n');
+  dimS.addEventListener('input', () => { state.dim = parseInt(dimS.value, 10); document.getElementById('v-dim-n').textContent = state.dim; state.peersCache = {}; });
+
+  resize();
+  window.addEventListener('resize', resize);
+  requestAnimationFrame(tick);
+})();
+</script>

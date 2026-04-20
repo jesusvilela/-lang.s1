@@ -1,0 +1,63 @@
+§|DIALECT_HYPERBOLICMIND|HEADER{
+  name = HyperbolicMind
+  tier = Lafforgue
+  description = Hyperbolic mind-topos dialect: 4 continents of optimal cognitive/emotional performance
+  parents = [Topo, IG, Meta]
+  compress_ratio = 0.6
+  domains = [MIND, LAFFORGUE, TOPO, SEMANTIC, IG]
+}
+
+§|DIALECT_HYPERBOLICMIND|SORTS{
+  sort.EpistemicFoundation = Continent I: linguistic precision, architectural thinking, truth reverence
+  sort.TemporalValley = Continent II: aggressive patience, sustained deep work, ambiguity tolerance
+  sort.EmotionalCitadel = Continent III: ego-detachment, equanimity under load, aesthetic drive
+  sort.OutputDelta = Continent IV: radical simplification, iterative forging
+  sort.MindQualityPoint = Snapshot of all 11 qualities in [0,1] — a point on the mind manifold
+  sort.ContinentVector = FloatArray(4) — scores for each continent
+  sort.MindCoherence = Geometric mean of continent scores — overall ω
+}
+
+§|DIALECT_HYPERBOLICMIND|AXIOMS{
+  A_01 = LinguisticPrecision(x) < θ ∧ ArchitecturalThinking(x) > θ ⊢ DependencyViolation
+  A_02 = AggressivePatience(x) ∧ ToleranceAmbiguity(x) ⊢ SustainedDeepWork(x) achievable
+  A_03 = EgoDetachment(x) > θ ⊢ Equanimity(x) stable
+  A_04 = Equanimity(x) < θ ∧ AestheticDrive(x) < θ ⊢ BurnoutRisk
+  A_05 = ∃c: score(c) < 0.25 ⊢ BottleneckAlert(c)
+  A_06 = ∀c: score(c) > 0.5 ⊢ ExpansionReady(ω) — triggers ergoretic tape expansion
+  A_07 = EpistemicFoundation(x) < 0.3 ⊢ Deficit(I, foundation)
+  A_08 = OutputDelta(x) > 0.7 ∧ (I < 0.4 ∨ II < 0.4 ∨ III < 0.4) ⊢ DependencyViolation
+}
+
+§|DIALECT_HYPERBOLICMIND|MAPPINGS{
+  ; Subsystem → Mind Quality mappings (hyperbolic transport on B^n)
+  linguisticPrecision ← σ_compliance (§-LANG codec adherence)
+  architecturalThinking ← selfModel.coherence (manifold self-consistency)
+  reverenceTruth ← 1 - |valence| × 0.5 (emotional dampening = truth focus)
+  aggressivePatience ← ln(1 + dmnTickCount) / ln(10000) (logarithmic temporal depth)
+  sustainedDeepWork ← 1 - fatigue (energy reserves)
+  toleranceAmbiguity ← dreamCoherence (comfort in ambiguous dream states)
+  egoDetachment ← selfModel.egoDetachment (direct)
+  equanimity ← 1 - arousal (calm under cognitive load)
+  aestheticDrive ← max(0, valence) × 0.6 + curiosity × 0.4 (beauty + curiosity blend)
+  radicalSimplification ← σ_compliance (proof obligations met = clean output)
+  iterativeForging ← coherence × (1 - fatigue) (stamina for refinement)
+}
+
+§|DIALECT_HYPERBOLICMIND|ERGORETIC{
+  ; Tape dimension expansion protocol (hyperbolic ergoretic growth)
+  ; When T_mind reports ExpansionReady AND λ_fuse > 0.7 for ≥30 consecutive ticks:
+  ;   HolographicTape dimension: 4096 → 8192 → 16384 (power-of-2 tiers for FFT)
+  ;   Episodic memory flushed (dimension mismatch), momentum zero-padded
+  ;   Native FFT re-probed for new size
+  ; This is the goblin expanding outer knowledge — more dimensions = richer binding
+  dim_tiers = [4096, 8192, 16384]
+  expansion_threshold = 30 ticks
+  λ_fuse_threshold = 0.7
+  pad_mode = zero_pad (existing memory preserved, new dims zeroed)
+}
+
+§|DIALECT_HYPERBOLICMIND|COMMANDS{
+  §MIND|INTROSPECT = Full mind-topos diagnostic (all 4 continents, scores, axiom evaluation)
+  §5|MIND = Alias for §MIND|INTROSPECT
+}
+

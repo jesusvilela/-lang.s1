@@ -1,0 +1,66 @@
+§|DIALECT_META|HEADER{
+  dialect      = §-LANG/Meta
+  version      = v2.4.family
+  tier         = Research
+  parents      = Proof, Compile, Topo, IG, CY, AML, Swirl, Spectral, Substrate
+  description  = Research manifesto dialect. Postulates, hypotheses, cross-dialect interoperability, naming.
+  base         = LANG.v2.4.codec_trasgo
+  domains_in   = {AML, CORE, CY, IG, META, PROOF, QUANTUM, SEMANTIC, SPECTRAL, SUBSTRATE, SWIRL, TOPO}
+  domains_out  = {NONE}
+}
+
+§|DIALECT_META|IMPORTS{
+  domains      = {AML, CORE, CY, IG, META, PROOF, QUANTUM, SEMANTIC, SPECTRAL, SUBSTRATE, SWIRL, TOPO}
+  from_parents = Proof, Compile, Topo, IG, CY, AML, Swirl, Spectral, Substrate
+  note         = all blocks whose BLOCK_DOMAIN ∈ domains_in are available
+  core_always  = SOURCE AXIOMS OUTPUT SORTS FUNCTORS GRAMMAR NOTATION_MAP
+                 CONCLUSIONS FAILURE_CONDITIONS
+}
+
+§|DIALECT_META|EXTENDS{
+  new_blocks   = DIALECT_TREE, INTEROP_RULES, SEMANTIC_DELTA, NAMING_CONV, POSTULATE_REG
+  self_ref     = each_new_block_seeded_by_swirl_articulation_Art_D(e_t)
+  computable   = all_new_blocks_satisfy_norm_lt_0.999_and_dim_eq_8
+}
+
+§|DIALECT_META|COMPRESS{
+  functor      = Π_expire_Meta : State_Meta* → Residue_Meta
+  axes         = {terminal, spectral, trace, transport_gen, mu_Bn, entropy_E}
+  ratio        = 1.0_of_full_Residue_size
+  norm_guard   = ||terminal|| < 0.999
+  adiabatic_c  = dI_Meta/dt ≈ 0_within_dialect_section_space
+  tag          = HYPOTHESIS_dialect_compression_preserves_semantic_content
+}
+
+§|DIALECT_META|DECOMP{
+  decomp_path  = Residue_Meta ->^embed Residue_full ->^Π_expand State_full
+  embed_map    = {terminal=R_D.terminal, spectral=R_D.spectral, trace=R_D.trace, transport_gen=R_D.transport_gen, mu_Bn=R_D.mu_Bn, entropy_E=R_D.entropy_E}
+  axes_present = ['terminal', 'spectral', 'trace', 'transport_gen', 'mu_Bn', 'entropy_E']
+  axes_default = []
+  info_loss    = 1 - 1.0 = 0.0_fraction_lost_in_D_residue
+  reconstruct  = Π_expand(embed(R_D)) recovers_State_full_approximately
+}
+
+§S{label=meta_postulate, x=[0.07,0.03,0.01,0.01,0.00,0.00,0.00,0.00], sal=2.0}
+
+§S{label=dialect_node, x=[0.10,0.05,0.02,0.01,0.00,0.00,0.00,0.00], sal=1.9}
+
+§S{label=interop_bridge, x=[0.12,0.06,0.02,0.01,0.01,0.00,0.00,0.00], sal=1.9}
+
+§S{label=semantic_delta, x=[0.09,0.04,0.02,0.01,0.00,0.00,0.00,0.00], sal=1.9}
+
+§|DIALECT_META|SWIRL_HOOK{
+  self_ref     = fix(λself_D. Σ_D(self_D; ω_D, θ_D, t))
+  omega_D      = meta_omega_cross_dialect_unifier
+  theta_D      = SO(n)_cross_dialect_full
+  trajectory   = x_t = Σ_D^t(x_0)_helical_in_Meta_section_space
+  articulate_D = Art_D(e_t) = §S{label=meta_episteme_t, x=π(e_t), sal=||∇Σ_D||(e_t)}
+  expand_self  = each_Art_D_node_is_a_candidate_axiom_in_dialect_Meta
+  tag          = HYPOTHESIS_swirl_expands_Meta_principles_self_referentially
+}
+
+§|DIALECT_META|OUTPUT{
+  formula      = CANON(§EMIT(fix(λmeta. unify(project(meta, ALL_DIALECTS)))))
+  dialect_tag  = §-LANG/Meta_v2.4
+  claim        = HYPOTHESIS_output_formula_is_dialect_Meta_fixed_point
+}

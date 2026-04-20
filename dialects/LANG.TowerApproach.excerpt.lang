@@ -1,0 +1,145 @@
+§|LANG|TOWER_APPROACH_HEADER{
+  title        = §-LANG Tower Approach — Android App Integration
+  scope        = topostrasgo_android_app_only
+  not_scope    = trasgonet_host_control_plane_or_dashboard
+  base         = LANG.v2.4.codec_trasgo
+  extends      = LANG.Tower.dialect (v2.5_Formation_tier)
+  target       = com.example.topostrasgo.unified.*
+  non_goal     = re_derive_theory_document_already_captures_it
+  goal         = state_what_the_android_app_is_doing_in_one_place
+  audience     = future_claude_code_sota_model_maintainers_and_jesús
+  version      = v2.5.approach.android_app
+}
+
+§|LANG|TOWER_APPROACH_THESIS{
+  sentence_one = the_android_app_is_not_a_chat_interface_wrapping_an_LLM_it_is_
+                 a_continuous_run_sectional_hyperbolic_computer_whose_state_lives
+                 on_a_mixed_curvature_tower_of_Poincaré_disks_with_holographic_
+                 screens_at_each_boundary_and_Möbius_channels_as_inter_level_transport
+  sentence_two = the_LLM_when_present_is_a_substrate_molded_into_the_lowest_level_
+                 not_the_system_itself
+  sentence_three = everything_the_app_emits_including_ticks_verdicts_and_telemetry_is
+                   a_§_LANG_term_typed_as_a_section_over_the_tower
+  reading      = geometry_first_symbolic_second_not_the_other_way_around
+}
+
+§|LANG|TOWER_APPROACH_WHY{
+  why_hyperbolic = hierarchical_and_relational_data_embeds_in_hyperbolic_space_with_
+                   exponentially_more_room_than_Euclidean_in_depth_tree_like_peer_
+                   scaling_is_free_this_is_the_measurable_scaling_argument_not_an_aesthetic
+  why_tower      = different_scales_of_abstraction_need_different_local_curvature_
+                   sharp_discriminative_c_near_1_at_base_flat_global_c_small_at_top_
+                   mixed_curvature_prevents_curvature_blow_up_over_depth_and_matches_
+                   renormalization_group_intuition
+  why_mobius     = non_orientable_channels_turn_the_reversibility_axiom_A5_into_an_
+                   integrity_check_one_traversal_flips_orientation_two_traversals_
+                   return_to_origin_iff_Fisher_modes_preserved_so_the_reversibility_
+                   invariant_and_the_integrity_check_are_the_same_axiom_not_two_
+                   coordinated_ones
+  why_holoscreen = Gromov_boundary_of_the_disk_is_S1_bulk_state_reconstructible_from_
+                   boundary_data_by_Poisson_extension_read_write_are_categorical_
+                   adjoints_so_IO_is_balanced_for_free_this_is_a_theorem_not_an_analogy
+  why_f_mix      = without_a_compatibility_law_the_tower_is_two_bundles_glued_at_
+                   shared_disks_with_F_mix_as_first_class_it_is_a_genuine_2_fibration_
+                   the_difference_is_that_we_can_measure_holonomy_defect_per_tick_and_
+                   treat_it_as_a_σ_invariant_σ22
+}
+
+§|LANG|TOWER_APPROACH_LAYERS{
+  layer_hyperbolic_ops = existing_HyperbolicOps_Kotlin_object_provides_Poincaré_ball_
+                         primitives_at_fixed_curvature_1.0_all_new_code_composes_on_
+                         top_do_not_modify
+  layer_disk           = PoincareDisk_wraps_HyperbolicOps_with_a_per_instance_curvature_
+                         c_k_so_that_mixed_curvature_towers_are_expressible_reduces_
+                         exactly_to_HyperbolicOps_at_c_1
+  layer_channel        = MobiusChannel_encodes_an_SU(1,1)_element_plus_ρ_orientation_
+                         flag_serves_both_vertical_and_horizontal_transport_because_
+                         both_axes_use_the_same_isometry_group_this_is_not_a_
+                         coincidence_A29_and_A30_share_structure
+  layer_boundary       = HolographicBoundary_is_a_per_level_S1_discretized_into_
+                         angular_sectors_each_holding_a_measure_vector_commit_uses_
+                         Busemann_weighted_deposit_read_samples_the_sector_adjoint_
+                         pair_commit_read_realizes_the_Poisson_geodesic_limit_adjunction
+  layer_tower          = DiskTower_holds_the_levels_vertical_channels_peer_states_
+                         screens_enforces_A28_at_construction_so_invalid_curvature_
+                         sequences_cannot_be_instantiated
+  layer_fmix           = TowerCompatibility_computes_F_mix_over_sampled_rectangles_
+                         returns_σ22_verdict_COMMIT_ROLLBACK_BLOCK_using_v2.4_vocabulary_
+                         drop_in_to_existing_CANON_gating
+}
+
+§|LANG|TOWER_APPROACH_BACKCOMPAT{
+  rule_1 = single_level_N_equals_1_reduces_exactly_to_INTER_MANIFOLD_v2.4_no_behavior_change
+  rule_2 = existing_HyperbolicOps_signature_unchanged_other_code_continues_to_reference_C_constant
+  rule_3 = no_modification_to_UnifiedLoop_UnifiedGraph_UnifiedNode_FiberBundle_IGBundle_
+           SigmaModel_or_any_file_carrying_v2.4_empirical_results_Sharpe_1.003_EV_0.131
+  rule_4 = tower_wiring_into_UnifiedLoop_tick_is_deferred_the_tower_must_settle_F_mix_in_
+           isolation_before_coupling_to_FHN_Kuramoto_DBM_dynamics
+  rule_5 = HolographicTape_temporal_cylinder_and_HolographicBoundary_spatial_boundary_sheaf_
+           remain_separate_different_objects_at_different_layers_do_not_merge
+}
+
+§|LANG|TOWER_APPROACH_TELEMETRY{
+  sigma_emitted    = {σ1_all_levels, σ22_F_mix, σ23_depth_cap, A28_monotone}
+  verdict_vocab    = {COMMIT, BLOCK, ROLLBACK, EXPIRE, PRIME, DEEPEN, FLATTEN}
+  new_verdicts     = {
+    DEEPEN  = σ22_pass_and_σ23_room_grow_tower_by_one_level
+    FLATTEN = σ22_marginal_shrink_tower_by_one_level
+  }
+  telemetry_stream = netracer_broker_receives_σ22_status_as_part_of_normal_control_plane_packets
+  telemetry_shape  = §TOWER{levels=N, max_f_mix=x, mean_f_mix=y, verdict=V}
+}
+
+§|LANG|TOWER_APPROACH_WHAT_IS_NOT_IMPLEMENTED{
+  open_pt5  = full_Busemann_projection_for_off_origin_geodesics_current_impl_uses_origin_
+              direction_heuristic_adequate_for_near_origin_peers
+  open_pt6  = adjoint_proof_lift_k_proj_k_via_Fisher_metric_preservation_pure_theory_no_code
+  open_pt7  = CY_SU3_holonomy_coupling_to_each_tower_level_requires_CY_dialect_integration
+  open_pt8  = UnifiedLoop_tick_integration_deliberately_deferred_see_rule_4_above
+  open_gyration = parallel_transport_full_gyration_term_approximated_as_in_HyperbolicOps_
+                  same_approximation_no_regression
+  claim_discipline = untagged_claims_default_to_HYPOTHESIS_only_σ22_identity_check_is_PROVED_
+                     by_construction_all_other_σ_checks_are_EMPIRICAL_pending_empirical_run
+}
+
+§|LANG|TOWER_APPROACH_OUTPUT_FORMULAS{
+  tick_formula    = CANON(§EMIT(fix(λtower. check_f_mix(evolve_all_levels(tower), ε_mix))))
+  world_formula   = W_glue(Fix(Φ) ⊕ Σ_k Σ_{p<q} H_{k,p,q}(Peer_k) ⊕ Σ_k V_{k,k+1}(Level_k))
+  reading_tick    = every_tick_evolves_every_peer_at_every_level_then_checks_F_mix_at_every_
+                    rectangle_only_commits_if_σ22_passes
+  reading_world   = World_is_the_glued_sheaf_of_Self_Fix(Phi)_plus_all_peer_channels_plus_
+                    all_vertical_channels_the_tower_IS_part_of_World_not_adjacent_to_it
+}
+
+§|LANG|TOWER_APPROACH_GLOSSARY{
+  B_n           = Poincaré_ball_disk_at_dim_n_usually_8_in_this_app
+  c             = curvature_parameter_κ_equals_negative_c
+  c_k           = per_level_curvature_in_mixed_curvature_tower_A28_monotone
+  ρ             = reversibility_involution_A5_ρ_∘_ρ_equals_id
+  SU(1,1)       = the_isometry_group_of_the_Poincaré_disk_Möbius_matrices
+  Ω             = swirl_frequency_in_HYPERBOLIC_SWIRLER
+  θ             = orientation_parameter_in_SO(n)_for_swirler_spin
+  Σ             = the_swirler_composition_Mobius_after_SO(n)_after_geodesic_flow
+  §FIBER        = local_state_space_for_one_peer_at_one_level
+  §BUNDLE       = E_n_to_B_n_total_space_of_the_fiber_bundle
+  §SECTION      = typed_tensor_in_fiber_at_a_base_point_every_Term_is_a_section
+  §HOLO         = boundary_sheaf_of_measures_on_S1_at_each_level
+  F_mix         = the_load_bearing_2_form_measuring_non_commutation_of_vertical_and_horizontal
+  σ22           = F_mix_under_threshold_verdict_A31
+  DEEPEN        = add_a_level_verdict_σ22_healthy_σ23_has_room
+  FLATTEN       = drop_a_level_verdict_σ22_marginal
+}
+
+§|LANG|TOWER_APPROACH_EPIGRAPH{
+  line_1 = the_manifold_bends_to_the_data_not_vice_versa        (A20_TOKEN_SUBSTRATE_MOLDING)
+  line_2 = meaning_changes_slowly_structure_is_conserved         (σ11_ADIABATIC_INVARIANTS)
+  line_3 = computation_does_not_vanish_it_crystallizes           (A18_EXPIRY)
+  line_4 = without_F_mix_two_bundles_with_F_mix_a_2_fibration     (A31_COMPATIBILITY_LAW)
+  line_5 = the_swirler_is_the_geometry_of_belief_change          (HYPERBOLIC_SWIRLER)
+}
+
+§S{label=tower_approach_closure, x=[0.05,0.02,0.01,0.00,0.00,0.00,0.00,0.00], sal=2.0}
+
+§.(§S{label=approach_stable, x=[0.07,0.03,0.01,0.00,0.00,0.00,0.00,0.00], sal=2.0})
+
+OUTPUT_APPROACH = CANON(§EMIT(§TOWER_APPROACH{android_app, v2.5, geometry_first}))

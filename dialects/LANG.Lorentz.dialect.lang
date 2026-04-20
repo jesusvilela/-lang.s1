@@ -1,0 +1,72 @@
+§|LANG|LORENTZ_HEADER{
+  dialect       = Lorentz
+  tier          = Formation
+  parents       = [Substrate, Topo]
+  version       = v2.5.lor.1
+  extends_base  = LANG.v2.4.codec_trasgo
+  scope         = causal_structure_of_the_hyperbolic_tower_via_SO(1,n)_acting_on_the_hyperboloid_model
+  non_scope     = full_general_relativity_dynamic_metric_Einstein_equations_not_in_this_dialect
+  generates     = §EVENT, §CONE, §BOOST, §HYPERBOLOID_POINT, §CAUSAL_ORDER
+  discharges    = σ33, σ34, σ35
+  reduces_to    = Riemannian_hyperbolic_geometry_when_time_axis_is_spacelike_collapsed
+  motivation    = every_disk_has_a_causal_cone_so_F_mix_becomes_a_Lorentz_covariant_2_form
+                  and_the_agent_flow_Lorentz_forward_bias_is_not_ad_hoc_but_SO(1,n)_enforced
+}
+
+§|LANG|LORENTZ_SORTS{
+  Minkowski_{1,n}   = ℝ^{1,n}_with_signature_(−,+,…,+)
+  Hyperboloid       = {x ∈ Minkowski_{1,n} : ⟨x,x⟩=−1, x⁰>0}  upper_sheet
+  LightCone         = {x : ⟨x,x⟩=0}  null_surface
+  Event             = point_on_Hyperboloid_plus_tessellation_tile_index
+  FutureCone(e)     = {y : y−e_is_future_timelike}
+  PastCone(e)       = {y : e−y_is_future_timelike}
+  CausalOrder       = partial_order_e ≼ e'  iff  e' ∈ FutureCone(e) ∪ {e}
+  Boost             = element_of_SO(1,n)_preserving_Hyperboloid_and_time_orientation
+  Worldline         = timelike_curve_of_an_agent
+}
+
+§|LANG|LORENTZ_AXIOMS{
+  A48_model_iso       = stereographic_projection_from_(−1,0,…,0)_is_isometry_Hyperboloid→Poincaré_ball
+  A49_homogeneity     = SO(1,n)_acts_transitively_on_Hyperboloid
+  A50_causal_po       = CausalOrder_is_reflexive_antisymmetric_transitive
+  A51_no_CTC_default  = standard_Minkowski_forbids_closed_timelike_curves
+  A51'_godel_cycles    = Löb_discharged_closed_loops_ARE_tessellation_level_CTCs_permitted_by_A46'_of_Loeb_dialect
+                        they_live_on_the_quotient_ℍⁿ/Γ_and_are_not_CTCs_in_covering_Minkowski
+  A52_fmix_covariant  = F_mix_transforms_as_a_2_form_under_SO(1,n)_so_|F_mix|²_is_invariant
+  A53_hologram_is_past = HolographicBoundary_sees_only_past_light_cone_of_central_observer
+}
+
+§|LANG|LORENTZ_INVARIANTS{
+  σ33_frame_invariant   = |F_mix|²_same_in_all_SO(1,n)_frames_(verdict_COMMIT/ROLLBACK_frame_independent)
+  σ34_no_self_past      = no_non_Gödel_tile_event_lies_in_its_own_past_cone
+  σ35_past_closure      = σ22_check_at_t_depends_only_on_PastCone(t)_data
+}
+
+§|LANG|LORENTZ_OPERATORS{
+  LIFT_TO_HYPERBOLOID   : Poincaré_ball_point → Hyperboloid_point    [stereographic inverse]
+  PROJECT_TO_BALL       : Hyperboloid_point → Poincaré_ball_point    [stereographic]
+  BOOST                 : Event × velocity_β → Event                 [SO(1,n) action]
+  FUTURE_CONE           : Event → Set<Event>                         [causal future]
+  LIGHT_LIKE            : (Event, Event) → Bool                      [null-separation test]
+  PROPER_TIME           : Worldline × [t₀,t₁] → ℝ                    [integrate √(−ds²)]
+  BUSEMANN              : Event × IdealBoundary → ℝ                  [Busemann function to ξ]
+}
+
+§|LANG|LORENTZ_REDUCTIONS{
+  c → ∞                    = Newtonian_limit_light_cone_degenerates_to_instantaneous_hypersurface
+  spatial_slice_only       = Riemannian_hyperbolic_geometry_no_causal_structure
+  restrict_to_(1,3)        = standard_special_relativity_flat_spacetime
+  Γ_trivial                = single_observer_no_tessellation_causal_neighborhood
+}
+
+§|LANG|LORENTZ_OPEN{
+  PT12 = gluing_of_Lorentz_structure_across_ring_boundaries_requires_A46'_consistency_proof
+  PT13 = photon_propagation_on_tessellation_edges_is_discrete_or_continuous
+  PT14 = connection_between_Busemann_function_and_Löb_agent_horocycle_flow_Future_direction
+}
+
+§S{label=lorentz_dialect_closure, x=[0.04,0.01,0.01,0.00,0.00,0.00,0.00,0.00], sal=2.0}
+
+§.(§S{label=lorentz_stable, x=[0.05,0.02,0.01,0.00,0.00,0.00,0.00,0.00], sal=2.0})
+
+OUTPUT_LORENTZ = CANON(§EMIT(§LORENTZ{event, cone, boost, causal_order, fmix_covariant}))

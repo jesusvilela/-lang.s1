@@ -1,0 +1,1157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Netracer V2 — Hyperbolic Stream</title>
+  <style>
+    :root {
+      --bg: #03070d;
+      --bg-soft: #07111d;
+      --panel: rgba(8, 17, 28, 0.9);
+      --line: rgba(112, 206, 255, 0.14);
+      --line-strong: rgba(112, 206, 255, 0.28);
+      --ink: #ebf7ff;
+      --muted: #7c96ab;
+      --gold: #f0c971;
+      --cyan: #75deff;
+      --mint: #89ffd0;
+      --rose: #ffb5a7;
+      --lavender: #c7cbff;
+      --amber: #ffd97a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow: hidden;
+      color: var(--ink);
+      font-family: "Bahnschrift", "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 18% 16%, rgba(24, 74, 112, 0.24), transparent 24%),
+        radial-gradient(circle at 84% 12%, rgba(229, 189, 100, 0.08), transparent 22%),
+        linear-gradient(180deg, #03060c, #07111c 44%, #020409 100%);
+    }
+    .topbar {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 20;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) repeat(4, auto) auto auto auto;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(4, 9, 15, 0.84);
+      backdrop-filter: blur(16px);
+    }
+    .brand {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.24em;
+      color: var(--gold);
+      white-space: nowrap;
+    }
+    .scope, .chip, .topbar a {
+      min-height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(9, 16, 25, 0.88);
+      color: var(--ink);
+      font: inherit;
+      text-decoration: none;
+      padding: 7px 12px;
+    }
+    .scope { width: 100%; cursor: pointer; }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+    .chip strong { color: var(--gold); font-weight: 700; }
+    .shell {
+      position: fixed;
+      inset: 50px 0 0 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) 360px;
+      gap: 12px;
+      padding: 12px;
+    }
+    .main {
+      display: grid;
+      grid-template-rows: minmax(0, 1fr) 220px;
+      gap: 12px;
+      min-height: 0;
+    }
+    .panel {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(7, 14, 24, 0.96), rgba(5, 11, 19, 0.92));
+      box-shadow: 0 24px 56px rgba(0, 0, 0, 0.26);
+      overflow: hidden;
+    }
+    .field-panel { position: relative; border-radius: 24px; min-height: 0; }
+    .rail {
+      display: grid;
+      grid-template-rows: auto auto minmax(0, 1fr);
+      gap: 12px;
+      min-height: 0;
+    }
+    .rail-panel, .tape-panel { border-radius: 20px; }
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 14px 10px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(6, 12, 20, 0.86);
+    }
+    .panel-title {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+    }
+    .panel-body { padding: 12px 14px 14px; min-height: 0; overflow: auto; }
+    .field-body { position: absolute; inset: 0; padding: 12px; }
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at center, rgba(14, 45, 70, 0.46), rgba(6, 15, 24, 0.34) 48%, rgba(2, 4, 8, 0.98) 100%);
+    }
+    .overlay {
+      position: absolute;
+      inset: 16px;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .overlay-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .overlay-chip {
+      pointer-events: none;
+      border: 1px solid rgba(112, 206, 255, 0.12);
+      border-radius: 999px;
+      background: rgba(6, 12, 19, 0.66);
+      color: var(--ink);
+      padding: 6px 10px;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      backdrop-filter: blur(8px);
+    }
+    .overlay-chip strong { color: var(--gold); }
+    .spin-chip { color: var(--amber); }
+    .spin-chip strong { color: var(--amber); }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .metric { padding: 10px 0; border-bottom: 1px solid rgba(112, 206, 255, 0.08); }
+    .metric:last-child { border-bottom: 0; }
+    .k {
+      color: var(--muted);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+    .v, .mono { margin-top: 4px; font-family: "Cascadia Code", monospace; }
+    .v { font-size: 0.96rem; }
+    .mono {
+      color: #cfe6f7;
+      font-size: 0.75rem;
+      line-height: 1.48;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .tape-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 16px;
+      height: 100%;
+    }
+    .stack { display: grid; gap: 10px; align-content: start; }
+    .stream, .node, .message, .preview {
+      border: 1px solid rgba(112, 206, 255, 0.12);
+      border-radius: 16px;
+      padding: 10px 12px;
+      background: rgba(6, 12, 20, 0.54);
+      text-align: left;
+      color: var(--ink);
+    }
+    button.stream, button.node { width: 100%; cursor: pointer; font: inherit; }
+    .stream.active, .node.active {
+      border-color: rgba(240, 201, 113, 0.42);
+      background: rgba(14, 23, 34, 0.84);
+    }
+    .stream strong, .node strong, .message strong, .preview strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.78rem;
+      letter-spacing: 0.03em;
+    }
+    .tag-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+    .tag {
+      border-radius: 999px;
+      padding: 4px 8px;
+      border: 1px solid rgba(112, 206, 255, 0.12);
+      background: rgba(7, 14, 24, 0.8);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .rail-list { min-height: 0; overflow: auto; }
+    .empty { color: var(--muted); font-size: 0.8rem; padding: 4px 0; }
+    .mode-toggle {
+      position: absolute;
+      right: 24px;
+      bottom: 24px;
+      display: flex;
+      gap: 6px;
+      pointer-events: auto;
+    }
+    .mode-toggle button {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(7, 14, 24, 0.84);
+      color: var(--ink);
+      padding: 6px 12px;
+      font-size: 0.7rem;
+      font-family: "Cascadia Code", monospace;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    .mode-toggle button.active {
+      border-color: rgba(240, 201, 113, 0.52);
+      color: var(--gold);
+    }
+    @media (max-width: 1100px) {
+      .shell { grid-template-columns: 1fr; grid-template-rows: minmax(0, 1fr) auto; }
+      .rail { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: auto; }
+    }
+    @media (max-width: 760px) {
+      .topbar { grid-template-columns: 1fr 1fr; }
+      .shell { inset: 96px 0 0 0; padding: 8px; }
+      .main { grid-template-rows: 58vh auto; }
+      .tape-grid, .rail { grid-template-columns: 1fr; }
+      .metrics { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">TrasgoNet · Hyperbolic Stream</div>
+    <select id="node-select" class="scope"></select>
+    <select id="section-select" class="scope"></select>
+    <select id="fiber-select" class="scope"></select>
+    <select id="bundle-select" class="scope"></select>
+    <select id="direction-select" class="scope"></select>
+    <div class="chip"><strong>pack</strong><span id="pack-chip">-</span></div>
+    <div class="chip"><strong>bind</strong><span id="bind-chip">-</span></div>
+    <a href="/" class="chip">v1</a>
+  </header>
+
+  <main class="shell">
+    <section class="main">
+      <section class="panel field-panel">
+        <div class="field-body">
+          <canvas id="field"></canvas>
+          <div class="overlay">
+            <div class="overlay-row">
+              <div class="overlay-chip"><strong>stream</strong><span id="stream-chip">§FLOW{pending}</span></div>
+              <div class="overlay-chip"><strong>node</strong><span id="node-chip">§TOPOS{trasgo}</span></div>
+              <div class="overlay-chip spin-chip"><strong>§SWIRL</strong><span id="swirl-chip">ω=0.00 θ=0.00</span></div>
+            </div>
+            <div class="overlay-row">
+              <div class="overlay-chip" id="legend-chip">§ reservoir ⇄ trasgo ⇄ node · Poincaré disk</div>
+              <div class="overlay-chip" id="bind-overlay">§NEGOTIATE{pending}</div>
+            </div>
+            <div class="mode-toggle" id="mode-toggle">
+              <button data-mode="hyperbolic" class="active">§HYP</button>
+              <button data-mode="flow">§FLOW</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel tape-panel">
+        <div class="panel-head">
+          <div class="panel-title">Stream Tape</div>
+          <div class="mono" id="summary">loading</div>
+        </div>
+        <div class="panel-body">
+          <div class="tape-grid">
+            <div class="stack">
+              <div class="panel-title">Recent Strands</div>
+              <div id="strands" class="rail-list stack"></div>
+            </div>
+            <div class="stack">
+              <div class="panel-title">Preview / § Messages</div>
+              <div id="preview" class="stack"></div>
+              <div id="messages" class="stack"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <aside class="rail">
+      <section class="panel rail-panel">
+        <div class="panel-head">
+          <div class="panel-title">Selected Node</div>
+          <div class="mono" id="selected-kind">-</div>
+        </div>
+        <div class="panel-body">
+          <div id="metrics" class="metrics"></div>
+        </div>
+      </section>
+
+      <section class="panel rail-panel">
+        <div class="panel-head">
+          <div class="panel-title">§ Bind</div>
+          <div class="mono" id="bind-url">-</div>
+        </div>
+        <div class="panel-body">
+          <div id="bind-card" class="preview"></div>
+        </div>
+      </section>
+
+      <section class="panel rail-panel">
+        <div class="panel-head">
+          <div class="panel-title">Detected Nodes</div>
+          <div class="mono" id="node-count">0</div>
+        </div>
+        <div class="panel-body">
+          <div id="nodes" class="rail-list stack"></div>
+        </div>
+      </section>
+    </aside>
+  </main>
+
+  <script>
+    // ──────────────────────────────────────────────────────
+    // Netracer V2 — Hyperbolic Stream Renderer
+    // Renders the Poincaré disk with helical swirler strands
+    // (§HYPERBOLIC_SWIRLER from §-LANG v2.4) and a slowly
+    // rotating reference frame to picture the spin of the
+    // informational stream, rather than classic packet flow.
+    // ──────────────────────────────────────────────────────
+
+    const SECTION_ORDER = ['all', 'reservoir', 'admission', 'execution', 'return', 'proof'];
+    const FIBER_OPTIONS = ['all', 'semantic', 'reflective', 'strict', 'embedding'];
+    const BUNDLE_OPTIONS = ['all', 'broker', 'runtime', 'model', 'return'];
+    const DIRECTION_OPTIONS = ['all', 'forward', 'reverse'];
+
+    // §HYP: depth bands in Poincaré disk coords, inner→outer. These correspond
+    // to sectional concentric annuli — §SECTION bands in hyperbolic metric.
+    const HYP_SECTION_RADII = {
+      reservoir: 0.22,
+      admission: 0.42,
+      execution: 0.60,
+      return:    0.76,
+      proof:     0.88
+    };
+
+    const state = {
+      runtime: null,
+      control: null,
+      catalog: null,
+      graph: null,
+      selectedNodeId: '',
+      filters: { section: 'all', fiber: 'all', bundle: 'all', direction: 'all' },
+      selectedStrandId: '',
+      selectedMessageId: '',
+      renderMode: 'hyperbolic'  // 'hyperbolic' | 'flow'
+    };
+
+    const ui = {
+      canvas: null,
+      ctx: null,
+      dpr: Math.max(1, window.devicePixelRatio || 1),
+      width: 0, height: 0,
+      ws: null,
+      animationFrame: 0
+    };
+
+    // ──────────────────────────────────────────────────────
+    // Boot + data plumbing (unchanged data contracts)
+    // ──────────────────────────────────────────────────────
+
+    async function boot() {
+      ui.canvas = document.getElementById('field');
+      ui.ctx = ui.canvas.getContext('2d');
+      resizeCanvas();
+      wireControls();
+      wireModeToggle();
+      connectWs();
+      await refreshAll();
+      window.addEventListener('resize', resizeCanvas);
+      const events = new EventSource('/events');
+      for (const eventName of ['packet', 'topology', 'traffic', 'policy', 'alert']) {
+        events.addEventListener(eventName, () => queueRefresh());
+      }
+      animate();
+    }
+
+    async function refreshAll() {
+      const [runtime, control, catalog] = await Promise.all([
+        fetchJson('/api/runtime'),
+        fetchJson('/api/slang/control-plane'),
+        fetchJson('/api/slang/catalog')
+      ]);
+      state.runtime = runtime;
+      state.control = control;
+      state.catalog = catalog;
+      const candidate = state.selectedNodeId
+        || runtime.topology?.nodes?.find((node) => node.kind === 'runtime')?.id
+        || 'netracer';
+      state.selectedNodeId = candidate;
+      renderSelects();
+      await refreshGraph();
+    }
+
+    async function refreshGraph() {
+      const query = new URLSearchParams({
+        node: state.selectedNodeId || 'netracer',
+        section: state.filters.section,
+        fiber: state.filters.fiber,
+        bundle: state.filters.bundle,
+        direction: state.filters.direction,
+        limit: '48'
+      });
+      state.graph = await fetchJson(`/api/slang/graph?${query.toString()}`);
+      if (!state.selectedStrandId || !state.graph.strands.some((s) => s.id === state.selectedStrandId)) {
+        state.selectedStrandId = state.graph.strands[0]?.id || '';
+      }
+      if (!state.selectedMessageId || !state.graph.messages.some((m) => m.id === state.selectedMessageId)) {
+        state.selectedMessageId = state.graph.messages[0]?.id || '';
+      }
+      if (ui.ws?.readyState === WebSocket.OPEN) {
+        ui.ws.send(JSON.stringify({ type: 'subscribe', nodeIds: [state.selectedNodeId] }));
+      }
+      renderAll();
+    }
+
+    function renderSelects() {
+      const nodes = state.runtime?.topology?.nodes || [];
+      fillSelect('node-select',
+        nodes.map((n) => ({ value: String(n.id), label: nodeLabel(n) })),
+        state.selectedNodeId || nodes[0]?.id || 'netracer');
+      fillSelect('section-select',
+        SECTION_ORDER.map((s) => ({ value: s, label: s === 'all' ? '§SECTION{all}' : `§SECTION{${s}}` })),
+        state.filters.section);
+      fillSelect('fiber-select',
+        FIBER_OPTIONS.map((f) => ({ value: f, label: f === 'all' ? '§FIBER{all}' : `§FIBER{${f}}` })),
+        state.filters.fiber);
+      fillSelect('bundle-select',
+        BUNDLE_OPTIONS.map((b) => ({ value: b, label: b === 'all' ? '§BUNDLE{all}' : `§BUNDLE{${b}}` })),
+        state.filters.bundle);
+      fillSelect('direction-select',
+        DIRECTION_OPTIONS.map((d) => ({ value: d, label: d === 'all' ? '§DIR{all}' : `§DIR{${d}}` })),
+        state.filters.direction);
+    }
+
+    function fillSelect(id, options, value) {
+      const select = document.getElementById(id);
+      select.innerHTML = options.map((o) => `<option value="${esc(o.value)}">${esc(o.label)}</option>`).join('');
+      select.value = value;
+    }
+
+    function renderAll() {
+      renderSummary();
+      renderMetrics();
+      renderBind();
+      renderNodes();
+      renderStrands();
+      renderMessages();
+      renderPreview();
+      draw();
+    }
+
+    function renderSummary() {
+      const packVersion = state.control?.activePack?.version || state.catalog?.lang?.version || '-';
+      const graph = state.graph || { metrics: {}, strands: [] };
+      document.getElementById('pack-chip').textContent = packVersion;
+      document.getElementById('bind-chip').textContent = compactBind(
+        state.graph?.bind?.httpUrl || state.control?.network?.httpUrls?.[0] || '-');
+      document.getElementById('node-chip').textContent = nodeLabel(
+        state.runtime?.topology?.nodes?.find((n) => String(n.id) === String(state.selectedNodeId))
+        || { id: state.selectedNodeId, kind: 'runtime' });
+      document.getElementById('stream-chip').textContent = state.graph?.strands[0]?.label || '§FLOW{idle}';
+      document.getElementById('legend-chip').textContent =
+        state.renderMode === 'hyperbolic'
+          ? `§ reservoir ⇄ trasgo ⇄ ${state.selectedNodeId} · Poincaré disk`
+          : `§ reservoir ⇄ trasgo ⇄ ${state.selectedNodeId}`;
+      document.getElementById('bind-overlay').textContent =
+        state.graph?.bind?.envelope?.split('\n')[1] || '§NEGOTIATE{pending}';
+      document.getElementById('summary').textContent =
+        `forward=${graph.metrics.forwardCount || 0} reverse=${graph.metrics.reverseCount || 0} ` +
+        `strands=${graph.metrics.strandCount || 0}`;
+      document.getElementById('selected-kind').textContent = state.graph?.selectedNode?.kind || '-';
+      document.getElementById('node-count').textContent = String(state.graph?.nodes?.length || 0);
+    }
+
+    function renderMetrics() {
+      const graph = state.graph || { metrics: {}, sections: [] };
+      const swirl = inferSwirlParams(graph);
+      const metrics = [
+        ['§PACK', state.control?.activePack?.version || '-'],
+        ['§LAN', state.control?.network?.preferredLanIp || 'localhost'],
+        ['§FWD', graph.metrics.forwardCount || 0],
+        ['§REV', graph.metrics.reverseCount || 0],
+        ['§STRANDS', graph.metrics.strandCount || 0],
+        ['§MESSAGES', graph.metrics.messageCount || 0],
+        ['§Ω spin', swirl.omega.toFixed(2)],
+        ['§θ orient', swirl.theta.toFixed(2)],
+        ['§c curv', swirl.curvature.toFixed(2)],
+        ['§SECTION', state.filters.section]
+      ];
+      document.getElementById('metrics').innerHTML = metrics.map(([k, v]) => `
+        <div class="metric"><div class="k">${esc(k)}</div><div class="v">${esc(v)}</div></div>
+      `).join('');
+    }
+
+    function renderBind() {
+      const bind = state.graph?.bind || null;
+      document.getElementById('bind-url').textContent = compactBind(bind?.httpUrl || '-');
+      document.getElementById('bind-card').innerHTML = bind ? `
+        <strong>${esc(bind.label || '§BIND')}</strong>
+        <div class="mono">${esc(bind.envelope)}</div>
+        <div class="tag-row">
+          <span class="tag">${esc(bind.pack?.version || '-')}</span>
+          <span class="tag">${esc(bind.wsUrl || '-')}</span>
+        </div>
+      ` : `<div class="empty">No § bind negotiated yet.</div>`;
+    }
+
+    function renderNodes() {
+      const nodes = state.graph?.nodes || [];
+      const container = document.getElementById('nodes');
+      container.innerHTML = nodes.map((n) => `
+        <button class="node ${String(n.id) === String(state.selectedNodeId) ? 'active' : ''}" data-node-id="${esc(n.id)}">
+          <strong>${esc(n.label)}</strong>
+          <div class="mono">negotiated=${esc(String(n.negotiated))} inbox=${esc(String(n.inboxCount))}</div>
+        </button>
+      `).join('');
+      for (const button of container.querySelectorAll('[data-node-id]')) {
+        button.addEventListener('click', async () => {
+          state.selectedNodeId = button.dataset.nodeId;
+          document.getElementById('node-select').value = state.selectedNodeId;
+          await refreshGraph();
+        });
+      }
+    }
+
+    function renderStrands() {
+      const strands = state.graph?.strands || [];
+      const container = document.getElementById('strands');
+      container.innerHTML = strands.length ? strands.slice().reverse().map((s) => `
+        <button class="stream ${s.id === state.selectedStrandId ? 'active' : ''}" data-strand-id="${esc(s.id)}">
+          <strong>${esc(s.label)}</strong>
+          <div class="mono">${esc(s.content)}</div>
+          <div class="tag-row">
+            <span class="tag">${esc(`§SECTION{${s.section}}`)}</span>
+            <span class="tag">${esc(`§FIBER{${s.fiber}}`)}</span>
+            <span class="tag">${esc(`§DIR{${s.direction}}`)}</span>
+          </div>
+        </button>
+      `).join('') : `<div class="empty">No strands for the current § filters.</div>`;
+      for (const button of container.querySelectorAll('[data-strand-id]')) {
+        button.addEventListener('click', () => {
+          state.selectedStrandId = button.dataset.strandId;
+          renderPreview();
+        });
+      }
+    }
+
+    function renderMessages() {
+      const messages = state.graph?.messages || [];
+      const container = document.getElementById('messages');
+      container.innerHTML = messages.length ? messages.slice().reverse().map((m) => `
+        <button class="message ${m.id === state.selectedMessageId ? 'active' : ''}" data-message-id="${esc(m.id)}">
+          <strong>${esc(m.type)}</strong>
+          <div class="mono">${esc(m.body)}</div>
+          <div class="tag-row">
+            <span class="tag">${esc(`§DIR{${m.direction}}`)}</span>
+            <span class="tag">${esc(`§SECTION{${m.section}}`)}</span>
+          </div>
+        </button>
+      `).join('') : `<div class="empty">No § messages for the selected node.</div>`;
+      for (const button of container.querySelectorAll('[data-message-id]')) {
+        button.addEventListener('click', () => {
+          state.selectedMessageId = button.dataset.messageId;
+          renderPreview();
+        });
+      }
+    }
+
+    function renderPreview() {
+      const strand = state.graph?.strands?.find((s) => s.id === state.selectedStrandId) || null;
+      const message = state.graph?.messages?.find((m) => m.id === state.selectedMessageId) || null;
+      const container = document.getElementById('preview');
+      const blocks = [];
+      if (strand) {
+        blocks.push(`
+          <div class="preview">
+            <strong>${esc(strand.label)}</strong>
+            <div class="mono">${esc(strand.content)}</div>
+            <div class="tag-row">
+              <span class="tag">${esc(strand.kind)}</span>
+              <span class="tag">${esc(strand.route)}</span>
+              <span class="tag">${esc(strand.timestamp)}</span>
+            </div>
+          </div>
+        `);
+      }
+      if (message) {
+        blocks.push(`
+          <div class="preview">
+            <strong>${esc(message.type)}</strong>
+            <div class="mono">${esc(message.body)}</div>
+          </div>
+        `);
+      }
+      container.innerHTML = blocks.length ? blocks.join('') : `<div class="empty">Select a strand or § message.</div>`;
+    }
+
+    function wireControls() {
+      document.getElementById('node-select').addEventListener('change', async (event) => {
+        state.selectedNodeId = event.target.value;
+        await refreshGraph();
+      });
+      for (const [id, key] of [['section-select', 'section'], ['fiber-select', 'fiber'], ['bundle-select', 'bundle'], ['direction-select', 'direction']]) {
+        document.getElementById(id).addEventListener('change', async (event) => {
+          state.filters[key] = event.target.value;
+          await refreshGraph();
+        });
+      }
+    }
+
+    function wireModeToggle() {
+      const toggle = document.getElementById('mode-toggle');
+      for (const button of toggle.querySelectorAll('[data-mode]')) {
+        button.addEventListener('click', () => {
+          state.renderMode = button.dataset.mode;
+          for (const b of toggle.querySelectorAll('[data-mode]')) {
+            b.classList.toggle('active', b.dataset.mode === state.renderMode);
+          }
+          renderSummary();
+        });
+      }
+    }
+
+    function connectWs() {
+      const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+      ui.ws = new WebSocket(`${protocol}//${location.host}/ws/slang`);
+      ui.ws.addEventListener('open', () => {
+        if (state.selectedNodeId) {
+          ui.ws.send(JSON.stringify({ type: 'subscribe', nodeIds: [state.selectedNodeId] }));
+        }
+      });
+      ui.ws.addEventListener('message', (event) => {
+        const message = JSON.parse(event.data);
+        if (message.type === 'hello' || message.type === 'subscribed') return;
+        if (['frame', 'nodeMessage', 'packUpgrade', 'relay'].includes(message.type)) {
+          queueRefresh();
+        }
+      });
+    }
+
+    let refreshTimer = null;
+    function queueRefresh() {
+      clearTimeout(refreshTimer);
+      refreshTimer = setTimeout(() => {
+        refreshAll().catch((error) => {
+          document.getElementById('summary').textContent = error.message;
+        });
+      }, 120);
+    }
+
+    function resizeCanvas() {
+      ui.width = ui.canvas.clientWidth;
+      ui.height = ui.canvas.clientHeight;
+      ui.canvas.width = Math.floor(ui.width * ui.dpr);
+      ui.canvas.height = Math.floor(ui.height * ui.dpr);
+      ui.ctx.setTransform(ui.dpr, 0, 0, ui.dpr, 0, 0);
+      draw();
+    }
+
+    function animate() {
+      draw();
+      ui.animationFrame = requestAnimationFrame(animate);
+    }
+
+    // ──────────────────────────────────────────────────────
+    // §HYP: Hyperbolic stream renderer
+    // Maps the §-LANG v2.4 stream data onto a Poincaré disk
+    // with an §HYPERBOLIC_SWIRLER-style helical trajectory per
+    // strand (geodesic carry + Ω rotation + θ spin). The whole
+    // frame rotates slowly to picture the informational spin.
+    // ──────────────────────────────────────────────────────
+
+    function inferSwirlParams(graph) {
+      // Ω (swirl frequency) is proxied by forward/reverse activity ratio
+      // θ (orientation) is proxied by section distribution
+      // c (effective curvature) is proxied by relation density (if the
+      // ingress hyperbolic embedder shipped it in metrics)
+      const fwd = graph?.metrics?.forwardCount || 0;
+      const rev = graph?.metrics?.reverseCount || 0;
+      const total = Math.max(1, fwd + rev);
+      const omega = Math.min(1.5, 0.18 + 0.65 * (fwd / total));
+      const theta = Math.atan2(rev - fwd, total) * 0.6;
+      // ingress-hyperbolic curvature lands at -1..-2.5; show |c|
+      const curvature = Math.abs(graph?.curvature ?? graph?.metrics?.curvature ?? 1.0);
+      return { omega, theta, curvature };
+    }
+
+    function draw() {
+      const ctx = ui.ctx;
+      const graph = state.graph;
+      if (!ctx) return;
+      ctx.clearRect(0, 0, ui.width, ui.height);
+      if (!graph) return;
+
+      if (state.renderMode === 'flow') {
+        drawClassicFlow(ctx, graph);
+      } else {
+        drawHyperbolicStream(ctx, graph);
+      }
+    }
+
+    function drawHyperbolicStream(ctx, graph) {
+      const W = ui.width, H = ui.height;
+      const cx = W * 0.5;
+      const cy = H * 0.5;
+      const R = Math.min(W, H) * 0.44;  // Poincaré disk radius in canvas px
+      const time = performance.now() * 0.0009;
+      const swirl = inferSwirlParams(graph);
+
+      // Global reference-frame rotation: slow elliptic Möbius (fixed at origin)
+      // This makes the informational "spin" visible without moving any node.
+      const frameRot = time * 0.32 + swirl.theta * 0.6;
+
+      drawDiskBackdrop(ctx, cx, cy, R, frameRot, swirl);
+      drawSectionAnnuli(ctx, cx, cy, R, graph, frameRot);
+
+      // Place primary nodes on the disk.
+      // Reservoir: near origin (interior source).
+      // Broker (Topos/trasgo): at origin (fixed point of all elliptic rotations).
+      // Selected target: on the collar (just inside ∂D) at a stable angle.
+      const brokerDisk = { x: 0, y: 0 };
+      const reservoirDisk = fromPolar(0.30, frameRot + 3.8);
+      const targetAngleSeed = hashAngle(state.selectedNodeId || 'netracer');
+      const targetDisk = fromPolar(0.92, frameRot + targetAngleSeed);
+
+      drawHyperbolicStrands(ctx, cx, cy, R, graph, reservoirDisk, brokerDisk, targetDisk, time, swirl);
+      drawBoundaryScreen(ctx, cx, cy, R, graph, frameRot);
+
+      // Render nodes over the strands for visibility.
+      const brokerCanvas = diskToCanvas(brokerDisk, cx, cy, R);
+      const reservoirCanvas = diskToCanvas(reservoirDisk, cx, cy, R);
+      const targetCanvas = diskToCanvas(targetDisk, cx, cy, R);
+      drawNode(ctx, reservoirCanvas.x, reservoirCanvas.y, '#f0c971', '§RESERVOIR');
+      drawNode(ctx, brokerCanvas.x, brokerCanvas.y, '#d8f4ff', '§TOPOS{trasgo}');
+      drawNode(ctx, targetCanvas.x, targetCanvas.y, '#89ffd0',
+        nodeLabel(state.runtime?.topology?.nodes?.find((n) => String(n.id) === String(state.selectedNodeId))
+          || { id: state.selectedNodeId, kind: 'runtime' }));
+
+      // Spin chip live update
+      document.getElementById('swirl-chip').textContent =
+        `ω=${swirl.omega.toFixed(2)} θ=${swirl.theta.toFixed(2)} c=${swirl.curvature.toFixed(2)}`;
+    }
+
+    function drawDiskBackdrop(ctx, cx, cy, R, frameRot, swirl) {
+      // Outer disk: the §HYP boundary (Gromov S¹)
+      ctx.save();
+      ctx.translate(cx, cy);
+
+      // Boundary glow
+      const glow = ctx.createRadialGradient(0, 0, R * 0.6, 0, 0, R * 1.08);
+      glow.addColorStop(0, 'rgba(117, 222, 255, 0.02)');
+      glow.addColorStop(1, 'rgba(117, 222, 255, 0.18)');
+      ctx.fillStyle = glow;
+      ctx.beginPath(); ctx.arc(0, 0, R * 1.05, 0, Math.PI * 2); ctx.fill();
+
+      // Boundary circle
+      ctx.strokeStyle = 'rgba(240, 201, 113, 0.42)';
+      ctx.lineWidth = 1.3;
+      ctx.setLineDash([6, 6]);
+      ctx.beginPath(); ctx.arc(0, 0, R, 0, Math.PI * 2); ctx.stroke();
+      ctx.setLineDash([]);
+
+      // §HYP geodesic rays (diameters) — rotating with the frame
+      ctx.strokeStyle = 'rgba(117, 222, 255, 0.09)';
+      ctx.lineWidth = 1;
+      for (let k = 0; k < 12; k += 1) {
+        const a = frameRot + (k * Math.PI) / 6;
+        ctx.beginPath();
+        ctx.moveTo(Math.cos(a) * R, Math.sin(a) * R);
+        ctx.lineTo(-Math.cos(a) * R, -Math.sin(a) * R);
+        ctx.stroke();
+      }
+
+      // §HYP concentric radial rings (non-Euclidean: closer to boundary, tighter)
+      ctx.strokeStyle = 'rgba(112, 206, 255, 0.12)';
+      for (let k = 1; k <= 6; k += 1) {
+        const rNorm = Math.tanh(k * 0.32);
+        ctx.beginPath(); ctx.arc(0, 0, rNorm * R, 0, Math.PI * 2); ctx.stroke();
+      }
+
+      // Orthogonal-arc geodesics (circular arcs perpendicular to ∂D) — the
+      // actual geodesics of the Poincaré metric. Draw a few for visual texture.
+      ctx.strokeStyle = 'rgba(117, 222, 255, 0.07)';
+      for (let k = 0; k < 8; k += 1) {
+        const a = frameRot * 0.5 + (k * Math.PI) / 4;
+        const p = { x: Math.cos(a), y: Math.sin(a) };
+        const q = { x: Math.cos(a + 1.1), y: Math.sin(a + 1.1) };
+        drawDiskGeodesic(ctx, p, q, R);
+      }
+
+      ctx.restore();
+    }
+
+    // §HYP: circular arc orthogonal to ∂D through two boundary points p, q
+    // (Poincaré disk radius 1). If p and q are diametrical, it's a diameter.
+    function drawDiskGeodesic(ctx, p, q, R) {
+      // In Poincaré disk, geodesic through p, q on ∂D is a circle orthogonal to ∂D.
+      // We approximate visually by a cubic bezier bowing toward origin.
+      const mx = (p.x + q.x) * 0.5;
+      const my = (p.y + q.y) * 0.5;
+      const mag = Math.hypot(mx, my);
+      const bow = mag < 1e-4 ? 0 : 0.6 * (1 - mag);
+      const cp = { x: mx * (1 - bow), y: my * (1 - bow) };
+      ctx.beginPath();
+      ctx.moveTo(p.x * R, p.y * R);
+      ctx.quadraticCurveTo(cp.x * R, cp.y * R, q.x * R, q.y * R);
+      ctx.stroke();
+    }
+
+    function drawSectionAnnuli(ctx, cx, cy, R, graph, frameRot) {
+      ctx.save();
+      ctx.translate(cx, cy);
+      const sections = graph.sections || [];
+      for (const section of sections) {
+        const rNorm = HYP_SECTION_RADII[section.id] ?? 0.5;
+        const radius = rNorm * R;
+        ctx.strokeStyle =
+          section.id === 'reservoir' ? 'rgba(240, 201, 113, 0.32)' :
+          section.id === 'proof' ? 'rgba(255, 181, 167, 0.26)' :
+          'rgba(117, 222, 255, 0.22)';
+        ctx.lineWidth = 1 + Math.min(3, Math.log1p(section.count || 0));
+        ctx.beginPath(); ctx.arc(0, 0, radius, 0, Math.PI * 2); ctx.stroke();
+        // Label riding the annulus
+        ctx.fillStyle = 'rgba(219, 238, 255, 0.7)';
+        ctx.font = '10px "Cascadia Code", monospace';
+        const labelAngle = frameRot + 0.15 + HYP_SECTION_RADII[section.id] * 0.4;
+        const lx = Math.cos(labelAngle) * radius;
+        const ly = Math.sin(labelAngle) * radius;
+        ctx.fillText(`${section.label} · ${section.count}`, lx + 6, ly - 4);
+      }
+      ctx.restore();
+    }
+
+    function drawHyperbolicStrands(ctx, cx, cy, R, graph, reservoirDisk, brokerDisk, targetDisk, time, swirl) {
+      const strands = graph.strands || [];
+      ctx.save();
+      ctx.translate(cx, cy);
+
+      strands.forEach((strand, index) => {
+        const isReverse = strand.direction === 'reverse';
+        const fromD = isReverse ? targetDisk : reservoirDisk;
+        const toD = isReverse ? reservoirDisk : targetDisk;
+        const viaD = brokerDisk;
+
+        // Color per fiber/direction (same palette as v2)
+        const color = isReverse
+          ? (strand.section === 'proof' ? '#f0c971' : '#ffb5a7')
+          : strand.fiber === 'embedding' ? '#89ffd0'
+          : strand.fiber === 'reflective' ? '#c7cbff'
+          : '#75deff';
+        const active = strand.id === state.selectedStrandId;
+        const alpha = active ? 0.96 : (isReverse ? 0.46 : 0.38);
+        const width = active ? 3.2 : Math.max(1.1, (strand.weight || 1) * 1.1);
+
+        // Swirler trajectory: helical path = geodesic carry + local rotation.
+        // We parameterize with t ∈ [0, 1] through fromD → viaD → toD in disk
+        // coords, then add a small elliptic-Mobius rotation modulating radius.
+        const N = 40;
+        ctx.strokeStyle = hexToRgba(color, alpha);
+        ctx.lineWidth = width;
+        ctx.beginPath();
+        for (let i = 0; i <= N; i += 1) {
+          const t = i / N;
+          const base = bezierPointDisk(fromD, viaD, toD, t);
+          const swirled = applySwirlPerturbation(base, t, index, swirl, time, isReverse);
+          const p = diskToCanvas(swirled, 0, 0, R);
+          if (i === 0) ctx.moveTo(p.x, p.y);
+          else ctx.lineTo(p.x, p.y);
+        }
+        ctx.stroke();
+
+        // Pulse traveling along the strand
+        const pulseT = isReverse
+          ? 1 - ((time * (0.25 + swirl.omega * 0.4) + index * 0.12) % 1)
+          : ((time * (0.25 + swirl.omega * 0.4) + index * 0.12) % 1);
+        const pulseBase = bezierPointDisk(fromD, viaD, toD, pulseT);
+        const pulseSwirled = applySwirlPerturbation(pulseBase, pulseT, index, swirl, time, isReverse);
+        const pulseCanvas = diskToCanvas(pulseSwirled, 0, 0, R);
+        ctx.fillStyle = hexToRgba(color, Math.min(0.98, alpha + 0.22));
+        ctx.beginPath(); ctx.arc(pulseCanvas.x, pulseCanvas.y, active ? 4.2 : 3.2, 0, Math.PI * 2); ctx.fill();
+
+        // Möbius ribbon marker — a tiny orthogonal flip at midpoint for reverse
+        // strands to picture the one_traverse orientation flip of INTER_MANIFOLD.
+        if (isReverse && index % 2 === 0) {
+          const midBase = bezierPointDisk(fromD, viaD, toD, 0.5);
+          const midSwirled = applySwirlPerturbation(midBase, 0.5, index, swirl, time, isReverse);
+          const mid = diskToCanvas(midSwirled, 0, 0, R);
+          ctx.strokeStyle = hexToRgba(color, 0.72);
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.arc(mid.x, mid.y, 7, 0, Math.PI);
+          ctx.stroke();
+        }
+      });
+
+      ctx.restore();
+    }
+
+    // §HYP: Swirler perturbation = base geodesic path + elliptic-Mobius
+    // rotation about origin, amplitude scaling with ω. For reverse strands we
+    // invert the helical handedness (the ρ involution at the visualization layer).
+    function applySwirlPerturbation(point, t, index, swirl, time, isReverse) {
+      const theta = swirl.theta + (isReverse ? -1 : 1) * (
+        swirl.omega * (t - 0.5) * 2.4 +
+        Math.sin(time * 1.2 + index * 0.4) * 0.12
+      );
+      const c = Math.cos(theta);
+      const s = Math.sin(theta);
+      // Rotate the point about the disk origin (elliptic Mobius with fixed point 0).
+      const rx = point.x * c - point.y * s;
+      const ry = point.x * s + point.y * c;
+      // Radial breathing to suggest curvature pulse (σ17 curvature adaptivity feel).
+      const breathe = 1 + 0.06 * Math.sin(time * 2.0 + index * 0.9);
+      return clampToDisk({ x: rx * breathe, y: ry * breathe }, 0.98);
+    }
+
+    function drawBoundaryScreen(ctx, cx, cy, R, graph, frameRot) {
+      // Render the §HOLO_SCREEN as a ring of angular sector indicators around
+      // ∂D. Each sector pulses with inferred boundary commit activity —
+      // approximated here from strand endpoints landing near the boundary.
+      ctx.save();
+      ctx.translate(cx, cy);
+      const sectors = 32;
+      const strands = graph.strands || [];
+      const activity = new Float32Array(sectors);
+      for (let i = 0; i < strands.length; i += 1) {
+        const a = ((i * 137.5) * Math.PI / 180) + frameRot;  // golden-angle scatter
+        const idx = ((Math.round((a / (Math.PI * 2)) * sectors) % sectors) + sectors) % sectors;
+        activity[idx] += (strands[i].weight || 1) * (strands[i].direction === 'reverse' ? 0.4 : 0.7);
+      }
+      let maxA = 0.001;
+      for (let k = 0; k < sectors; k += 1) if (activity[k] > maxA) maxA = activity[k];
+      for (let k = 0; k < sectors; k += 1) {
+        const a = (k / sectors) * Math.PI * 2 + frameRot;
+        const intensity = activity[k] / maxA;
+        if (intensity < 0.02) continue;
+        const x0 = Math.cos(a) * R * 1.02;
+        const y0 = Math.sin(a) * R * 1.02;
+        const x1 = Math.cos(a) * R * (1.02 + 0.08 * intensity);
+        const y1 = Math.sin(a) * R * (1.02 + 0.08 * intensity);
+        ctx.strokeStyle = `rgba(240, 201, 113, ${0.15 + 0.55 * intensity})`;
+        ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    // ──────────────────────────────────────────────────────
+    // §HYP utilities: disk coords ↔ canvas
+    // ──────────────────────────────────────────────────────
+
+    function diskToCanvas(diskPoint, cx, cy, R) {
+      return { x: cx + diskPoint.x * R, y: cy + diskPoint.y * R };
+    }
+
+    function fromPolar(r, theta) {
+      return { x: r * Math.cos(theta), y: r * Math.sin(theta) };
+    }
+
+    function bezierPointDisk(p0, p1, p2, t) {
+      const u = 1 - t;
+      return {
+        x: u * u * p0.x + 2 * u * t * p1.x + t * t * p2.x,
+        y: u * u * p0.y + 2 * u * t * p1.y + t * t * p2.y
+      };
+    }
+
+    function clampToDisk(p, maxR) {
+      const r = Math.hypot(p.x, p.y);
+      if (r <= maxR) return p;
+      return { x: p.x * maxR / r, y: p.y * maxR / r };
+    }
+
+    function hashAngle(seed) {
+      const s = String(seed || '');
+      let h = 0;
+      for (let i = 0; i < s.length; i += 1) h = ((h << 5) - h + s.charCodeAt(i)) | 0;
+      return (Math.abs(h) % 1000) / 1000 * Math.PI * 2;
+    }
+
+    // ──────────────────────────────────────────────────────
+    // §FLOW: Classic bezier renderer preserved as fallback
+    // ──────────────────────────────────────────────────────
+
+    function drawClassicFlow(ctx, graph) {
+      const left = ui.width * 0.14;
+      const center = ui.width * 0.5;
+      const right = ui.width * 0.86;
+      const top = ui.height * 0.16;
+      const bottom = ui.height * 0.82;
+      const bandHeight = (bottom - top) / Math.max(1, graph.sections.length - 1);
+      const time = performance.now() * 0.0014;
+
+      ctx.strokeStyle = 'rgba(117, 222, 255, 0.08)';
+      ctx.lineWidth = 1;
+      for (let index = 0; index < 9; index += 1) {
+        const t = index / 8;
+        const y = top + (bottom - top) * t;
+        ctx.beginPath();
+        ctx.moveTo(left - 40, y);
+        ctx.bezierCurveTo(center - 120, y - 26, center + 120, y + 26, right + 40, y);
+        ctx.stroke();
+      }
+
+      const sectionY = new Map();
+      graph.sections.forEach((section, index) => {
+        const y = top + bandHeight * index;
+        sectionY.set(section.id, y);
+      });
+
+      const reservoir = { x: left, y: sectionY.get('reservoir') || top };
+      const broker = { x: center, y: ui.height * 0.5 };
+      const target = { x: right, y: ui.height * 0.5 };
+
+      graph.strands.forEach((strand, index) => {
+        const y = sectionY.get(strand.section) || broker.y;
+        const amplitude = 24 + (index % 7) * 7;
+        const swing = Math.sin(time + index * 0.7) * 14;
+        const color = strand.direction === 'reverse'
+          ? (strand.section === 'proof' ? '#f0c971' : '#ffb5a7')
+          : strand.fiber === 'embedding' ? '#89ffd0'
+          : strand.fiber === 'reflective' ? '#c7cbff'
+          : '#75deff';
+        const active = strand.id === state.selectedStrandId;
+        const width = active ? 3.4 : Math.max(1.2, (strand.weight || 1) * 1.2);
+        const alpha = active ? 0.94 : strand.direction === 'reverse' ? 0.44 : 0.34;
+        const from = strand.direction === 'reverse' ? target : reservoir;
+        const to = strand.direction === 'reverse' ? reservoir : target;
+
+        ctx.strokeStyle = hexToRgba(color, alpha);
+        ctx.lineWidth = width;
+        ctx.beginPath();
+        ctx.moveTo(from.x, from.y);
+        ctx.bezierCurveTo(
+          from.x + (broker.x - from.x) * 0.46, y - (amplitude + swing),
+          broker.x - 28, y + (amplitude + swing) * 0.3,
+          broker.x, broker.y
+        );
+        ctx.bezierCurveTo(
+          broker.x + 28, y - (amplitude + swing) * 0.3,
+          to.x - (to.x - broker.x) * 0.46, y + (amplitude + swing),
+          to.x, to.y
+        );
+        ctx.stroke();
+      });
+
+      drawNode(ctx, reservoir.x, reservoir.y, '#f0c971', '§RESERVOIR');
+      drawNode(ctx, broker.x, broker.y, '#d8f4ff', '§TOPOS{trasgo}');
+      drawNode(ctx, target.x, target.y, '#89ffd0',
+        nodeLabel(state.runtime?.topology?.nodes?.find((n) => String(n.id) === String(state.selectedNodeId))
+          || { id: state.selectedNodeId, kind: 'runtime' }));
+    }
+
+    function drawNode(ctx, x, y, color, label) {
+      const glow = ctx.createRadialGradient(x, y, 0, x, y, 44);
+      glow.addColorStop(0, hexToRgba(color, 0.34));
+      glow.addColorStop(1, hexToRgba(color, 0));
+      ctx.fillStyle = glow;
+      ctx.beginPath(); ctx.arc(x, y, 44, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = hexToRgba(color, 0.96);
+      ctx.beginPath(); ctx.arc(x, y, 8, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = hexToRgba(color, 0.82);
+      ctx.lineWidth = 1.4;
+      ctx.beginPath(); ctx.arc(x, y, 14, 0, Math.PI * 2); ctx.stroke();
+      ctx.fillStyle = 'rgba(3, 7, 13, 0.92)';
+      ctx.strokeStyle = 'rgba(117, 222, 255, 0.18)';
+      const width = ctx.measureText(label).width + 16;
+      roundRect(ctx, x + 12, y - 26, width, 20, 10);
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = '#ebf7ff';
+      ctx.font = '11px "Cascadia Code", monospace';
+      ctx.fillText(label, x + 20, y - 12);
+    }
+
+    function nodeLabel(node) {
+      const kind = String(node?.kind || 'node');
+      if (kind === 'broker') return `§TOPOS{trasgo|broker=${node.id}}`;
+      if (kind === 'model') return `§MODEL{${String(node.label || node.id)}}`;
+      return `§RUNTIME{${String(node.id || 'runtime')}}`;
+    }
+
+    function compactBind(value) {
+      const raw = String(value || '-');
+      return raw.length > 28 ? `${raw.slice(0, 28)}…` : raw;
+    }
+
+    async function fetchJson(url) {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+      return response.json();
+    }
+
+    function roundRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
+      ctx.closePath();
+    }
+
+    function hexToRgba(hex, alpha) {
+      const clean = String(hex || '').replace('#', '');
+      const full = clean.length === 3 ? clean.split('').map((c) => c + c).join('') : clean;
+      const num = parseInt(full || 'ffffff', 16);
+      return `rgba(${(num >> 16) & 255}, ${(num >> 8) & 255}, ${num & 255}, ${alpha})`;
+    }
+
+    function esc(value) {
+      return String(value ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;');
+    }
+
+    boot().catch((error) => {
+      document.getElementById('summary').textContent = error.message;
+    });
+  </script>
+</body>
+</html>

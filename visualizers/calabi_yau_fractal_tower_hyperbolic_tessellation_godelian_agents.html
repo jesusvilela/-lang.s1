@@ -1,0 +1,681 @@
+<h2 class="sr-only">Interactive visualization of a Calabi-Yau-seeded fractal tower built on a hyperbolic {7,3} tessellation, with Lorentz causal structure, Gödelian self-reflecting agent trajectories, and informationally optimal hierarchical growth.</h2>
+
+<style>
+  .cyt { font-family: var(--font-sans); color: var(--color-text-primary); }
+  .cyt .tabs { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; align-items: center; }
+  .cyt .tab-label { font-size: 11px; color: var(--color-text-tertiary); letter-spacing: 0.05em; text-transform: uppercase; margin-right: 4px; }
+  .cyt .tab-group { display: inline-flex; gap: 2px; padding: 2px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); }
+  .cyt .tab-group button {
+    border: none; background: transparent; color: var(--color-text-secondary);
+    padding: 6px 12px; font-size: 12px; font-family: var(--font-sans); font-weight: 400;
+    border-radius: 6px; cursor: pointer; transition: background 0.15s, color 0.15s;
+  }
+  .cyt .tab-group button.active { background: var(--color-background-primary); color: var(--color-text-primary); font-weight: 500; }
+  .cyt .tab-group button:hover:not(.active) { color: var(--color-text-primary); }
+  .cyt .canvas-wrap {
+    background: var(--color-background-secondary); border-radius: var(--border-radius-lg);
+    padding: 16px; margin-bottom: 12px; position: relative;
+  }
+  .cyt canvas { display: block; width: 100%; height: 520px; border-radius: var(--border-radius-md); }
+  .cyt .overlay-tr {
+    position: absolute; top: 24px; right: 24px;
+    background: var(--color-background-primary); border-radius: var(--border-radius-md);
+    padding: 8px 12px; font-size: 11px; color: var(--color-text-secondary);
+    border: 0.5px solid var(--color-border-tertiary); font-family: var(--font-mono);
+    pointer-events: none; line-height: 1.6; min-width: 140px;
+  }
+  .cyt .overlay-tl {
+    position: absolute; top: 24px; left: 24px;
+    background: var(--color-background-primary); border-radius: var(--border-radius-md);
+    padding: 8px 12px; font-size: 10px; color: var(--color-text-tertiary);
+    border: 0.5px solid var(--color-border-tertiary); font-family: var(--font-mono);
+    pointer-events: none; line-height: 1.6; max-width: 220px;
+  }
+  .cyt .overlay-caption {
+    position: absolute; bottom: 24px; left: 24px; right: 24px;
+    font-size: 11px; color: var(--color-text-tertiary); line-height: 1.5;
+    pointer-events: none;
+  }
+  .cyt .controls { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 12px 16px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); margin-bottom: 8px; }
+  .cyt .control-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+  .cyt .control-row label { color: var(--color-text-secondary); min-width: 64px; font-size: 11px; }
+  .cyt .control-row input[type=range] { flex: 1; min-width: 0; }
+  .cyt .control-row .val { min-width: 28px; text-align: right; color: var(--color-text-primary); font-weight: 500; font-family: var(--font-mono); font-size: 11px; }
+  .cyt .legend { display: flex; gap: 14px; font-size: 11px; color: var(--color-text-secondary); flex-wrap: wrap; padding: 0 4px; }
+  .cyt .legend-item { display: flex; align-items: center; gap: 6px; }
+  .cyt .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .cyt .legend-line { width: 14px; height: 2px; flex-shrink: 0; }
+  @media (max-width: 500px) { .cyt .controls { grid-template-columns: 1fr; } }
+</style>
+
+<div class="cyt">
+  <div class="tabs">
+    <span class="tab-label">Mode</span>
+    <div class="tab-group" id="cyt-mode">
+      <button data-mode="structure" class="active">Tessellation</button>
+      <button data-mode="grow">Hierarchical grow</button>
+      <button data-mode="zoom">Fractal zoom</button>
+    </div>
+    <span class="tab-label" style="margin-left: 12px;">Agents</span>
+    <div class="tab-group" id="cyt-agents-tab">
+      <button data-agents="off">Quiet</button>
+      <button data-agents="open" class="active">Open</button>
+      <button data-agents="godel">Gödel loops</button>
+    </div>
+  </div>
+
+  <div class="canvas-wrap">
+    <canvas id="viz-cy"></canvas>
+    <div class="overlay-tl">CY³ → {7,3} → SO(1,n) → □(□P→P)</div>
+    <div class="overlay-tr" id="cyt-stats">depth&nbsp;—<br>tiles&nbsp;—<br>bits&nbsp;—<br>loops&nbsp;—</div>
+    <div class="overlay-caption" id="cyt-caption"></div>
+  </div>
+
+  <div class="controls">
+    <div class="control-row">
+      <label>depth</label>
+      <input type="range" id="cyt-depth" min="2" max="5" value="3" step="1">
+      <span class="val" id="cyt-depth-v">3</span>
+    </div>
+    <div class="control-row">
+      <label>agents</label>
+      <input type="range" id="cyt-agents" min="0" max="50" value="18" step="1">
+      <span class="val" id="cyt-agents-v">18</span>
+    </div>
+    <div class="control-row">
+      <label>flow</label>
+      <input type="range" id="cyt-flow" min="0" max="100" value="40" step="1">
+      <span class="val" id="cyt-flow-v">0.40</span>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#7F77DD"></div>CY tile · moduli point</div>
+    <div class="legend-item"><div class="legend-line" style="background:#EF9F27"></div>geodesic edge</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#D85A30"></div>agent · Lorentz-forward</div>
+    <div class="legend-item"><div class="legend-line" style="background:#D85A30"></div>Gödel closed loop</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#1D9E75"></div>fixed point</div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const canvas = document.getElementById('viz-cy');
+  const ctx = canvas.getContext('2d');
+  const statsEl = document.getElementById('cyt-stats');
+  const captionEl = document.getElementById('cyt-caption');
+
+  const state = {
+    mode: 'structure',
+    agents: 'open',
+    depth: 3,
+    agentCount: 18,
+    flow: 0.40,
+    time: 0,
+    zoomPhase: 0,
+    growPhase: 0,
+    prevT: null,
+    dpr: Math.max(1, window.devicePixelRatio || 1),
+    reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    tiles: [],
+    edges: [],
+    neighbors: [],     // neighbors[i] = array of tile indices adjacent to tile i
+    agentsArr: [],
+    loopTrails: [],    // completed Gödel loops, drawn as faint ghost paths
+    needsRegen: true
+  };
+
+  function resize() {
+    const w = canvas.clientWidth;
+    const h = 520;
+    canvas.width = w * state.dpr;
+    canvas.height = h * state.dpr;
+    ctx.setTransform(state.dpr, 0, 0, state.dpr, 0, 0);
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // Hyperbolic {7,3}-ish tessellation (approximated for visual fidelity)
+  // Tiles organised in concentric rings; each ring's radius and count set
+  // to mimic hyperbolic shrinking + branching. Ring 0 has 1 tile; ring k>0
+  // has ~7 + 7(k-1) tiles. Ring radius r_k = tanh(k·a) for some a ≈ 0.56.
+  // ═══════════════════════════════════════════════════════════
+
+  const P_SIDES = 7; // heptagonal tiles ({7,3})
+
+  function generateTiles(depth) {
+    const tiles = [];
+    tiles.push({
+      idx: 0, ring: 0, angleIdx: 0, ringCount: 1,
+      x: 0, y: 0,
+      size: 0.32,   // in disk-unit
+      angle: 0
+    });
+    for (let ring = 1; ring <= depth; ring++) {
+      const r = Math.tanh(ring * 0.56);
+      const count = ring === 1 ? 7 : 6 * ring + 1;
+      const sizeScale = 1 / Math.cosh(ring * 0.56);
+      const baseSize = 0.32 * sizeScale;
+      const angleOffset = ring * 0.11;
+      for (let i = 0; i < count; i++) {
+        const theta = (i / count) * Math.PI * 2 + angleOffset;
+        tiles.push({
+          idx: tiles.length,
+          ring: ring,
+          angleIdx: i,
+          ringCount: count,
+          x: r * Math.cos(theta),
+          y: r * Math.sin(theta),
+          size: baseSize,
+          angle: theta
+        });
+      }
+    }
+    return tiles;
+  }
+
+  function buildNeighbors(tiles) {
+    const n = tiles.length;
+    const nb = Array.from({ length: n }, () => []);
+    const byRing = {};
+    for (const t of tiles) {
+      if (!byRing[t.ring]) byRing[t.ring] = [];
+      byRing[t.ring].push(t);
+    }
+    // Intra-ring neighbors (cyclic)
+    for (const ring in byRing) {
+      const arr = byRing[ring];
+      if (arr.length < 2) continue;
+      for (let i = 0; i < arr.length; i++) {
+        const a = arr[i].idx;
+        const b = arr[(i + 1) % arr.length].idx;
+        nb[a].push(b);
+        nb[b].push(a);
+      }
+    }
+    // Inter-ring neighbors (parent to children)
+    for (const ring in byRing) {
+      const rk = parseInt(ring);
+      if (!byRing[rk + 1]) continue;
+      const here = byRing[rk];
+      const next = byRing[rk + 1];
+      const ratio = next.length / here.length;
+      for (let i = 0; i < here.length; i++) {
+        const start = Math.floor(i * ratio);
+        const end = Math.floor((i + 1) * ratio);
+        for (let j = start; j <= end && j < next.length; j++) {
+          const a = here[i].idx, b = next[j].idx;
+          if (!nb[a].includes(b)) nb[a].push(b);
+          if (!nb[b].includes(a)) nb[b].push(a);
+        }
+      }
+    }
+    return nb;
+  }
+
+  function buildEdges(tiles, neighbors) {
+    const edges = [];
+    const seen = new Set();
+    for (let i = 0; i < neighbors.length; i++) {
+      for (const j of neighbors[i]) {
+        const key = Math.min(i, j) + ':' + Math.max(i, j);
+        if (seen.has(key)) continue;
+        seen.add(key);
+        edges.push({ a: i, b: j });
+      }
+    }
+    return edges;
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // Möbius hyperbolic flow (for fractal zoom)
+  // Translates Poincaré-disk points along a fixed boundary direction.
+  // ═══════════════════════════════════════════════════════════
+
+  function mobiusTrans(x, y, d, phi) {
+    const ar = Math.tanh(d / 2) * Math.cos(phi);
+    const ai = Math.tanh(d / 2) * Math.sin(phi);
+    const numR = x + ar, numI = y + ai;
+    const denR = 1 + ar * x + ai * y;
+    const denI = ar * y - ai * x;
+    const denMag = denR * denR + denI * denI;
+    return {
+      x: (numR * denR + numI * denI) / denMag,
+      y: (numI * denR - numR * denI) / denMag
+    };
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // Agents — Lorentz-forward or Gödel-closed trajectories
+  // Open agents drift outward (toward future boundary).
+  // Gödel agents trace closed loops.
+  // ═══════════════════════════════════════════════════════════
+
+  function spawnAgent(id) {
+    const tiles = state.tiles;
+    const nb = state.neighbors;
+    const tileIdx = Math.floor(Math.random() * tiles.length);
+    const isGodel = state.agents === 'godel' || (state.agents === 'open' && Math.random() < 0.3);
+    const pathLen = isGodel ? (3 + Math.floor(Math.random() * 4)) : 0;
+    return {
+      id: id,
+      tileIdx: tileIdx,
+      nextTileIdx: tileIdx,
+      progress: 1.0,
+      pathHistory: [tileIdx],
+      pathTarget: pathLen,
+      isGodel: isGodel,
+      // A Gödel agent records its own path to retrace (self-reflection)
+      age: 0
+    };
+  }
+
+  function pickNextTile(agentTileIdx, preferOutward) {
+    const nb = state.neighbors[agentTileIdx];
+    if (!nb || nb.length === 0) return agentTileIdx;
+    // Lorentz-forward bias: prefer neighbors at larger ring (outward = forward time)
+    // unless reducedMotion or strictly random
+    const here = state.tiles[agentTileIdx];
+    const weights = nb.map(j => {
+      const there = state.tiles[j];
+      const outwardFactor = preferOutward ? Math.max(0.1, 1 + (there.ring - here.ring) * 0.6) : 1;
+      return outwardFactor;
+    });
+    const total = weights.reduce((s, w) => s + w, 0);
+    let r = Math.random() * total;
+    for (let i = 0; i < nb.length; i++) {
+      r -= weights[i];
+      if (r <= 0) return nb[i];
+    }
+    return nb[0];
+  }
+
+  function updateAgent(agent, dt) {
+    agent.progress += dt * state.flow * 1.6;
+    agent.age += dt;
+    if (agent.progress < 1) return;
+    // Step to next
+    agent.tileIdx = agent.nextTileIdx;
+    agent.progress = 0;
+
+    if (agent.isGodel && agent.pathHistory.length >= agent.pathTarget) {
+      // Gödel closure: return to start via the shortest observed path (use history path)
+      // Record the completed loop
+      const loopPath = agent.pathHistory.slice();
+      loopPath.push(loopPath[0]); // close
+      state.loopTrails.push({
+        path: loopPath.map(i => ({ x: state.tiles[i].x, y: state.tiles[i].y })),
+        age: 0
+      });
+      if (state.loopTrails.length > 20) state.loopTrails.shift();
+      // Restart at entry
+      agent.tileIdx = loopPath[0];
+      agent.nextTileIdx = pickNextTile(agent.tileIdx, true);
+      agent.pathHistory = [agent.tileIdx];
+      return;
+    }
+
+    agent.nextTileIdx = pickNextTile(agent.tileIdx, true);
+    agent.pathHistory.push(agent.nextTileIdx);
+
+    // Decay agents that reach ring > depth (expiration, symbolically fall off the boundary)
+    if (state.tiles[agent.tileIdx].ring >= state.depth) {
+      if (!agent.isGodel && Math.random() < 0.25) {
+        // Respawn at a random interior tile
+        const interior = state.tiles.filter(t => t.ring <= 1);
+        const spawn = interior[Math.floor(Math.random() * interior.length)].idx;
+        agent.tileIdx = spawn;
+        agent.nextTileIdx = pickNextTile(spawn, true);
+        agent.pathHistory = [spawn];
+      }
+    }
+  }
+
+  function regenerate() {
+    state.tiles = generateTiles(state.depth);
+    state.neighbors = buildNeighbors(state.tiles);
+    state.edges = buildEdges(state.tiles, state.neighbors);
+    state.agentsArr = [];
+    for (let i = 0; i < state.agentCount; i++) state.agentsArr.push(spawnAgent(i));
+    state.loopTrails = [];
+    state.needsRegen = false;
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // Apply mode-dependent transformation (zoom in fractal mode)
+  // Returns disk-coords (x', y') given tile's base disk-coords (x, y)
+  // ═══════════════════════════════════════════════════════════
+
+  function applyModeTransform(x, y) {
+    if (state.mode === 'zoom') {
+      // Möbius translation along +x axis, period chosen to roughly match tile spacing
+      const d = (state.zoomPhase % 2) * 0.9;
+      return mobiusTrans(x, y, d, 0);
+    }
+    return { x, y };
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // Drawing
+  // ═══════════════════════════════════════════════════════════
+
+  function drawBackground(cx, cy, R) {
+    // Subtle radial gradient — past (cool center) → future (warm boundary)
+    const g = ctx.createRadialGradient(cx, cy, R * 0.2, cx, cy, R);
+    g.addColorStop(0, 'rgba(29, 158, 117, 0.05)');
+    g.addColorStop(0.6, 'rgba(127, 119, 221, 0.03)');
+    g.addColorStop(1, 'rgba(239, 159, 39, 0.08)');
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.fill();
+
+    // Boundary silhouette — the holographic screen S¹
+    ctx.strokeStyle = 'rgba(239, 159, 39, 0.5)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([5, 5]);
+    ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Faint light rays (Lorentz time arrow) — from center outward
+    ctx.strokeStyle = 'rgba(239, 159, 39, 0.05)';
+    ctx.lineWidth = 0.5;
+    for (let k = 0; k < 14; k++) {
+      const a = (k / 14) * Math.PI * 2 + state.time * 0.02;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + Math.cos(a) * R, cy + Math.sin(a) * R);
+      ctx.stroke();
+    }
+  }
+
+  function drawTile(tile, cx, cy, R, alpha) {
+    const t = applyModeTransform(tile.x, tile.y);
+    // In zoom/move, tiles beyond |z|=1 shouldn't render
+    if (Math.hypot(t.x, t.y) > 0.99) return null;
+    // Hyperbolic visual shrinking: size shrinks with radial distance
+    const rNorm = Math.hypot(t.x, t.y);
+    const shrink = 1 - rNorm * 0.25;
+    const sizePx = tile.size * R * shrink;
+    const px = cx + t.x * R;
+    const py = cy + t.y * R;
+
+    // Polygon (heptagon approximated in Euclidean — good enough visually)
+    ctx.fillStyle = `rgba(127, 119, 221, ${0.05 * alpha})`;
+    ctx.strokeStyle = `rgba(239, 159, 39, ${0.35 * alpha})`;
+    ctx.lineWidth = 0.7;
+    ctx.beginPath();
+    const rotOff = tile.angle + (tile.ring % 2) * (Math.PI / P_SIDES);
+    for (let k = 0; k < P_SIDES; k++) {
+      const a = (k / P_SIDES) * Math.PI * 2 + rotOff;
+      const vx = px + Math.cos(a) * sizePx * 0.95;
+      const vy = py + Math.sin(a) * sizePx * 0.95;
+      if (k === 0) ctx.moveTo(vx, vy); else ctx.lineTo(vx, vy);
+    }
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
+    // CY glyph — small double-ring torus suggestion + holomorphic dash
+    if (sizePx > 6) {
+      const gR = sizePx * 0.28;
+      ctx.strokeStyle = `rgba(127, 119, 221, ${0.65 * alpha})`;
+      ctx.lineWidth = 0.9;
+      ctx.beginPath(); ctx.arc(px, py, gR, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.arc(px, py, gR * 0.55, 0, Math.PI * 2); ctx.stroke();
+      // Holomorphic direction
+      ctx.beginPath();
+      ctx.moveTo(px - gR * 0.8, py);
+      ctx.lineTo(px + gR * 0.8, py);
+      ctx.stroke();
+    } else if (sizePx > 3) {
+      // Too small for full glyph — just a seed dot
+      ctx.fillStyle = `rgba(127, 119, 221, ${0.5 * alpha})`;
+      ctx.beginPath(); ctx.arc(px, py, 1.2, 0, Math.PI * 2); ctx.fill();
+    }
+
+    // Fixed-point marker: central tile (ring 0) is the cone point / fixed point of all symmetries
+    if (tile.ring === 0) {
+      ctx.strokeStyle = `rgba(29, 158, 117, ${0.8 * alpha})`;
+      ctx.lineWidth = 1.2;
+      ctx.beginPath(); ctx.arc(px, py, sizePx * 0.12, 0, Math.PI * 2); ctx.stroke();
+      ctx.fillStyle = `rgba(29, 158, 117, ${0.9 * alpha})`;
+      ctx.beginPath(); ctx.arc(px, py, 2, 0, Math.PI * 2); ctx.fill();
+    }
+
+    return { px, py, sizePx };
+  }
+
+  function drawEdges(cx, cy, R, alpha) {
+    ctx.strokeStyle = `rgba(239, 159, 39, ${0.12 * alpha})`;
+    ctx.lineWidth = 0.4;
+    ctx.beginPath();
+    for (const e of state.edges) {
+      const ta = state.tiles[e.a];
+      const tb = state.tiles[e.b];
+      const pa = applyModeTransform(ta.x, ta.y);
+      const pb = applyModeTransform(tb.x, tb.y);
+      if (Math.hypot(pa.x, pa.y) > 0.99 || Math.hypot(pb.x, pb.y) > 0.99) continue;
+      ctx.moveTo(cx + pa.x * R, cy + pa.y * R);
+      ctx.lineTo(cx + pb.x * R, cy + pb.y * R);
+    }
+    ctx.stroke();
+  }
+
+  function drawLoopTrails(cx, cy, R) {
+    for (const loop of state.loopTrails) {
+      const alpha = Math.max(0, 0.35 - loop.age * 0.02);
+      if (alpha < 0.02) continue;
+      ctx.strokeStyle = `rgba(216, 90, 48, ${alpha})`;
+      ctx.lineWidth = 1.1;
+      ctx.beginPath();
+      for (let i = 0; i < loop.path.length; i++) {
+        const p = applyModeTransform(loop.path[i].x, loop.path[i].y);
+        const x = cx + p.x * R;
+        const y = cy + p.y * R;
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+  }
+
+  function drawAgent(agent, cx, cy, R) {
+    const here = state.tiles[agent.tileIdx];
+    const next = state.tiles[agent.nextTileIdx];
+    const px0 = here.x + (next.x - here.x) * agent.progress;
+    const py0 = here.y + (next.y - here.y) * agent.progress;
+    const p = applyModeTransform(px0, py0);
+    if (Math.hypot(p.x, p.y) > 0.99) return;
+    const x = cx + p.x * R;
+    const y = cy + p.y * R;
+
+    const col = agent.isGodel ? 'rgba(216, 90, 48, 0.95)' : 'rgba(216, 90, 48, 0.8)';
+    ctx.fillStyle = col;
+    ctx.beginPath(); ctx.arc(x, y, agent.isGodel ? 2.6 : 2.2, 0, Math.PI * 2); ctx.fill();
+
+    // Gödel agents: subtle halo
+    if (agent.isGodel) {
+      ctx.strokeStyle = 'rgba(216, 90, 48, 0.45)';
+      ctx.lineWidth = 0.7;
+      ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.stroke();
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // Grow mode — fade tiles in ring by ring
+  // ═══════════════════════════════════════════════════════════
+
+  function ringAlpha(ring) {
+    if (state.mode !== 'grow') return 1;
+    const growTime = state.growPhase * 1.2;
+    // Each ring enters at t = ring * 1.5, full at t = ring * 1.5 + 1.2
+    const entry = ring * 1.5;
+    if (growTime < entry) return 0;
+    if (growTime > entry + 1.2) return 1;
+    return (growTime - entry) / 1.2;
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // Main draw
+  // ═══════════════════════════════════════════════════════════
+
+  function draw() {
+    const w = canvas.clientWidth;
+    const h = 520;
+    ctx.clearRect(0, 0, w, h);
+    const cx = w / 2;
+    const cy = h / 2;
+    const R = Math.min(w, h) * 0.46;
+
+    drawBackground(cx, cy, R);
+
+    // Edges (faded)
+    drawEdges(cx, cy, R, 1);
+
+    // Tiles
+    for (const tile of state.tiles) {
+      const a = ringAlpha(tile.ring);
+      if (a < 0.01) continue;
+      drawTile(tile, cx, cy, R, a);
+    }
+
+    // Loop trails (behind agents)
+    drawLoopTrails(cx, cy, R);
+
+    // Agents
+    if (state.agents !== 'off' && state.mode !== 'grow') {
+      for (const a of state.agentsArr) drawAgent(a, cx, cy, R);
+    } else if (state.agents !== 'off' && state.mode === 'grow') {
+      // Grow mode: agents only appear once their ring has instantiated
+      for (const a of state.agentsArr) {
+        const here = state.tiles[a.tileIdx];
+        if (ringAlpha(here.ring) > 0.3) drawAgent(a, cx, cy, R);
+      }
+    }
+
+    // Fractal zoom: draw secondary nested mini-tessellation inside central tile
+    if (state.mode === 'zoom') {
+      drawFractalChild(cx, cy, R);
+    }
+
+    updateStats();
+  }
+
+  // Nested child tessellation — signals the fractal/self-similar structure
+  function drawFractalChild(cx, cy, R) {
+    // Render a miniature copy of the tessellation centered at origin
+    // at scale = Möbius zoom factor → ensures infinite regress visual
+    const childScale = 0.12;
+    const childR = R * childScale;
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, Math.min(1, (state.zoomPhase % 2) * 0.6));
+    // Simple mini-disk with a few nested tile dots
+    ctx.strokeStyle = 'rgba(239, 159, 39, 0.3)';
+    ctx.lineWidth = 0.7;
+    ctx.setLineDash([3, 3]);
+    ctx.beginPath(); ctx.arc(cx, cy, childR, 0, Math.PI * 2); ctx.stroke();
+    ctx.setLineDash([]);
+    // Central CY glyph
+    ctx.strokeStyle = 'rgba(127, 119, 221, 0.6)';
+    ctx.lineWidth = 0.8;
+    ctx.beginPath(); ctx.arc(cx, cy, childR * 0.25, 0, Math.PI * 2); ctx.stroke();
+    // Seed ring of 7
+    for (let k = 0; k < 7; k++) {
+      const a = (k / 7) * Math.PI * 2;
+      const x = cx + Math.cos(a) * childR * 0.6;
+      const y = cy + Math.sin(a) * childR * 0.6;
+      ctx.fillStyle = 'rgba(127, 119, 221, 0.5)';
+      ctx.beginPath(); ctx.arc(x, y, 1.6, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // Stats and caption
+  // ═══════════════════════════════════════════════════════════
+
+  function updateStats() {
+    const tileCount = state.tiles.length;
+    const bits = Math.log2(tileCount).toFixed(2);
+    const loops = state.loopTrails.length;
+    statsEl.innerHTML =
+      `depth&nbsp;${state.depth}<br>` +
+      `tiles&nbsp;${tileCount}<br>` +
+      `I&nbsp;${bits}&nbsp;bits<br>` +
+      `loops&nbsp;${loops}`;
+
+    const caps = {
+      structure: `Static {${P_SIDES},3} tessellation of ℍ². Each heptagon is a CY moduli point; the central teal dot is the cone fixed point. Radial rays are Lorentz light-rays; outward = forward time.`,
+      grow: `Hierarchical instantiation from the fixed point outward. Each ring adds ΔI = log₂(ringCount) bits. The growth rate matches the tessellation's fractal dimension — informationally minimal for F_mix compliance.`,
+      zoom: `Möbius flow toward an ideal boundary point. The pattern is self-similar under this flow — infinitely many tiles pass through any finite window. The nested child tessellation in the middle is the next scale down.`
+    };
+    captionEl.textContent = caps[state.mode];
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // Animation loop
+  // ═══════════════════════════════════════════════════════════
+
+  function tick(t) {
+    if (state.needsRegen) regenerate();
+    if (state.prevT === null) state.prevT = t;
+    const dt = Math.min(0.05, (t - state.prevT) / 1000);
+    state.prevT = t;
+    if (!state.reducedMotion) {
+      state.time += dt;
+      if (state.mode === 'zoom') state.zoomPhase += dt * 0.35;
+      if (state.mode === 'grow') {
+        state.growPhase += dt * 0.4;
+        // Reset grow cycle after all rings done + pause
+        if (state.growPhase > (state.depth + 2) * 1.5) state.growPhase = 0;
+      }
+    }
+    // Update agents
+    if (state.agents !== 'off') {
+      for (const a of state.agentsArr) updateAgent(a, dt);
+    }
+    // Age loop trails
+    for (const loop of state.loopTrails) loop.age += dt;
+    state.loopTrails = state.loopTrails.filter(l => l.age < 18);
+
+    draw();
+    requestAnimationFrame(tick);
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // Controls
+  // ═══════════════════════════════════════════════════════════
+
+  document.getElementById('cyt-mode').addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-mode]'); if (!b) return;
+    state.mode = b.dataset.mode;
+    state.growPhase = 0;
+    state.zoomPhase = 0;
+    for (const x of e.currentTarget.querySelectorAll('button')) x.classList.toggle('active', x.dataset.mode === state.mode);
+  });
+  document.getElementById('cyt-agents-tab').addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-agents]'); if (!b) return;
+    state.agents = b.dataset.agents;
+    state.needsRegen = true; // respawn agents with new type
+    for (const x of e.currentTarget.querySelectorAll('button')) x.classList.toggle('active', x.dataset.agents === state.agents);
+  });
+  const depthS = document.getElementById('cyt-depth');
+  depthS.addEventListener('input', () => {
+    state.depth = parseInt(depthS.value, 10);
+    document.getElementById('cyt-depth-v').textContent = state.depth;
+    state.needsRegen = true;
+  });
+  const agentsS = document.getElementById('cyt-agents');
+  agentsS.addEventListener('input', () => {
+    state.agentCount = parseInt(agentsS.value, 10);
+    document.getElementById('cyt-agents-v').textContent = state.agentCount;
+    state.needsRegen = true;
+  });
+  const flowS = document.getElementById('cyt-flow');
+  flowS.addEventListener('input', () => {
+    state.flow = flowS.value / 100;
+    document.getElementById('cyt-flow-v').textContent = state.flow.toFixed(2);
+  });
+
+  resize();
+  window.addEventListener('resize', resize);
+  requestAnimationFrame(tick);
+})();
+</script>

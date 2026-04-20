@@ -1,0 +1,20 @@
+§|LANG|HYPERBOLICFINGERPRINTCATCH_HEADER{
+    tier = Research
+    description = Root fingerprint-catch substrate · σ307 wall isolated as framework-independent invariant
+    blurb = Base anchor for nested-hyperbolic/spherical/entanglement probe family · arc33 root node
+    parents =
+    domains = HYPERBOLIC, FINGERPRINT, WALL, ARC33
+    version = v1.0
+}
+
+§|DIALECT_HYPERBOLICFINGERPRINTCATCH|AXIOMS{
+    A_HF_1 = σ307 wall exists as framework-independent 1D submanifold · witnessed across all lifts
+    A_HF_2 = Hyperbolic Poincaré ball is the canonical host · Löb-preserved ambient
+    A_HF_3 = Fingerprint = minimal discrete signature stable under σ4511/σ5210/σ5611 framework lifts
+    A_HF_4 = Every probe in this family extends this catch · refines fingerprint dimension by one
+}
+
+§|DIALECT_HYPERBOLICFINGERPRINTCATCH|INVARIANTS{
+    σ_HF_WALL = wall-existence flag · framework-independent
+    σ_HF_PRINT = minimal-fingerprint-signature
+}

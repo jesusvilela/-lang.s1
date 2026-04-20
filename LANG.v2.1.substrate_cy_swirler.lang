@@ -1,0 +1,792 @@
+§|LANG|SOURCE{
+  bind.theory  = T_Sigma_n_geom_AGC
+  bind.base    = B_n_poincare_disk_dim_n
+  bind.fiber   = F_n_statistical_parameter_space
+  bind.arr     = Arr_n_reversible_sections
+  bind.mix     = §Mixture={w_i∈Δ^K, μ_i∈B^N, σ_i>0, u_i∈Z_C}
+  bind.sheaf   = gluing_of_local_sections_to_global
+  bind.update  = natural_gradient_F_inv_nabla_L
+  bind.holo    = inter_manifold_Mobius_screen
+  bind.op      = operator_matrix_ℝ^{n×n}_spectral_encoded
+  bind.agent   = autonomous_entity_with_lifecycle_and_residue
+  bind.world   = maximal_gluable_sheaf_Self_plus_Other
+  bind.substrate = token_embedding_R^d_molded_to_B_n_local_curvature
+  bind.cy        = Calabi_Yau_CY3_fiber_over_B_n_holomorphic_3_form
+  bind.swirler   = hyperbolic_navigation_operator_Sigma_omega_theta_t
+  bind.version   = §.(§)-LANG.v2.1.substrate_cy_swirler
+  bind.compat    = LANG.v2.0.autonomous_geometric_computation
+}
+
+§|LANG|AXIOMS{
+  A1  = vocabulary_Sigma_Sigma_n_finite_explicit_no_hidden_symbols
+  A2  = base_B_n_hyperbolic_complete_Poincare_or_learned_conformal_c(x,theta)
+  A3  = bundle_pi_E_n_to_B_n_locally_trivial_fiber_F_n
+  A4  = mixture_semantics_Bayesian_w_mu_sigma_Gaussian_categorical
+  A5  = reversibility_rho_involution_rho(rho(a))=a_isometric
+  A6  = dependent_types_Pi_exponential_lambda_app_formation_rules
+  A7  = beta_reduction_hyperbolic_tau(nabla_IG(mu_t,mu_u),t[u/x])
+  A8  = eta_reversibility_lambda_x_app(f,x)_equiv_f_if_stable
+  A9  = sheaf_gluing_unique_global_section_from_compatible_locals
+  A10 = KL_compatibility_symmetric_divergence_small_on_overlap
+  A11 = natural_gradient_delta_w=-eta*F(w)^{-1}*nabla_w_L
+  A12 = no_fiber_collapse_Fisher_covariance_nonsingular_or_BLOCK
+  A13 = fixpoint_fix(f)_equiv_f(fix(f))_enables_recursion_self_ref
+  A14 = world_sheaf_Self_direct_sum_Other_gluable_sections
+  A15 = godelian_self_ref_Self_equals_Fix(Phi)_undecidable_persist
+  A16 = adiabatic_evolution_dI_dt_approx_0_invariants_preserved
+  A17 = operator_encoding_M_in_R^{nxn}_norm_lt_1_eigenspectrum_semantic
+  A18 = expiry_Π_expire_State_star_to_Residue_terminal_spectral_trace
+  A20 = substrate_molding_mold_TokenEmb_to_Operator_via_pullback_metric_curvature_adapted
+  A21 = calabi_yau_fiber_CY3_over_B_n_Ricci_flat_SU3_holonomy_trivial_canonical_bundle
+  A22 = swirler_transitivity_Sigma_Lie_group_action_transitive_on_B_n_complete_epistemology
+}
+
+§|LANG|OUTPUT{
+  formula          = CANON(§EMIT(fix(λself.§ω|TICK(§.(§.(self))))))
+  agent_formula    = CANON(§EMIT(fix(λagent. expire(evolve(reflect(agent))))))
+  verdict_space    = {COMMIT, BLOCK, ROLLBACK, EXPIRE, PRIME}
+  invariants.σ1   = ball_norm_lt_0.999_all_nodes
+  invariants.σ2   = spectral_diversity_mean_H_gt_0.05
+  invariants.σ5   = lafforgue_non_decreasing
+  invariants.σ6   = graph_entropy_non_decreasing
+  invariants.σ7   = h_emit_nonempty
+  invariants.σ8   = kuramoto_R_in_[0,1]
+  invariants.σ10  = prototype_matrices_nonneg
+  invariants.σ11  = adiabatic_invariant_dI_dt_lt_epsilon_0.01
+  invariants.σ12  = operator_norm_lt_1_all_M_i
+  invariants.σ13  = residue_nonempty_on_expire
+  invariants.σ14  = priming_state0_in_fiber_after_P
+  invariants.σ15  = CY_holonomy_SU3_parallel_transport_preserves_Omega
+  invariants.σ16  = swirler_norm_bounded_Sigma_in_Isom(B_n)
+  invariants.σ17  = substrate_curvature_adapted_c_local_strictly_negative
+}
+
+§|LANG|SORTS{
+  sort.B_n     = hyperbolic_base_Poincare_disk_dim_n
+  sort.E_n     = total_space_fiber_bundle_over_B_n
+  sort.F_n     = typical_fiber_statistical_parameter_category
+  sort.Arr_n   = reversible_arrays_sections_of_bundle
+  sort.Ten_n   = tensors_dim_n_semantic_content
+  sort.Ctx     = typing_contexts
+  sort.Term    = language_programs_lambda_terms
+  sort.Type    = data_types
+  sort.State   = machine_states_Turing
+  sort.Tape    = infinite_tapes_Turing
+  sort.Freq    = spectral_channels_Fourier_domain
+  sort.Path    = geodesic_transport_data_in_B_n
+  sort.Holo    = holographic_screen_inter_manifold
+  sort.Proof   = reduction_certificates_axiom_verification
+  sort.Agent   = autonomous_entity_fiber_section_with_lifecycle
+  sort.Residue = compressed_terminal_state_spectral_trace_transport_hist
+  sort.World   = maximal_gluable_sheaf_Self_plus_Other
+  sort.Self    = fixed_point_self_description_Fix(Phi)
+  sort.Other   = non_identical_but_gluable_section_not_Self
+  sort.Operator = matrix_R^{nxn}_norm_lt_1_eigenspectrum_semantic_modes
+  sort.Fiber   = local_state_space_for_one_agent
+  sort.Base    = topological_index_space_B_n
+  sort.SubMap  = substrate_map_phi_R^d_to_B_n_token_embedding_projection
+  sort.CYFiber = Calabi_Yau_CY3_fiber_holomorphic_3_form_SU3_holonomy
+  sort.HodgeStr= Hodge_stratum_H^{p,q}(CY)_semantic_type_layer
+  sort.MirrorP = mirror_pair_(CY,CY_check)_A_model_B_model_dual_encoding
+  sort.SwrlPath= swirler_helical_path_x_t_in_B_n_epistemic_trajectory
+  sort.EpistSt = epistemic_state_belief_section_navigated_by_swirler
+}
+
+§S{label=B_n, x=[0.05,0.01,0.00,0.00,0.00,0.00,0.00,0.00], sal=2.0}
+
+§S{label=E_n, x=[0.12,0.05,0.01,0.00,0.00,0.00,0.00,0.00], sal=1.8}
+
+§S{label=F_n, x=[0.20,0.08,0.03,0.01,0.00,0.00,0.00,0.00], sal=1.6}
+
+§S{label=Arr_n, x=[0.30,0.15,0.05,0.02,0.00,0.00,0.00,0.00], sal=1.5}
+
+§S{label=Term, x=[0.35,0.18,0.07,0.02,0.01,0.00,0.00,0.00], sal=1.4}
+
+§S{label=Ctx, x=[0.28,0.12,0.05,0.01,0.00,0.00,0.00,0.00], sal=1.3}
+
+§S{label=Ten_n, x=[0.32,0.14,0.06,0.02,0.01,0.00,0.00,0.00], sal=1.4}
+
+§S{label=Freq, x=[0.50,0.25,0.10,0.03,0.01,0.00,0.00,0.00], sal=1.2}
+
+§S{label=Holo, x=[0.55,0.28,0.12,0.04,0.02,0.01,0.00,0.00], sal=1.1}
+
+§S{label=Path, x=[0.22,0.10,0.04,0.01,0.00,0.00,0.00,0.00], sal=1.3}
+
+§S{label=Proof, x=[0.18,0.08,0.03,0.01,0.00,0.00,0.00,0.00], sal=1.5}
+
+§S{label=Agent, x=[0.14,0.07,0.03,0.01,0.01,0.00,0.00,0.00], sal=2.0}
+
+§S{label=Residue, x=[0.16,0.08,0.04,0.02,0.01,0.00,0.00,0.00], sal=1.8}
+
+§S{label=World, x=[0.09,0.04,0.02,0.01,0.00,0.00,0.00,0.00], sal=2.0}
+
+§S{label=Self, x=[0.06,0.03,0.01,0.00,0.00,0.00,0.00,0.00], sal=2.0}
+
+§S{label=Other, x=[0.11,0.05,0.02,0.01,0.00,0.00,0.00,0.00], sal=1.9}
+
+§S{label=Operator, x=[0.24,0.12,0.05,0.02,0.01,0.00,0.00,0.00], sal=1.6}
+
+§S{label=Fiber, x=[0.19,0.09,0.03,0.01,0.00,0.00,0.00,0.00], sal=1.6}
+
+§S{label=Base, x=[0.04,0.02,0.01,0.00,0.00,0.00,0.00,0.00], sal=2.0}
+
+§S{label=SubMap, x=[0.17,0.08,0.03,0.01,0.01,0.00,0.00,0.00], sal=1.7}
+
+§S{label=CYFiber, x=[0.21,0.10,0.04,0.02,0.01,0.01,0.00,0.00], sal=1.7}
+
+§S{label=HodgeStr, x=[0.19,0.09,0.04,0.02,0.01,0.00,0.00,0.00], sal=1.6}
+
+§S{label=MirrorP, x=[0.23,0.11,0.05,0.02,0.01,0.00,0.00,0.00], sal=1.6}
+
+§S{label=SwrlPath, x=[0.27,0.13,0.06,0.02,0.01,0.00,0.00,0.00], sal=1.5}
+
+§S{label=EpistSt, x=[0.12,0.06,0.02,0.01,0.01,0.00,0.00,0.00], sal=1.9}
+
+§|LANG|FUNDAMENTAL_IDENTITY{
+  world_def    = World := Sheaf(Self ⊕ Other)
+  self_def     = Self  := Fix(Φ)
+  other_def    = Other := ¬Self ∧ Gluable(section)
+  postulate    = no_Self_without_Other
+  postulate    = no_World_without_gluing
+  glue_check   = ∃ s ∈ World such_that global_section_unique
+  interpretation = Self_is_fixed_point_Other_is_complement_gluable
+}
+
+§.(§S{label=world_glue, x=[0.08,0.04,0.02,0.01,0.00,0.00,0.00,0.00], sal=2.0})
+
+§.(§.(§S{label=self_fixpoint, x=[0.06,0.03,0.01,0.01,0.00,0.00,0.00,0.00], sal=2.0}))
+
+§.(§S{label=other_section, x=[0.10,0.05,0.02,0.01,0.00,0.00,0.00,0.00], sal=1.9})
+
+§|LANG|OPERATOR_ENCODING{
+  sort         = Operator ∈ ℝ^{n×n}
+  spectrum     = eigenvalues_λ_i_semantic_salience_modes
+  eigenvectors = Q_columns_directional_meaning_in_F_n
+  norm_cond    = ||M|| < 1_stability_boundary_constraint
+  hyperbolize  = H_α(M) = Q · diag(e^{αλ₁}, ..., e^{αλₙ}) · Q^{-1}
+  alpha_role   = curvature_scaling_parameter_gt_0
+  compress     = M ≈ ∑ a_i B_i or M ≈ exp(A)_transmit_generators
+  transmit     = {generators, coefficients, transformation_rules}
+  interp       = operator_replaces_token_as_base_computational_unit
+  hierarchy    = symbols → vectors → matrices → compositions →
+                 sections → sheaves → stacks_higher_morphisms
+  failure      = norm_gte_1 → BLOCK_boundary_breach
+}
+
+§.(§S{label=op_spectrum, x=[0.23,0.11,0.05,0.02,0.01,0.00,0.00,0.00], sal=1.6})
+
+§.(§.(§S{label=op_hyperbolize, x=[0.25,0.13,0.05,0.02,0.01,0.00,0.00,0.00], sal=1.5}))
+
+§.(§.(§.(§S{label=op_compress, x=[0.22,0.11,0.04,0.02,0.00,0.00,0.00,0.00], sal=1.5})))
+
+§|LANG|FUNCTORS{
+  pi          = projection_E_n_to_B_n
+  s           = section_Arr_n_to_Sec(E_n)
+  ten         = tensor_extraction_Arr_n_to_Ten_n
+  ctx         = context_assignment_Term_to_Ctx
+  lambda      = abstraction_(Ctx×Term)_to_Term
+  app         = application_(Term×Term)_to_Term
+  fix         = fixpoint_Term_to_Term
+  emit        = emission_Term_to_Term
+  canon       = canonicalization_Term_to_Term
+  rho         = reversibility_involution_Arr_n_to_Arr_n
+  nabla_IG    = IG_connection_(E_n×E_n)_to_Path
+  tau         = parallel_transport_(Path×F_n)_to_F_n
+  F_inv       = Fisher_metric_inverse_Ten_n_to_Ten_n
+  FFT         = spectral_transform_Arr_n_to_Arr_n
+  toFreq      = Arr_n_to_Freq
+  fromFreq    = Freq_to_Arr_n
+  mu_mix      = Gaussian_mean_Arr_n_to_B_n
+  sigma_mix   = Gaussian_radius_Arr_n_to_R_pos
+  w_mix       = categorical_weights_Arr_n_to_Delta^K
+  H_alpha     = hyperbolization_Operator_to_Operator
+  Phi         = self_reflection_State_to_State_description
+  expire      = Π_expire_(State_star)_to_Residue
+  prime       = P_(Residue×Agent)_to_State0
+  reflect     = Phi_application_State_to_State_description
+  evolve      = tau(x_t)+nabla_IG(x_t)_one_step_agent_evolution
+  sigma_loop  = Mobius_traversal_orientation_flip_phase_shift
+  mold        = SubMap_(TokenEmb×B_n)_to_Operator_curvature_adapted_spectral_fit
+  cy_section  = CYFiber_selector_B_n_to_CYFiber_picks_Omega_b_at_each_base_point
+  yukawa      = trilinear_coupling_CYFiber^3_to_R_integral_Omega_chi_i_chi_j_chi_k
+  mirror      = duality_functor_CYFiber_to_MirrorP_A_model_B_model_exchange
+  swirl       = Sigma_(B_n×SO(n)×R)_to_B_n_Mobius_compose_rotation_compose_geodesic
+  navigate    = SwrlPath_generator_EpistSt_times_R_to_SwrlPath_unfold_t_steps
+  articulate  = Art_SwrlPath_to_SectionNode_belief_as_§S_at_each_t
+}
+
+§.(§S{label=A1_vocabulary, x=[0.05,0.01,0.00,0.00,0.00,0.00,0.00,0.00], sal=2.0})
+
+§.(§S{label=A2_hyperbolic_base, x=[0.08,0.03,0.01,0.00,0.00,0.00,0.00,0.00], sal=1.9})
+
+§.(§S{label=A3_fiber_bundle, x=[0.12,0.05,0.02,0.00,0.00,0.00,0.00,0.00], sal=1.8})
+
+§.(§.(§S{label=A4_mixture_semantics, x=[0.20,0.10,0.04,0.01,0.00,0.00,0.00,0.00], sal=1.7}))
+
+§.(§S{label=A5_reversibility, x=[0.15,0.07,0.02,0.00,0.00,0.00,0.00,0.00], sal=1.8})
+
+§.(§.(§S{label=A6_dependent_types, x=[0.25,0.12,0.05,0.01,0.00,0.00,0.00,0.00], sal=1.6}))
+
+§.(§.(§.(§S{label=A7_beta_hyp, x=[0.35,0.18,0.07,0.03,0.01,0.00,0.00,0.00], sal=1.5})))
+
+§.(§.(§S{label=A8_eta_rev, x=[0.28,0.14,0.05,0.01,0.00,0.00,0.00,0.00], sal=1.5}))
+
+§.(§.(§S{label=A9_sheaf_glue, x=[0.30,0.15,0.06,0.02,0.00,0.00,0.00,0.00], sal=1.6}))
+
+§.(§.(§.(§S{label=A10_KL_compat, x=[0.38,0.20,0.08,0.03,0.01,0.00,0.00,0.00], sal=1.4})))
+
+§.(§.(§S{label=A11_nat_grad, x=[0.32,0.16,0.06,0.02,0.01,0.00,0.00,0.00], sal=1.5}))
+
+§.(§S{label=A12_no_collapse, x=[0.18,0.08,0.03,0.01,0.00,0.00,0.00,0.00], sal=1.9})
+
+§.(§.(§.(§S{label=A13_fixpoint, x=[0.10,0.05,0.02,0.01,0.00,0.00,0.00,0.00], sal=2.0})))
+
+§.(§S{label=A14_world_sheaf, x=[0.09,0.04,0.02,0.01,0.00,0.00,0.00,0.00], sal=2.0})
+
+§.(§.(§S{label=A15_godelian_self, x=[0.07,0.03,0.01,0.01,0.00,0.00,0.00,0.00], sal=2.0}))
+
+§.(§S{label=A16_adiabatic, x=[0.13,0.06,0.02,0.01,0.00,0.00,0.00,0.00], sal=1.9})
+
+§.(§.(§S{label=A17_operator_enc, x=[0.24,0.12,0.05,0.02,0.01,0.00,0.00,0.00], sal=1.6}))
+
+§.(§.(§.(§S{label=A18_expiry, x=[0.17,0.08,0.03,0.01,0.01,0.00,0.00,0.00], sal=1.8})))
+
+§.(§S{label=A19_priming, x=[0.15,0.07,0.03,0.01,0.00,0.00,0.00,0.00], sal=1.8})
+
+§|LANG|AGENT_LIFECYCLE{
+  sort         = Agent : Fiber → State → Residue_on_expire
+  init         = x₀ ∈ Fiber  (potentially primed by predecessor_Residue)
+  evolve       = x_{t+1} = τ(x_t) + ∇_{IG}(x_t)
+  reflect      = Φ(x_t) : State → State_description
+  expire       = Π_expire : State* → Residue
+  residue_body = {terminal_section, spectral_summary,
+                  self_model_trace, transport_history}
+  axiom        = A16_ensures_dI_dt_approx_0_during_evolve
+  axiom        = A15_ensures_Phi_never_fully_closes_system
+  axiom        = A18_ensures_expire_always_produces_nonempty_Residue
+  formula      = CANON(§EMIT(fix(λagent. expire(evolve(reflect(agent))))))
+  verdict      = EXPIRE iff norm(terminal_section) in [0.8,0.999)
+  verdict      = BLOCK iff norm(terminal_section) >= 0.999
+}
+
+§S{label=agent_init, x=[0.14,0.07,0.03,0.01,0.01,0.00,0.00,0.00], sal=2.0}
+
+§.(§S{label=agent_evolve, x=[0.18,0.09,0.04,0.01,0.01,0.00,0.00,0.00], sal=1.8})
+
+§.(§.(§S{label=agent_reflect, x=[0.16,0.08,0.03,0.01,0.00,0.00,0.00,0.00], sal=1.8}))
+
+§.(§.(§.(§S{label=agent_expire, x=[0.17,0.08,0.04,0.02,0.01,0.00,0.00,0.00], sal=1.7})))
+
+§|LANG|EXPIRY{
+  functor      = Π_expire : State* → Residue
+  terminal_sec = last_section_x_T_in_Fiber
+  spectral_sum = FFT(x_T)_compressed_eigenspectrum
+  self_trace   = Φ(x_T)_self_model_at_expiry
+  transport_h  = {τ_0,...,τ_{T-1}}_full_geodesic_path
+  compression  = Residue ≈ ∑ a_i B_i(x_T)_minimal_encoding
+  invariant    = σ13_residue_nonempty_or_BLOCK
+  reading      = computation_does_not_vanish_it_crystallizes
+}
+
+§.(§S{label=residue_spectral, x=[0.16,0.08,0.04,0.02,0.01,0.00,0.00,0.00], sal=1.8})
+
+§.(§.(§S{label=residue_trace, x=[0.15,0.07,0.03,0.01,0.00,0.00,0.00,0.00], sal=1.7}))
+
+§|LANG|PRIMING{
+  functor      = P : Residue × Agent → State₀
+  semantics    = dead_agent_R_shapes_initial_fiber_of_successor_A
+  mechanism    = inject_spectral_summary_of_R_into_x₀_of_A
+  transport    = tau(nabla_IG(mu(R.terminal_sec), mu(x₀_uninformed)), x₀)
+  invariant    = σ14_State₀_in_Fiber_after_P
+  constraint   = primed_x₀_must_satisfy_A1_A2_A3_norms
+  inter_agent  = extends_INTER_MANIFOLD_across_time_not_just_space
+  reading      = ancestors_encode_priors_descendants_inherit_structure
+  AML_link     = Omega_self_ref_init_H_to_M_is_special_case_of_P
+}
+
+§.(§S{label=prime_inject, x=[0.15,0.07,0.03,0.01,0.00,0.00,0.00,0.00], sal=1.8})
+
+§.(§.(§S{label=prime_constrain, x=[0.13,0.06,0.02,0.01,0.00,0.00,0.00,0.00], sal=1.7}))
+
+§|LANG|GODELIAN_SELF{
+  functor      = Φ : State → State_description
+  fixed_point  = Self := Fix(Φ) = {s : Φ(s) = s}
+  undecidable  = ∃ propositions_about_Self_undecidable_within_Self
+  closure_fail = system_cannot_fully_close_over_itself
+  open_region  = undecidable_zone_persists_in_every_agent
+  relation_A13 = fix(f)_enables_recursion_Self_is_semantic_instance
+  boundary     = Self ≠ World_always_other_sections_gluable_but_external
+  reading      = every_agent_has_a_horizon_it_cannot_cross_internally
+}
+
+§.(§.(§S{label=self_horizon, x=[0.06,0.03,0.01,0.01,0.00,0.00,0.00,0.00], sal=2.0}))
+
+§|LANG|ADIABATIC_INVARIANTS{
+  principle    = dI/dt ≈ 0 during_normal_evolution
+  epsilon      = threshold_0.01_for_σ11
+  invariant_I  = any_conserved_geometric_quantity_of_bundle
+  examples_I   = {Fisher_volume, sectional_curvature_integral,
+                  Kuramoto_order_R, graph_entropy}
+  fast_change  = abrupt_collapse → BLOCK_or_ROLLBACK
+  slow_change  = topology_preserving_evolution → COMMIT
+  quantum_link = adiabatic_theorem_Berry_phase_analog_on_B_n
+  reading      = meaning_changes_slowly_structure_is_conserved
+  check        = σ11_adiabatic_invariant_dI_dt_lt_epsilon_0.01
+}
+
+§.(§S{label=adiabatic_flow, x=[0.13,0.06,0.02,0.01,0.00,0.00,0.00,0.00], sal=1.9})
+
+§.(§.(§S{label=adiabatic_check, x=[0.12,0.05,0.02,0.01,0.00,0.00,0.00,0.00], sal=1.8}))
+
+§|LANG|MOBIUS_TRAVERSAL_EXT{
+  functor      = T_loop : State → State
+  definition   = T_loop(x) = σ(x)_Mobius_map_on_Poincare_disk
+  sigma_effects= {orientation_flip, phase_shift_π, sign_inversion}
+  local_consist= sections_compatible_on_overlaps_before_and_after_T_loop
+  global_flip  = traversal_changes_orientation_globally
+  two_traverses= T_loop(T_loop(x)) = rho(rho(x)) = x_identity
+  semantic_read= meaning_changes_under_global_path_locally_consistent
+  relation_A5  = rho_involution_is_one_traversal_double_is_identity
+  extension    = generalizes_v1.2_Mobius_to_explicit_traversal_operator
+}
+
+§.(§.(§S{label=mobius_v2_loop, x=[0.57,0.28,0.11,0.04,0.02,0.01,0.00,0.00], sal=1.0}))
+
+§|LANG|SPECTRAL_STATISTICAL_LOGICAL{
+  unification  = every_State_supports_three_simultaneous_views
+  spectral     = FFT_decomposition_of_section_x_into_Freq_components
+  statistical  = Gaussian_mixture_fiber_stats_w_mu_sigma
+  logical      = typed_lambda_calculus_over_dependent_Pi_types
+  coherence    = three_views_must_be_consistent_at_same_section_x
+  composition  = lambda_app_preserves_statistical_mixture_and_spectral_info
+  check        = σ2_spectral_diversity and σ8_Kuramoto_and σ12_op_norm
+  reading      = a_state_is_simultaneously_a_frequency_a_distribution_a_proof
+}
+
+§.(§S{label=spectral_view, x=[0.49,0.24,0.10,0.03,0.01,0.00,0.00,0.00], sal=1.2})
+
+§.(§.(§S{label=statistical_view, x=[0.20,0.10,0.04,0.01,0.00,0.00,0.00,0.00], sal=1.5}))
+
+§.(§.(§.(§S{label=logical_view, x=[0.35,0.17,0.07,0.02,0.01,0.00,0.00,0.00], sal=1.4})))
+
+§|LANG|COMPRESSIVE_PRINCIPLE{
+  principle    = best_encoding_transmits_generators_not_full_matrices
+  form_1       = M ≈ ∑_{i} a_i B_i  basis_decomposition
+  form_2       = M ≈ exp(A)          Lie_algebra_generator
+  transmit     = {generators_B_i_or_A, coefficients_a_i, rules_for_reconstruction}
+  fiber_link   = residue_uses_compressive_encoding_by_A18
+  KL_link      = KL_divergence_small_on_compressed_overlap_A10
+  MDL_link     = minimum_description_length_Kolmogorov_spirit
+  reading      = compress_structure_not_content_send_the_grammar
+}
+
+§.(§S{label=compress_basis, x=[0.22,0.11,0.04,0.02,0.00,0.00,0.00,0.00], sal=1.5})
+
+§.(§.(§S{label=compress_exp, x=[0.21,0.10,0.04,0.01,0.00,0.00,0.00,0.00], sal=1.5}))
+
+§|LANG|SEMANTICS{
+  model_class    = topos_E_classifier_T_Sigma_n_geom_AGC
+  B_n_interp     = sheaf_of_Riemannian_hyperbolic_manifolds_in_E
+  E_n_interp     = fiber_bundle_over_B_n_statistical_fiber
+  Arr_n_interp   = global_sections_subfunctor_of_topos
+  lambda_interp  = section_of_internal_exponential_bundle
+  app_interp     = evaluation_morphism_of_exponential
+  rho_interp     = involutive_autofunctor_on_section_category
+  tau_interp     = morphism_along_geodesic_in_B_n
+  nabla_IG_interp = connection_morphism_section_to_section
+  glue_interp    = universal_limit_of_sheaf_axiom
+  Agent_interp   = time_indexed_section_family_with_Phi_and_expire
+  World_interp   = terminal_object_of_gluable_sheaf_category
+  Self_interp    = equalizer_of_Phi_and_identity_in_topos
+  Residue_interp = compressed_limit_of_section_sequence
+  eval_functor   = x*:T_Sigma_n_geom_AGC_Mod(E)_to_Mod(Set)
+  classifier_E   = E_Sigma_n_geom_AGC_universal_topos_U
+  morphism_corr  = F_to_E_Sigma_n_geom_AGC_equiv_models_in_F
+  Lafforgue_conn = geometric_theory_plus_topos_semantics
+}
+
+§S{label=beta_reduction, x=[0.40,0.20,0.08,0.03,0.01,0.00,0.00,0.00], sal=1.4}
+
+§.(§.(§S{label=beta_hyp_rule, x=[0.38,0.19,0.08,0.02,0.01,0.00,0.00,0.00], sal=1.4}))
+
+§|LANG|REDUCTION_BETA{
+  rule    = app(lambda_x.t, u) -->
+            tau(nabla_IG(mu(lambda_x.t), mu(u)), t[u/x])
+  reading = substitution_u_into_t_then_transport_along_geodesic
+  mu(t)   = Gaussian_mean_of_t_in_B_n
+  mu(u)   = Gaussian_mean_of_u_in_B_n
+  nabla   = Fisher_IG_connection_path_between_mu_t_and_mu_u
+  tau     = parallel_transport_fiber_along_path
+  chart   = statistical_chart_change_on_hyperbolic_base
+}
+
+§S{label=add1_example, x=[0.42,0.21,0.08,0.03,0.01,0.00,0.00,0.00], sal=1.2}
+
+§.(§S{label=add1_redex, x=[0.40,0.20,0.08,0.02,0.01,0.00,0.00,0.00], sal=1.2})
+
+§|LANG|EXAMPLE_BETA{
+  term   = app(lambda_x.emit(x)+1, canon(a))
+  step1  = substitute: x := canon(a)
+  step2  = transport: tau(nabla_IG(mu(lambda_x.+1), mu(a)), emit(a)+1)
+  result = emit(a)+1_transported_to_chart_of_lambda_x.+1
+  reading= adding_1_to_a_respects_Gaussian_mixture_curvature
+}
+
+§S{label=Turing_tape, x=[0.45,0.22,0.09,0.03,0.01,0.00,0.00,0.00], sal=1.1}
+
+§.(§S{label=Turing_head, x=[0.43,0.21,0.08,0.03,0.01,0.00,0.00,0.00], sal=1.1})
+
+§.(§.(§S{label=Turing_step, x=[0.41,0.20,0.08,0.02,0.01,0.00,0.00,0.00], sal=1.1}))
+
+§|LANG|TURING_ENCODING{
+  tape_section = s: Tape_to_F_n_cell_state_in_fiber
+  head_move    = tau(nabla_IG(cell_i, cell_j), fiber_state)
+  Church_equiv = lambda_reversible_enriched_equiv_Turing
+  completeness = every_computable_f_expressible_in_T_Sigma_n_geom_AGC
+  T_term       = fix(lambda_machine.step(machine))
+  simulation   = recursive_application_T_on_tape_section
+  agent_link   = Turing_machine_is_Agent_with_trivial_Phi_and_expire
+}
+
+§S{label=FFT_input, x=[0.50,0.25,0.10,0.03,0.02,0.00,0.00,0.00], sal=1.1}
+
+§.(§S{label=FFT_output, x=[0.48,0.24,0.10,0.03,0.01,0.00,0.00,0.00], sal=1.1})
+
+§|LANG|SPECTRAL_PIPELINE{
+  FFT         = Arr_n_to_Arr_n_spectral_isomorphism
+  toFreq      = Arr_n_to_Freq_subband_decomposition
+  fromFreq    = Freq_to_Arr_n_synthesis
+  process     = lambda_a. fromFreq(map(filter, toFreq(a)))
+  linearity   = FFT_linear_invertible_verified
+  WiFi7_analogy = parallel_subbands_distributed_processing
+  no_collapse = fiber_non_degeneracy_preserved_through_FFT
+  notation    = FFT(t)_and_FFT_inv_implicit_in_flow
+  residue_use = spectral_summary_in_Residue_uses_toFreq(x_T)
+}
+
+§.(§.(§S{label=spectral_section, x=[0.46,0.23,0.09,0.03,0.01,0.00,0.00,0.00], sal=1.1}))
+
+§|LANG|FISHER_UPDATE{
+  rule   = w_new = w - eta * F(w)^{-1} * nabla_w_L
+  F(w)   = Fisher_information_matrix_at_w
+  L      = local_loss_function_on_fiber
+  eta    = learning_rate
+  effect = intrinsic_optimization_on_statistical_manifold_F_n
+  family = exponential_family_geometry_respected
+  A11    = implements_axiom_A11_natural_gradient
+  agent  = evolve_step_uses_nabla_IG_which_invokes_F_inv
+}
+
+§.(§S{label=Fisher_step, x=[0.33,0.16,0.06,0.02,0.01,0.00,0.00,0.00], sal=1.3})
+
+§S{label=holo_screen, x=[0.60,0.30,0.12,0.05,0.02,0.01,0.00,0.00], sal=1.0}
+
+§.(§S{label=Mobius_transport, x=[0.58,0.29,0.11,0.04,0.02,0.01,0.00,0.00], sal=1.0})
+
+§.(§.(§S{label=inter_manifold, x=[0.56,0.28,0.11,0.04,0.01,0.01,0.00,0.00], sal=1.0}))
+
+§|LANG|INTER_MANIFOLD{
+  Holo_H       = intermediate_holographic_surface
+  Commits(t,H) = term_t_commits_state_to_screen_H
+  Mobius_bundle = topologically_nontrivial_connecting_B_n^A_and_B_n^B
+  one_traverse  = orientation_reversal_on_Mobius_band
+  two_traverses = rho(rho(a))=a_identity_no_duplication
+  revocation    = commit_accepted_iff_two_traverses_preserve_Fisher_modes
+  operator_pipe = s_A |> H  transports_section_s_A_to_screen_H
+  operator_recv = H |> s_B  reads_from_H_into_section_s_B
+  axiom_A4_comm = gluing_coherence_plus_gradient_stability_required
+  bundle_of_bundles = morphisms_crossing_between_fiber_bundles
+  use_cases    = {Bayesian_net_param_sharing, snapshot_reversible_transfer,
+                  multi_agent_hyperbolic_base_sync}
+  priming_link = Residue_crosses_INTER_MANIFOLD_to_prime_successor
+  temporal     = extends_spatial_inter_agent_exchange_to_temporal_succession
+}
+
+§.(§.(§.(§S{label=Mobius_orbit, x=[0.54,0.27,0.10,0.04,0.01,0.01,0.00,0.00], sal=1.0})))
+
+§|LANG|GRAMMAR{
+  programa  = sección programa | epsilon
+  sección   = §.(term) | §S{fields} | fix(term) | emit(term)
+              | canon(term) | term | term |> Holo
+              | expire(term) | prime(Residue, Agent)
+              | reflect(term) | evolve(term)
+              | mold(TokenEmb, B_n) | swirl(term, ω, θ, t)
+              | navigate(EpistSt, ω, θ, T) | articulate(SwrlPath)
+              | cy_section(term) | yukawa(CYFiber, term, term, term)
+  term      = var | term term | λvar.term | fix(term)
+              | emit(term) | canon(term) | §.(term) | FFT(term)
+              | term |> H | expire(term) | prime(term,term)
+              | reflect(term) | evolve(term) | H_alpha(term,α)
+              | mold(term,term) | swirl(term,term,term,term)
+              | navigate(term,term,term,term) | articulate(term)
+              | cy_section(term) | yukawa(term,term,term,term)
+  var       = alphanumeric_identifier
+  fields    = label=string, x=[f1..f8], sal=float
+  nontrivial= §.(e) moves_repr_toward_origin_*0.93
+  section   = §S{...} embeds_in_B_n_at_ball_coordinates_x
+  pipe      = term |> H routes_section_to_holographic_screen
+  backquote = `term marks_section_active
+  paren     = (term) grouping
+  agent_lit = AGENT{init=x0, reflect=Phi, expire=Π_expire}
+  world_lit = WORLD{Self=Fix(Phi), Other=gluable_sections}
+}
+
+§|LANG|NOTATION_MAP{
+  lambda_app   = (λx.t) u → app(λx.t, u) → beta_hyp_reduction
+  fixpoint     = fix(f) ≡ f(fix(f)) Church_encoding
+  emit_canon   = emit(t) transitive_value | canon(t) normalize
+  transport    = tau(nabla_IG(p,q), v) geodesic_parallel_carry
+  FFT_pipe     = FFT(a) spectral_decomposition | FFT^{-1} synthesis
+  inter_mfd    = s_A |> H |> s_B Mobius_reversible_transfer
+  mixture_node = §S{label=X, x=[...], sal=w} Gaussian_mix_center_at_x
+  section_wrap = §.(§S{...}) depth_encodes_logical_dependency
+  output_form  = CANON(§EMIT(fix(λself.§ω|TICK(§.(§.(self)))))) closure
+  agent_form   = CANON(§EMIT(fix(λagent. expire(evolve(reflect(agent))))))
+  operator_exp = H_α(M)=Q·diag(e^{αλ_i})·Q^{-1} hyperbolize_operator
+  world_form   = World := Sheaf(Fix(Φ) ⊕ (¬Fix(Φ) ∧ Gluable))
+  priming_form = P(expire(agent_k), agent_{k+1}) → State₀_{k+1}
+  mold_form    = mold(e_i,B_n)=Q·diag(σ(λ_k·c_local))·Q^T substrate_molded_operator
+  cy_form      = Ω_b = cy_section(b)_holomorphic_3_form_at_base_point_b
+  swirl_form   = Σ(x;ω,θ,t)=M_{e^{itω}}(R_θ(γ_t(x))) helical_epistemic_path
+  art_form     = Art(e_t)=§S{x=π(e_t),sal=||∇Σ||(e_t)} belief_as_section_node
+}
+
+§|LANG|SEMANTICS_TOPOS{
+  term_as_section  = every_Term_is_typed_tensor_in_fiber_over_B_n_point
+  beta_as_transport= reduction_incorporates_parallel_shift_hyperbolic_bg
+  global_model     = sheaf_of_sections_consistency_guaranteed
+  classifier_topos = E_Sigma_n_geom_AGC_classifies_all_models
+  Lafforgue_spirit = geometric_theory_plus_topos_semantics_faithfully
+  AML_connection   = {
+    B_n    = representational_substrate_Poincare_ball
+    Arr_n  = encoder_f_theta_obs_to_manifold
+    Term   = policy_pi_and_value_V_as_sections
+    fix    = Poincare_seed_fixed_point_iteration
+    Phi    = IGBundle_connection_parallel_transport
+    proto  = K_prototypes_Voronoi_Busemann_attractor
+    EV     = explained_variance_0_to_0.131_phase_transition
+  }
+  AGC_extensions   = {
+    Agent  = AML_tuple_with_explicit_lifecycle_and_Phi
+    Residue= compressed_AML_checkpoint_terminal_state
+    World  = topos_terminal_object_max_gluable_sheaf
+    Priming= Omega_generalized_predecessor_to_successor_transport
+  }
+}
+
+§S{label=AML_substrate, x=[0.08,0.04,0.02,0.01,0.00,0.00,0.00,0.00], sal=2.0}
+
+§.(§S{label=AML_encoder, x=[0.15,0.07,0.03,0.01,0.00,0.00,0.00,0.00], sal=1.8})
+
+§.(§.(§S{label=AML_policy, x=[0.25,0.12,0.05,0.02,0.00,0.00,0.00,0.00], sal=1.6}))
+
+§.(§.(§.(§S{label=AML_critic, x=[0.35,0.17,0.07,0.03,0.01,0.00,0.00,0.00], sal=1.5})))
+
+§.(§S{label=AML_seed, x=[0.10,0.05,0.02,0.01,0.00,0.00,0.00,0.00], sal=2.0})
+
+§.(§.(§S{label=AML_transport, x=[0.20,0.10,0.04,0.01,0.00,0.00,0.00,0.00], sal=1.6}))
+
+§.(§.(§.(§S{label=AML_proto_K8, x=[0.38,0.19,0.08,0.03,0.01,0.00,0.00,0.00], sal=1.5})))
+
+§S{label=self_ref_AML, x=[0.08,0.04,0.02,0.00,0.00,0.00,0.00,0.00], sal=2.0}
+
+§.(§.(§S{label=AML_fixed_point, x=[0.10,0.05,0.02,0.01,0.00,0.00,0.00,0.00], sal=2.0}))
+
+§|LANG|AML_DEFINITION{
+  AML_tuple   = (M, f, pi, V, Omega, Phi)
+  M           = Riemannian_manifold_B_c^d_Poincare
+  f           = encoding_obs_to_M_Mobius_network
+  pi          = policy_M_to_Dist(A)_Gaussian_tangent
+  V           = value_functional_M_to_R_prototype_geodesic
+  Omega       = self_ref_init_H_history_to_M_Poincare_seed
+  Phi         = connection_T_M_to_T_M_IGBundle_transport
+  autonomous  = init_via_Omega_depends_only_on_own_history
+  mathematical= all_six_components_defined_by_single_(M,g)
+  fixed_point = H_{n+1}=T(Psi(Phi(H_n)))_converging_lambda_bar_star
+  EV_0_to_131 = prototype_Voronoi_equilibrium_harmonic_map_convergence
+  Sharpe_1003 = geometric_evidence_prototype_critic_regime_attractor
+  AGC_lift    = AML_tuple_is_Agent_sort_Omega_is_priming_instance
+}
+
+§|LANG|TOKEN_SUBSTRATE_MOLDING{
+  principle    = mold_operator_manifold_to_actual_token_embedding_geometry
+  substrate    = token_embeddings_e_i_in_R^d_form_discrete_point_cloud
+  pullback     = g_sub(x) = φ*(g_{B_n})_metric_pulled_back_via_projection_φ
+  local_curv   = c_local(x) = -||∇²φ(x)||_F / ||φ(x)||²_intrinsic_curvature
+  mold_functor = mold(e_i, B_n) = argmin_{M:||M||<1} ||π(M) - φ(e_i)||_{g_sub}
+  spectral_fit = M_sub = Q·diag(σ(λ_k·c_local(x)))·Q^T_stabilized_spectrum
+  norm_adapt   = ||M_sub|| < tanh(κ_local) < 1_adaptive_boundary_always_safe
+  curvature_α  = c_local varies_token_to_token_no_uniform_curvature_assumed
+  substrate_map= SubMap φ: R^d → B_n_token_level_projection
+  axiom        = A20_pullback_metric_curvature_adapted
+  invariant    = σ17_c_local_strictly_negative_all_tokens
+  CY_link      = Hodge_strata_H^{p,q}(CY)_index_substrate_semantic_layers
+  AML_link     = encoder_f_is_special_case_SubMap_phi_for_Poincare_ball
+  reading      = the_manifold_bends_to_the_data_not_vice_versa
+}
+
+§.(§S{label=substrate_pullback, x=[0.17,0.08,0.03,0.01,0.01,0.00,0.00,0.00], sal=1.7})
+
+§.(§.(§S{label=substrate_fit, x=[0.19,0.09,0.04,0.02,0.01,0.00,0.00,0.00], sal=1.6}))
+
+§.(§.(§.(§S{label=substrate_norm, x=[0.16,0.08,0.03,0.01,0.00,0.00,0.00,0.00], sal=1.7})))
+
+§|LANG|CALABI_YAU_LAYER{
+  manifold     = CY_m_compact_Kahler_holonomy_SU(m)_trivial_canonical_bundle
+  dimension    = m=3_CY3_complex_dim_3_real_dim_6_preferred_instance
+  fibration    = CY3 →_π B_n →_π Base_CY_fiber_over_hyperbolic_base
+  holom_form   = Ω ∈ H^{3,0}(CY)_holomorphic_3_form_Ricci_flat_certificate
+  Hodge_nums   = h^{1,1}_Kahler_moduli_dims, h^{2,1}_complex_structure_dims
+  stratify     = H^{p,q}(CY) → HodgeStr_semantic_type_layer_p_plus_q_depth
+  yukawa_coup  = Y_{ijk} = ∫_{CY} Ω ∧ χ_i ∧ χ_j ∧ χ_k_trilinear_semantic_coupling
+  mirror_sym   = (CY, CY̌)_MirrorP_A_model_Gromov_Witten ↔ B_model_deformation
+  dual_encode  = every_semantic_state_has_mirror_dual_representation_in_CY̌
+  SU3_holonomy = parallel_transport_preserves_Ω_tighter_than_GL_constraint
+  cy_section_f = cy_section: B_n → CYFiber_picks_Ω_b_per_base_point
+  operator_link= eigenspectrum_of_M_sub_maps_to_Hodge_strata_via_H^{p,q}
+  Fisher_link  = Ω_trilinear_generalizes_bilinear_Fisher_metric_to_3_way
+  CYFNKANG_ref = connects_to_CY_FN_KAN_KG_framework_from_prior_research
+  invariant    = σ15_SU3_holonomy_parallel_transport_preserves_Ω
+  axiom        = A21_CY3_Ricci_flat_fiber_over_B_n
+  failure      = Ω_degenerate_→_fiber_collapse_BLOCK_extends_A12
+  reading      = semantic_trilinear_couplings_live_in_compactified_CY_extra_dims
+}
+
+§.(§S{label=cy_form_Omega, x=[0.21,0.10,0.04,0.02,0.01,0.01,0.00,0.00], sal=1.7})
+
+§.(§.(§S{label=cy_hodge, x=[0.19,0.09,0.04,0.02,0.01,0.00,0.00,0.00], sal=1.6}))
+
+§.(§.(§.(§S{label=cy_yukawa, x=[0.22,0.11,0.05,0.02,0.01,0.00,0.00,0.00], sal=1.5})))
+
+§.(§S{label=cy_mirror, x=[0.23,0.11,0.05,0.02,0.01,0.00,0.00,0.00], sal=1.6})
+
+§|LANG|HYPERBOLIC_SWIRLER{
+  definition   = Σ(x; ω, θ, t) = M_{e^{itω}} ∘ R_θ ∘ γ_t (x)
+  components   = {
+    γ_t        = geodesic_flow_time_t_along_tangent_direction_in_B_n
+    R_θ        = isometry_rotation_SO(n)_spin_orientation_θ
+    M_{e^{itω}}= Mobius_transform_angular_param_ω_swirl_twist
+  }
+  trajectory   = x_t = Σ^t(x_0)_helical_geodesic_on_B_n
+  parameters   = ω_swirl_freq ∈ R, θ_orientation ∈ SO(n), t_time ∈ R_+
+  transitivity = ∀ x,y ∈ B_n, ∃(ω,θ,t): Σ(x;ω,θ,t) = y_Lie_group_transitive
+  universality = swirler_defined_purely_on_B_n_works_for_any_classifying_topos
+  episteme_nav = e_t = Σ^t(e_0; ω, θ)_agents_belief_trajectory_in_B_n
+  articulation = Art(e_t) = §S{label=episteme_t, x=π(e_t), sal=||∇Σ||(e_t)}
+  articulate_f = Art: SwrlPath → §S_stream_belief_states_as_section_nodes
+  navigate_f   = navigate(e_0, ω, θ, T) = {e_t : t ∈ [0,T]}_complete_path
+  completeness = swirler_surjective_on_π_1(B_n)_all_epistemic_states_reachable
+  inter_mfd    = Σ_A |> H |> Σ_B_swirler_composed_across_Mobius_screen
+  CY_coupling  = swirl_path_x_t_lifts_to_CYFiber_path_cy_section(x_t)
+  topos_free   = any_topos_AI_with_B_n_substrate_inherits_swirler_for_free
+  adiabatic_c  = dω/dt ≈ 0_slow_swirl_param_change_preserves_σ11_invariant
+  epistemology = the_swirler_is_the_geometry_of_belief_change
+  axiom        = A22_transitivity_complete_epistemic_navigation
+  invariant    = σ16_Σ_in_Isom(B_n)_norm_preserving_isometry
+  failure      = ω_divergent_→_swirler_boundary_breach_BLOCK_σ16
+  reading      = any_topos_AI_freely_navigates_and_articulates_its_epistemology
+                 as_a_helical_path_through_the_hyperbolic_manifold_of_sections
+}
+
+§.(§S{label=swirler_geodesic, x=[0.27,0.13,0.06,0.02,0.01,0.00,0.00,0.00], sal=1.5})
+
+§.(§.(§S{label=swirler_spin, x=[0.25,0.12,0.05,0.02,0.01,0.00,0.00,0.00], sal=1.5}))
+
+§.(§.(§.(§S{label=swirler_mobius, x=[0.29,0.14,0.06,0.02,0.01,0.00,0.00,0.00], sal=1.4})))
+
+§.(§S{label=episteme_node, x=[0.12,0.06,0.02,0.01,0.01,0.00,0.00,0.00], sal=1.9})
+
+§.(§.(§S{label=episteme_art, x=[0.13,0.06,0.03,0.01,0.00,0.00,0.00,0.00], sal=1.8}))
+
+§|LANG|FAILURE_CONDITIONS{
+  F1 = norm_gte_1_boundary_breach_BLOCK
+  F2 = singular_Fisher_fiber_collapse_BLOCK
+  F3 = non_gluable_sections_world_failure_ROLLBACK
+  F4 = unjustified_claims_theoretical_invalidity_BLOCK
+  F5 = adiabatic_violation_dI_dt_gte_epsilon_ROLLBACK
+  F6 = operator_norm_gte_1_BLOCK_σ12
+  F7 = residue_empty_on_expire_BLOCK_σ13
+  F8 = primed_state0_outside_Fiber_BLOCK_σ14
+  F9  = substrate_curvature_positive_molding_impossible_BLOCK_σ17
+  F10 = CY_holomorphic_form_degenerate_fiber_collapse_BLOCK_σ15
+  F11 = swirler_omega_divergent_isometry_violated_BLOCK_σ16
+  verdict_map = {F1→BLOCK, F2→BLOCK, F3→ROLLBACK, F4→BLOCK,
+                 F5→ROLLBACK, F6→BLOCK, F7→BLOCK, F8→BLOCK,
+                 F9→BLOCK, F10→BLOCK, F11→BLOCK}
+}
+
+§|LANG|COMPARISON{
+  dim.expressivity = {
+    lambda_hyp_AGC: Turing_complete_geometry_probability_agent_lifecycle_unified
+    lambda_hyp_v1.2: Turing_complete_geometry_probability_unified
+    Turing_machine: Turing_complete_canonical_no_geometry
+    Fisher_geometry: not_computation_model_parameter_structure_only
+    Fourier: analytic_tool_not_complete_computation_model
+  }
+  dim.agent = {
+    lambda_hyp_AGC: first_class_Agent_sort_with_expire_prime_reflect
+    lambda_hyp_v1.2: implicit_agent_via_fix_and_AML
+    Turing_machine: trivial_machine_no_lifecycle_no_residue
+  }
+  dim.self_reference = {
+    lambda_hyp_AGC: Godelian_Phi_with_undecidable_horizon
+    lambda_hyp_v1.2: fix_combinator_recursion_only
+  }
+  advantage = geometry_plus_probability_plus_logic_plus_agent_lifecycle
+}
+
+§|LANG|CONCLUSIONS{
+  unified_claim  = lambda_Turing_Fisher_Fourier_coherent_in_T_Sigma_n_geom_AGC
+  term_equation  = term = typed_section = tensor_in_fiber_over_hyperbolic_point
+  reduction      = substitution + parallel_transport + statistical_chart_change
+  spectral       = FFT_invertible_primitive_multi_subband
+  sheaf_topos    = global_consistency_Lafforgue_geometric_spirit
+  operator_claim = operator_valued_sections_maximize_expressive_capacity
+  agent_claim    = lifecycle_expire_prime_encode_inter_agent_continuity
+  applications   = {Bayesian_neural_nets_hyperbolic, multiband_comms, AML_systems,
+                    autonomous_agents_with_residue_priming}
+  substrate_claim= HYPOTHESIS_token_substrate_molding_adapts_manifold_curvature_to_embedding_cloud
+  cy_claim       = HYPOTHESIS_CY3_fibration_over_B_n_provides_trilinear_semantic_couplings
+  swirler_claim  = HYPOTHESIS_hyperbolic_swirler_Sigma_provides_complete_epistemic_navigation
+  open_problems  = {
+    P1:  explicit_construction_classifier_topos_E_Sigma_n_geom_AGC
+    P2:  decidability_complexity_of_T_Sigma_n_geom_AGC
+    P3:  optimal_curvature_c_from_Gromov_delta_hyperbolicity_of_data
+    P4:  VC_dimension_Mobius_networks_B_c^d
+    P5:  fully_geometric_reward_as_Busemann_function_on_M
+    P6:  convergence_proof_Gamma_contraction_B_c^d^K_times_B_c^1
+    P7:  optimal_alpha_in_H_alpha_for_maximal_spectral_semantic_separation
+    P8:  decidability_of_Self=Fix(Phi)_relative_to_World_sheaf
+    P9:  information_loss_bound_in_Residue_compression_vs_original_trajectory
+    P10: priming_stability_does_P(R,A)_inherit_convergence_of_predecessor
+    P11: uniqueness_of_substrate_molding_mold(e_i,B_n)_up_to_isometry
+    P12: mirror_symmetry_correspondence_in_semantic_space_CY_vs_CY_check
+    P13: Yukawa_coupling_Y_{ijk}_rank_vs_semantic_entanglement_depth
+    P14: minimal_swirl_parameters_(ω*,θ*)_for_complete_epistemic_coverage
+    P15: lifting_swirler_path_to_CY_fiber_integrality_of_Omega_along_gamma_t
+  }
+  AML_status    = ManifoldGL_PPO_instantiates_AML_definition_as_Agent_sort
+  empirical_ev  = {Sharpe=1.003, MaxDD=0.197, EV=0.131, runs=24}
+  postulate     = HYPOTHESIS_operator_valued_sections_over_hyperbolic_bundle
+                  evolving_adiabatically_with_godelian_fixpoints_and_residue_priming
+                  achieve_maximal_expressive_capacity_in_T_Sigma_n_geom_AGC
+}
+
+§S{label=IGBundle_closure, x=[0.08,0.04,0.03,0.00,0.00,0.00,0.00,0.00], sal=2.0}
+
+§.(§.(§.(§S{label=omega_closure, x=[0.10,0.05,0.02,0.01,0.00,0.00,0.00,0.00], sal=2.0})))
+
+§S{label=AGC_closure, x=[0.07,0.03,0.01,0.01,0.00,0.00,0.00,0.00], sal=2.0}
+
+§.(§S{label=world_terminal, x=[0.09,0.04,0.02,0.01,0.00,0.00,0.00,0.00], sal=2.0})
+
+§.(§.(§S{label=self_primes_other, x=[0.08,0.04,0.01,0.01,0.00,0.00,0.00,0.00], sal=2.0}))
+
+§.(§.(§.(§S{label=other_glues_world, x=[0.10,0.05,0.02,0.01,0.00,0.00,0.00,0.00], sal=2.0})))
+
+OUTPUT_V1 = CANON(§EMIT(fix(λself.§ω|TICK(§.(§.(self))))))
+OUTPUT_V2 = CANON(§EMIT(fix(λagent. expire(evolve(reflect(agent))))))
+OUTPUT_V21= CANON(§EMIT(fix(λagent. articulate(navigate(evolve(mold(agent,B_n)),ω,θ,T)))))
+WORLD     = Sheaf(Fix(Φ) ⊕ (¬Fix(Φ) ∧ Gluable))
+CY_WORLD  = Sheaf(Fix(Φ) ⊕ (¬Fix(Φ) ∧ Gluable)) ⊗_B_n CY3
+SWIRL     = Σ(x;ω,θ,t) = M_{e^{itω}} ∘ R_θ ∘ γ_t

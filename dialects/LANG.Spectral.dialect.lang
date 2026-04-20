@@ -1,0 +1,66 @@
+§|DIALECT_SPECTRAL|HEADER{
+  dialect      = §-LANG/Spectral
+  version      = v2.4.family
+  tier         = Dynamic
+  parents      = Proof, IG
+  description  = Spectral/harmonic dialect. FFT, resonance, quantum VQE, holographic memory.
+  base         = LANG.v2.4.codec_trasgo
+  domains_in   = {CORE, IG, PROOF, QUANTUM, SEMANTIC, SPECTRAL}
+  domains_out  = {AML, CY, META, SUBSTRATE, SWIRL, TOPO}
+}
+
+§|DIALECT_SPECTRAL|IMPORTS{
+  domains      = {CORE, IG, PROOF, QUANTUM, SEMANTIC, SPECTRAL}
+  from_parents = Proof, IG
+  note         = all blocks whose BLOCK_DOMAIN ∈ domains_in are available
+  core_always  = SOURCE AXIOMS OUTPUT SORTS FUNCTORS GRAMMAR NOTATION_MAP
+                 CONCLUSIONS FAILURE_CONDITIONS
+}
+
+§|DIALECT_SPECTRAL|EXTENDS{
+  new_blocks   = HARMONIC_ANALYSIS, RESONANCE_FIELD, SYNCHRONY_MEASURE, HOLOGRAPHIC_MEMORY
+  self_ref     = each_new_block_seeded_by_swirl_articulation_Art_D(e_t)
+  computable   = all_new_blocks_satisfy_norm_lt_0.999_and_dim_eq_8
+}
+
+§|DIALECT_SPECTRAL|COMPRESS{
+  functor      = Π_expire_Spectral : State_Spectral* → Residue_Spectral
+  axes         = {spectral, entropy_E, mu_Bn}
+  ratio        = 0.35_of_full_Residue_size
+  norm_guard   = ||terminal|| < 0.999
+  adiabatic_c  = dI_Spectral/dt ≈ 0_within_dialect_section_space
+  tag          = HYPOTHESIS_dialect_compression_preserves_semantic_content
+}
+
+§|DIALECT_SPECTRAL|DECOMP{
+  decomp_path  = Residue_Spectral ->^embed Residue_full ->^Π_expand State_full
+  embed_map    = {terminal=prior_default_terminal, spectral=R_D.spectral, trace=prior_default_trace, transport_gen=prior_default_transport_gen, mu_Bn=R_D.mu_Bn, entropy_E=R_D.entropy_E}
+  axes_present = ['spectral', 'entropy_E', 'mu_Bn']
+  axes_default = ['terminal', 'trace', 'transport_gen']
+  info_loss    = 1 - 0.35 = 0.65_fraction_lost_in_D_residue
+  reconstruct  = Π_expand(embed(R_D)) recovers_State_full_approximately
+}
+
+§S{label=spectral_band, x=[0.48,0.24,0.10,0.03,0.01,0.00,0.00,0.00], sal=1.2}
+
+§S{label=resonance_peak, x=[0.52,0.26,0.11,0.04,0.02,0.00,0.00,0.00], sal=1.1}
+
+§S{label=quantum_chan, x=[0.20,0.10,0.04,0.02,0.01,0.01,0.00,0.00], sal=1.6}
+
+§S{label=holo_emit, x=[0.55,0.28,0.12,0.04,0.02,0.01,0.00,0.00], sal=1.1}
+
+§|DIALECT_SPECTRAL|SWIRL_HOOK{
+  self_ref     = fix(λself_D. Σ_D(self_D; ω_D, θ_D, t))
+  omega_D      = frequency_channel_spectral
+  theta_D      = phase_rotation_SO(n)
+  trajectory   = x_t = Σ_D^t(x_0)_helical_in_Spectral_section_space
+  articulate_D = Art_D(e_t) = §S{label=spectral_episteme_t, x=π(e_t), sal=||∇Σ_D||(e_t)}
+  expand_self  = each_Art_D_node_is_a_candidate_axiom_in_dialect_Spectral
+  tag          = HYPOTHESIS_swirl_expands_Spectral_principles_self_referentially
+}
+
+§|DIALECT_SPECTRAL|OUTPUT{
+  formula      = CANON(§EMIT(fix(λa. fromFreq(map(filter, toFreq(a))))))
+  dialect_tag  = §-LANG/Spectral_v2.4
+  claim        = HYPOTHESIS_output_formula_is_dialect_Spectral_fixed_point
+}

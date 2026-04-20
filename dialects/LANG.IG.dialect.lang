@@ -1,0 +1,64 @@
+§|DIALECT_IG|HEADER{
+  dialect      = §-LANG/IG
+  version      = v2.4.family
+  tier         = Semantic
+  parents      = Proof
+  description  = Information geometry dialect. Fisher transport, natural gradients, manifold learning.
+  base         = LANG.v2.4.codec_trasgo
+  domains_in   = {CORE, IG, PROOF, SEMANTIC}
+  domains_out  = {AML, CY, META, QUANTUM, SPECTRAL, SUBSTRATE, SWIRL, TOPO}
+}
+
+§|DIALECT_IG|IMPORTS{
+  domains      = {CORE, IG, PROOF, SEMANTIC}
+  from_parents = Proof
+  note         = all blocks whose BLOCK_DOMAIN ∈ domains_in are available
+  core_always  = SOURCE AXIOMS OUTPUT SORTS FUNCTORS GRAMMAR NOTATION_MAP
+                 CONCLUSIONS FAILURE_CONDITIONS
+}
+
+§|DIALECT_IG|EXTENDS{
+  new_blocks   = EXPONENTIAL_FAMILY, NAT_GRAD_FLOW, GEODESIC_FIELD, KL_METRIC
+  self_ref     = each_new_block_seeded_by_swirl_articulation_Art_D(e_t)
+  computable   = all_new_blocks_satisfy_norm_lt_0.999_and_dim_eq_8
+}
+
+§|DIALECT_IG|COMPRESS{
+  functor      = Π_expire_IG : State_IG* → Residue_IG
+  axes         = {terminal, spectral, mu_Bn}
+  ratio        = 0.45_of_full_Residue_size
+  norm_guard   = ||terminal|| < 0.999
+  adiabatic_c  = dI_IG/dt ≈ 0_within_dialect_section_space
+  tag          = HYPOTHESIS_dialect_compression_preserves_semantic_content
+}
+
+§|DIALECT_IG|DECOMP{
+  decomp_path  = Residue_IG ->^embed Residue_full ->^Π_expand State_full
+  embed_map    = {terminal=R_D.terminal, spectral=R_D.spectral, trace=prior_default_trace, transport_gen=prior_default_transport_gen, mu_Bn=R_D.mu_Bn, entropy_E=prior_default_entropy_E}
+  axes_present = ['terminal', 'spectral', 'mu_Bn']
+  axes_default = ['trace', 'transport_gen', 'entropy_E']
+  info_loss    = 1 - 0.45 = 0.55_fraction_lost_in_D_residue
+  reconstruct  = Π_expand(embed(R_D)) recovers_State_full_approximately
+}
+
+§S{label=Fisher_field, x=[0.20,0.10,0.04,0.01,0.00,0.00,0.00,0.00], sal=1.8}
+
+§S{label=natural_grad, x=[0.25,0.12,0.05,0.02,0.01,0.00,0.00,0.00], sal=1.7}
+
+§S{label=stat_fiber, x=[0.20,0.08,0.03,0.01,0.00,0.00,0.00,0.00], sal=1.7}
+
+§|DIALECT_IG|SWIRL_HOOK{
+  self_ref     = fix(λself_D. Σ_D(self_D; ω_D, θ_D, t))
+  omega_D      = nabla_IG_flow
+  theta_D      = F_inv_theta_Fisher_orientation
+  trajectory   = x_t = Σ_D^t(x_0)_helical_in_IG_section_space
+  articulate_D = Art_D(e_t) = §S{label=ig_episteme_t, x=π(e_t), sal=||∇Σ_D||(e_t)}
+  expand_self  = each_Art_D_node_is_a_candidate_axiom_in_dialect_IG
+  tag          = HYPOTHESIS_swirl_expands_IG_principles_self_referentially
+}
+
+§|DIALECT_IG|OUTPUT{
+  formula      = CANON(§EMIT(fix(λw. w - eta*F_inv(w)*nabla_L(w))))
+  dialect_tag  = §-LANG/IG_v2.4
+  claim        = HYPOTHESIS_output_formula_is_dialect_IG_fixed_point
+}

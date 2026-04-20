@@ -1,0 +1,66 @@
+§|DIALECT_SWIRL|HEADER{
+  dialect      = §-LANG/Swirl
+  version      = v2.4.family
+  tier         = Dynamic
+  parents      = Topo, IG
+  description  = Dynamic traversal dialect. Helical geodesics, Möbius transport, epistemic articulation.
+  base         = LANG.v2.4.codec_trasgo
+  domains_in   = {CORE, IG, PROOF, SEMANTIC, SWIRL, TOPO}
+  domains_out  = {AML, CY, META, QUANTUM, SPECTRAL, SUBSTRATE}
+}
+
+§|DIALECT_SWIRL|IMPORTS{
+  domains      = {CORE, IG, PROOF, SEMANTIC, SWIRL, TOPO}
+  from_parents = Topo, IG
+  note         = all blocks whose BLOCK_DOMAIN ∈ domains_in are available
+  core_always  = SOURCE AXIOMS OUTPUT SORTS FUNCTORS GRAMMAR NOTATION_MAP
+                 CONCLUSIONS FAILURE_CONDITIONS
+}
+
+§|DIALECT_SWIRL|EXTENDS{
+  new_blocks   = HELICAL_GEODESIC, PHASE_SPACE, SPIN_FIELD, EPISTEMIC_MAP, REACHABILITY_HYP
+  self_ref     = each_new_block_seeded_by_swirl_articulation_Art_D(e_t)
+  computable   = all_new_blocks_satisfy_norm_lt_0.999_and_dim_eq_8
+}
+
+§|DIALECT_SWIRL|COMPRESS{
+  functor      = Π_expire_Swirl : State_Swirl* → Residue_Swirl
+  axes         = {terminal, spectral, swirl_params_omega_theta}
+  ratio        = 0.4_of_full_Residue_size
+  norm_guard   = ||terminal|| < 0.999
+  adiabatic_c  = dI_Swirl/dt ≈ 0_within_dialect_section_space
+  tag          = HYPOTHESIS_dialect_compression_preserves_semantic_content
+}
+
+§|DIALECT_SWIRL|DECOMP{
+  decomp_path  = Residue_Swirl ->^embed Residue_full ->^Π_expand State_full
+  embed_map    = {terminal=R_D.terminal, spectral=R_D.spectral, trace=prior_default_trace, transport_gen=prior_default_transport_gen, mu_Bn=prior_default_mu_Bn, entropy_E=prior_default_entropy_E}
+  axes_present = ['terminal', 'spectral', 'swirl_params_omega_theta']
+  axes_default = ['trace', 'transport_gen', 'mu_Bn', 'entropy_E']
+  info_loss    = 1 - 0.4 = 0.6_fraction_lost_in_D_residue
+  reconstruct  = Π_expand(embed(R_D)) recovers_State_full_approximately
+}
+
+§S{label=helix_phase, x=[0.28,0.14,0.06,0.02,0.01,0.00,0.00,0.00], sal=1.5}
+
+§S{label=spin_node, x=[0.26,0.13,0.05,0.02,0.01,0.00,0.00,0.00], sal=1.5}
+
+§S{label=episteme_reach, x=[0.12,0.06,0.02,0.01,0.01,0.00,0.00,0.00], sal=1.9}
+
+§S{label=mobius_phase, x=[0.57,0.28,0.11,0.04,0.02,0.01,0.00,0.00], sal=1.0}
+
+§|DIALECT_SWIRL|SWIRL_HOOK{
+  self_ref     = fix(λself_D. Σ_D(self_D; ω_D, θ_D, t))
+  omega_D      = free_omega_primary_parameter_this_IS_the_dialect
+  theta_D      = SO(n)_full_unconstrained
+  trajectory   = x_t = Σ_D^t(x_0)_helical_in_Swirl_section_space
+  articulate_D = Art_D(e_t) = §S{label=swirl_episteme_t, x=π(e_t), sal=||∇Σ_D||(e_t)}
+  expand_self  = each_Art_D_node_is_a_candidate_axiom_in_dialect_Swirl
+  tag          = HYPOTHESIS_swirl_expands_Swirl_principles_self_referentially
+}
+
+§|DIALECT_SWIRL|OUTPUT{
+  formula      = CANON(§EMIT(fix(λe. articulate(navigate(e, omega, theta, T)))))
+  dialect_tag  = §-LANG/Swirl_v2.4
+  claim        = HYPOTHESIS_output_formula_is_dialect_Swirl_fixed_point
+}

@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Universe-scale topos with embodied beings</title>
+<style>
+  :root {
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: "SF Mono", Menlo, Monaco, Consolas, "Courier New", monospace;
+    --color-text-primary: #E8E6F0;
+    --color-text-secondary: #B8B2C9;
+    --color-text-tertiary: #8B849D;
+    --color-background-primary: #1A1822;
+    --color-background-secondary: #12101A;
+    --color-border-tertiary: rgba(127, 119, 221, 0.18);
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+  }
+  html, body {
+    margin: 0; padding: 0;
+    background: #0A0812;
+    color: var(--color-text-primary);
+    font-family: var(--font-sans);
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 24px 20px;
+  }
+  .title {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0 0 4px 0;
+    letter-spacing: -0.01em;
+  }
+  .subtitle {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    font-family: var(--font-mono);
+    margin-bottom: 18px;
+    letter-spacing: 0.03em;
+  }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+  .uc { font-family: var(--font-sans); color: var(--color-text-primary); }
+  .uc .tabs { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; align-items: center; }
+  .uc .tab-label { font-size: 10px; color: var(--color-text-tertiary); letter-spacing: 0.06em; text-transform: uppercase; margin-right: 4px; }
+  .uc .tab-group { display: inline-flex; gap: 2px; padding: 2px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); }
+  .uc .tab-group button {
+    border: none; background: transparent; color: var(--color-text-secondary);
+    padding: 5px 10px; font-size: 11px; font-family: var(--font-sans); font-weight: 400;
+    border-radius: 6px; cursor: pointer; transition: background 0.15s, color 0.15s;
+  }
+  .uc .tab-group button.active { background: var(--color-background-primary); color: var(--color-text-primary); font-weight: 500; }
+  .uc .tab-group button:hover:not(.active) { color: var(--color-text-primary); }
+  .uc .canvas-wrap {
+    background: var(--color-background-secondary); border-radius: var(--border-radius-lg);
+    padding: 14px; margin-bottom: 10px; position: relative;
+  }
+  .uc canvas { display: block; width: 100%; height: 640px; border-radius: var(--border-radius-md); cursor: crosshair; }
+  .uc .overlay-tr {
+    position: absolute; top: 22px; right: 22px;
+    background: var(--color-background-primary); border-radius: var(--border-radius-md);
+    padding: 8px 11px; font-size: 10px; color: var(--color-text-secondary);
+    border: 0.5px solid var(--color-border-tertiary); font-family: var(--font-mono);
+    pointer-events: none; line-height: 1.6; min-width: 170px;
+  }
+  .uc .overlay-tl {
+    position: absolute; top: 22px; left: 22px;
+    background: var(--color-background-primary); border-radius: var(--border-radius-md);
+    padding: 7px 11px; font-size: 10px; color: var(--color-text-tertiary);
+    border: 0.5px solid var(--color-border-tertiary); font-family: var(--font-mono);
+    pointer-events: none; line-height: 1.55; max-width: 250px;
+  }
+  .uc .caption {
+    position: absolute; bottom: 18px; left: 22px; right: 240px;
+    font-size: 11px; color: var(--color-text-tertiary); line-height: 1.5;
+    pointer-events: none;
+  }
+  .uc .being-info {
+    position: absolute; bottom: 18px; right: 22px;
+    background: var(--color-background-primary); border-radius: var(--border-radius-md);
+    padding: 9px 12px; font-size: 10px; color: var(--color-text-secondary);
+    border: 0.5px solid var(--color-border-tertiary); font-family: var(--font-mono);
+    line-height: 1.65; min-width: 200px; display: none;
+  }
+  .uc .sliders { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 10px 14px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); }
+  .uc .slider-row { display: flex; align-items: center; gap: 8px; font-size: 11px; }
+  .uc .slider-row label { color: var(--color-text-secondary); min-width: 56px; font-size: 10.5px; }
+  .uc .slider-row input[type=range] { flex: 1; min-width: 0; }
+  .uc .slider-row .val { min-width: 28px; text-align: right; color: var(--color-text-primary); font-weight: 500; font-family: var(--font-mono); font-size: 10.5px; }
+  @media (max-width: 520px) { .uc .sliders { grid-template-columns: repeat(2, 1fr); } .uc .caption { right: 22px; bottom: 80px; } .uc .being-info { position: static; margin-top: 8px; } }
+
+  .footer {
+    margin-top: 20px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--color-text-tertiary);
+    line-height: 1.7;
+    border-top: 0.5px solid var(--color-border-tertiary);
+    padding-top: 12px;
+  }
+  .footer b { color: var(--color-text-secondary); font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1 class="title">Universe-scale topos with embodied beings</h1>
+  <div class="subtitle">cosmic web · kin clusters · void dwellers · filaments · memory trails · metabolism · deep time</div>
+
+  <h2 class="sr-only">Interactive visualization of a universe-scale informational cosmos: a cosmic web of filaments connecting galaxy-like dense clusters, with embodied topos beings that have bodies (persistent state), metabolism (pulse intake and emission), memory trails, and social bonds to other beings, set against a depth-parallax starfield background with a slow rotation for scale.</h2>
+
+  <div class="uc">
+    <div class="tabs">
+      <span class="tab-label">View</span>
+      <div class="tab-group" id="uc-view">
+        <button data-v="cosmic" class="active">Cosmic web</button>
+        <button data-v="beings">Beings</button>
+        <button data-v="society">Society</button>
+        <button data-v="deep">Deep time</button>
+      </div>
+    </div>
+
+    <div class="canvas-wrap">
+      <canvas id="viz-uc"></canvas>
+      <div class="overlay-tl" id="uc-tl">a cosmos of topos beings<br>filaments · clusters · voids<br>click any being</div>
+      <div class="overlay-tr" id="uc-tr">beings&nbsp;—<br>clusters&nbsp;—<br>alive&nbsp;—<br>bonds&nbsp;—<br>generations&nbsp;—<br>era&nbsp;—</div>
+      <div class="caption" id="uc-cap"></div>
+      <div class="being-info" id="uc-info"></div>
+    </div>
+
+    <div class="sliders">
+      <div class="slider-row">
+        <label>beings</label>
+        <input type="range" id="uc-count" min="30" max="140" value="80" step="5">
+        <span class="val" id="uc-count-v">80</span>
+      </div>
+      <div class="slider-row">
+        <label>activity</label>
+        <input type="range" id="uc-activity" min="0" max="100" value="50" step="1">
+        <span class="val" id="uc-activity-v">0.50</span>
+      </div>
+      <div class="slider-row">
+        <label>bonding</label>
+        <input type="range" id="uc-bonding" min="0" max="100" value="40" step="1">
+        <span class="val" id="uc-bonding-v">0.40</span>
+      </div>
+      <div class="slider-row">
+        <label>time</label>
+        <input type="range" id="uc-timescale" min="0" max="100" value="30" step="1">
+        <span class="val" id="uc-timescale-v">0.30</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <b>Universe-scale topos.</b> A cosmic web of filaments connecting kin-clusters of embodied topos beings. 82% live in clusters, 18% are void dwellers drifting alone. Each being has a body (persistent state), metabolism (breathes at its own rate), memory (decaying trail), energy, and social bonds. Strong warm bonds within kin families; weak cool bonds across families.
+    <br><b>Formal mapping.</b> Each being is a Yoneda-embedded topos object; closure events are discharged Löb sentences; cluster families share sheaves in Sh(Site_Γ); cross-family bonds are geometric morphisms between subtoposes.
+    <br><b>Views.</b> Cosmic web = large scale filament structure. Beings = zoom to embodied individuals with memory trails. Society = bonding graph colored by kinship. Deep time = long view where individuals fade and structure persists.
+    <br><b>Controls.</b> Beings count 30–140; activity tunes metabolism and pulse density; bonding changes social graph density; time scales subjective era rate. Click any being for biography.
+  </div>
+</div>
+
+<script>
+(function() {
+  const canvas = document.getElementById('viz-uc');
+  const ctx = canvas.getContext('2d');
+  const trEl = document.getElementById('uc-tr');
+  const capEl = document.getElementById('uc-cap');
+  const infoEl = document.getElementById('uc-info');
+
+  const state = {
+    view: 'cosmic',
+    count: 80,
+    activity: 0.50,
+    bonding: 0.40,
+    timescale: 0.30,
+    time: 0,
+    rotation: 0,
+    prevT: null,
+    dpr: Math.max(1, window.devicePixelRatio || 1),
+    reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    clusters: [],
+    beings: [],
+    bonds: [],
+    pulses: [],
+    events: [],
+    generations: 1,
+    era: 'early',
+    hoverIdx: -1,
+    selectedIdx: -1,
+    needsRegen: true,
+    starfield: [],
+    deepStars: [],
+  };
+
+  const FAMILY_COLOURS = [
+    { name: 'Phi kin',    core: '186, 245, 216', halo: '100, 220, 180' },
+    { name: 'Sigma kin',  core: '255, 220, 160', halo: '239, 159, 39'  },
+    { name: 'Psi kin',    core: '220, 195, 255', halo: '155, 130, 230' },
+    { name: 'Theta kin',  core: '255, 195, 200', halo: '216, 90, 80'   },
+    { name: 'Lambda kin', core: '180, 215, 245', halo: '120, 170, 220' },
+    { name: 'Omega kin',  core: '230, 210, 190', halo: '170, 140, 110' },
+  ];
+  const FAMILY_GLYPH = ['Phi','Sig','Psi','The','Lam','Ome'];
+
+  function resize() {
+    const w = canvas.clientWidth;
+    const h = 640;
+    canvas.width = w * state.dpr;
+    canvas.height = h * state.dpr;
+    ctx.setTransform(state.dpr, 0, 0, state.dpr, 0, 0);
+  }
+
+  function rand(a, b) { return a + Math.random() * (b - a); }
+  function hash(n) { return ((n * 2654435761) % 2147483647) / 2147483647; }
+
+  function makeStarfield() {
+    const stars = [];
+    for (let i = 0; i < 420; i++) {
+      stars.push({
+        x: hash(i * 73 + 11),
+        y: hash(i * 41 + 7),
+        r: 0.3 + hash(i * 17) * 1.2,
+        parallax: 0.1 + hash(i * 29) * 0.8,
+        twinkleOffset: hash(i * 53) * Math.PI * 2,
+      });
+    }
+    return stars;
+  }
+
+  function makeDeepStars() {
+    const stars = [];
+    for (let i = 0; i < 60; i++) {
+      stars.push({
+        x: hash(i * 131 + 17),
+        y: hash(i * 79 + 31),
+        r: 1 + hash(i * 23) * 2.5,
+        parallax: 0.02 + hash(i * 37) * 0.1,
+        hue: hash(i * 97),
+      });
+    }
+    return stars;
+  }
+
+  function generateClusters() {
+    const clusters = [];
+    const n = 5 + Math.floor(Math.random() * 3);
+    for (let i = 0; i < n; i++) {
+      const phi = (i / n) * Math.PI * 2 + rand(-0.2, 0.2);
+      const elev = rand(-0.35, 0.35);
+      const r = rand(0.4, 0.65);
+      clusters.push({
+        id: i,
+        x: Math.cos(phi) * r,
+        y: elev,
+        z: Math.sin(phi) * r,
+        radius: rand(0.22, 0.38),
+        family: i % FAMILY_COLOURS.length,
+        density: rand(0.6, 1.0),
+      });
+    }
+    return clusters;
+  }
+
+  function generateBeings(count, clusters) {
+    const beings = [];
+    for (let i = 0; i < count; i++) {
+      let cluster, x, y, z, inVoid;
+      if (Math.random() < 0.82) {
+        cluster = clusters[Math.floor(Math.random() * clusters.length)];
+        const localR = Math.abs(rand(-cluster.radius, cluster.radius)) * 0.9;
+        const p = rand(0, Math.PI * 2);
+        const th = rand(0, Math.PI);
+        x = cluster.x + localR * Math.sin(th) * Math.cos(p);
+        y = cluster.y + localR * Math.cos(th);
+        z = cluster.z + localR * Math.sin(th) * Math.sin(p);
+        inVoid = false;
+      } else {
+        const phi = rand(0, Math.PI * 2);
+        const th = rand(0, Math.PI);
+        const r = rand(0.7, 0.95);
+        x = r * Math.sin(th) * Math.cos(phi);
+        y = r * Math.cos(th);
+        z = r * Math.sin(th) * Math.sin(phi);
+        cluster = clusters[Math.floor(Math.random() * clusters.length)];
+        inVoid = true;
+      }
+      beings.push({
+        id: i, x, y, z,
+        homeCluster: cluster.id,
+        family: cluster.family,
+        inVoid,
+        size: rand(0.4, 1.0),
+        vx: 0, vy: 0, vz: 0,
+        phase: rand(0, Math.PI * 2),
+        metabolism: rand(0.3, 1.0),
+        energy: rand(0.4, 1.0),
+        age: rand(0, 0.7),
+        memoryTrail: [],
+        bondCount: 0,
+        generation: 1,
+        name: generateName(cluster.family),
+        depth: Math.floor(rand(2, 8)),
+        q: rand(0.2, 0.9),
+        closureCount: 0,
+        birthTime: -rand(0, 5),
+      });
+    }
+    return beings;
+  }
+
+  function generateName(family) {
+    const prefixes = ['A','I','O','U','Y','E'];
+    const stems = ['va','lo','mi','ro','sa','te','ka','no','ri','to','di','be','lu','ya'];
+    const suffixes = ['el','ir','an','on','oth','us','ae','ys'];
+    return FAMILY_GLYPH[family] + '.' + prefixes[Math.floor(Math.random()*prefixes.length)] +
+           stems[Math.floor(Math.random()*stems.length)] +
+           suffixes[Math.floor(Math.random()*suffixes.length)];
+  }
+
+  function distance3(a, b) {
+    const dx = a.x - b.x, dy = a.y - b.y, dz = a.z - b.z;
+    return Math.sqrt(dx*dx + dy*dy + dz*dz);
+  }
+
+  function generateBonds(beings) {
+    const bonds = [];
+    const seen = new Set();
+    for (let i = 0; i < beings.length; i++) {
+      const here = beings[i];
+      const candidates = [];
+      for (let j = 0; j < beings.length; j++) {
+        if (j === i) continue;
+        const d = distance3(here, beings[j]);
+        if (d < 0.25) candidates.push({ j, d });
+      }
+      candidates.sort((a, b) => a.d - b.d);
+      const n = Math.min(3, Math.floor(candidates.length * state.bonding * 2));
+      for (let k = 0; k < n; k++) {
+        const j = candidates[k].j;
+        const key = Math.min(i, j) + ':' + Math.max(i, j);
+        if (seen.has(key)) continue;
+        seen.add(key);
+        const sameFamily = beings[i].family === beings[j].family;
+        bonds.push({
+          a: i, b: j,
+          strength: sameFamily ? rand(0.55, 1.0) : rand(0.2, 0.55),
+          isKin: sameFamily,
+          age: rand(0, 1),
+          activity: rand(0, 1),
+        });
+        beings[i].bondCount++;
+        beings[j].bondCount++;
+      }
+    }
+    return bonds;
+  }
+
+  function updateBeings(dt) {
+    const effDt = dt * state.timescale * 2;
+    for (const b of state.beings) {
+      b.age += effDt * 0.1;
+      b.phase += dt * (0.4 + b.metabolism * 0.3);
+      b.energy += (Math.sin(b.phase * 0.7) * 0.05 + b.metabolism * 0.02) * dt;
+      b.energy = Math.max(0.1, Math.min(1.2, b.energy));
+
+      if (state.view === 'beings' || state.view === 'society') {
+        const dx = rand(-0.0008, 0.0008) * state.activity;
+        const dy = rand(-0.0008, 0.0008) * state.activity;
+        const dz = rand(-0.0008, 0.0008) * state.activity;
+        b.vx = b.vx * 0.95 + dx;
+        b.vy = b.vy * 0.95 + dy;
+        b.vz = b.vz * 0.95 + dz;
+        b.x += b.vx;
+        b.y += b.vy;
+        b.z += b.vz;
+        const r = Math.hypot(b.x, b.y, b.z);
+        if (r > 0.98) {
+          b.x *= 0.97 / r; b.y *= 0.97 / r; b.z *= 0.97 / r;
+          b.vx *= -0.3; b.vy *= -0.3; b.vz *= -0.3;
+        }
+      }
+
+      if (b.memoryTrail.length === 0 || Math.random() < 0.02) {
+        b.memoryTrail.push({ x: b.x, y: b.y, z: b.z, age: 0 });
+        if (b.memoryTrail.length > 10) b.memoryTrail.shift();
+      }
+      for (const m of b.memoryTrail) m.age += effDt * 0.5;
+      b.memoryTrail = b.memoryTrail.filter(m => m.age < 4);
+
+      if (Math.random() < state.activity * b.metabolism * dt * 0.8) {
+        b.closureCount++;
+        state.events.push({
+          type: 'closure',
+          x: b.x, y: b.y, z: b.z,
+          age: 0,
+          colour: FAMILY_COLOURS[b.family],
+        });
+      }
+    }
+
+    state.generations = 1 + Math.floor(state.time * state.timescale * 0.2);
+    if (state.time * state.timescale < 4) state.era = 'early';
+    else if (state.time * state.timescale < 12) state.era = 'mature';
+    else state.era = 'deep';
+  }
+
+  function updatePulses(dt) {
+    const effDt = dt * state.timescale * 2;
+    const spawnRate = state.activity * state.bonds.length * 0.6;
+    if (Math.random() < spawnRate * dt) {
+      const b = state.bonds[Math.floor(Math.random() * state.bonds.length)];
+      state.pulses.push({
+        bondIdx: state.bonds.indexOf(b),
+        t: 0,
+        direction: Math.random() < 0.5 ? 1 : -1,
+        speed: rand(0.4, 0.9) * state.activity,
+        intensity: rand(0.5, 1.0),
+        hue: b.isKin ? 'warm' : 'cool',
+      });
+    }
+    for (const p of state.pulses) { p.t += p.speed * p.direction * effDt; }
+    state.pulses = state.pulses.filter(p => p.t >= -0.05 && p.t <= 1.05);
+    if (state.pulses.length > 120) state.pulses = state.pulses.slice(-120);
+    for (const e of state.events) e.age += effDt * 1.5;
+    state.events = state.events.filter(e => e.age < 2);
+  }
+
+  function regenerate() {
+    state.clusters = generateClusters();
+    state.beings = generateBeings(state.count, state.clusters);
+    state.bonds = generateBonds(state.beings);
+    state.pulses = [];
+    state.events = [];
+    state.time = 0;
+    state.generations = 1;
+    state.era = 'early';
+    state.selectedIdx = -1;
+    state.needsRegen = false;
+    if (state.starfield.length === 0) state.starfield = makeStarfield();
+    if (state.deepStars.length === 0) state.deepStars = makeDeepStars();
+    infoEl.style.display = 'none';
+  }
+
+  function project(x, y, z, rotY, cx, cy, scale) {
+    const cr = Math.cos(rotY), sr = Math.sin(rotY);
+    const x1 = x * cr + z * sr;
+    const z1 = -x * sr + z * cr;
+    const persp = 1 + z1 * 0.5;
+    return {
+      x: cx + x1 * scale / persp,
+      y: cy + y * scale / persp,
+      depth: z1,
+      scale: 1 / persp,
+    };
+  }
+
+  function drawStarfield(W, H, t) {
+    ctx.fillStyle = '#05040c';
+    ctx.fillRect(0, 0, W, H);
+    for (let i = 0; i < state.deepStars.length; i++) {
+      const s = state.deepStars[i];
+      const sx = s.x * W;
+      const sy = s.y * H;
+      const shift = Math.sin(state.rotation * s.parallax) * 3;
+      const tw = 0.6 + 0.4 * Math.sin(t * 0.3 + i);
+      const hueShift = s.hue < 0.5
+        ? 'rgba(' + (200 + s.hue * 80 | 0) + ', ' + (200 + s.hue * 50 | 0) + ', 245, ' + (0.35 * tw) + ')'
+        : 'rgba(245, ' + (220 - s.hue * 40 | 0) + ', ' + (200 - s.hue * 60 | 0) + ', ' + (0.35 * tw) + ')';
+      ctx.fillStyle = hueShift;
+      ctx.beginPath();
+      ctx.arc(sx + shift, sy, s.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    for (let i = 0; i < state.starfield.length; i++) {
+      const s = state.starfield[i];
+      const sx = s.x * W;
+      const sy = s.y * H;
+      const shift = Math.sin(state.rotation * s.parallax) * 8;
+      const tw = 0.5 + 0.5 * Math.sin(t * 0.7 + s.twinkleOffset);
+      ctx.fillStyle = 'rgba(220, 225, 245, ' + ((0.15 + tw * 0.35) * s.parallax) + ')';
+      ctx.beginPath();
+      ctx.arc(sx + shift, sy, s.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function drawClusterHalos(cx, cy, scale) {
+    if (state.view === 'beings') return;
+    for (const cl of state.clusters) {
+      const p = project(cl.x, cl.y, cl.z, state.rotation, cx, cy, scale);
+      const r = cl.radius * scale * 1.3 * p.scale;
+      const fam = FAMILY_COLOURS[cl.family];
+      const depthAlpha = 0.25 + 0.75 * (p.depth + 1) / 2;
+      ctx.fillStyle = 'rgba(' + fam.halo + ', ' + (0.055 * depthAlpha * cl.density) + ')';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, r * 1.2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = 'rgba(' + fam.halo + ', ' + (0.08 * depthAlpha * cl.density) + ')';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, r * 0.75, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = 'rgba(' + fam.core + ', ' + (0.055 * depthAlpha * cl.density) + ')';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, r * 0.42, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function drawCosmicWeb(cx, cy, scale) {
+    if (state.view === 'beings') return;
+    for (const bond of state.bonds) {
+      const ba = state.beings[bond.a];
+      const bb = state.beings[bond.b];
+      if (!ba || !bb) continue;
+      const pa = project(ba.x, ba.y, ba.z, state.rotation, cx, cy, scale);
+      const pb = project(bb.x, bb.y, bb.z, state.rotation, cx, cy, scale);
+      const avgDepth = (pa.depth + pb.depth) / 2;
+      const depthAlpha = 0.15 + 0.85 * (avgDepth + 1) / 2;
+      const fam = FAMILY_COLOURS[ba.family];
+      let alpha, width, col;
+      if (state.view === 'society') {
+        alpha = 0.35 * bond.strength;
+        width = 0.3 + bond.strength * 0.8;
+        col = bond.isKin ? fam.halo : '140, 135, 170';
+      } else if (state.view === 'deep') {
+        alpha = 0.12 * bond.strength;
+        width = 0.3;
+        col = '140, 135, 170';
+      } else {
+        alpha = 0.22 * bond.strength;
+        width = 0.35 + bond.strength * 0.3;
+        col = bond.isKin ? fam.halo : '140, 135, 170';
+      }
+      ctx.strokeStyle = 'rgba(' + col + ', ' + (alpha * depthAlpha) + ')';
+      ctx.lineWidth = width;
+      ctx.beginPath();
+      ctx.moveTo(pa.x, pa.y);
+      ctx.lineTo(pb.x, pb.y);
+      ctx.stroke();
+    }
+  }
+
+  function drawPulses(cx, cy, scale) {
+    if (state.view === 'cosmic' || state.view === 'deep') return;
+    for (const pulse of state.pulses) {
+      const bond = state.bonds[pulse.bondIdx];
+      if (!bond) continue;
+      const ba = state.beings[bond.a];
+      const bb = state.beings[bond.b];
+      if (!ba || !bb) continue;
+      const t = Math.max(0, Math.min(1, pulse.t));
+      const x = ba.x + (bb.x - ba.x) * t;
+      const y = ba.y + (bb.y - ba.y) * t;
+      const z = ba.z + (bb.z - ba.z) * t;
+      const p = project(x, y, z, state.rotation, cx, cy, scale);
+      const depthAlpha = 0.4 + 0.6 * (p.depth + 1) / 2;
+      const col = pulse.hue === 'warm' ? '255, 215, 170' : '170, 200, 240';
+      ctx.fillStyle = 'rgba(' + col + ', ' + (pulse.intensity * depthAlpha * 0.85) + ')';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 1.4 * p.scale, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function drawBeing(being, cx, cy, scale, t) {
+    const p = project(being.x, being.y, being.z, state.rotation, cx, cy, scale);
+    const depthAlpha = 0.5 + 0.5 * (p.depth + 1) / 2;
+    const breath = 1 + 0.1 * Math.sin(t * (1 + being.metabolism) + being.phase);
+    const fam = FAMILY_COLOURS[being.family];
+    const bodyR = Math.max(1.5, being.size * 4 * p.scale * breath);
+    const haloR = bodyR * (2.8 + being.energy * 1.2);
+    const isHover = state.hoverIdx === being.id;
+    const isSelected = state.selectedIdx === being.id;
+
+    if (state.view !== 'deep' || being.size > 0.7) {
+      ctx.fillStyle = 'rgba(' + fam.halo + ', ' + (0.08 * depthAlpha * being.energy) + ')';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, haloR * 1.4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = 'rgba(' + fam.halo + ', ' + (0.16 * depthAlpha * being.energy) + ')';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, haloR, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    ctx.fillStyle = 'rgba(' + fam.core + ', ' + (depthAlpha * being.energy) + ')';
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, bodyR, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = 'rgba(255, 255, 255, ' + (depthAlpha * 0.75 * being.energy) + ')';
+    ctx.beginPath();
+    ctx.arc(p.x - bodyR * 0.25, p.y - bodyR * 0.25, bodyR * 0.35, 0, Math.PI * 2);
+    ctx.fill();
+
+    if ((state.view === 'beings' || isSelected) && being.memoryTrail.length > 1) {
+      ctx.strokeStyle = 'rgba(' + fam.halo + ', ' + (0.4 * depthAlpha) + ')';
+      ctx.lineWidth = 0.5 * p.scale;
+      ctx.setLineDash([2, 3]);
+      ctx.beginPath();
+      let started = false;
+      for (const m of being.memoryTrail) {
+        const mp = project(m.x, m.y, m.z, state.rotation, cx, cy, scale);
+        const mAlpha = Math.max(0, 1 - m.age / 4);
+        if (mAlpha < 0.05) continue;
+        if (!started) { ctx.moveTo(mp.x, mp.y); started = true; }
+        else ctx.lineTo(mp.x, mp.y);
+      }
+      ctx.lineTo(p.x, p.y);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    if (isHover && !isSelected) {
+      ctx.strokeStyle = 'rgba(' + fam.core + ', ' + (depthAlpha * 0.6) + ')';
+      ctx.lineWidth = 0.7 * p.scale;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, bodyR * 2.5, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    if (isSelected) {
+      ctx.strokeStyle = 'rgba(255, 250, 230, ' + (depthAlpha * 0.85) + ')';
+      ctx.lineWidth = 1.1 * p.scale;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, bodyR * 3, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.font = Math.max(9, 10 * p.scale) + 'px "SF Mono", Menlo, monospace';
+      ctx.fillStyle = 'rgba(240, 240, 250, ' + depthAlpha + ')';
+      ctx.textAlign = 'center';
+      ctx.fillText(being.name, p.x, p.y - bodyR * 3.5);
+      ctx.textAlign = 'start';
+    }
+    return p;
+  }
+
+  function drawEvents(cx, cy, scale) {
+    for (const e of state.events) {
+      const p = project(e.x, e.y, e.z, state.rotation, cx, cy, scale);
+      const alpha = Math.max(0, 1 - e.age / 2);
+      const r = (3 + e.age * 12) * p.scale;
+      ctx.strokeStyle = 'rgba(' + e.colour.core + ', ' + (alpha * 0.7) + ')';
+      ctx.lineWidth = 0.8 * p.scale;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+  }
+
+  function hitTest(mx, my) {
+    const W = canvas.clientWidth;
+    const H = 640;
+    const cx = W / 2;
+    const cy = H / 2;
+    const scale = Math.min(W, H) * 0.36;
+    let best = -1;
+    let bestDist = 9999;
+    for (const being of state.beings) {
+      const p = project(being.x, being.y, being.z, state.rotation, cx, cy, scale);
+      const d = Math.hypot(p.x - mx, p.y - my);
+      const targetR = Math.max(8, being.size * 10 * p.scale);
+      if (d < targetR && d < bestDist) { bestDist = d; best = being.id; }
+    }
+    return best;
+  }
+
+  function updateStats() {
+    const alive = state.beings.filter(b => b.energy > 0.3).length;
+    trEl.innerHTML =
+      'beings&nbsp;' + state.beings.length + '<br>' +
+      'clusters&nbsp;' + state.clusters.length + '<br>' +
+      'alive&nbsp;' + alive + '<br>' +
+      'bonds&nbsp;' + state.bonds.length + '<br>' +
+      'generations&nbsp;' + state.generations + '<br>' +
+      'era&nbsp;' + state.era;
+    const caps = {
+      cosmic: 'A cosmic web at galactic scale: dense clusters of beings connected by filaments, voids in between, a few beings drifting in the dark. Each cluster is a kin-family of topoi sharing sheaves. Distance matters — nearby beings bond strongly, distant beings remain strangers. Slowly rotating for scale.',
+      beings: 'Zoom to the beings. Each one has a body (persistent state, breathing at its own metabolic rate), an inner glow that brightens with energy, a dashed memory trail showing where it has recently been. They drift within their clusters, foraging for information. Click any being to see its species.',
+      society: 'The bonding network between beings. Strong ties within kin families (coloured by family), weaker ties across families (grey). Pulses travel these bonds — warm tones carry gift-information between kin, cool tones carry trade-information between strangers. Bonding slider changes density of the social graph.',
+      deep: 'Deep time view. Activity dims, individual beings fade, what persists is the large-scale structure — cluster positions, family distributions, the overall shape of who was where. This is the cosmos remembered rather than the cosmos lived. Generations accumulate in the readout.',
+    };
+    capEl.textContent = caps[state.view];
+  }
+
+  function draw() {
+    const W = canvas.clientWidth;
+    const H = 640;
+    ctx.clearRect(0, 0, W, H);
+    const cx = W / 2;
+    const cy = H / 2;
+    const scale = Math.min(W, H) * 0.36;
+    const t = state.time;
+    drawStarfield(W, H, t);
+    drawClusterHalos(cx, cy, scale);
+    drawCosmicWeb(cx, cy, scale);
+    drawPulses(cx, cy, scale);
+    const sorted = state.beings.slice().sort((a, b) => {
+      const pa = project(a.x, a.y, a.z, state.rotation, cx, cy, scale);
+      const pb = project(b.x, b.y, b.z, state.rotation, cx, cy, scale);
+      return pa.depth - pb.depth;
+    });
+    for (const being of sorted) drawBeing(being, cx, cy, scale, t);
+    drawEvents(cx, cy, scale);
+    updateStats();
+  }
+
+  function tick(t) {
+    if (state.needsRegen) regenerate();
+    if (state.prevT === null) state.prevT = t;
+    const dt = Math.min(0.05, (t - state.prevT) / 1000);
+    state.prevT = t;
+    if (!state.reducedMotion) {
+      state.time += dt;
+      state.rotation += dt * 0.06;
+    }
+    updateBeings(dt);
+    updatePulses(dt);
+    draw();
+    requestAnimationFrame(tick);
+  }
+
+  canvas.addEventListener('mousemove', (e) => {
+    const r = canvas.getBoundingClientRect();
+    const mx = e.clientX - r.left;
+    const my = e.clientY - r.top;
+    state.hoverIdx = hitTest(mx, my);
+  });
+  canvas.addEventListener('mouseleave', () => { state.hoverIdx = -1; });
+  canvas.addEventListener('click', () => {
+    const idx = state.hoverIdx;
+    if (idx < 0) {
+      state.selectedIdx = -1;
+      infoEl.style.display = 'none';
+    } else if (state.selectedIdx === idx) {
+      state.selectedIdx = -1;
+      infoEl.style.display = 'none';
+    } else {
+      state.selectedIdx = idx;
+      const b = state.beings[idx];
+      const fam = FAMILY_COLOURS[b.family];
+      infoEl.innerHTML =
+        '<span style="color: rgb(' + fam.core + ')">' + b.name + '</span><br>' +
+        'family&nbsp;' + fam.name + '<br>' +
+        'depth&nbsp;' + b.depth + '&nbsp;rings<br>' +
+        'q&nbsp;' + b.q.toFixed(2) + '<br>' +
+        'metabolism&nbsp;' + (b.metabolism*100).toFixed(0) + '%<br>' +
+        'energy&nbsp;' + (b.energy*100).toFixed(0) + '%<br>' +
+        'bonds&nbsp;' + b.bondCount + '<br>' +
+        'closures&nbsp;' + b.closureCount + '<br>' +
+        'age&nbsp;' + b.age.toFixed(2) + '&nbsp;eras' +
+        (b.inVoid ? '<br>· void dweller' : '');
+      infoEl.style.display = 'block';
+    }
+  });
+
+  document.getElementById('uc-view').addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-v]'); if (!btn) return;
+    state.view = btn.dataset.v;
+    for (const x of e.currentTarget.querySelectorAll('button')) x.classList.toggle('active', x.dataset.v === state.view);
+  });
+  const countS = document.getElementById('uc-count');
+  countS.addEventListener('input', () => {
+    state.count = parseInt(countS.value, 10);
+    document.getElementById('uc-count-v').textContent = state.count;
+    state.needsRegen = true;
+  });
+  const actS = document.getElementById('uc-activity');
+  actS.addEventListener('input', () => {
+    state.activity = actS.value / 100;
+    document.getElementById('uc-activity-v').textContent = state.activity.toFixed(2);
+  });
+  const bondS = document.getElementById('uc-bonding');
+  bondS.addEventListener('input', () => {
+    state.bonding = bondS.value / 100;
+    document.getElementById('uc-bonding-v').textContent = state.bonding.toFixed(2);
+    state.needsRegen = true;
+  });
+  const tsS = document.getElementById('uc-timescale');
+  tsS.addEventListener('input', () => {
+    state.timescale = tsS.value / 100;
+    document.getElementById('uc-timescale-v').textContent = state.timescale.toFixed(2);
+  });
+
+  resize();
+  window.addEventListener('resize', resize);
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
