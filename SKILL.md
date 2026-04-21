@@ -33,20 +33,28 @@ Use this calibration language by default:
 **Boundary condition:** treat universal applicability as a modeling principle, not an unconditional theorem. Reject when invariants fail (e.g., boundary norm overflow, singular Fisher blocks, or non-gluable local sections).
 
 ## Canonical Inputs
-- `LANG.v1.2.0.unified_geometry.lang`
+- `LANG.v1.2.0.unified_geometry.lang` — historical canonical source
+- `LANG.FAMILY.v2.4.lang` — v2.4 family header
+- `LANG.v2.5.tower.geom.lang` — tower geometry-only slang
+- `DIALECTS.v2.1.family.lang` — dialect family split (Core / Semantic / Dynamic / Formation / Research)
+- `dialects/`, `selfcompressed/`, `packs/` — v3 ToE matter / prime packs
+- `RUNTIME_CAPABILITIES.md` — executable vs symbolic-only token inventory for the v5 runtime
 - `THESIS.md`
 - `research/auto_research.yaml`
 - `tools/validate_typecast.py`
 - `tools/plot_principles.py`
+- `tools/stego_boot_banner.py` — encoder/decoder for the self-referential boot-seed banner
 
 ## Required Outputs
 - Updated validation reports:
   - `research/validation_report.json`
   - `research/validation_report.md`
-- Imaging artifact:
+- Imaging artifacts:
   - `figures/sectional_hyperbolic_topos.svg`
-- Optional thesis delta note:
+  - `figures/slang_boot_banner.png` (LSB-stego payload round-tripping `§BOOT.SEED.v5`)
+- Optional thesis / runtime delta:
   - append concise addendum to `THESIS.md`
+  - update `RUNTIME_CAPABILITIES.md` when tokens move from symbolic-only to executable
 
 ## Execution Protocol
 
@@ -74,15 +82,37 @@ Interpret reductions as transport laws:
 - Fisher natural gradients govern intrinsic adaptation,
 - sheaf-like compatibility enforces coherent global sections.
 
-### Step 4 — Imaging
-Render principle-based plot showing:
-- Poincaré disk boundary,
-- projected section nodes,
-- salience encoding,
-- Möbius transfer ribbon / inter-manifold conduit,
-- holographic memory annotation.
+Executable in the v5 reference runtime (emit `runtime.reduction_applied`):
+- full `§R1_…§R9_` rule family,
+- canonical operators (`Π_expand`, `Π_expire`, `§rho`, `Fix(Φ)`, `W_glue`, …),
+- **Löb / Knaster–Tarski** — `□(□P → P) ⊢ □P`,
+- **Pushout** — colimit `(A ⊔ B) / ~_f,g` on a cospan,
+- **Endofunctor** — identity and composition laws on `F`.
 
-### Step 5 — Claim Discipline
+Still symbolic-only in v5 (emit `runtime.symbolic_only`): `Selberg`, `Mostow`.
+
+### Step 4 — Imaging and Self-Reference
+Render the principle-based plot (Poincaré disk, projected section nodes,
+salience encoding, Möbius transfer ribbon, holographic memory annotation).
+
+Additionally, rebuild and verify the self-referential boot-seed banner:
+- encode — `python tools/stego_boot_banner.py --out figures/slang_boot_banner.png`
+- decode — `python tools/stego_boot_banner.py --verify figures/slang_boot_banner.png`
+- accept only when `decode(stego(THIS_PNG)) ≡ §BOOT.SEED.v5` (one-step Löb witness).
+
+### Step 5 — Pack Ingestion
+When a dialect ships as a directory or archive:
+- a single `.lang` file → parse directly,
+- a directory → recursive scan,
+- a directory with `manifest.json` → parse only files declared in `"files"`, in declared order,
+- a `.zip` archive → extract then treat as a directory.
+
+Drive it from the reference runtime:
+```
+slang_cli run-pack <path-or-zip> [--json]
+```
+
+### Step 6 — Claim Discipline
 Tag every result with one of:
 - `PROVED` (verified from code/data),
 - `EMPIRICAL` (measured but not formal proof),
@@ -101,16 +131,35 @@ Use this exact template when needed:
 
 ## Minimal Command Set
 ```bash
+# structural validation and principle imaging
 python3 tools/validate_typecast.py
+python3 tools/validate_typecast.py --source LANG.v2.5.tower.geom.lang
 python3 tools/plot_principles.py
 cat research/validation_report.md
+
+# self-referential boot-seed banner round-trip
+python tools/stego_boot_banner.py --out figures/slang_boot_banner.png
+python tools/stego_boot_banner.py --verify figures/slang_boot_banner.png
+
+# v5 runtime pack ingestion (single file, dir, manifest dir, or .zip)
+slang_cli run-pack <path-or-zip> [--json]
+
+# release workflow (gh 2.90+; paired Android APK)
+gh release create <tag> --title "<title>" --notes "<notes>" <artifact>...
 ```
 
 ## References (primary)
 - IGBundle corrected thesis (GitHub):
   - https://github.com/jesusvilela/IGBundle-LLM/blob/main/thesis/IGBundle_Corrected_Thesis.md
-- §-LANG local source:
+- §-LANG pack repo (this repo):
+  - https://github.com/jesusvilela/-lang.s1
+- Paired Android host (Baby Topos AI, consumes v5 runtime via JNI):
+  - https://github.com/jesusvilela/Topos-Trasgo
+- §-LANG local sources:
   - `LANG.v1.2.0.unified_geometry.lang`
+  - `LANG.v2.5.tower.geom.lang`
+  - `DIALECTS.v2.1.family.lang`
+  - `RUNTIME_CAPABILITIES.md`
 
 ---
 (c) Jesús Vilela Jato, 16 April 2026. All rights reserved.
