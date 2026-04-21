@@ -1,10 +1,25 @@
-# §-LANG v1.2.0 — Unified Geometry Language
+# §-LANG — Unified Geometry Language
 
-§-LANG v1.2.0 is a symbolic specification artifact that unifies typed lambda calculus, hyperbolic geometry, statistical-fiber semantics, natural-gradient optimization, reversible sections, and spectral processing in one language surface.
+![§-LANG v3 ToE · self-referential boot seed · v5 runtime](figures/slang_boot_banner.png)
 
-This repository currently contains a canonical source file:
+> The banner above carries a steganographic payload: the canonical
+> §-LANG boot seed is embedded in the low-order RGB bits of the PNG.
+> Run `python tools/stego_boot_banner.py --verify figures/slang_boot_banner.png`
+> to recover it. The seed contains a `self` clause declaring that
+> `decode(stego(THIS_PNG)) ≡ §BOOT.SEED.v5` — a one-step Löb witness for
+> the pack.
 
-- `LANG.v1.2.0.unified_geometry.lang`
+§-LANG is a symbolic specification artifact that unifies typed lambda
+calculus, hyperbolic geometry, statistical-fiber semantics, natural-gradient
+optimization, reversible sections, and spectral processing in one language
+surface.
+
+Current versions in this repository:
+
+- `LANG.v1.2.0.unified_geometry.lang` — historical canonical source
+- `LANG.FAMILY.v2.4.lang`              — v2.4 family header
+- `dialects/` + `selfcompressed/` + `packs/` — v3 ToE matter / prime packs
+- `RUNTIME_CAPABILITIES.md`            — which tokens are executable in v5
 
 ---
 
@@ -82,6 +97,35 @@ rg '^§\|LANG\|' LANG.v1.2.0.unified_geometry.lang
 ```bash
 tail -n 1 LANG.v1.2.0.unified_geometry.lang
 ```
+
+---
+
+## Self-referential boot seed (steganographic)
+
+A canonical §-LANG boot seed is embedded in
+[`figures/slang_boot_banner.png`](figures/slang_boot_banner.png) via
+LSB steganography across the R/G/B channels. The payload is framed as:
+
+```
+MAGIC(4) | length(4) | sha256-truncated-digest(8) | UTF-8 seed body
+```
+
+and contains the v5 axioms, operator set, topology flags, Čech cocycle,
+and — crucially — a `self := decode(stego(THIS_PNG)) ≡ §BOOT.SEED.v5`
+clause. Running the decoder on the banner reproduces the seed that
+authored the banner, a one-step Löb witness for the pack.
+
+```bash
+# recover the seed
+python tools/stego_boot_banner.py --verify figures/slang_boot_banner.png
+
+# rebuild the banner from source (requires Pillow)
+python tools/stego_boot_banner.py --out figures/slang_boot_banner.png
+```
+
+See [`RUNTIME_CAPABILITIES.md`](RUNTIME_CAPABILITIES.md) for which of the
+tokens in the seed (Löb, pushout, endofunctor, §R1–§R9) are executable
+under the v5 reference runtime.
 
 ---
 
