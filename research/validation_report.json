@@ -1,20 +1,34 @@
 {
-  "source": "LANG.v2.5.tower.geom.lang",
-  "profile": "tower_geom",
-  "num_lines": 55,
-  "num_blocks": 8,
+  "source": "LANG.v1.2.0.unified_geometry.lang",
+  "profile": "unified_geometry",
+  "num_lines": 411,
+  "num_blocks": 22,
   "unique_blocks": [
+    "ADIABATIC_MOBIUS_FLOW",
+    "AML_DEFINITION",
     "AXIOMS",
-    "INVARIANTS",
-    "NOTES",
+    "BASES",
+    "COMPARISON",
+    "CONCLUSIONS",
+    "EXAMPLE_BETA",
+    "FIBER_BUNDLE_POSSIBILITY_SPACE",
+    "FISHER_UPDATE",
+    "FUNCTORS",
+    "GRAMMAR",
+    "INTER_MANIFOLD",
+    "NMATRIX_SELFREF",
+    "NOTATION_MAP",
     "OUTPUT",
-    "REDUCTION",
+    "REDUCTION_BETA",
+    "SEMANTICS",
+    "SEMANTICS_TOPOS",
     "SORTS",
     "SOURCE",
-    "TOWER_STRUCTURE"
+    "SPECTRAL_PIPELINE",
+    "TURING_ENCODING"
   ],
   "missing_required_blocks": [],
-  "num_sections": 0,
+  "num_sections": 19,
   "checks": {
     "block_headers_present": true,
     "section_vectors_dimension_8": true,
@@ -22,17 +36,29 @@
     "salience_positive": true
   },
   "geometry": {
-    "max_section_norm": 0.0,
-    "margin_to_boundary_0_999": 0.999
+    "max_section_norm": 0.683667,
+    "margin_to_boundary_0_999": 0.315333
   },
   "typecast": {
     "SOURCE": "meta_binding",
-    "SORTS": "tower_type_universe",
-    "AXIOMS": "geometric_laws",
-    "TOWER_STRUCTURE": "vertical_horizontal_transport_layout",
-    "INVARIANTS": "stability_constraints",
-    "REDUCTION": "tower_evolution_dynamics",
+    "AXIOMS": "logical_foundation",
     "OUTPUT": "operational_contract",
-    "NOTES": "semantic_interpretation_and_scope"
+    "BASES": "geometric_and_logical_base_layers",
+    "SORTS": "type_universe",
+    "FUNCTORS": "categorical_morphisms",
+    "SEMANTICS": "topos_semantics",
+    "REDUCTION_BETA": "geometric_computation",
+    "TURING_ENCODING": "computability_bridge",
+    "SPECTRAL_PIPELINE": "frequency_semantics",
+    "FISHER_UPDATE": "information_geometry_learning",
+    "INTER_MANIFOLD": "cross_bundle_exchange",
+    "GRAMMAR": "surface_syntax",
+    "NOTATION_MAP": "notation_lowering",
+    "SEMANTICS_TOPOS": "classifier_topos_layer",
+    "AML_DEFINITION": "autonomous_agent_layer",
+    "NMATRIX_SELFREF": "self_referential_operator_dynamics",
+    "FIBER_BUNDLE_POSSIBILITY_SPACE": "global_section_possibility_geometry",
+    "ADIABATIC_MOBIUS_FLOW": "reversible_cross_manifold_information_flow",
+    "CONCLUSIONS": "theory_closure"
   }
 }

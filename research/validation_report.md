@@ -1,11 +1,11 @@
 # Validation and Typecast Report
 
 ## Status
-- Source: `LANG.v2.5.tower.geom.lang`
-- Profile: `tower_geom`
-- Lines: 55
-- Blocks discovered: 8 (8 unique)
-- Section nodes discovered: 0
+- Source: `LANG.v1.2.0.unified_geometry.lang`
+- Profile: `unified_geometry`
+- Lines: 411
+- Blocks discovered: 22 (22 unique)
+- Section nodes discovered: 19
 
 ## Checks
 - ✅ `block_headers_present`
@@ -14,18 +14,30 @@
 - ✅ `salience_positive`
 
 ## Geometric Boundary
-- Max section norm: 0.0
-- Margin to invariant 0.999: 0.999
+- Max section norm: 0.683667
+- Margin to invariant 0.999: 0.315333
 
 ## Typecast Map
 - `SOURCE` → `meta_binding`
-- `SORTS` → `tower_type_universe`
-- `AXIOMS` → `geometric_laws`
-- `TOWER_STRUCTURE` → `vertical_horizontal_transport_layout`
-- `INVARIANTS` → `stability_constraints`
-- `REDUCTION` → `tower_evolution_dynamics`
+- `AXIOMS` → `logical_foundation`
 - `OUTPUT` → `operational_contract`
-- `NOTES` → `semantic_interpretation_and_scope`
+- `BASES` → `geometric_and_logical_base_layers`
+- `SORTS` → `type_universe`
+- `FUNCTORS` → `categorical_morphisms`
+- `SEMANTICS` → `topos_semantics`
+- `REDUCTION_BETA` → `geometric_computation`
+- `TURING_ENCODING` → `computability_bridge`
+- `SPECTRAL_PIPELINE` → `frequency_semantics`
+- `FISHER_UPDATE` → `information_geometry_learning`
+- `INTER_MANIFOLD` → `cross_bundle_exchange`
+- `GRAMMAR` → `surface_syntax`
+- `NOTATION_MAP` → `notation_lowering`
+- `SEMANTICS_TOPOS` → `classifier_topos_layer`
+- `AML_DEFINITION` → `autonomous_agent_layer`
+- `NMATRIX_SELFREF` → `self_referential_operator_dynamics`
+- `FIBER_BUNDLE_POSSIBILITY_SPACE` → `global_section_possibility_geometry`
+- `ADIABATIC_MOBIUS_FLOW` → `reversible_cross_manifold_information_flow`
+- `CONCLUSIONS` → `theory_closure`
 
 ## Postulate
 A fully sectional hyperbolic self-referential computer is admissible when section norms remain strictly interior to the Poincaré boundary and recursion is mediated by reversible transport over the bundle.

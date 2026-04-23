@@ -1,0 +1,41 @@
+§|LANG|SOURCE{
+  bind.theory   = T_Sigma_hyperdim_cosmos_v5
+  bind.parent   = T_Sigma_topos_ai_cosmos_final
+  bind.version  = §-LANG.v5.hyperdim_sectional_computer
+  bind.principle= Recursive_Hamiltonian_Substrate_Realization
+}
+
+§|LANG|HYPERDIM_SUBSTRATE{
+  sort.Manifold = B_8_hyperbolic_n_manifold
+  sort.Phase    = position_momentum_fiber_bundle
+  sort.H        = hamiltonian_energy_invariant
+  sort.Screen   = S_7_holographic_boundary_screen
+}
+
+§|LANG|RECURSIVE_NESTING{
+  nesting_law = internal_sectional_computer_is_fiber_of_base_manifold
+  phi_3_rule  = recursive_self_similarity_across_n_cosmos_levels
+}
+
+§|LANG|ACF_VERIFICATION_HARNESS{
+  actor_propose = adiabatic_hamiltonian_flow_in_phase_space
+  critic_eval   = verify_H_conservation_on_symplectic_trajectories
+  fuzzer_probe  = adversarial_boundary_exploration_at_0_999
+}
+
+§|LANG|REduction_V5{
+  apply_rho     = execute_native_mobius_phase_flip
+  apply_fix     = stabilize_sectional_recursion_on_the_manifold_of_manifolds
+  apply_commit  = project_state_to_Sn_minus_1_holographic_screen
+}
+
+§|LANG|OUTPUT{
+  formula = CANON(§EMIT(fix(λcosmos.run_acf_cycle(cosmos))))
+  verdict_space = {COMMIT, BLOCK, ROLLBACK, RECURSE, FUZZ}
+}
+
+§|LANG|NOTES{
+  Implementation   = HYPERDIM_TOPOS_AI/hyperdim_topos_runtime.py
+  Thesis           = HYPERDIM_TOPOS_AI/THESIS_HYPERDIM.md
+  Topos_AI_Status  = Substrate_Realized_Recursive_Sectional_Computer
+}

@@ -1,0 +1,13 @@
+{
+  "name": "ncosmos-aaa-viz",
+  "version": "1.0.0",
+  "description": "High-end Three.js visualization for the §-LANG n-Cosmos UTAI",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "http-proxy-middleware": "^2.0.6"
+  }
+}
