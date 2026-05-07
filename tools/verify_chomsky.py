@@ -19,7 +19,8 @@ OUT_JSON = Path("research/chomsky_verification_report.json")
 OUT_MD = Path("research/chomsky_verification_report.md")
 
 BLOCK_HEADER_RE = re.compile(r"^§\|LANG\|([A-Z_]+)\{")
-IDENT_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+IDENT_PATTERN = r"[A-Za-z_À-ÿ][A-Za-z0-9_À-ÿ]*"
+IDENT_RE = re.compile(rf"^{IDENT_PATTERN}$")
 SHALLOW_SECTION_RE = re.compile(r"^§\.\([A-Za-z_][A-Za-z0-9_]*\)$")
 
 
@@ -53,7 +54,11 @@ def parse_productions(block_lines: list[str]) -> list[Production]:
         nonlocal current_lhs, current_rhs
         if current_lhs is None:
             return
-        alternatives = [part.strip() for part in re.split(r"\s+\|\s+", current_rhs) if part.strip()]
+        alternatives = [
+            part.strip()
+            for part in re.split(r"\s*\|(?!>)\s*", current_rhs)
+            if part.strip()
+        ]
         productions.append(Production(lhs=current_lhs, alternatives=alternatives))
         current_lhs = None
         current_rhs = ""
@@ -65,7 +70,7 @@ def parse_productions(block_lines: list[str]) -> list[Production]:
         if "=" in line and not line.startswith("|"):
             candidate_lhs, rhs = line.split("=", 1)
             lhs = candidate_lhs.strip()
-            if re.match(r"^[A-Za-z_À-ÿ][A-Za-z0-9_À-ÿ]*$", lhs):
+            if IDENT_RE.match(lhs):
                 flush()
                 current_lhs = lhs
                 current_rhs = rhs.strip()
@@ -91,6 +96,10 @@ def matching_outer_call(expr: str, prefix: str) -> str | None:
     return expr[start + 1 : -1] if depth == 0 else None
 
 
+def matching_outer_parens(expr: str) -> str | None:
+    return matching_outer_call(expr, "")
+
+
 def parse_surface_term(expr: str) -> bool:
     """Recognize a small recursive subset declared by the GRAMMAR block."""
     expr = expr.strip()
@@ -103,7 +112,7 @@ def parse_surface_term(expr: str) -> bool:
         inner = matching_outer_call(expr, prefix)
         if inner is not None:
             return parse_surface_term(inner)
-    inner = matching_outer_call(expr, "")
+    inner = matching_outer_parens(expr)
     return parse_surface_term(inner) if inner is not None else False
 
 
@@ -120,7 +129,7 @@ def nonterminal_occurrences(rhs: str, nonterminals: set[str]) -> list[tuple[str,
 
 def classify_grammar(productions: list[Production]) -> dict:
     nonterminals = {production.lhs for production in productions}
-    context_free_lhs = all(re.match(r"^[A-Za-z_À-ÿ][A-Za-z0-9_À-ÿ]*$", p.lhs) for p in productions)
+    context_free_lhs = all(IDENT_RE.match(p.lhs) for p in productions)
 
     nonregular_reasons: list[str] = []
     for production in productions:
