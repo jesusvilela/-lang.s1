@@ -1,0 +1,39 @@
+name: §-LANG Structural Validation
+
+on:
+  push:
+    paths:
+      - "**.lang"
+      - "tools/validate_typecast.py"
+      - ".github/workflows/validate.yml"
+  pull_request:
+    paths:
+      - "**.lang"
+      - "tools/validate_typecast.py"
+      - ".github/workflows/validate.yml"
+
+jobs:
+  validate:
+    name: Validate all .lang sources
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run structural validation (all .lang files)
+        run: python3 tools/validate_typecast.py --all
+
+      - name: Upload validation reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation-reports
+          path: |
+            research/validation_report_all.json
+            research/validation_report_all.md
+            research/validation_report.json
+            research/validation_report.md
