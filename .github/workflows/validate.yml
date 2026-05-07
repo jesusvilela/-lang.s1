@@ -5,11 +5,13 @@ on:
     paths:
       - "**.lang"
       - "tools/validate_typecast.py"
+      - "tools/verify_chomsky.py"
       - ".github/workflows/validate.yml"
   pull_request:
     paths:
       - "**.lang"
       - "tools/validate_typecast.py"
+      - "tools/verify_chomsky.py"
       - ".github/workflows/validate.yml"
 
 jobs:
@@ -27,6 +29,9 @@ jobs:
       - name: Run structural validation (all .lang files)
         run: python3 tools/validate_typecast.py --all
 
+      - name: Run Chomsky hierarchy evidence checks
+        run: python3 tools/verify_chomsky.py
+
       - name: Upload validation reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -37,3 +42,5 @@ jobs:
             research/validation_report_all.md
             research/validation_report.json
             research/validation_report.md
+            research/chomsky_verification_report.json
+            research/chomsky_verification_report.md
