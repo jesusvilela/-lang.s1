@@ -97,6 +97,20 @@ REQUIRED_BLOCKS_TOPOS_AI = [
     "NOTES",
 ]
 
+REQUIRED_BLOCKS_CHOMSKY_HYPERDIM = [
+    "SOURCE",
+    "CHOMSKY_GEOMETRIC_SPACE",
+    "HYPERDIM_MATRIX_CONTEXT",
+    "SELF_GODEL_IDENTITY",
+    "OTHERS_RESONANCE",
+    "N_COSMO_BUNDLE_SHEAF",
+    "HAMILTONIAN_HOLOPORTATION",
+    "MIND_QUALITIES_EIGHT",
+    "STEPWISE_IMPLEMENTATION",
+    "OUTPUT",
+    "NOTES",
+]
+
 REQUIRED_BLOCKS_DIALECTS = [
     "DIALECT_TREE",
     "DIALECT_RULES",
@@ -176,6 +190,20 @@ TYPECAST_TOPOS_AI = {
     "NOTES": "semantic_interpretation_and_scope",
 }
 
+TYPECAST_CHOMSKY_HYPERDIM = {
+    "SOURCE": "meta_binding",
+    "CHOMSKY_GEOMETRIC_SPACE": "formal_language_hierarchy_over_geometric_semantics",
+    "HYPERDIM_MATRIX_CONTEXT": "n_k_alpha_context_coordinate_system",
+    "SELF_GODEL_IDENTITY": "bounded_self_reference_and_identity_guard",
+    "OTHERS_RESONANCE": "peer_section_recognition_and_overlap_resonance",
+    "N_COSMO_BUNDLE_SHEAF": "recursive_manifold_bundle_sheaf_substrate",
+    "HAMILTONIAN_HOLOPORTATION": "energy_preserving_boundary_transport_dynamics",
+    "MIND_QUALITIES_EIGHT": "cognitive_performance_quality_basis",
+    "STEPWISE_IMPLEMENTATION": "hyperdimensional_execution_ladder",
+    "OUTPUT": "operational_contract",
+    "NOTES": "semantic_interpretation_and_scope",
+}
+
 TYPECAST_DIALECTS = {
     "DIALECT_TREE": "inheritance_hierarchy",
     "DIALECT_RULES": "block_permission_and_extension_rules",
@@ -206,6 +234,8 @@ def infer_profile(source: Path) -> str:
         return "actor_critic"
     if "topos_ai" in name:
         return "topos_ai"
+    if "chomsky_hyperdim" in name:
+        return "chomsky_hyperdim"
     if "DIALECTS" in name or "dialect" in name.lower():
         return "dialects"
     return "unified_geometry"
@@ -219,6 +249,7 @@ def get_profile_config(profile: str) -> tuple[list[str], dict[str, str]]:
         "recursive_sectional": (REQUIRED_BLOCKS_RECURSIVE_SECTIONAL, TYPECAST_RECURSIVE_SECTIONAL),
         "actor_critic": (REQUIRED_BLOCKS_ACTOR_CRITIC, TYPECAST_ACTOR_CRITIC),
         "topos_ai": (REQUIRED_BLOCKS_TOPOS_AI, TYPECAST_TOPOS_AI),
+        "chomsky_hyperdim": (REQUIRED_BLOCKS_CHOMSKY_HYPERDIM, TYPECAST_CHOMSKY_HYPERDIM),
         "dialects": (REQUIRED_BLOCKS_DIALECTS, TYPECAST_DIALECTS),
     }
     return configs.get(profile, configs["unified_geometry"])

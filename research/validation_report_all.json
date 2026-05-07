@@ -270,5 +270,49 @@
       "OUTPUT": "operational_contract",
       "NOTES": "semantic_interpretation_and_scope"
     }
+  },
+  {
+    "source": "LANG.v6.chomsky_hyperdim_cognition.lang",
+    "profile": "chomsky_hyperdim",
+    "num_lines": 96,
+    "num_blocks": 11,
+    "unique_blocks": [
+      "CHOMSKY_GEOMETRIC_SPACE",
+      "HAMILTONIAN_HOLOPORTATION",
+      "HYPERDIM_MATRIX_CONTEXT",
+      "MIND_QUALITIES_EIGHT",
+      "NOTES",
+      "N_COSMO_BUNDLE_SHEAF",
+      "OTHERS_RESONANCE",
+      "OUTPUT",
+      "SELF_GODEL_IDENTITY",
+      "SOURCE",
+      "STEPWISE_IMPLEMENTATION"
+    ],
+    "missing_required_blocks": [],
+    "num_sections": 5,
+    "checks": {
+      "block_headers_present": true,
+      "section_vectors_dimension_8": true,
+      "section_norm_below_0_999": true,
+      "salience_positive": true
+    },
+    "geometry": {
+      "max_section_norm": 0.370945,
+      "margin_to_boundary_0_999": 0.628055
+    },
+    "typecast": {
+      "SOURCE": "meta_binding",
+      "CHOMSKY_GEOMETRIC_SPACE": "formal_language_hierarchy_over_geometric_semantics",
+      "HYPERDIM_MATRIX_CONTEXT": "n_k_alpha_context_coordinate_system",
+      "SELF_GODEL_IDENTITY": "bounded_self_reference_and_identity_guard",
+      "OTHERS_RESONANCE": "peer_section_recognition_and_overlap_resonance",
+      "N_COSMO_BUNDLE_SHEAF": "recursive_manifold_bundle_sheaf_substrate",
+      "HAMILTONIAN_HOLOPORTATION": "energy_preserving_boundary_transport_dynamics",
+      "MIND_QUALITIES_EIGHT": "cognitive_performance_quality_basis",
+      "STEPWISE_IMPLEMENTATION": "hyperdimensional_execution_ladder",
+      "OUTPUT": "operational_contract",
+      "NOTES": "semantic_interpretation_and_scope"
+    }
   }
 ]

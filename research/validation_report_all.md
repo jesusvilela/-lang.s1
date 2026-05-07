@@ -16,6 +16,7 @@
 | `LANG.v3.1.recursive_sectional_computer.lang` | `recursive_sectional` | 51 | 7 | 0 | ✅ |
 | `LANG.v3.2.actor_critic_fuzzer_cycle.lang` | `actor_critic` | 44 | 6 | 0 | ✅ |
 | `LANG.v5.topos_ai_cosmos_synthesis.lang` | `topos_ai` | 52 | 7 | 0 | ✅ |
+| `LANG.v6.chomsky_hyperdim_cognition.lang` | `chomsky_hyperdim` | 96 | 11 | 5 | ✅ |
 
 ## `DIALECTS.v2.1.family.lang`
 
@@ -72,4 +73,12 @@
 - ✅ `section_norm_below_0_999`
 - ✅ `salience_positive`
 - Max section norm: 0.0 (margin to 0.999: 0.999)
+
+## `LANG.v6.chomsky_hyperdim_cognition.lang`
+
+- ✅ `block_headers_present`
+- ✅ `section_vectors_dimension_8`
+- ✅ `section_norm_below_0_999`
+- ✅ `salience_positive`
+- Max section norm: 0.370945 (margin to 0.999: 0.628055)
 

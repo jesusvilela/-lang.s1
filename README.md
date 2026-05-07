@@ -18,6 +18,7 @@ Current versions in this repository:
 
 - `LANG.v1.2.0.unified_geometry.lang` — historical canonical source
 - `LANG.FAMILY.v2.4.lang`              — v2.4 family header
+- `LANG.v6.chomsky_hyperdim_cognition.lang` — Chomsky hierarchy in hyperdimensional cognitive geometry
 - `dialects/` + `selfcompressed/` + `packs/` — v3 ToE matter / prime packs
 - `RUNTIME_CAPABILITIES.md`            — which tokens are executable in v5
 

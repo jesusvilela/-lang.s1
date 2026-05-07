@@ -27,7 +27,7 @@ python3 tools/verify_chomsky.py
 
 ### 1.2 Results (as of last run)
 
-All 7 `.lang` source files **pass** all structural checks:
+All 8 `.lang` source files **pass** all structural checks:
 
 | File | Profile | Blocks | Sections | Status |
 |------|---------|--------|----------|--------|
@@ -38,6 +38,7 @@ All 7 `.lang` source files **pass** all structural checks:
 | `LANG.v3.1.recursive_sectional_computer.lang` | `recursive_sectional` | 7 | 0 | ✅ |
 | `LANG.v3.2.actor_critic_fuzzer_cycle.lang` | `actor_critic` | 6 | 0 | ✅ |
 | `LANG.v5.topos_ai_cosmos_synthesis.lang` | `topos_ai` | 7 | 0 | ✅ |
+| `LANG.v6.chomsky_hyperdim_cognition.lang` | `chomsky_hyperdim` | 11 | 5 | ✅ |
 
 Full per-file reports: [`research/validation_report_all.md`](research/validation_report_all.md)  
 Machine-readable JSON: [`research/validation_report_all.json`](research/validation_report_all.json)
