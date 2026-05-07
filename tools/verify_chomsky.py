@@ -48,20 +48,20 @@ def extract_block(lines: list[str], block: str) -> list[str]:
 def parse_productions(block_lines: list[str]) -> list[Production]:
     productions: list[Production] = []
     current_lhs: str | None = None
-    current_rhs = ""
+    rhs_buffer = ""
 
     def flush() -> None:
-        nonlocal current_lhs, current_rhs
+        nonlocal current_lhs, rhs_buffer
         if current_lhs is None:
             return
         alternatives = [
             part.strip()
-            for part in re.split(r"\s*\|(?!>)\s*", current_rhs)
+            for part in re.split(r"\s*\|(?!>)\s*", rhs_buffer)
             if part.strip()
         ]
         productions.append(Production(lhs=current_lhs, alternatives=alternatives))
         current_lhs = None
-        current_rhs = ""
+        rhs_buffer = ""
 
     for raw_line in block_lines:
         line = raw_line.strip()
@@ -73,10 +73,10 @@ def parse_productions(block_lines: list[str]) -> list[Production]:
             if IDENT_RE.match(lhs):
                 flush()
                 current_lhs = lhs
-                current_rhs = rhs.strip()
+                rhs_buffer = rhs.strip()
                 continue
         if current_lhs is not None:
-            current_rhs += " " + line
+            rhs_buffer += " " + line
     flush()
     return productions
 
@@ -165,6 +165,8 @@ def build_report(source: Path) -> dict:
 
     nested_witnesses = []
     term = "a"
+    # Depths 1-6 give bounded, reproducible witnesses for recursive nesting
+    # without claiming a formal proof over every possible nesting depth.
     for depth in range(1, 7):
         term = f"§.({term})"
         nested_witnesses.append(

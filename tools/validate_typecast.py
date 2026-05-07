@@ -10,6 +10,7 @@ import sys
 import argparse
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Callable
 
 OUT_JSON = Path("research/validation_report.json")
 OUT_MD = Path("research/validation_report.md")
@@ -221,6 +222,14 @@ def get_profile_config(profile: str) -> tuple[list[str], dict[str, str]]:
     return configs.get(profile, configs["unified_geometry"])
 
 
+def validate_sections_property(
+    sections: list[SectionPoint],
+    predicate: Callable[[SectionPoint], bool],
+    default: bool = True,
+) -> bool:
+    return default if not sections else all(predicate(section) for section in sections)
+
+
 def validate_source(src: Path) -> dict:
     """Validate a single .lang source file and return a report dict."""
     profile = infer_profile(src)
@@ -246,9 +255,9 @@ def validate_source(src: Path) -> dict:
     block_set = set(blocks)
     missing = [b for b in required_blocks if b not in block_set]
 
-    dim_ok = all(len(p.x) == 8 for p in sections) if sections else True
-    norm_ok = all(p.norm < 0.999 for p in sections) if sections else True
-    sal_ok = all(p.sal > 0 for p in sections) if sections else True
+    dim_ok = validate_sections_property(sections, lambda p: len(p.x) == 8)
+    norm_ok = validate_sections_property(sections, lambda p: p.norm < 0.999)
+    sal_ok = validate_sections_property(sections, lambda p: p.sal > 0)
 
     max_norm = max((p.norm for p in sections), default=0.0)
     min_margin = 0.999 - max_norm
