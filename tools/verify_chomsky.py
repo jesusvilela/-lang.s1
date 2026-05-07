@@ -56,6 +56,7 @@ def parse_productions(block_lines: list[str]) -> list[Production]:
             return
         alternatives = [
             part.strip()
+            # Avoid splitting the surface pipe operator `|>` as an alternative separator.
             for part in re.split(r"\s*\|(?!>)\s*", rhs_buffer)
             if part.strip()
         ]
@@ -165,8 +166,9 @@ def build_report(source: Path) -> dict:
 
     nested_witnesses = []
     term = "a"
-    # Depths 1-6 give bounded, reproducible witnesses for recursive nesting
-    # without claiming a formal proof over every possible nesting depth.
+    # Depths 1-6 give bounded, reproducible witnesses for recursive nesting:
+    # enough to demonstrate the unbounded pattern's shape while keeping the
+    # report compact and avoiding any claim of a formal all-depth proof.
     for depth in range(1, 7):
         term = f"§.({term})"
         nested_witnesses.append(

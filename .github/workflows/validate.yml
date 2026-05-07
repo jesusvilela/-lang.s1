@@ -27,6 +27,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
+          # The verification scripts use modern type annotations tested on 3.11.
           python-version: "3.11"
 
       - name: Run structural validation (all .lang files)

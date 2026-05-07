@@ -16,6 +16,8 @@ OUT_JSON = Path("research/validation_report.json")
 OUT_MD = Path("research/validation_report.md")
 OUT_ALL_JSON = Path("research/validation_report_all.json")
 OUT_ALL_MD = Path("research/validation_report_all.md")
+EXPECTED_SECTION_DIMENSION = 8
+POINCARE_BOUNDARY_MARGIN = 0.999
 
 BLOCK_RE = re.compile(r"^§\|LANG\|([A-Z_]+)\{")
 SECTION_RE = re.compile(
@@ -255,12 +257,16 @@ def validate_source(src: Path) -> dict:
     block_set = set(blocks)
     missing = [b for b in required_blocks if b not in block_set]
 
-    dim_ok = validate_sections_property(sections, lambda p: len(p.x) == 8)
-    norm_ok = validate_sections_property(sections, lambda p: p.norm < 0.999)
+    dim_ok = validate_sections_property(
+        sections, lambda p: len(p.x) == EXPECTED_SECTION_DIMENSION
+    )
+    norm_ok = validate_sections_property(
+        sections, lambda p: p.norm < POINCARE_BOUNDARY_MARGIN
+    )
     sal_ok = validate_sections_property(sections, lambda p: p.sal > 0)
 
     max_norm = max((p.norm for p in sections), default=0.0)
-    min_margin = 0.999 - max_norm
+    min_margin = POINCARE_BOUNDARY_MARGIN - max_norm
 
     return {
         "source": str(src),
