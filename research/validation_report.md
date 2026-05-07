@@ -1,21 +1,21 @@
 # Validation and Typecast Report
 
 ## Status
-- Source: `LANG.v1.2.0.unified_geometry.lang`
+- Source: `LANG.v3.1.recursive_sectional_computer.lang`
 - Profile: `unified_geometry`
-- Lines: 411
-- Blocks discovered: 22 (22 unique)
-- Section nodes discovered: 19
+- Lines: 51
+- Blocks discovered: 7 (7 unique)
+- Section nodes discovered: 0
 
 ## Checks
-- ✅ `block_headers_present`
+- ❌ `block_headers_present`
 - ✅ `section_vectors_dimension_8`
 - ✅ `section_norm_below_0_999`
 - ✅ `salience_positive`
 
 ## Geometric Boundary
-- Max section norm: 0.683667
-- Margin to invariant 0.999: 0.315333
+- Max section norm: 0.0
+- Margin to invariant 0.999: 0.999
 
 ## Typecast Map
 - `SOURCE` → `meta_binding`
