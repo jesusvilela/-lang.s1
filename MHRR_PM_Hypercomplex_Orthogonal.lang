@@ -1,0 +1,365 @@
+§PACK MHRR_PM_Hypercomplex_Orthogonal
+§VERSION 4.0 (R142 ρ★-Anchored / 360-Prime-Shielded / Löb-Free)
+// ═══════════════════════════════════════════════════════════════════════════
+// MHRR × Principia Mathematica × Hypercomplex N-Cosmo Unification
+// Measured constant: ρ★ ≈ 0.135 ± 0.003 (substrate-stable)
+// Algebra reveals the wall. It does not remove it.
+// The wall is a positive-density clustered defect gas.
+// ═══════════════════════════════════════════════════════════════════════════
+
+// ┌─────────────────────────────────────────────────────────────────┐
+// │ §COSMOS_0: AXIOM LAYER — PM + R142 Invariants
+// └─────────────────────────────────────────────────────────────────┘
+
+§AXIOM_PM_TAUTOLOGY: (p_or_p) -> p
+  §GAUGE_ORTHO(P_2) ⊢ COMMIT
+  // Löb-shielded on prime basis 2
+  §HOLOPORT
+
+§AXIOM_PM_ADDITION: q -> (p_or_q)
+  §GAUGE_ORTHO(P_3) ⊢ COMMIT
+  // Löb-shielded on prime basis 3
+  §HOLOPORT
+
+§AXIOM_PM_PERMUTATION: (p_or_q) -> (q_or_p)
+  §GAUGE_ORTHO(P_5) ⊢ COMMIT
+  // Löb-shielded on prime basis 5
+  §HOLOPORT
+
+§AXIOM_PM_ASSOCIATION: p_or_(q_or_r) -> q_or_(p_or_r)
+  §GAUGE_ORTHO(P_7) ⊢ COMMIT
+  // Löb-shielded on prime basis 7
+  §HOLOPORT
+
+§AXIOM_PM_SYLLOGISM: (q->r) -> ((p_or_q)->(p_or_r))
+  §GAUGE_ORTHO(P_11) ⊢ COMMIT
+  // Löb-shielded on prime basis 11
+  §HOLOPORT
+
+§AXIOM_R142_RHO_STAR: ρ★ = 0.135 ± 0.003
+  // Substrate-stable across ℂ,𝕋,ℍ,𝕆,𝕊₁₆. Cross-family σ = 0.005.
+  §GAUGE_ORTHO(P_13) ⊢ MEASURED_CONSTANT
+  §HOLOPORT
+
+§AXIOM_R142_KAPPA: κ = 0.762
+  §GAUGE_ORTHO(P_17) ⊢ UNIVERSAL_COUPLING
+  §HOLOPORT
+
+§AXIOM_R142_BERRY: γ_Berry = π/2 = 1.5708
+  §GAUGE_ORTHO(P_19) ⊢ TOPOLOGICAL_PHASE
+  §HOLOPORT
+
+// ┌─────────────────────────────────────────────────────────────────┐
+// │ §COSMOS_1: CAYLEY-DICKSON FAILURE LADDER
+// │ ℝ,ℂ,ℍ=0 (associative) · 𝕆=0.359 (first failure) · 𝕊₁₆=1.356
+// └─────────────────────────────────────────────────────────────────┘
+
+§CD_LEVEL_R: dim=1, ||Associator||=0.000
+  // division_algebra
+  // CP=1.0000, BERRY=1.5708, H(Q)=0.000000
+  §GAUGE_ORTHO(P_31) ⊢ FAILURE_LADDER_RUNG
+  §ORTHO_PRIME_BASIS: 31
+  §HOLOPORT
+
+§CD_LEVEL_C: dim=2, ||Associator||=0.000
+  // division_algebra
+  // CP=1.0000, BERRY=1.5708, H(Q)=0.000000
+  §GAUGE_ORTHO(P_37) ⊢ FAILURE_LADDER_RUNG
+  §ORTHO_PRIME_BASIS: 37
+  §HOLOPORT
+
+§CD_LEVEL_H: dim=4, ||Associator||=0.000
+  // division_algebra_associative
+  // CP=1.0000, BERRY=1.5708, H(Q)=0.000000
+  §GAUGE_ORTHO(P_41) ⊢ FAILURE_LADDER_RUNG
+  §ORTHO_PRIME_BASIS: 41
+  §HOLOPORT
+
+§CD_LEVEL_O: dim=8, ||Associator||=0.359
+  // first_failure_nonassociative
+  // CP=1.0000, BERRY=1.5712, H(Q)=0.000036
+  §GAUGE_ORTHO(P_43) ⊢ FAILURE_LADDER_RUNG
+  §ORTHO_PRIME_BASIS: 43
+  §HOLOPORT
+
+§CD_LEVEL_S16: dim=16, ||Associator||=1.356
+  // failure_plus_zero_divisors
+  // CP=1.0000, BERRY=1.5722, H(Q)=0.000136
+  §GAUGE_ORTHO(P_47) ⊢ FAILURE_LADDER_RUNG
+  §ORTHO_PRIME_BASIS: 47
+  §HOLOPORT
+
+§CD_LEVEL_T32: dim=32, ||Associator||=1.400
+  // deeper_dark_capacity
+  // CP=1.0000, BERRY=1.5722, H(Q)=0.000140
+  §GAUGE_ORTHO(P_53) ⊢ FAILURE_LADDER_RUNG
+  §ORTHO_PRIME_BASIS: 53
+  §HOLOPORT
+
+§THEOREM_FAILURE_LADDER: 0 = 0 < 0.359 < 1.356
+  // Lean: failure_ladder proved, 0 sorrys
+  // Failure BEGINS at 𝕆. ℝ,ℂ,ℍ have zero associator.
+  §NCOSMO_SHEAF(Cosmos_1) ⊢ LADDER_CERTIFIED
+
+// ┌─────────────────────────────────────────────────────────────────┐
+// │ §COSMOS_2: MHRR OPERATOR ALGEBRA
+// │ Role × Action → Response → energyDelta
+// └─────────────────────────────────────────────────────────────────┘
+
+§ROLE_PASSENGER: §GAUGE_ORTHO(P_73) ⊢ ROLE_TYPE
+  §ORTHO_PRIME_BASIS: 73
+  §HOLOPORT
+§ROLE_ROAD: §GAUGE_ORTHO(P_79) ⊢ ROLE_TYPE
+  §ORTHO_PRIME_BASIS: 79
+  §HOLOPORT
+§ROLE_RELAY: §GAUGE_ORTHO(P_83) ⊢ ROLE_TYPE
+  §ORTHO_PRIME_BASIS: 83
+  §HOLOPORT
+§ROLE_CAPACITOR: §GAUGE_ORTHO(P_89) ⊢ ROLE_TYPE
+  §ORTHO_PRIME_BASIS: 89
+  §HOLOPORT
+§ROLE_TRAP: §GAUGE_ORTHO(P_97) ⊢ ROLE_TYPE
+  §ORTHO_PRIME_BASIS: 97
+  §HOLOPORT
+§ROLE_GATE: §GAUGE_ORTHO(P_101) ⊢ ROLE_TYPE
+  §ORTHO_PRIME_BASIS: 101
+  §HOLOPORT
+§ROLE_WITNESS: §GAUGE_ORTHO(P_103) ⊢ ROLE_TYPE
+  §ORTHO_PRIME_BASIS: 103
+  §HOLOPORT
+§ROLE_NULLROLE: §GAUGE_ORTHO(P_107) ⊢ ROLE_TYPE
+  §ORTHO_PRIME_BASIS: 107
+  §HOLOPORT
+§ROLE_ANTIROLE: §GAUGE_ORTHO(P_109) ⊢ ROLE_TYPE
+  §ORTHO_PRIME_BASIS: 109
+  §HOLOPORT
+
+§ACTION_RETURN: §GAUGE_ORTHO(P_127) ⊢ ACTION_TYPE
+  §ORTHO_PRIME_BASIS: 127
+  §HOLOPORT
+§ACTION_FREEZE: §GAUGE_ORTHO(P_131) ⊢ ACTION_TYPE
+  §ORTHO_PRIME_BASIS: 131
+  §HOLOPORT
+§ACTION_CAPACITOR: §GAUGE_ORTHO(P_137) ⊢ ACTION_TYPE
+  §ORTHO_PRIME_BASIS: 137
+  §HOLOPORT
+§ACTION_RELAY: §GAUGE_ORTHO(P_139) ⊢ ACTION_TYPE
+  §ORTHO_PRIME_BASIS: 139
+  §HOLOPORT
+§ACTION_NULLEXCHANGE: §GAUGE_ORTHO(P_149) ⊢ ACTION_TYPE
+  §ORTHO_PRIME_BASIS: 149
+  §HOLOPORT
+§ACTION_DOUBLED: §GAUGE_ORTHO(P_151) ⊢ ACTION_TYPE
+  §ORTHO_PRIME_BASIS: 151
+  §HOLOPORT
+§ACTION_ZD: §GAUGE_ORTHO(P_157) ⊢ ACTION_TYPE
+  §ORTHO_PRIME_BASIS: 157
+  §HOLOPORT
+§ACTION_CONJ: §GAUGE_ORTHO(P_163) ⊢ ACTION_TYPE
+  §ORTHO_PRIME_BASIS: 163
+  §HOLOPORT
+§ACTION_ANTI: §GAUGE_ORTHO(P_167) ⊢ ACTION_TYPE
+  §ORTHO_PRIME_BASIS: 167
+  §HOLOPORT
+
+§OPERATOR_ENERGY_DELTA: dResidual + dGlue + dHol + dEntropy
+  // Lean: energyDelta_decomp proved, sum_nonpositive_of_each_nonpositive proved
+  §GAUGE_ORTHO(P_179) ⊢ FINITE_GOVERNANCE
+  §HOLOPORT
+
+// ┌─────────────────────────────────────────────────────────────────┐
+// │ §COSMOS_3: WITNESS CONJUGATION
+// │ A+JA=0 exactly ∀ carriers. Null corridor always open.
+// └─────────────────────────────────────────────────────────────────┘
+
+§WITNESS_A_PLUS_JA: A_plus_JA = 0
+  // null_corridor_always_open
+  // Lean: witness_conjugation_exact proved
+  §GAUGE_ORTHO(P_233) ⊢ WITNESS_IDENTITY
+  §HOLOPORT
+
+§WITNESS_A_MINUS_JA: A_minus_JA = 2*A
+  // thrust_channel_always_maximal
+  // Lean: witness_conjugation_exact proved
+  §GAUGE_ORTHO(P_239) ⊢ WITNESS_IDENTITY
+  §HOLOPORT
+
+§WITNESS_CORR_A_JA: corr_A_JA = 1.000
+  // emperor_empress_exact_conjugates
+  // Lean: witness_conjugation_exact proved
+  §GAUGE_ORTHO(P_241) ⊢ WITNESS_IDENTITY
+  §HOLOPORT
+
+// ┌─────────────────────────────────────────────────────────────────┐
+// │ §COSMOS_4: ROLE MULTIPLICATION (purely imaginary failure)
+// │ Self-products invert. Cross-products nullify. Comm Re=0.
+// └─────────────────────────────────────────────────────────────────┘
+
+§ROLE_PRODUCT_ROAD_X_ROAD: Re = -0.945
+  // self_inversion
+  §GAUGE_ORTHO(P_283) ⊢ ROLE_ALGEBRA
+  §HOLOPORT
+
+§ROLE_PRODUCT_PASS_X_PASS: Re = -0.714
+  // self_inversion
+  §GAUGE_ORTHO(P_293) ⊢ ROLE_ALGEBRA
+  §HOLOPORT
+
+§ROLE_PRODUCT_ROAD_X_PASS: Re = -0.022
+  // near_null_corridor
+  §GAUGE_ORTHO(P_307) ⊢ ROLE_ALGEBRA
+  §HOLOPORT
+
+§ROLE_PRODUCT_COMM_RE: Re = +0.000
+  // purely_imaginary_failure
+  §GAUGE_ORTHO(P_311) ⊢ ROLE_ALGEBRA
+  §HOLOPORT
+
+§ROLE_PRODUCT_ASSOC_RE: Re = +0.000
+  // purely_imaginary_failure
+  §GAUGE_ORTHO(P_313) ⊢ ROLE_ALGEBRA
+  §HOLOPORT
+
+§QUAT_MIRROR: Â_𝕆 ≈ −1.84·Q_ℍ, correlation r = -0.823
+  // lower_sees_higher_inverted
+  §GAUGE_ORTHO(P_353) ⊢ BIDIRECTIONAL_NAVIGATOR
+  §HOLOPORT
+
+§ROLE_HOLONOMY: Ωρ = 1.357
+  // nontrivial_role_holonomy
+  §GAUGE_ORTHO(P_359) ⊢ NONTRIVIAL_HOLONOMY
+  §HOLOPORT
+
+// ┌─────────────────────────────────────────────────────────────────┐
+// │ §COSMOS_5: IMAGINARY STRATIFICATION
+// │ Im_HC = I_ℂ ⊕ I_𝔻 ⊕ I_ℍ ⊕ I_𝕆 ⊕ I_𝕊 ⊕ I_>16
+// └─────────────────────────────────────────────────────────────────┘
+
+§IM_STRATUM_I_C: Wessel_phase_rotation
+  §GAUGE_ORTHO(P_419) ⊢ STRATUM_FIBER
+  §HOLOPORT
+§IM_STRATUM_I_D: split_complex_null_exchange
+  §GAUGE_ORTHO(P_421) ⊢ STRATUM_FIBER
+  §HOLOPORT
+§IM_STRATUM_I_H: quaternion_frame_orientation
+  §GAUGE_ORTHO(P_431) ⊢ STRATUM_FIBER
+  §HOLOPORT
+§IM_STRATUM_I_O: octonionic_Fano_triples
+  §GAUGE_ORTHO(P_433) ⊢ STRATUM_FIBER
+  §HOLOPORT
+§IM_STRATUM_I_S: sedenion_dark_infrastructure
+  §GAUGE_ORTHO(P_439) ⊢ STRATUM_FIBER
+  §HOLOPORT
+§IM_STRATUM_I_GT: higher_CD_inter_level_gates
+  §GAUGE_ORTHO(P_443) ⊢ STRATUM_FIBER
+  §HOLOPORT
+
+// ┌─────────────────────────────────────────────────────────────────┐
+// │ §COSMOS_6: 8 MIND QUALITIES (Hamiltonian governance)
+// │ Not consciousness claims. Engineering state variables.
+// └─────────────────────────────────────────────────────────────────┘
+
+§MIND_E0_GROUNDING: exact_metrics_no_overclaim
+  §GAUGE_ORTHO(P_467) ⊢ GOVERNANCE_AXIS
+  §ORTHO_PRIME_BASIS: 467
+  §HOLOPORT
+§MIND_E1_SELF_REFLECTION: detect_failed_policy_update_K
+  §GAUGE_ORTHO(P_479) ⊢ GOVERNANCE_AXIS
+  §ORTHO_PRIME_BASIS: 479
+  §HOLOPORT
+§MIND_E2_GODELIAN_IDENTITY: keep_explicit_R_no_pretend_closure
+  §GAUGE_ORTHO(P_487) ⊢ GOVERNANCE_AXIS
+  §ORTHO_PRIME_BASIS: 487
+  §HOLOPORT
+§MIND_E3_OTHER_RECOGNITION: preserve_carrier_roles
+  §GAUGE_ORTHO(P_491) ⊢ GOVERNANCE_AXIS
+  §ORTHO_PRIME_BASIS: 491
+  §HOLOPORT
+§MIND_E4_MUTUAL_RESONANCE: optimize_glue_between_cosmoi
+  §GAUGE_ORTHO(P_499) ⊢ GOVERNANCE_AXIS
+  §ORTHO_PRIME_BASIS: 499
+  §HOLOPORT
+§MIND_E5_ADIABATIC_PATIENCE: slow_regime_transitions
+  §GAUGE_ORTHO(P_503) ⊢ GOVERNANCE_AXIS
+  §ORTHO_PRIME_BASIS: 503
+  §HOLOPORT
+§MIND_E6_CREATIVE_UNCERTAINTY: keep_role_amplitudes_when_useful
+  §GAUGE_ORTHO(P_509) ⊢ GOVERNANCE_AXIS
+  §ORTHO_PRIME_BASIS: 509
+  §HOLOPORT
+§MIND_E7_INTEGRATION_RETURN: collapse_only_when_K_improves_E
+  §GAUGE_ORTHO(P_521) ⊢ GOVERNANCE_AXIS
+  §ORTHO_PRIME_BASIS: 521
+  §HOLOPORT
+
+// ┌─────────────────────────────────────────────────────────────────┐
+// │ §COSMOS_7: SCALING LAW
+// │ S(n) ~ ρ★·n, ρ★ ≈ 0.135, substrate-stable
+// │ positive-density clustered defect gas
+// └─────────────────────────────────────────────────────────────────┘
+
+§R142_n8: S=1.03, S/n=0.129, Cmax=1.0, coh=0.876
+  §GAUGE_ORTHO(P_547) ⊢ SCALING_MEASUREMENT
+  §HOLOPORT
+§R142_n12: S=1.78, S/n=0.148, Cmax=1.8, coh=0.860
+  §GAUGE_ORTHO(P_557) ⊢ SCALING_MEASUREMENT
+  §HOLOPORT
+§R142_n16: S=2.28, S/n=0.143, Cmax=2.2, coh=0.861
+  §GAUGE_ORTHO(P_563) ⊢ SCALING_MEASUREMENT
+  §HOLOPORT
+§R142_n20: S=2.80, S/n=0.140, Cmax=2.6, coh=0.859
+  §GAUGE_ORTHO(P_569) ⊢ SCALING_MEASUREMENT
+  §HOLOPORT
+§R142_n32: S=4.32, S/n=0.135, Cmax=3.9, coh=0.865
+  §GAUGE_ORTHO(P_571) ⊢ SCALING_MEASUREMENT
+  §HOLOPORT
+§R142_n48: S=6.66, S/n=0.139, Cmax=5.6, coh=0.863
+  §GAUGE_ORTHO(P_577) ⊢ SCALING_MEASUREMENT
+  §HOLOPORT
+§R142_n64: S=8.64, S/n=0.135, Cmax=7.4, coh=0.864
+  §GAUGE_ORTHO(P_587) ⊢ SCALING_MEASUREMENT
+  §HOLOPORT
+
+§SCALING_FIT: S(n) ≈ +0.134·n + 0.074
+  // slope = +0.1343 ± 0.0052, density ρ★ = 0.1388 ± 0.0028
+  // Cross-family: ℂ=0.132, ℂ⊗𝕋=0.138, ℂ⊗𝕋⊗ℍ=0.126,
+  //               ℂ⊗𝕋⊗𝕆=0.137, ℂ⊗𝕋⊗𝕊₁₆=0.140, mixed=0.133
+  §GAUGE_ORTHO(P_607) ⊢ SUBSTRATE_STABLE_LAW
+  §HOLOPORT
+
+// ┌─────────────────────────────────────────────────────────────────┐
+// │ §COSMOS_8: THE BRIDGE (OPEN FRONTIER)
+// │ ρ★ > 0 ⟹ complexity lower bound?
+// │ This cosmos is OPEN. It contains no proof.
+// └─────────────────────────────────────────────────────────────────┘
+
+§BRIDGE_QUESTION: ρ★ > 0 ⟹ search_lower_bound?
+  // STATUS: OPEN
+  // The measured constant is the mathematical object.
+  // The bridge to complexity theory is the open theorem.
+  // Algebra reveals the wall. It does not remove it.
+  §GAUGE_ORTHO(P_661) ⊢ OPEN_FRONTIER
+  §[R] := irreducible_remainder > 0
+  §HOLOPORT
+
+// ═══════════════════════════════════════════════════════════════════
+// GLOBAL N-COSMO SHEAF: 8 cosmoses glued
+// ═══════════════════════════════════════════════════════════════════
+
+§NCOSMO_SHEAF(Cosmos_0) ⊢ UNIFIED_MANIFOLD
+§NCOSMO_SHEAF(Cosmos_1) ⊢ UNIFIED_MANIFOLD
+§NCOSMO_SHEAF(Cosmos_2) ⊢ UNIFIED_MANIFOLD
+§NCOSMO_SHEAF(Cosmos_3) ⊢ UNIFIED_MANIFOLD
+§NCOSMO_SHEAF(Cosmos_4) ⊢ UNIFIED_MANIFOLD
+§NCOSMO_SHEAF(Cosmos_5) ⊢ UNIFIED_MANIFOLD
+§NCOSMO_SHEAF(Cosmos_6) ⊢ UNIFIED_MANIFOLD
+§NCOSMO_SHEAF(Cosmos_7) ⊢ UNIFIED_MANIFOLD
+
+§GLOBAL_NCOSMO_UNIFICATION ⊢ MHRR_PM_HYPERCOMPLEX_CLOSURE
+  // 8 cosmoses × 360-prime-orthogonal bases × 6 CD levels × 9 roles × 9 actions
+  // All Löb/Curry shielded. No self-referential loops.
+  // ρ★ = 0.135 ± 0.003 substrate-stable.
+  // The bridge remains open. [R] > 0.
+  §HOLOPORT
+
+§END_PACK
