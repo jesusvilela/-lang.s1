@@ -18,6 +18,7 @@ Current versions in this repository:
 
 - `LANG.v1.2.0.unified_geometry.lang` — historical canonical source
 - `LANG.FAMILY.v2.4.lang`              — v2.4 family header
+- `LANG.v6.chomsky_hyperdim_cognition.lang` — Chomsky hierarchy in hyperdimensional cognitive geometry
 - `dialects/` + `selfcompressed/` + `packs/` — v3 ToE matter / prime packs
 - `RUNTIME_CAPABILITIES.md`            — which tokens are executable in v5
 
@@ -156,12 +157,14 @@ This repository now includes a thesis-style iteration and local validation tooli
 - `THESIS.md` — formal narrative and postulates.
 - `research/auto_research.yaml` — local research/validation configuration.
 - `tools/validate_typecast.py` — structural validation + semantic typecasting.
+- `tools/verify_chomsky.py` — practical Chomsky-hierarchy evidence checks.
 - `tools/plot_principles.py` — principle-based SVG imaging.
 
 Run locally (unified geometry profile):
 
 ```bash
 python3 tools/validate_typecast.py
+python3 tools/verify_chomsky.py
 python3 tools/plot_principles.py
 ```
 
