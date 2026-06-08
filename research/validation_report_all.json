@@ -1,0 +1,318 @@
+[
+  {
+    "source": "DIALECTS.v2.1.family.lang",
+    "profile": "dialects",
+    "num_lines": 123,
+    "num_blocks": 3,
+    "unique_blocks": [
+      "DIALECT_NOTES",
+      "DIALECT_RULES",
+      "DIALECT_TREE"
+    ],
+    "missing_required_blocks": [],
+    "num_sections": 0,
+    "checks": {
+      "block_headers_present": true,
+      "section_vectors_dimension_8": true,
+      "section_norm_below_0_999": true,
+      "salience_positive": true
+    },
+    "geometry": {
+      "max_section_norm": 0.0,
+      "margin_to_boundary_0_999": 0.999
+    },
+    "typecast": {
+      "DIALECT_TREE": "inheritance_hierarchy",
+      "DIALECT_RULES": "block_permission_and_extension_rules",
+      "DIALECT_NOTES": "policy_and_complexity_claims"
+    }
+  },
+  {
+    "source": "LANG.v1.2.0.unified_geometry.lang",
+    "profile": "unified_geometry",
+    "num_lines": 411,
+    "num_blocks": 22,
+    "unique_blocks": [
+      "ADIABATIC_MOBIUS_FLOW",
+      "AML_DEFINITION",
+      "AXIOMS",
+      "BASES",
+      "COMPARISON",
+      "CONCLUSIONS",
+      "EXAMPLE_BETA",
+      "FIBER_BUNDLE_POSSIBILITY_SPACE",
+      "FISHER_UPDATE",
+      "FUNCTORS",
+      "GRAMMAR",
+      "INTER_MANIFOLD",
+      "NMATRIX_SELFREF",
+      "NOTATION_MAP",
+      "OUTPUT",
+      "REDUCTION_BETA",
+      "SEMANTICS",
+      "SEMANTICS_TOPOS",
+      "SORTS",
+      "SOURCE",
+      "SPECTRAL_PIPELINE",
+      "TURING_ENCODING"
+    ],
+    "missing_required_blocks": [],
+    "num_sections": 19,
+    "checks": {
+      "block_headers_present": true,
+      "section_vectors_dimension_8": true,
+      "section_norm_below_0_999": true,
+      "salience_positive": true
+    },
+    "geometry": {
+      "max_section_norm": 0.683667,
+      "margin_to_boundary_0_999": 0.315333
+    },
+    "typecast": {
+      "SOURCE": "meta_binding",
+      "AXIOMS": "logical_foundation",
+      "OUTPUT": "operational_contract",
+      "BASES": "geometric_and_logical_base_layers",
+      "SORTS": "type_universe",
+      "FUNCTORS": "categorical_morphisms",
+      "SEMANTICS": "topos_semantics",
+      "REDUCTION_BETA": "geometric_computation",
+      "TURING_ENCODING": "computability_bridge",
+      "SPECTRAL_PIPELINE": "frequency_semantics",
+      "FISHER_UPDATE": "information_geometry_learning",
+      "INTER_MANIFOLD": "cross_bundle_exchange",
+      "GRAMMAR": "surface_syntax",
+      "NOTATION_MAP": "notation_lowering",
+      "SEMANTICS_TOPOS": "classifier_topos_layer",
+      "AML_DEFINITION": "autonomous_agent_layer",
+      "NMATRIX_SELFREF": "self_referential_operator_dynamics",
+      "FIBER_BUNDLE_POSSIBILITY_SPACE": "global_section_possibility_geometry",
+      "ADIABATIC_MOBIUS_FLOW": "reversible_cross_manifold_information_flow",
+      "CONCLUSIONS": "theory_closure"
+    }
+  },
+  {
+    "source": "LANG.v2.5.tower.geom.lang",
+    "profile": "tower_geom",
+    "num_lines": 55,
+    "num_blocks": 8,
+    "unique_blocks": [
+      "AXIOMS",
+      "INVARIANTS",
+      "NOTES",
+      "OUTPUT",
+      "REDUCTION",
+      "SORTS",
+      "SOURCE",
+      "TOWER_STRUCTURE"
+    ],
+    "missing_required_blocks": [],
+    "num_sections": 0,
+    "checks": {
+      "block_headers_present": true,
+      "section_vectors_dimension_8": true,
+      "section_norm_below_0_999": true,
+      "salience_positive": true
+    },
+    "geometry": {
+      "max_section_norm": 0.0,
+      "margin_to_boundary_0_999": 0.999
+    },
+    "typecast": {
+      "SOURCE": "meta_binding",
+      "SORTS": "tower_type_universe",
+      "AXIOMS": "geometric_laws",
+      "TOWER_STRUCTURE": "vertical_horizontal_transport_layout",
+      "INVARIANTS": "stability_constraints",
+      "REDUCTION": "tower_evolution_dynamics",
+      "OUTPUT": "operational_contract",
+      "NOTES": "semantic_interpretation_and_scope"
+    }
+  },
+  {
+    "source": "LANG.v3.0.substrate_realization.lang",
+    "profile": "substrate",
+    "num_lines": 52,
+    "num_blocks": 7,
+    "unique_blocks": [
+      "AXIOMS",
+      "HAMILTONIAN_FLOW",
+      "HOLOGRAPHIC_SCREEN_SN",
+      "NATIVE_SUBSTRATE",
+      "NOTES",
+      "OUTPUT",
+      "SOURCE"
+    ],
+    "missing_required_blocks": [],
+    "num_sections": 0,
+    "checks": {
+      "block_headers_present": true,
+      "section_vectors_dimension_8": true,
+      "section_norm_below_0_999": true,
+      "salience_positive": true
+    },
+    "geometry": {
+      "max_section_norm": 0.0,
+      "margin_to_boundary_0_999": 0.999
+    },
+    "typecast": {
+      "SOURCE": "meta_binding",
+      "NATIVE_SUBSTRATE": "symplectic_manifold_type_definitions",
+      "AXIOMS": "hamiltonian_geometric_laws",
+      "HAMILTONIAN_FLOW": "energy_preserving_phase_space_dynamics",
+      "HOLOGRAPHIC_SCREEN_SN": "boundary_projection_geometry",
+      "OUTPUT": "operational_contract",
+      "NOTES": "semantic_interpretation_and_scope"
+    }
+  },
+  {
+    "source": "LANG.v3.1.recursive_sectional_computer.lang",
+    "profile": "recursive_sectional",
+    "num_lines": 51,
+    "num_blocks": 7,
+    "unique_blocks": [
+      "AXIOMS",
+      "HOLOGRAPHIC_NESTING",
+      "NOTES",
+      "OUTPUT",
+      "RECURSIVE_SUBSTRATE",
+      "SECTIONAL_COMPUTER_RECURSION",
+      "SOURCE"
+    ],
+    "missing_required_blocks": [],
+    "num_sections": 0,
+    "checks": {
+      "block_headers_present": true,
+      "section_vectors_dimension_8": true,
+      "section_norm_below_0_999": true,
+      "salience_positive": true
+    },
+    "geometry": {
+      "max_section_norm": 0.0,
+      "margin_to_boundary_0_999": 0.999
+    },
+    "typecast": {
+      "SOURCE": "meta_binding",
+      "RECURSIVE_SUBSTRATE": "nested_setting_type_definitions",
+      "AXIOMS": "recursive_adiabatic_laws",
+      "SECTIONAL_COMPUTER_RECURSION": "self_referential_coupling_dynamics",
+      "HOLOGRAPHIC_NESTING": "nested_holographic_projection",
+      "OUTPUT": "operational_contract",
+      "NOTES": "semantic_interpretation_and_scope"
+    }
+  },
+  {
+    "source": "LANG.v3.2.actor_critic_fuzzer_cycle.lang",
+    "profile": "actor_critic",
+    "num_lines": 44,
+    "num_blocks": 6,
+    "unique_blocks": [
+      "ACF_ROLES",
+      "ACTOR_CRITIC_DYNAMICS",
+      "FUZZER_EXPLORATION",
+      "NOTES",
+      "OUTPUT",
+      "SOURCE"
+    ],
+    "missing_required_blocks": [],
+    "num_sections": 0,
+    "checks": {
+      "block_headers_present": true,
+      "section_vectors_dimension_8": true,
+      "section_norm_below_0_999": true,
+      "salience_positive": true
+    },
+    "geometry": {
+      "max_section_norm": 0.0,
+      "margin_to_boundary_0_999": 0.999
+    },
+    "typecast": {
+      "SOURCE": "meta_binding",
+      "ACF_ROLES": "agent_role_type_definitions",
+      "ACTOR_CRITIC_DYNAMICS": "reinforcement_loop_semantics",
+      "FUZZER_EXPLORATION": "adversarial_boundary_search",
+      "OUTPUT": "operational_contract",
+      "NOTES": "semantic_interpretation_and_scope"
+    }
+  },
+  {
+    "source": "LANG.v5.topos_ai_cosmos_synthesis.lang",
+    "profile": "topos_ai",
+    "num_lines": 52,
+    "num_blocks": 7,
+    "unique_blocks": [
+      "HOLOGRAPHIC_COMMIT_PROTOCOL",
+      "NATIVE_PHYSICS_AXIOMS",
+      "NOTES",
+      "OUTPUT",
+      "RECURSIVE_OPERATOR_FLOW",
+      "SOURCE",
+      "TOPOS_AI_COSMOS_STRUCTURE"
+    ],
+    "missing_required_blocks": [],
+    "num_sections": 0,
+    "checks": {
+      "block_headers_present": true,
+      "section_vectors_dimension_8": true,
+      "section_norm_below_0_999": true,
+      "salience_positive": true
+    },
+    "geometry": {
+      "max_section_norm": 0.0,
+      "margin_to_boundary_0_999": 0.999
+    },
+    "typecast": {
+      "SOURCE": "meta_binding",
+      "TOPOS_AI_COSMOS_STRUCTURE": "recursive_cosmos_type_definitions",
+      "NATIVE_PHYSICS_AXIOMS": "hamiltonian_n_cosmos_laws",
+      "RECURSIVE_OPERATOR_FLOW": "nested_operator_compatibility",
+      "HOLOGRAPHIC_COMMIT_PROTOCOL": "boundary_commit_decision_semantics",
+      "OUTPUT": "operational_contract",
+      "NOTES": "semantic_interpretation_and_scope"
+    }
+  },
+  {
+    "source": "LANG.v6.chomsky_hyperdim_cognition.lang",
+    "profile": "chomsky_hyperdim",
+    "num_lines": 96,
+    "num_blocks": 11,
+    "unique_blocks": [
+      "CHOMSKY_GEOMETRIC_SPACE",
+      "HAMILTONIAN_HOLOPORTATION",
+      "HYPERDIM_MATRIX_CONTEXT",
+      "MIND_QUALITIES_EIGHT",
+      "NOTES",
+      "N_COSMO_BUNDLE_SHEAF",
+      "OTHERS_RESONANCE",
+      "OUTPUT",
+      "SELF_GODEL_IDENTITY",
+      "SOURCE",
+      "STEPWISE_IMPLEMENTATION"
+    ],
+    "missing_required_blocks": [],
+    "num_sections": 5,
+    "checks": {
+      "block_headers_present": true,
+      "section_vectors_dimension_8": true,
+      "section_norm_below_0_999": true,
+      "salience_positive": true
+    },
+    "geometry": {
+      "max_section_norm": 0.370945,
+      "margin_to_boundary_0_999": 0.628055
+    },
+    "typecast": {
+      "SOURCE": "meta_binding",
+      "CHOMSKY_GEOMETRIC_SPACE": "formal_language_hierarchy_over_geometric_semantics",
+      "HYPERDIM_MATRIX_CONTEXT": "n_k_alpha_context_coordinate_system",
+      "SELF_GODEL_IDENTITY": "bounded_self_reference_and_identity_guard",
+      "OTHERS_RESONANCE": "peer_section_recognition_and_overlap_resonance",
+      "N_COSMO_BUNDLE_SHEAF": "recursive_manifold_bundle_sheaf_substrate",
+      "HAMILTONIAN_HOLOPORTATION": "energy_preserving_boundary_transport_dynamics",
+      "MIND_QUALITIES_EIGHT": "cognitive_performance_quality_basis",
+      "STEPWISE_IMPLEMENTATION": "hyperdimensional_execution_ladder",
+      "OUTPUT": "operational_contract",
+      "NOTES": "semantic_interpretation_and_scope"
+    }
+  }
+]

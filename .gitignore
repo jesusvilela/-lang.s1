@@ -1,0 +1,14 @@
+# Node
+node_modules/
+dist/
+*.tgz
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+
+# OS
+.DS_Store
+Thumbs.db

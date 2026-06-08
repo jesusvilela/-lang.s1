@@ -1,0 +1,173 @@
+{
+  "source": "LANG.v1.2.0.unified_geometry.lang",
+  "scope": "practical evidence for Chomsky-hierarchy classification; not a formal proof",
+  "productions": [
+    {
+      "lhs": "programa",
+      "alternatives": [
+        "sección programa",
+        "epsilon"
+      ]
+    },
+    {
+      "lhs": "sección",
+      "alternatives": [
+        "§.(term)",
+        "§S{fields}",
+        "fix(term)",
+        "emit(term)",
+        "canon(term)",
+        "term",
+        "term |> Holo"
+      ]
+    },
+    {
+      "lhs": "term",
+      "alternatives": [
+        "var",
+        "term term",
+        "λvar.term",
+        "fix(term)",
+        "emit(term)",
+        "canon(term)",
+        "§.(term)",
+        "FFT(term)",
+        "term |> H"
+      ]
+    },
+    {
+      "lhs": "var",
+      "alternatives": [
+        "alphanumeric_identifier"
+      ]
+    },
+    {
+      "lhs": "fields",
+      "alternatives": [
+        "label=string, x=[f1..f8], sal=float"
+      ]
+    },
+    {
+      "lhs": "nontrivial",
+      "alternatives": [
+        "§.(e) moves_repr_toward_origin_*0.93"
+      ]
+    },
+    {
+      "lhs": "section",
+      "alternatives": [
+        "§S{...} embeds_in_B_n_at_ball_coordinates_x"
+      ]
+    },
+    {
+      "lhs": "pipe",
+      "alternatives": [
+        "term |> H routes_section_to_holographic_screen"
+      ]
+    },
+    {
+      "lhs": "backquote",
+      "alternatives": [
+        "`term marks_section_active"
+      ]
+    },
+    {
+      "lhs": "paren",
+      "alternatives": [
+        "(term) grouping"
+      ]
+    }
+  ],
+  "classification_evidence": {
+    "lexical_layer": {
+      "classification": "Type-3 / regular evidence",
+      "evidence": [
+        "`var = alphanumeric_identifier` is a regular-token description",
+        "numeric field/salience literals are matched by finite regular patterns in existing validators"
+      ]
+    },
+    "surface_syntax_layer": {
+      "classification": "Type-2 / context-free evidence",
+      "type_2_context_free_shape": true,
+      "not_type_3_regular_surface_evidence": true,
+      "nonregular_evidence": [
+        "`backquote = `term marks_section_active` nests or embeds nonterminal `term`",
+        "`paren = (term) grouping` nests or embeds nonterminal `term`",
+        "`programa = sección programa` contains multiple nonterminals on the RHS",
+        "`sección = canon(term)` nests or embeds nonterminal `term`",
+        "`sección = emit(term)` nests or embeds nonterminal `term`",
+        "`sección = fix(term)` nests or embeds nonterminal `term`",
+        "`sección = §.(term)` nests or embeds nonterminal `term`",
+        "`sección = §S{fields}` nests or embeds nonterminal `fields`",
+        "`term = FFT(term)` nests or embeds nonterminal `term`",
+        "`term = canon(term)` nests or embeds nonterminal `term`",
+        "`term = emit(term)` nests or embeds nonterminal `term`",
+        "`term = fix(term)` nests or embeds nonterminal `term`",
+        "`term = term term` contains multiple nonterminals on the RHS",
+        "`term = §.(term)` nests or embeds nonterminal `term`",
+        "`term = λvar.term` contains multiple nonterminals on the RHS"
+      ],
+      "nested_term_witnesses": [
+        {
+          "depth": 1,
+          "term": "§.(a)",
+          "recursive_parser_accepts": true,
+          "single_wrap_regular_regex_accepts": true
+        },
+        {
+          "depth": 2,
+          "term": "§.(§.(a))",
+          "recursive_parser_accepts": true,
+          "single_wrap_regular_regex_accepts": false
+        },
+        {
+          "depth": 3,
+          "term": "§.(§.(§.(a)))",
+          "recursive_parser_accepts": true,
+          "single_wrap_regular_regex_accepts": false
+        },
+        {
+          "depth": 4,
+          "term": "§.(§.(§.(§.(a))))",
+          "recursive_parser_accepts": true,
+          "single_wrap_regular_regex_accepts": false
+        },
+        {
+          "depth": 5,
+          "term": "§.(§.(§.(§.(§.(a)))))",
+          "recursive_parser_accepts": true,
+          "single_wrap_regular_regex_accepts": false
+        },
+        {
+          "depth": 6,
+          "term": "§.(§.(§.(§.(§.(§.(a))))))",
+          "recursive_parser_accepts": true,
+          "single_wrap_regular_regex_accepts": false
+        }
+      ]
+    },
+    "semantic_layer": {
+      "classification": "Type-0 / recursively enumerable evidence only",
+      "evidence": {
+        "lambda_symbol_present": true,
+        "fixpoint_operator_present": true,
+        "turing_encoding_block_present": true,
+        "declared_computability_claim_present": true
+      },
+      "limitation": "The repository contains symbolic `fix`, λ-calculus, and Turing-encoding declarations, but no executable interpreter or proof checker establishing full semantic equivalence."
+    }
+  },
+  "checks": {
+    "grammar_block_present": true,
+    "productions_extracted": true,
+    "surface_grammar_is_context_free_shape": true,
+    "surface_grammar_has_nonregular_recursion_evidence": true,
+    "recursive_witnesses_parse": true,
+    "semantic_type0_markers_present": true
+  },
+  "limitations": [
+    "This script does not prove that the full language is exactly Type-2 or Type-0.",
+    "It verifies declared grammar shape and concrete recursive-syntax witnesses only.",
+    "Semantic claims about self-reference, prime-other resonance, and LLM-induced expansion remain unverified by executable evidence."
+  ]
+}
