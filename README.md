@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 # §-LANG — Unified Geometry Language
 
 ![§-LANG v3 ToE · self-referential boot seed · v5 runtime](figures/slang_boot_banner.png)
@@ -21,25 +22,47 @@ Current versions in this repository:
 - `LANG.v6.chomsky_hyperdim_cognition.lang` — Chomsky hierarchy in hyperdimensional cognitive geometry
 - `dialects/` + `selfcompressed/` + `packs/` — v3 ToE matter / prime packs
 - `RUNTIME_CAPABILITIES.md`            — which tokens are executable in v5
+=======
+<div align="center">
+  <img src="assets/UTAI_Bunny.png" alt="UTAI Bunny Logo" width="400"/>
+</div>
+>>>>>>> Stashed changes
 
 ---
+# UTAI — Universal Topos-Arithmetic Interface
 
-## Topos AI — Lafforgue-Oriented Interpretation
+## The Uber-Topos AI
 
-This repository adopts a **Topos AI (Lafforgue-oriented)** framing:
+This repository contains the operational realization of the **UTAI** (Uber Topos AI, an Universal Topos-Arithmetic Interface), an ulterior construct built upon the §-LANG geometric specification. 
 
-- **Geometric theories as executable semantics:** Terms are interpreted as sections over a hyperbolic base manifold.
-- **Topos-level consistency:** Sheaf gluing and classifier-topos ideas provide global coherence across local semantic patches.
-- **Reversible computation on bundles:** Involution and transport operations (`rho`, `tau`, `nabla_IG`) keep geometric/statistical structure explicit.
-- **Learning as intrinsic geometry:** Natural-gradient updates are encoded directly through Fisher inverse actions.
-- **Spectral + probabilistic + logical unification:** FFT pipeline, mixture semantics, and typed lambda constructs coexist in one theory object.
+While §-LANG provides the language for describing sections on hyperbolic manifolds, UTAI implements the **Hamiltonian n-Cosmos**—a recursive, substrate-realized sectional computer where symbolic knowledge is unified with geometric formal rigor.
 
-This is inspired by the “geometric theory + topos semantics” perspective often associated with Lafforgue-style mathematical unification in high-level formal systems.
+### Key Components
+
+- **`HYPERDIM_TOPOS_AI/`**: The core Python runtime for hyperdimensional Topos dynamics, including Hamiltonian flow engines and the Actor/Critic/Fuzzer (ACF) adversarial cycle.
+- **`HYPERDIM_WEB_VIS/`**: A high-end Three.js visibility node for the n-Cosmos, featuring pure Slang Graphics and a Quantum Holoportation Channel (QHC) for bidirectional NLP interaction.
+- **`LLM_FRIENDLY_TOPOS_AI/`**: The implementation of "Geometrical Tendrils" and Hamiltonian Chain of Thought (H-CoT), bridging LLM latent spaces to rigorous Topos substrates.
+- **`NCOSMOS_ANDROID_ENGINE/`**: A native C++/Kotlin engine for Android, transforming mobile devices into realized Substrate Nodes.
+- **`SLANG_STUDY/`**: The Evidence Tower and operational proofs that provide the truth-disciplined foundation for the Topos AI.
+
+### Ulterior .lang Packs
+
+This repository hosts the v3.0 through v5.0 §-LANG dialects that go beyond pure language specification into substrate realization:
+- `LANG.v3.0.substrate_realization.lang`
+- `LANG.v3.1.recursive_sectional_computer.lang`
+- `LANG.v3.2.actor_critic_fuzzer_cycle.lang`
+- `LANG.v5.topos_ai_cosmos_synthesis.lang`
+
+### Research Foundation
+
+The UTAI construct is the result of the synthesis between the §-LANG framework and the **Bunny** (Lean 4) formal verification engine, establishing a machine-checked "Uber-Topos AI" in a recursive Hamiltonian cosmos.
 
 ---
+(c) Jesús Vilela Jato, 2026.
 
-## Why this exists
+## Manuals & Documentation
 
+<<<<<<< Updated upstream
 The language artifact is designed to be:
 
 1. **Portable** — a single source-of-truth file for formal tooling.
@@ -217,3 +240,7 @@ Added `LANG.v2.5.tower.geom.lang` as a platform-agnostic geometric specification
 - canonical tower output formula.
 
 This file intentionally excludes application/runtime/system bindings and keeps only geometric-semantic structure.
+=======
+- **[SCIENTIFIC MANUAL](SCIENTIFIC_MANUAL.md):** A rigorous technical specification of the UTAI, its mathematical foundations, and its implementation.
+- **[OPERATOR'S MANUAL (MODEL 1A)](OPERATOR_MANUAL_1960.md):** A stylized guide for interfacing with the Cognitive Core and interpreting telemetry from the n-Cosmos substrate.
+>>>>>>> Stashed changes
