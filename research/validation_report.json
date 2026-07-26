@@ -3,6 +3,7 @@
   "profile": "unified_geometry",
   "surface": "legacy_block",
   "pack": null,
+  "expected_pack": null,
   "version": null,
   "num_lines": 411,
   "num_blocks": 22,
@@ -35,6 +36,7 @@
   "checks": {
     "declared_profile_known": "PASS",
     "surface_recognized": "PASS",
+    "pack_identity_matches_profile": "NOT_APPLICABLE",
     "block_headers_present": "PASS",
     "section_vectors_dimension_8": "PASS",
     "section_norm_below_0_999": "PASS",
@@ -46,6 +48,11 @@
   "geometry": {
     "max_section_norm": 0.683667,
     "margin_to_boundary_0_999": 0.315333
+  },
+  "declarations": {
+    "theorem_declarations": 0,
+    "axiom_declarations": 0,
+    "commit_markers": 0
   },
   "notes": []
 }

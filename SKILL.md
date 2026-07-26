@@ -47,6 +47,10 @@ inputs the skill workflow reads; it must not drift from that manifest.
 - `LANG.v6.chomsky_hyperdim_cognition.lang` — Chomsky hyperdim cognition
 - `DIALECTS.v2.1.family.lang` — dialect family split (Core / Semantic / Dynamic / Formation / Research)
 - `MHRR_PM_Hypercomplex_Orthogonal.lang` — experimental R142/MHRR pack
+- `principia_seed.lang` — PM axiom seed pack
+- `principia_mathematica_full_N400.lang` — 400-depth generated PM deduction tree
+- `principia_360_prime_orthogonal.lang` — 360-prime orthogonal PM tree
+- `ncosmo_hypercomplex_unification.lang` — 7-level n-Cosmos sheaf pack
 - `RUNTIME_CAPABILITIES.md` — reported executable vs symbolic-only token surface for the v5 runtime
 - `THESIS.md`
 - `research/auto_research.yaml`
@@ -54,8 +58,9 @@ inputs the skill workflow reads; it must not drift from that manifest.
 - `tools/plot_principles.py`
 - `tools/stego_boot_banner.py` — encoder/decoder for the self-referential boot-seed banner
 
-Unvalidated bulk artifacts (`principia_*.lang`, `ncosmo_*.lang`) are not skill
-inputs. They are undeclared surfaces carrying no structural evidence status.
+Pack inputs carry a `pack` surface: headers and pack identity are checked, and
+nothing else is. Read [`PACKS.md`](PACKS.md) before treating any pack content as
+a result — a `⊢ COMMIT` in a pack is emitted text, not a discharged judgment.
 
 ## Required Outputs
 - Updated validation reports:

@@ -47,6 +47,81 @@ claims:
       - formal provability result
       - executability of tokens appearing in the decoded payload
 
+  - id: SLANG-PACK-001
+    text: Each declared pack presents explicit §PACK and §VERSION headers whose declared pack identity matches its declared validation profile.
+    layer: L_syn
+    status: P
+    scope: >-
+      Header presence and pack-identity binding only. Establishes that a declared
+      pack file is the pack it claims to be, and nothing about its contents.
+    artifacts:
+      - validation/sources.json
+      - tools/validate_typecast.py
+      - tests/test_validate_typecast.py
+      - research/validation_report_all.json
+    forbidden_promotions:
+      - soundness of any deduction tree in a pack
+      - proof status of any §THEOREM line
+      - the turnstile marker as a discharged judgment
+      - semantic or empirical content of pack coordinates
+
+  - id: PACK-THEOREM-001
+    text: The declared packs contain 3871 §THEOREM lines and 3875 turnstile COMMIT markers.
+    layer: L_syn
+    status: P
+    scope: >-
+      A tally of lines matching a surface pattern, reproduced by the validator on
+      every build. It counts text. It checks nothing about what the text asserts.
+    artifacts:
+      - tools/validate_typecast.py
+      - research/validation_report_all.json
+      - PACKS.md
+    forbidden_promotions:
+      - number of proved theorems
+      - number of verified deductions
+      - evidence that Principia Mathematica was reconstructed
+
+  - id: PACK-NUMERICS-001
+    text: Pack-reported quantities such as Mind Hamiltonian H(Q), CP, BERRY, and TELOS describe the modelled system.
+    layer: L_op
+    status: H
+    scope: >-
+      Emitted numbers with no generator, seed, estimator, or uncertainty method
+      published in this repository. Not reproducible here, therefore not M.
+    artifacts:
+      - ncosmo_hypercomplex_unification.lang
+      - principia_mathematica_full_N400.lang
+      - principia_360_prime_orthogonal.lang
+      - PACKS.md
+    required_bridge:
+      - publish the generator that produced each pack
+      - raw data, seeds, and parameter ranges
+      - estimator and uncertainty method
+      - matched nulls and execution environment
+    forbidden_promotions:
+      - measured constant
+      - adiabatic ground state as a physical finding
+      - Hegelian closure or unification as an established result
+
+  - id: PACK-SHIELD-001
+    text: Coprime basis projection over 360 distinct primes shields the deduction tree against Loeb/Curry self-reference.
+    layer: L_sem
+    status: H
+    scope: >-
+      The 360-prime construction is verified present; that it shields anything is
+      asserted by the pack version string and not tested. No adversarial attack
+      was run against it.
+    artifacts:
+      - principia_360_prime_orthogonal.lang
+      - PACKS.md
+    required_bridge:
+      - state the self-reference attack being defended against
+      - construct an attack that could fail the shield
+      - publish the run and its outcome
+    forbidden_promotions:
+      - proved consistency
+      - paradox freedom
+
   - id: SLANG-RUNTIME-001
     text: The documented v5 tokens have the stated executable semantics.
     layer: L_op
@@ -89,6 +164,11 @@ claims:
       - universal constant
       - substrate stability
       - complexity lower bound
+    known_divergence: >-
+      The pack source text states "Measured constant: rho-star ~ 0.135 +/- 0.003
+      (substrate-stable)". The ledger does not accept that wording. The pack is
+      left as generated to preserve provenance; where pack text and this ledger
+      disagree, this ledger governs.
 
   - id: R142-COMPLEXITY-001
     text: Positive-density clustered defects imply a complexity lower bound.

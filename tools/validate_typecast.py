@@ -33,19 +33,34 @@ BLOCK_RE = re.compile(r"^§\|LANG\|([A-Z_]+)\{")
 SECTION_RE = re.compile(r"^§S\{label=([^,]+), x=\[([^\]]+)\], sal=([0-9.]+)\}$")
 PACK_RE = re.compile(r"^§PACK\s+(.+)$")
 VERSION_RE = re.compile(r"^§VERSION\s+(.+)$")
+THEOREM_RE = re.compile(r"^§THEOREM")
+AXIOM_RE = re.compile(r"^§AXIOM")
+COMMIT_RE = re.compile(r"⊢\s*COMMIT")
 
+LEGACY_BLOCK = "legacy_block"
+PACK = "pack"
+
+# A profile declares the surface it is validated as. `legacy_block` profiles
+# require named §|LANG|<BLOCK>{ headers; `pack` profiles require explicit §PACK
+# and §VERSION headers and bind the declared pack identity, so one pack file
+# cannot silently stand in for another. Neither surface implies semantics.
 PROFILES: dict[str, dict[str, object]] = {
     "unified_geometry": {
+        "surface": LEGACY_BLOCK,
         "required": ["SOURCE", "AXIOMS", "OUTPUT", "BASES", "SORTS", "FUNCTORS", "SEMANTICS", "REDUCTION_BETA", "TURING_ENCODING", "SPECTRAL_PIPELINE", "FISHER_UPDATE", "INTER_MANIFOLD", "GRAMMAR", "NOTATION_MAP", "SEMANTICS_TOPOS", "AML_DEFINITION", "NMATRIX_SELFREF", "FIBER_BUNDLE_POSSIBILITY_SPACE", "ADIABATIC_MOBIUS_FLOW", "CONCLUSIONS"],
     },
-    "tower_geom": {"required": ["SOURCE", "SORTS", "AXIOMS", "TOWER_STRUCTURE", "INVARIANTS", "REDUCTION", "OUTPUT", "NOTES"]},
-    "substrate": {"required": ["SOURCE", "NATIVE_SUBSTRATE", "AXIOMS", "HAMILTONIAN_FLOW", "HOLOGRAPHIC_SCREEN_SN", "OUTPUT", "NOTES"]},
-    "recursive_sectional": {"required": ["SOURCE", "RECURSIVE_SUBSTRATE", "AXIOMS", "SECTIONAL_COMPUTER_RECURSION", "HOLOGRAPHIC_NESTING", "OUTPUT", "NOTES"]},
-    "actor_critic": {"required": ["SOURCE", "ACF_ROLES", "ACTOR_CRITIC_DYNAMICS", "FUZZER_EXPLORATION", "OUTPUT", "NOTES"]},
-    "topos_ai": {"required": ["SOURCE", "TOPOS_AI_COSMOS_STRUCTURE", "NATIVE_PHYSICS_AXIOMS", "RECURSIVE_OPERATOR_FLOW", "HOLOGRAPHIC_COMMIT_PROTOCOL", "OUTPUT", "NOTES"]},
-    "chomsky_hyperdim": {"required": ["SOURCE", "CHOMSKY_GEOMETRIC_SPACE", "HYPERDIM_MATRIX_CONTEXT", "SELF_GODEL_IDENTITY", "OTHERS_RESONANCE", "N_COSMO_BUNDLE_SHEAF", "HAMILTONIAN_HOLOPORTATION", "MIND_QUALITIES_EIGHT", "STEPWISE_IMPLEMENTATION", "OUTPUT", "NOTES"]},
-    "dialects": {"required": ["DIALECT_TREE", "DIALECT_RULES", "DIALECT_NOTES"]},
-    "mhrr_pack_v1": {"required": []},
+    "tower_geom": {"surface": LEGACY_BLOCK, "required": ["SOURCE", "SORTS", "AXIOMS", "TOWER_STRUCTURE", "INVARIANTS", "REDUCTION", "OUTPUT", "NOTES"]},
+    "substrate": {"surface": LEGACY_BLOCK, "required": ["SOURCE", "NATIVE_SUBSTRATE", "AXIOMS", "HAMILTONIAN_FLOW", "HOLOGRAPHIC_SCREEN_SN", "OUTPUT", "NOTES"]},
+    "recursive_sectional": {"surface": LEGACY_BLOCK, "required": ["SOURCE", "RECURSIVE_SUBSTRATE", "AXIOMS", "SECTIONAL_COMPUTER_RECURSION", "HOLOGRAPHIC_NESTING", "OUTPUT", "NOTES"]},
+    "actor_critic": {"surface": LEGACY_BLOCK, "required": ["SOURCE", "ACF_ROLES", "ACTOR_CRITIC_DYNAMICS", "FUZZER_EXPLORATION", "OUTPUT", "NOTES"]},
+    "topos_ai": {"surface": LEGACY_BLOCK, "required": ["SOURCE", "TOPOS_AI_COSMOS_STRUCTURE", "NATIVE_PHYSICS_AXIOMS", "RECURSIVE_OPERATOR_FLOW", "HOLOGRAPHIC_COMMIT_PROTOCOL", "OUTPUT", "NOTES"]},
+    "chomsky_hyperdim": {"surface": LEGACY_BLOCK, "required": ["SOURCE", "CHOMSKY_GEOMETRIC_SPACE", "HYPERDIM_MATRIX_CONTEXT", "SELF_GODEL_IDENTITY", "OTHERS_RESONANCE", "N_COSMO_BUNDLE_SHEAF", "HAMILTONIAN_HOLOPORTATION", "MIND_QUALITIES_EIGHT", "STEPWISE_IMPLEMENTATION", "OUTPUT", "NOTES"]},
+    "dialects": {"surface": LEGACY_BLOCK, "required": ["DIALECT_TREE", "DIALECT_RULES", "DIALECT_NOTES"]},
+    "mhrr_pack_v1": {"surface": PACK, "required": [], "expected_pack": "MHRR_PM_Hypercomplex_Orthogonal"},
+    "principia_seed_v1": {"surface": PACK, "required": [], "expected_pack": "Principia_Mathematica_Phase1"},
+    "principia_n400_v1": {"surface": PACK, "required": [], "expected_pack": "Principia_Mathematica_Vol1_N3"},
+    "principia_360_prime_v2": {"surface": PACK, "required": [], "expected_pack": "Principia_Mathematica_360_Prime_Orthogonal"},
+    "ncosmo_unification_v3": {"surface": PACK, "required": [], "expected_pack": "NCosmo_Hypercomplex_Unification"},
 }
 
 
@@ -103,6 +118,9 @@ def validate_source(src: Path, profile: str) -> dict:
     sections: list[SectionPoint] = []
     pack_name: str | None = None
     version: str | None = None
+    theorem_declarations = 0
+    axiom_declarations = 0
+    commit_markers = 0
 
     for raw in lines:
         line = raw.strip()
@@ -114,23 +132,42 @@ def validate_source(src: Path, profile: str) -> dict:
             pack_name = match.group(1).strip()
         if match := VERSION_RE.match(line):
             version = match.group(1).strip()
+        if THEOREM_RE.match(line):
+            theorem_declarations += 1
+        if AXIOM_RE.match(line):
+            axiom_declarations += 1
+        if COMMIT_RE.search(line):
+            commit_markers += 1
 
     block_set = set(blocks)
-    required = list(PROFILES[profile]["required"])
+    spec = PROFILES[profile]
+    required = list(spec["required"])
     missing = [name for name in required if name not in block_set]
+    expected_pack = spec.get("expected_pack")
 
-    if profile == "mhrr_pack_v1":
+    if spec.get("surface") == PACK:
         surface_status = PASS if pack_name and version else FAIL
         block_status = NOT_APPLICABLE
-        notes = ["MHRR pack surface recognized by explicit §PACK and §VERSION headers.", "Semantic, theorem, and empirical claims are NOT_TESTED by this validator."]
+        if expected_pack is None:
+            identity_status = NOT_APPLICABLE
+        else:
+            identity_status = PASS if pack_name == expected_pack else FAIL
+        notes = [
+            "Pack surface recognized by explicit §PACK and §VERSION headers.",
+            "Declaration counts are surface tallies, not proofs: a §THEOREM line "
+            "and a ⊢ COMMIT marker are text this validator counted, not results it checked.",
+            "Semantic, theorem, and empirical claims are NOT_TESTED by this validator.",
+        ]
     else:
         surface_status = PASS
         block_status = PASS if not missing else FAIL
+        identity_status = NOT_APPLICABLE
         notes = []
 
     checks = {
         "declared_profile_known": PASS,
         "surface_recognized": surface_status,
+        "pack_identity_matches_profile": identity_status,
         "block_headers_present": block_status,
         "section_vectors_dimension_8": property_status(sections, lambda p: len(p.x) == EXPECTED_SECTION_DIMENSION),
         "section_norm_below_0_999": property_status(sections, lambda p: p.norm < POINCARE_BOUNDARY_MARGIN),
@@ -144,14 +181,20 @@ def validate_source(src: Path, profile: str) -> dict:
     margin = None if max_norm is None else POINCARE_BOUNDARY_MARGIN - max_norm
     return {
         "source": str(src), "profile": profile,
-        "surface": "pack" if pack_name else "legacy_block",
-        "pack": pack_name, "version": version,
+        "surface": PACK if spec.get("surface") == PACK else LEGACY_BLOCK,
+        "pack": pack_name, "expected_pack": expected_pack, "version": version,
         "num_lines": len(lines), "num_blocks": len(blocks),
         "unique_blocks": sorted(block_set), "missing_required_blocks": missing,
         "num_sections": len(sections), "checks": checks,
         "geometry": {
             "max_section_norm": None if max_norm is None else round(max_norm, 6),
             "margin_to_boundary_0_999": None if margin is None else round(margin, 6),
+        },
+        # Surface tallies only. Counting a §THEOREM line is not checking a theorem.
+        "declarations": {
+            "theorem_declarations": theorem_declarations,
+            "axiom_declarations": axiom_declarations,
+            "commit_markers": commit_markers,
         },
         "notes": notes,
     }
@@ -176,11 +219,21 @@ def report_to_md_lines(report: dict) -> list[str]:
     ]
     for name, status in report["checks"].items():
         lines.append(f"- {status_icon(status)} `{name}` — `{status}`")
+    lines.extend(["", "## Declarations (surface tallies, not results)", ""] + declaration_lines(report))
     if report["missing_required_blocks"]:
         lines.extend(["", f"Missing required blocks: `{report['missing_required_blocks']}`"])
     if report["notes"]:
         lines.extend(["", "## Notes"] + [f"- {note}" for note in report["notes"]])
     return lines
+
+
+def declaration_lines(report: dict) -> list[str]:
+    counts = report.get("declarations") or {}
+    return [
+        f"- `theorem_declarations`: {counts.get('theorem_declarations', 0)}",
+        f"- `axiom_declarations`: {counts.get('axiom_declarations', 0)}",
+        f"- `commit_markers`: {counts.get('commit_markers', 0)}",
+    ]
 
 
 def build_aggregate_md(reports: list[dict]) -> list[str]:
@@ -189,16 +242,24 @@ def build_aggregate_md(reports: list[dict]) -> list[str]:
         "# §-LANG Aggregate Validation Report", "",
         "> Scope: declared structural surfaces only. `NOT_TESTED` and `NOT_APPLICABLE` are not passes.", "",
         f"## Summary {'✅' if all_pass else '❌'}", "",
-        "| Source | Profile | Surface | Sections | Structural result |",
-        "|---|---|---:|---:|---|",
+        "| Source | Profile | Surface | Sections | Theorem decls | Structural result |",
+        "|---|---|---:|---:|---:|---|",
     ]
     for report in reports:
-        lines.append(f"| `{report['source']}` | `{report['profile']}` | `{report['surface']}` | {report['num_sections']} | {'PASS' if report_passes(report) else 'FAIL'} |")
-    lines.append("")
+        decls = (report.get("declarations") or {}).get("theorem_declarations", 0)
+        lines.append(f"| `{report['source']}` | `{report['profile']}` | `{report['surface']}` | {report['num_sections']} | {decls} | {'PASS' if report_passes(report) else 'FAIL'} |")
+    lines.extend([
+        "",
+        "`Theorem decls` counts `§THEOREM` lines present in the source text. It is a",
+        "surface tally, not a count of checked theorems, and carries no proof authority.",
+        "",
+    ])
     for report in reports:
         lines.extend([f"## `{report['source']}`", ""])
         for name, status in report["checks"].items():
             lines.append(f"- {status_icon(status)} `{name}` — `{status}`")
+        if report.get("declarations"):
+            lines.extend(["", "Declarations (surface tallies):"] + declaration_lines(report))
         lines.append("")
     return lines
 

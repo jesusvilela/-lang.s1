@@ -12,6 +12,7 @@
 ## Checks
 - ✅ `declared_profile_known` — `PASS`
 - ✅ `surface_recognized` — `PASS`
+- ➖ `pack_identity_matches_profile` — `NOT_APPLICABLE`
 - ✅ `block_headers_present` — `PASS`
 - ✅ `section_vectors_dimension_8` — `PASS`
 - ✅ `section_norm_below_0_999` — `PASS`
@@ -19,3 +20,9 @@
 - ⚪ `semantic_correctness` — `NOT_TESTED`
 - ⚪ `mathematical_claims` — `NOT_TESTED`
 - ⚪ `empirical_claims` — `NOT_TESTED`
+
+## Declarations (surface tallies, not results)
+
+- `theorem_declarations`: 0
+- `axiom_declarations`: 0
+- `commit_markers`: 0

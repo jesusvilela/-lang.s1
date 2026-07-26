@@ -4,6 +4,7 @@
     "profile": "dialects",
     "surface": "legacy_block",
     "pack": null,
+    "expected_pack": null,
     "version": null,
     "num_lines": 123,
     "num_blocks": 3,
@@ -17,6 +18,7 @@
     "checks": {
       "declared_profile_known": "PASS",
       "surface_recognized": "PASS",
+      "pack_identity_matches_profile": "NOT_APPLICABLE",
       "block_headers_present": "PASS",
       "section_vectors_dimension_8": "NOT_APPLICABLE",
       "section_norm_below_0_999": "NOT_APPLICABLE",
@@ -29,6 +31,11 @@
       "max_section_norm": null,
       "margin_to_boundary_0_999": null
     },
+    "declarations": {
+      "theorem_declarations": 0,
+      "axiom_declarations": 0,
+      "commit_markers": 0
+    },
     "notes": []
   },
   {
@@ -36,6 +43,7 @@
     "profile": "unified_geometry",
     "surface": "legacy_block",
     "pack": null,
+    "expected_pack": null,
     "version": null,
     "num_lines": 411,
     "num_blocks": 22,
@@ -68,6 +76,7 @@
     "checks": {
       "declared_profile_known": "PASS",
       "surface_recognized": "PASS",
+      "pack_identity_matches_profile": "NOT_APPLICABLE",
       "block_headers_present": "PASS",
       "section_vectors_dimension_8": "PASS",
       "section_norm_below_0_999": "PASS",
@@ -80,6 +89,11 @@
       "max_section_norm": 0.683667,
       "margin_to_boundary_0_999": 0.315333
     },
+    "declarations": {
+      "theorem_declarations": 0,
+      "axiom_declarations": 0,
+      "commit_markers": 0
+    },
     "notes": []
   },
   {
@@ -87,6 +101,7 @@
     "profile": "tower_geom",
     "surface": "legacy_block",
     "pack": null,
+    "expected_pack": null,
     "version": null,
     "num_lines": 55,
     "num_blocks": 8,
@@ -105,6 +120,7 @@
     "checks": {
       "declared_profile_known": "PASS",
       "surface_recognized": "PASS",
+      "pack_identity_matches_profile": "NOT_APPLICABLE",
       "block_headers_present": "PASS",
       "section_vectors_dimension_8": "NOT_APPLICABLE",
       "section_norm_below_0_999": "NOT_APPLICABLE",
@@ -117,6 +133,11 @@
       "max_section_norm": null,
       "margin_to_boundary_0_999": null
     },
+    "declarations": {
+      "theorem_declarations": 0,
+      "axiom_declarations": 0,
+      "commit_markers": 0
+    },
     "notes": []
   },
   {
@@ -124,6 +145,7 @@
     "profile": "substrate",
     "surface": "legacy_block",
     "pack": null,
+    "expected_pack": null,
     "version": null,
     "num_lines": 52,
     "num_blocks": 7,
@@ -141,6 +163,7 @@
     "checks": {
       "declared_profile_known": "PASS",
       "surface_recognized": "PASS",
+      "pack_identity_matches_profile": "NOT_APPLICABLE",
       "block_headers_present": "PASS",
       "section_vectors_dimension_8": "NOT_APPLICABLE",
       "section_norm_below_0_999": "NOT_APPLICABLE",
@@ -153,6 +176,11 @@
       "max_section_norm": null,
       "margin_to_boundary_0_999": null
     },
+    "declarations": {
+      "theorem_declarations": 0,
+      "axiom_declarations": 0,
+      "commit_markers": 0
+    },
     "notes": []
   },
   {
@@ -160,6 +188,7 @@
     "profile": "recursive_sectional",
     "surface": "legacy_block",
     "pack": null,
+    "expected_pack": null,
     "version": null,
     "num_lines": 51,
     "num_blocks": 7,
@@ -177,6 +206,7 @@
     "checks": {
       "declared_profile_known": "PASS",
       "surface_recognized": "PASS",
+      "pack_identity_matches_profile": "NOT_APPLICABLE",
       "block_headers_present": "PASS",
       "section_vectors_dimension_8": "NOT_APPLICABLE",
       "section_norm_below_0_999": "NOT_APPLICABLE",
@@ -189,6 +219,11 @@
       "max_section_norm": null,
       "margin_to_boundary_0_999": null
     },
+    "declarations": {
+      "theorem_declarations": 0,
+      "axiom_declarations": 0,
+      "commit_markers": 0
+    },
     "notes": []
   },
   {
@@ -196,6 +231,7 @@
     "profile": "actor_critic",
     "surface": "legacy_block",
     "pack": null,
+    "expected_pack": null,
     "version": null,
     "num_lines": 44,
     "num_blocks": 6,
@@ -212,6 +248,7 @@
     "checks": {
       "declared_profile_known": "PASS",
       "surface_recognized": "PASS",
+      "pack_identity_matches_profile": "NOT_APPLICABLE",
       "block_headers_present": "PASS",
       "section_vectors_dimension_8": "NOT_APPLICABLE",
       "section_norm_below_0_999": "NOT_APPLICABLE",
@@ -224,6 +261,11 @@
       "max_section_norm": null,
       "margin_to_boundary_0_999": null
     },
+    "declarations": {
+      "theorem_declarations": 0,
+      "axiom_declarations": 0,
+      "commit_markers": 0
+    },
     "notes": []
   },
   {
@@ -231,6 +273,7 @@
     "profile": "topos_ai",
     "surface": "legacy_block",
     "pack": null,
+    "expected_pack": null,
     "version": null,
     "num_lines": 52,
     "num_blocks": 7,
@@ -248,6 +291,7 @@
     "checks": {
       "declared_profile_known": "PASS",
       "surface_recognized": "PASS",
+      "pack_identity_matches_profile": "NOT_APPLICABLE",
       "block_headers_present": "PASS",
       "section_vectors_dimension_8": "NOT_APPLICABLE",
       "section_norm_below_0_999": "NOT_APPLICABLE",
@@ -260,6 +304,11 @@
       "max_section_norm": null,
       "margin_to_boundary_0_999": null
     },
+    "declarations": {
+      "theorem_declarations": 0,
+      "axiom_declarations": 0,
+      "commit_markers": 0
+    },
     "notes": []
   },
   {
@@ -267,6 +316,7 @@
     "profile": "chomsky_hyperdim",
     "surface": "legacy_block",
     "pack": null,
+    "expected_pack": null,
     "version": null,
     "num_lines": 96,
     "num_blocks": 11,
@@ -288,6 +338,7 @@
     "checks": {
       "declared_profile_known": "PASS",
       "surface_recognized": "PASS",
+      "pack_identity_matches_profile": "NOT_APPLICABLE",
       "block_headers_present": "PASS",
       "section_vectors_dimension_8": "PASS",
       "section_norm_below_0_999": "PASS",
@@ -300,6 +351,11 @@
       "max_section_norm": 0.370945,
       "margin_to_boundary_0_999": 0.628055
     },
+    "declarations": {
+      "theorem_declarations": 0,
+      "axiom_declarations": 0,
+      "commit_markers": 0
+    },
     "notes": []
   },
   {
@@ -307,6 +363,7 @@
     "profile": "mhrr_pack_v1",
     "surface": "pack",
     "pack": "MHRR_PM_Hypercomplex_Orthogonal",
+    "expected_pack": "MHRR_PM_Hypercomplex_Orthogonal",
     "version": "4.0 (R142 ρ★-Anchored / 360-Prime-Shielded / Löb-Free)",
     "num_lines": 365,
     "num_blocks": 0,
@@ -316,6 +373,7 @@
     "checks": {
       "declared_profile_known": "PASS",
       "surface_recognized": "PASS",
+      "pack_identity_matches_profile": "PASS",
       "block_headers_present": "NOT_APPLICABLE",
       "section_vectors_dimension_8": "NOT_APPLICABLE",
       "section_norm_below_0_999": "NOT_APPLICABLE",
@@ -328,8 +386,170 @@
       "max_section_norm": null,
       "margin_to_boundary_0_999": null
     },
+    "declarations": {
+      "theorem_declarations": 1,
+      "axiom_declarations": 8,
+      "commit_markers": 5
+    },
     "notes": [
-      "MHRR pack surface recognized by explicit §PACK and §VERSION headers.",
+      "Pack surface recognized by explicit §PACK and §VERSION headers.",
+      "Declaration counts are surface tallies, not proofs: a §THEOREM line and a ⊢ COMMIT marker are text this validator counted, not results it checked.",
+      "Semantic, theorem, and empirical claims are NOT_TESTED by this validator."
+    ]
+  },
+  {
+    "source": "principia_seed.lang",
+    "profile": "principia_seed_v1",
+    "surface": "pack",
+    "pack": "Principia_Mathematica_Phase1",
+    "expected_pack": "Principia_Mathematica_Phase1",
+    "version": "1.0",
+    "num_lines": 40,
+    "num_blocks": 0,
+    "unique_blocks": [],
+    "missing_required_blocks": [],
+    "num_sections": 0,
+    "checks": {
+      "declared_profile_known": "PASS",
+      "surface_recognized": "PASS",
+      "pack_identity_matches_profile": "PASS",
+      "block_headers_present": "NOT_APPLICABLE",
+      "section_vectors_dimension_8": "NOT_APPLICABLE",
+      "section_norm_below_0_999": "NOT_APPLICABLE",
+      "salience_positive": "NOT_APPLICABLE",
+      "semantic_correctness": "NOT_TESTED",
+      "mathematical_claims": "NOT_TESTED",
+      "empirical_claims": "NOT_TESTED"
+    },
+    "geometry": {
+      "max_section_norm": null,
+      "margin_to_boundary_0_999": null
+    },
+    "declarations": {
+      "theorem_declarations": 0,
+      "axiom_declarations": 5,
+      "commit_markers": 0
+    },
+    "notes": [
+      "Pack surface recognized by explicit §PACK and §VERSION headers.",
+      "Declaration counts are surface tallies, not proofs: a §THEOREM line and a ⊢ COMMIT marker are text this validator counted, not results it checked.",
+      "Semantic, theorem, and empirical claims are NOT_TESTED by this validator."
+    ]
+  },
+  {
+    "source": "principia_mathematica_full_N400.lang",
+    "profile": "principia_n400_v1",
+    "surface": "pack",
+    "pack": "Principia_Mathematica_Vol1_N3",
+    "expected_pack": "Principia_Mathematica_Vol1_N3",
+    "version": "1.0 (Fractal Generator)",
+    "num_lines": 10011,
+    "num_blocks": 0,
+    "unique_blocks": [],
+    "missing_required_blocks": [],
+    "num_sections": 0,
+    "checks": {
+      "declared_profile_known": "PASS",
+      "surface_recognized": "PASS",
+      "pack_identity_matches_profile": "PASS",
+      "block_headers_present": "NOT_APPLICABLE",
+      "section_vectors_dimension_8": "NOT_APPLICABLE",
+      "section_norm_below_0_999": "NOT_APPLICABLE",
+      "salience_positive": "NOT_APPLICABLE",
+      "semantic_correctness": "NOT_TESTED",
+      "mathematical_claims": "NOT_TESTED",
+      "empirical_claims": "NOT_TESTED"
+    },
+    "geometry": {
+      "max_section_norm": null,
+      "margin_to_boundary_0_999": null
+    },
+    "declarations": {
+      "theorem_declarations": 2000,
+      "axiom_declarations": 5,
+      "commit_markers": 2000
+    },
+    "notes": [
+      "Pack surface recognized by explicit §PACK and §VERSION headers.",
+      "Declaration counts are surface tallies, not proofs: a §THEOREM line and a ⊢ COMMIT marker are text this validator counted, not results it checked.",
+      "Semantic, theorem, and empirical claims are NOT_TESTED by this validator."
+    ]
+  },
+  {
+    "source": "principia_360_prime_orthogonal.lang",
+    "profile": "principia_360_prime_v2",
+    "surface": "pack",
+    "pack": "Principia_Mathematica_360_Prime_Orthogonal",
+    "expected_pack": "Principia_Mathematica_360_Prime_Orthogonal",
+    "version": "2.0 (Löb/Curry Shielded)",
+    "num_lines": 9012,
+    "num_blocks": 0,
+    "unique_blocks": [],
+    "missing_required_blocks": [],
+    "num_sections": 0,
+    "checks": {
+      "declared_profile_known": "PASS",
+      "surface_recognized": "PASS",
+      "pack_identity_matches_profile": "PASS",
+      "block_headers_present": "NOT_APPLICABLE",
+      "section_vectors_dimension_8": "NOT_APPLICABLE",
+      "section_norm_below_0_999": "NOT_APPLICABLE",
+      "salience_positive": "NOT_APPLICABLE",
+      "semantic_correctness": "NOT_TESTED",
+      "mathematical_claims": "NOT_TESTED",
+      "empirical_claims": "NOT_TESTED"
+    },
+    "geometry": {
+      "max_section_norm": null,
+      "margin_to_boundary_0_999": null
+    },
+    "declarations": {
+      "theorem_declarations": 1800,
+      "axiom_declarations": 5,
+      "commit_markers": 1800
+    },
+    "notes": [
+      "Pack surface recognized by explicit §PACK and §VERSION headers.",
+      "Declaration counts are surface tallies, not proofs: a §THEOREM line and a ⊢ COMMIT marker are text this validator counted, not results it checked.",
+      "Semantic, theorem, and empirical claims are NOT_TESTED by this validator."
+    ]
+  },
+  {
+    "source": "ncosmo_hypercomplex_unification.lang",
+    "profile": "ncosmo_unification_v3",
+    "surface": "pack",
+    "pack": "NCosmo_Hypercomplex_Unification",
+    "expected_pack": "NCosmo_Hypercomplex_Unification",
+    "version": "3.0 (8-Mind Hamiltonian Governed / n-Manifold Sheaved)",
+    "num_lines": 356,
+    "num_blocks": 0,
+    "unique_blocks": [],
+    "missing_required_blocks": [],
+    "num_sections": 0,
+    "checks": {
+      "declared_profile_known": "PASS",
+      "surface_recognized": "PASS",
+      "pack_identity_matches_profile": "PASS",
+      "block_headers_present": "NOT_APPLICABLE",
+      "section_vectors_dimension_8": "NOT_APPLICABLE",
+      "section_norm_below_0_999": "NOT_APPLICABLE",
+      "salience_positive": "NOT_APPLICABLE",
+      "semantic_correctness": "NOT_TESTED",
+      "mathematical_claims": "NOT_TESTED",
+      "empirical_claims": "NOT_TESTED"
+    },
+    "geometry": {
+      "max_section_norm": null,
+      "margin_to_boundary_0_999": null
+    },
+    "declarations": {
+      "theorem_declarations": 70,
+      "axiom_declarations": 0,
+      "commit_markers": 70
+    },
+    "notes": [
+      "Pack surface recognized by explicit §PACK and §VERSION headers.",
+      "Declaration counts are surface tallies, not proofs: a §THEOREM line and a ⊢ COMMIT marker are text this validator counted, not results it checked.",
       "Semantic, theorem, and empirical claims are NOT_TESTED by this validator."
     ]
   }

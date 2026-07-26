@@ -46,11 +46,19 @@ For declared legacy profiles the validator checks:
 - Euclidean norm below the configured `0.999` boundary for present vectors;
 - positive salience for present vectors.
 
-### Experimental pack checks
+### Pack surface checks
 
-The current `mhrr_pack_v1` structural profile checks only that explicit `§PACK`
-and `§VERSION` headers exist. Its semantic, mathematical, runtime, and empirical
-claims remain `NOT_TESTED` by this validator.
+Five packs are declared with `pack`-surface profiles. For each, the validator
+checks that explicit `§PACK` and `§VERSION` headers exist, and that the declared
+`§PACK` identity matches the profile it was declared under — so one pack file
+cannot silently stand in for another. Their semantic, mathematical, runtime, and
+empirical claims remain `NOT_TESTED`.
+
+The validator also tallies `§THEOREM` lines, `§AXIOM` lines, and `⊢ COMMIT`
+markers per source. These are reported under `declarations`, deliberately
+separate from `checks`: they are counts of text, and counting a `§THEOREM` line
+is not checking a theorem. A turnstile in a pack is a character a generator
+emitted, not a judgment a checker discharged. See [`PACKS.md`](PACKS.md).
 
 Unknown profiles fail explicitly. Profiles are not inferred from filenames.
 
@@ -61,9 +69,13 @@ current correction:
 
 1. absent sections return `NOT_APPLICABLE`, not vacuous `PASS`;
 2. unknown profiles fail rather than defaulting silently;
-3. experimental packs require explicit surface headers;
+3. packs require explicit surface headers;
 4. pack recognition does not depend on the filename;
-5. present vectors are actually checked.
+5. present vectors are actually checked;
+6. a well-formed pack whose identity does not match its declared profile fails;
+7. a matching pack identity passes, and legacy block profiles report the
+   identity check as `NOT_APPLICABLE` rather than borrowing it;
+8. theorem tallies are recorded as declarations and never appear as checks.
 
 These tests are correlated repository evidence, not independent replication.
 
