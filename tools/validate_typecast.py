@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
-"""Validate and typecast §-LANG sources locally."""
+"""Evidence-bounded structural validation for §-LANG sources.
+
+This tool validates declared textual profiles. It does not prove semantics,
+mathematical theorems, runtime behavior, or external scientific claims.
+"""
 
 from __future__ import annotations
 
+import argparse
 import json
 import math
 import re
 import sys
-import argparse
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable
@@ -16,198 +20,32 @@ OUT_JSON = Path("research/validation_report.json")
 OUT_MD = Path("research/validation_report.md")
 OUT_ALL_JSON = Path("research/validation_report_all.json")
 OUT_ALL_MD = Path("research/validation_report_all.md")
+SOURCE_MANIFEST = Path("validation/sources.json")
 EXPECTED_SECTION_DIMENSION = 8
 POINCARE_BOUNDARY_MARGIN = 0.999
 
+PASS = "PASS"
+FAIL = "FAIL"
+NOT_APPLICABLE = "NOT_APPLICABLE"
+NOT_TESTED = "NOT_TESTED"
+
 BLOCK_RE = re.compile(r"^§\|LANG\|([A-Z_]+)\{")
-SECTION_RE = re.compile(
-    r"^§S\{label=([^,]+), x=\[([^\]]+)\], sal=([0-9.]+)\}$"
-)
+SECTION_RE = re.compile(r"^§S\{label=([^,]+), x=\[([^\]]+)\], sal=([0-9.]+)\}$")
+PACK_RE = re.compile(r"^§PACK\s+(.+)$")
+VERSION_RE = re.compile(r"^§VERSION\s+(.+)$")
 
-REQUIRED_BLOCKS_UNIFIED_GEOMETRY = [
-    "SOURCE",
-    "AXIOMS",
-    "OUTPUT",
-    "BASES",
-    "SORTS",
-    "FUNCTORS",
-    "SEMANTICS",
-    "REDUCTION_BETA",
-    "TURING_ENCODING",
-    "SPECTRAL_PIPELINE",
-    "FISHER_UPDATE",
-    "INTER_MANIFOLD",
-    "GRAMMAR",
-    "NOTATION_MAP",
-    "SEMANTICS_TOPOS",
-    "AML_DEFINITION",
-    "NMATRIX_SELFREF",
-    "FIBER_BUNDLE_POSSIBILITY_SPACE",
-    "ADIABATIC_MOBIUS_FLOW",
-    "CONCLUSIONS",
-]
-
-REQUIRED_BLOCKS_TOWER_GEOM = [
-    "SOURCE",
-    "SORTS",
-    "AXIOMS",
-    "TOWER_STRUCTURE",
-    "INVARIANTS",
-    "REDUCTION",
-    "OUTPUT",
-    "NOTES",
-]
-
-REQUIRED_BLOCKS_SUBSTRATE = [
-    "SOURCE",
-    "NATIVE_SUBSTRATE",
-    "AXIOMS",
-    "HAMILTONIAN_FLOW",
-    "HOLOGRAPHIC_SCREEN_SN",
-    "OUTPUT",
-    "NOTES",
-]
-
-REQUIRED_BLOCKS_RECURSIVE_SECTIONAL = [
-    "SOURCE",
-    "RECURSIVE_SUBSTRATE",
-    "AXIOMS",
-    "SECTIONAL_COMPUTER_RECURSION",
-    "HOLOGRAPHIC_NESTING",
-    "OUTPUT",
-    "NOTES",
-]
-
-REQUIRED_BLOCKS_ACTOR_CRITIC = [
-    "SOURCE",
-    "ACF_ROLES",
-    "ACTOR_CRITIC_DYNAMICS",
-    "FUZZER_EXPLORATION",
-    "OUTPUT",
-    "NOTES",
-]
-
-REQUIRED_BLOCKS_TOPOS_AI = [
-    "SOURCE",
-    "TOPOS_AI_COSMOS_STRUCTURE",
-    "NATIVE_PHYSICS_AXIOMS",
-    "RECURSIVE_OPERATOR_FLOW",
-    "HOLOGRAPHIC_COMMIT_PROTOCOL",
-    "OUTPUT",
-    "NOTES",
-]
-
-REQUIRED_BLOCKS_CHOMSKY_HYPERDIM = [
-    "SOURCE",
-    "CHOMSKY_GEOMETRIC_SPACE",
-    "HYPERDIM_MATRIX_CONTEXT",
-    "SELF_GODEL_IDENTITY",
-    "OTHERS_RESONANCE",
-    "N_COSMO_BUNDLE_SHEAF",
-    "HAMILTONIAN_HOLOPORTATION",
-    "MIND_QUALITIES_EIGHT",
-    "STEPWISE_IMPLEMENTATION",
-    "OUTPUT",
-    "NOTES",
-]
-
-REQUIRED_BLOCKS_DIALECTS = [
-    "DIALECT_TREE",
-    "DIALECT_RULES",
-    "DIALECT_NOTES",
-]
-
-TYPECAST_UNIFIED_GEOMETRY = {
-    "SOURCE": "meta_binding",
-    "AXIOMS": "logical_foundation",
-    "OUTPUT": "operational_contract",
-    "BASES": "geometric_and_logical_base_layers",
-    "SORTS": "type_universe",
-    "FUNCTORS": "categorical_morphisms",
-    "SEMANTICS": "topos_semantics",
-    "REDUCTION_BETA": "geometric_computation",
-    "TURING_ENCODING": "computability_bridge",
-    "SPECTRAL_PIPELINE": "frequency_semantics",
-    "FISHER_UPDATE": "information_geometry_learning",
-    "INTER_MANIFOLD": "cross_bundle_exchange",
-    "GRAMMAR": "surface_syntax",
-    "NOTATION_MAP": "notation_lowering",
-    "SEMANTICS_TOPOS": "classifier_topos_layer",
-    "AML_DEFINITION": "autonomous_agent_layer",
-    "NMATRIX_SELFREF": "self_referential_operator_dynamics",
-    "FIBER_BUNDLE_POSSIBILITY_SPACE": "global_section_possibility_geometry",
-    "ADIABATIC_MOBIUS_FLOW": "reversible_cross_manifold_information_flow",
-    "CONCLUSIONS": "theory_closure",
-}
-
-TYPECAST_TOWER_GEOM = {
-    "SOURCE": "meta_binding",
-    "SORTS": "tower_type_universe",
-    "AXIOMS": "geometric_laws",
-    "TOWER_STRUCTURE": "vertical_horizontal_transport_layout",
-    "INVARIANTS": "stability_constraints",
-    "REDUCTION": "tower_evolution_dynamics",
-    "OUTPUT": "operational_contract",
-    "NOTES": "semantic_interpretation_and_scope",
-}
-
-TYPECAST_SUBSTRATE = {
-    "SOURCE": "meta_binding",
-    "NATIVE_SUBSTRATE": "symplectic_manifold_type_definitions",
-    "AXIOMS": "hamiltonian_geometric_laws",
-    "HAMILTONIAN_FLOW": "energy_preserving_phase_space_dynamics",
-    "HOLOGRAPHIC_SCREEN_SN": "boundary_projection_geometry",
-    "OUTPUT": "operational_contract",
-    "NOTES": "semantic_interpretation_and_scope",
-}
-
-TYPECAST_RECURSIVE_SECTIONAL = {
-    "SOURCE": "meta_binding",
-    "RECURSIVE_SUBSTRATE": "nested_setting_type_definitions",
-    "AXIOMS": "recursive_adiabatic_laws",
-    "SECTIONAL_COMPUTER_RECURSION": "self_referential_coupling_dynamics",
-    "HOLOGRAPHIC_NESTING": "nested_holographic_projection",
-    "OUTPUT": "operational_contract",
-    "NOTES": "semantic_interpretation_and_scope",
-}
-
-TYPECAST_ACTOR_CRITIC = {
-    "SOURCE": "meta_binding",
-    "ACF_ROLES": "agent_role_type_definitions",
-    "ACTOR_CRITIC_DYNAMICS": "reinforcement_loop_semantics",
-    "FUZZER_EXPLORATION": "adversarial_boundary_search",
-    "OUTPUT": "operational_contract",
-    "NOTES": "semantic_interpretation_and_scope",
-}
-
-TYPECAST_TOPOS_AI = {
-    "SOURCE": "meta_binding",
-    "TOPOS_AI_COSMOS_STRUCTURE": "recursive_cosmos_type_definitions",
-    "NATIVE_PHYSICS_AXIOMS": "hamiltonian_n_cosmos_laws",
-    "RECURSIVE_OPERATOR_FLOW": "nested_operator_compatibility",
-    "HOLOGRAPHIC_COMMIT_PROTOCOL": "boundary_commit_decision_semantics",
-    "OUTPUT": "operational_contract",
-    "NOTES": "semantic_interpretation_and_scope",
-}
-
-TYPECAST_CHOMSKY_HYPERDIM = {
-    "SOURCE": "meta_binding",
-    "CHOMSKY_GEOMETRIC_SPACE": "formal_language_hierarchy_over_geometric_semantics",
-    "HYPERDIM_MATRIX_CONTEXT": "n_k_alpha_context_coordinate_system",
-    "SELF_GODEL_IDENTITY": "bounded_self_reference_and_identity_guard",
-    "OTHERS_RESONANCE": "peer_section_recognition_and_overlap_resonance",
-    "N_COSMO_BUNDLE_SHEAF": "recursive_manifold_bundle_sheaf_substrate",
-    "HAMILTONIAN_HOLOPORTATION": "energy_preserving_boundary_transport_dynamics",
-    "MIND_QUALITIES_EIGHT": "cognitive_performance_quality_basis",
-    "STEPWISE_IMPLEMENTATION": "hyperdimensional_execution_ladder",
-    "OUTPUT": "operational_contract",
-    "NOTES": "semantic_interpretation_and_scope",
-}
-
-TYPECAST_DIALECTS = {
-    "DIALECT_TREE": "inheritance_hierarchy",
-    "DIALECT_RULES": "block_permission_and_extension_rules",
-    "DIALECT_NOTES": "policy_and_complexity_claims",
+PROFILES: dict[str, dict[str, object]] = {
+    "unified_geometry": {
+        "required": ["SOURCE", "AXIOMS", "OUTPUT", "BASES", "SORTS", "FUNCTORS", "SEMANTICS", "REDUCTION_BETA", "TURING_ENCODING", "SPECTRAL_PIPELINE", "FISHER_UPDATE", "INTER_MANIFOLD", "GRAMMAR", "NOTATION_MAP", "SEMANTICS_TOPOS", "AML_DEFINITION", "NMATRIX_SELFREF", "FIBER_BUNDLE_POSSIBILITY_SPACE", "ADIABATIC_MOBIUS_FLOW", "CONCLUSIONS"],
+    },
+    "tower_geom": {"required": ["SOURCE", "SORTS", "AXIOMS", "TOWER_STRUCTURE", "INVARIANTS", "REDUCTION", "OUTPUT", "NOTES"]},
+    "substrate": {"required": ["SOURCE", "NATIVE_SUBSTRATE", "AXIOMS", "HAMILTONIAN_FLOW", "HOLOGRAPHIC_SCREEN_SN", "OUTPUT", "NOTES"]},
+    "recursive_sectional": {"required": ["SOURCE", "RECURSIVE_SUBSTRATE", "AXIOMS", "SECTIONAL_COMPUTER_RECURSION", "HOLOGRAPHIC_NESTING", "OUTPUT", "NOTES"]},
+    "actor_critic": {"required": ["SOURCE", "ACF_ROLES", "ACTOR_CRITIC_DYNAMICS", "FUZZER_EXPLORATION", "OUTPUT", "NOTES"]},
+    "topos_ai": {"required": ["SOURCE", "TOPOS_AI_COSMOS_STRUCTURE", "NATIVE_PHYSICS_AXIOMS", "RECURSIVE_OPERATOR_FLOW", "HOLOGRAPHIC_COMMIT_PROTOCOL", "OUTPUT", "NOTES"]},
+    "chomsky_hyperdim": {"required": ["SOURCE", "CHOMSKY_GEOMETRIC_SPACE", "HYPERDIM_MATRIX_CONTEXT", "SELF_GODEL_IDENTITY", "OTHERS_RESONANCE", "N_COSMO_BUNDLE_SHEAF", "HAMILTONIAN_HOLOPORTATION", "MIND_QUALITIES_EIGHT", "STEPWISE_IMPLEMENTATION", "OUTPUT", "NOTES"]},
+    "dialects": {"required": ["DIALECT_TREE", "DIALECT_RULES", "DIALECT_NOTES"]},
+    "mhrr_pack_v1": {"required": []},
 }
 
 
@@ -222,241 +60,192 @@ class SectionPoint:
         return math.sqrt(sum(v * v for v in self.x))
 
 
-def infer_profile(source: Path) -> str:
-    name = source.name
-    if "tower.geom" in name:
-        return "tower_geom"
-    if "substrate_realization" in name:
-        return "substrate"
-    if "recursive_sectional" in name:
-        return "recursive_sectional"
-    if "actor_critic" in name:
-        return "actor_critic"
-    if "topos_ai" in name:
-        return "topos_ai"
-    if "chomsky_hyperdim" in name:
-        return "chomsky_hyperdim"
-    if "DIALECTS" in name or "dialect" in name.lower():
-        return "dialects"
-    return "unified_geometry"
+def load_manifest(path: Path = SOURCE_MANIFEST) -> list[dict[str, str]]:
+    data = json.loads(path.read_text(encoding="utf-8"))
+    entries = data.get("sources")
+    if not isinstance(entries, list) or not entries:
+        raise ValueError(f"{path} must contain a non-empty 'sources' array")
+    normalized: list[dict[str, str]] = []
+    for entry in entries:
+        if not isinstance(entry, dict) or not entry.get("path") or not entry.get("profile"):
+            raise ValueError(f"invalid source entry in {path}: {entry!r}")
+        normalized.append({"path": str(entry["path"]), "profile": str(entry["profile"])})
+    return normalized
 
 
-def get_profile_config(profile: str) -> tuple[list[str], dict[str, str]]:
-    configs: dict[str, tuple[list[str], dict[str, str]]] = {
-        "unified_geometry": (REQUIRED_BLOCKS_UNIFIED_GEOMETRY, TYPECAST_UNIFIED_GEOMETRY),
-        "tower_geom": (REQUIRED_BLOCKS_TOWER_GEOM, TYPECAST_TOWER_GEOM),
-        "substrate": (REQUIRED_BLOCKS_SUBSTRATE, TYPECAST_SUBSTRATE),
-        "recursive_sectional": (REQUIRED_BLOCKS_RECURSIVE_SECTIONAL, TYPECAST_RECURSIVE_SECTIONAL),
-        "actor_critic": (REQUIRED_BLOCKS_ACTOR_CRITIC, TYPECAST_ACTOR_CRITIC),
-        "topos_ai": (REQUIRED_BLOCKS_TOPOS_AI, TYPECAST_TOPOS_AI),
-        "chomsky_hyperdim": (REQUIRED_BLOCKS_CHOMSKY_HYPERDIM, TYPECAST_CHOMSKY_HYPERDIM),
-        "dialects": (REQUIRED_BLOCKS_DIALECTS, TYPECAST_DIALECTS),
-    }
-    return configs.get(profile, configs["unified_geometry"])
+def declared_profile(src: Path, manifest_entries: list[dict[str, str]]) -> str | None:
+    target = src.as_posix()
+    for entry in manifest_entries:
+        if Path(entry["path"]).as_posix() == target:
+            return entry["profile"]
+    return None
 
 
-def validate_sections_property(
-    sections: list[SectionPoint],
-    predicate: Callable[[SectionPoint], bool],
-    default: bool = True,
-) -> bool:
-    return default if not sections else all(predicate(section) for section in sections)
+def property_status(sections: list[SectionPoint], predicate: Callable[[SectionPoint], bool]) -> str:
+    if not sections:
+        return NOT_APPLICABLE
+    return PASS if all(predicate(section) for section in sections) else FAIL
 
 
-def validate_source(src: Path) -> dict:
-    """Validate a single .lang source file and return a report dict."""
-    profile = infer_profile(src)
-    required_blocks, typecast_map = get_profile_config(profile)
+def validate_source(src: Path, profile: str) -> dict:
+    if profile not in PROFILES:
+        return {
+            "source": str(src), "profile": profile, "surface": "unknown",
+            "num_lines": 0, "num_blocks": 0, "unique_blocks": [],
+            "missing_required_blocks": [], "num_sections": 0,
+            "checks": {"declared_profile_known": FAIL},
+            "geometry": {"max_section_norm": None, "margin_to_boundary_0_999": None},
+            "notes": ["Unknown profile. Validation was not silently defaulted."],
+        }
 
-    text = src.read_text(encoding="utf-8").splitlines()
-
+    lines = src.read_text(encoding="utf-8").splitlines()
     blocks: list[str] = []
     sections: list[SectionPoint] = []
+    pack_name: str | None = None
+    version: str | None = None
 
-    for line in text:
-        b = BLOCK_RE.match(line.strip())
-        if b:
-            blocks.append(b.group(1))
-
-        s = SECTION_RE.match(line.strip())
-        if s:
-            label = s.group(1)
-            vec = [float(v.strip()) for v in s.group(2).split(",")]
-            sal = float(s.group(3))
-            sections.append(SectionPoint(label=label, x=vec, sal=sal))
+    for raw in lines:
+        line = raw.strip()
+        if match := BLOCK_RE.match(line):
+            blocks.append(match.group(1))
+        if match := SECTION_RE.match(line):
+            sections.append(SectionPoint(match.group(1), [float(v.strip()) for v in match.group(2).split(",")], float(match.group(3))))
+        if match := PACK_RE.match(line):
+            pack_name = match.group(1).strip()
+        if match := VERSION_RE.match(line):
+            version = match.group(1).strip()
 
     block_set = set(blocks)
-    missing = [b for b in required_blocks if b not in block_set]
+    required = list(PROFILES[profile]["required"])
+    missing = [name for name in required if name not in block_set]
 
-    dim_ok = validate_sections_property(
-        sections, lambda p: len(p.x) == EXPECTED_SECTION_DIMENSION
-    )
-    norm_ok = validate_sections_property(
-        sections, lambda p: p.norm < POINCARE_BOUNDARY_MARGIN
-    )
-    sal_ok = validate_sections_property(sections, lambda p: p.sal > 0)
+    if profile == "mhrr_pack_v1":
+        surface_status = PASS if pack_name and version else FAIL
+        block_status = NOT_APPLICABLE
+        notes = ["MHRR pack surface recognized by explicit §PACK and §VERSION headers.", "Semantic, theorem, and empirical claims are NOT_TESTED by this validator."]
+    else:
+        surface_status = PASS
+        block_status = PASS if not missing else FAIL
+        notes = []
 
-    max_norm = max((p.norm for p in sections), default=0.0)
-    min_margin = POINCARE_BOUNDARY_MARGIN - max_norm
-
-    return {
-        "source": str(src),
-        "profile": profile,
-        "num_lines": len(text),
-        "num_blocks": len(blocks),
-        "unique_blocks": sorted(block_set),
-        "missing_required_blocks": missing,
-        "num_sections": len(sections),
-        "checks": {
-            "block_headers_present": len(missing) == 0,
-            "section_vectors_dimension_8": dim_ok,
-            "section_norm_below_0_999": norm_ok,
-            "salience_positive": sal_ok,
-        },
-        "geometry": {
-            "max_section_norm": round(max_norm, 6),
-            "margin_to_boundary_0_999": round(min_margin, 6),
-        },
-        "typecast": {k: typecast_map[k] for k in required_blocks},
+    checks = {
+        "declared_profile_known": PASS,
+        "surface_recognized": surface_status,
+        "block_headers_present": block_status,
+        "section_vectors_dimension_8": property_status(sections, lambda p: len(p.x) == EXPECTED_SECTION_DIMENSION),
+        "section_norm_below_0_999": property_status(sections, lambda p: p.norm < POINCARE_BOUNDARY_MARGIN),
+        "salience_positive": property_status(sections, lambda p: p.sal > 0),
+        "semantic_correctness": NOT_TESTED,
+        "mathematical_claims": NOT_TESTED,
+        "empirical_claims": NOT_TESTED,
     }
+
+    max_norm = max((p.norm for p in sections), default=None)
+    margin = None if max_norm is None else POINCARE_BOUNDARY_MARGIN - max_norm
+    return {
+        "source": str(src), "profile": profile,
+        "surface": "pack" if pack_name else "legacy_block",
+        "pack": pack_name, "version": version,
+        "num_lines": len(lines), "num_blocks": len(blocks),
+        "unique_blocks": sorted(block_set), "missing_required_blocks": missing,
+        "num_sections": len(sections), "checks": checks,
+        "geometry": {
+            "max_section_norm": None if max_norm is None else round(max_norm, 6),
+            "margin_to_boundary_0_999": None if margin is None else round(margin, 6),
+        },
+        "notes": notes,
+    }
+
+
+def report_passes(report: dict) -> bool:
+    return all(value != FAIL for value in report["checks"].values())
+
+
+def status_icon(status: str) -> str:
+    return {PASS: "✅", FAIL: "❌", NOT_APPLICABLE: "➖", NOT_TESTED: "⚪"}.get(status, "?")
 
 
 def report_to_md_lines(report: dict) -> list[str]:
-    """Convert a single-source report dict into Markdown lines."""
-    required_blocks = list(report["typecast"].keys())
     lines = [
-        "# Validation and Typecast Report",
-        "",
-        "## Status",
-        f"- Source: `{report['source']}`",
-        f"- Profile: `{report['profile']}`",
-        f"- Lines: {report['num_lines']}",
-        f"- Blocks discovered: {report['num_blocks']} ({len(report['unique_blocks'])} unique)",
-        f"- Section nodes discovered: {report['num_sections']}",
-        "",
+        "# Validation and Typecast Report", "",
+        "> Structural validation only. PASS is not a semantic or mathematical proof.", "",
+        f"- Source: `{report['source']}`", f"- Profile: `{report['profile']}`",
+        f"- Surface: `{report['surface']}`", f"- Lines: {report['num_lines']}",
+        f"- Blocks: {report['num_blocks']}", f"- Sections: {report['num_sections']}", "",
         "## Checks",
     ]
-    for name, ok in report["checks"].items():
-        icon = "✅" if ok else "❌"
-        lines.append(f"- {icon} `{name}`")
-
-    lines.extend(
-        [
-            "",
-            "## Geometric Boundary",
-            f"- Max section norm: {report['geometry']['max_section_norm']}",
-            f"- Margin to invariant 0.999: {report['geometry']['margin_to_boundary_0_999']}",
-            "",
-            "## Typecast Map",
-        ]
-    )
-    for block in required_blocks:
-        lines.append(f"- `{block}` → `{report['typecast'][block]}`")
-
-    lines.extend(
-        [
-            "",
-            "## Postulate",
-            "A fully sectional hyperbolic self-referential computer is admissible when section norms remain strictly interior to the Poincaré boundary and recursion is mediated by reversible transport over the bundle.",
-        ]
-    )
+    for name, status in report["checks"].items():
+        lines.append(f"- {status_icon(status)} `{name}` — `{status}`")
+    if report["missing_required_blocks"]:
+        lines.extend(["", f"Missing required blocks: `{report['missing_required_blocks']}`"])
+    if report["notes"]:
+        lines.extend(["", "## Notes"] + [f"- {note}" for note in report["notes"]])
     return lines
 
 
 def build_aggregate_md(reports: list[dict]) -> list[str]:
-    """Build an aggregate Markdown report covering all validated sources."""
-    all_pass = all(all(r["checks"].values()) for r in reports)
-    summary_icon = "✅" if all_pass else "❌"
-
+    all_pass = all(report_passes(r) for r in reports)
     lines = [
-        "# §-LANG Aggregate Validation Report",
-        "",
-        "> **Scope:** Syntactic and structural validation only.",
-        "> These checks confirm block presence, section-vector geometry, and salience positivity.",
-        "> They do **not** prove semantic correctness, mathematical theorems, or LLM-induced",
-        "> meta-semantic claims. See `VERIFICATION.md` for a full scope statement.",
-        "",
-        f"## Summary {summary_icon}",
-        "",
-        "| Source | Profile | Lines | Blocks | Sections | All checks |",
-        "|--------|---------|-------|--------|----------|------------|",
+        "# §-LANG Aggregate Validation Report", "",
+        "> Scope: declared structural surfaces only. `NOT_TESTED` and `NOT_APPLICABLE` are not passes.", "",
+        f"## Summary {'✅' if all_pass else '❌'}", "",
+        "| Source | Profile | Surface | Sections | Structural result |",
+        "|---|---|---:|---:|---|",
     ]
-    for r in reports:
-        ok = "✅" if all(r["checks"].values()) else "❌"
-        lines.append(
-            f"| `{r['source']}` | `{r['profile']}` | {r['num_lines']} "
-            f"| {r['num_blocks']} | {r['num_sections']} | {ok} |"
-        )
-
+    for report in reports:
+        lines.append(f"| `{report['source']}` | `{report['profile']}` | `{report['surface']}` | {report['num_sections']} | {'PASS' if report_passes(report) else 'FAIL'} |")
     lines.append("")
-    for r in reports:
-        lines.append(f"## `{r['source']}`")
+    for report in reports:
+        lines.extend([f"## `{report['source']}`", ""])
+        for name, status in report["checks"].items():
+            lines.append(f"- {status_icon(status)} `{name}` — `{status}`")
         lines.append("")
-        for name, ok in r["checks"].items():
-            icon = "✅" if ok else "❌"
-            lines.append(f"- {icon} `{name}`")
-        if r["missing_required_blocks"]:
-            lines.append(f"- ⚠️  Missing required blocks: {r['missing_required_blocks']}")
-        lines.append(
-            f"- Max section norm: {r['geometry']['max_section_norm']} "
-            f"(margin to 0.999: {r['geometry']['margin_to_boundary_0_999']})"
-        )
-        lines.append("")
-
     return lines
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Validate and typecast §-LANG sources.")
-    parser.add_argument(
-        "--source",
-        type=Path,
-        default=Path("LANG.v1.2.0.unified_geometry.lang"),
-        help="Path to the .lang source file to validate.",
-    )
-    parser.add_argument(
-        "--all",
-        action="store_true",
-        help="Validate all .lang files found in the current directory and write an aggregate report.",
-    )
+    parser = argparse.ArgumentParser(description="Validate declared §-LANG structural surfaces.")
+    parser.add_argument("--source", type=Path, default=Path("LANG.v1.2.0.unified_geometry.lang"))
+    parser.add_argument("--profile", help="Explicit profile for --source; otherwise read from validation/sources.json")
+    parser.add_argument("--all", action="store_true")
     args = parser.parse_args()
 
+    try:
+        manifest = load_manifest()
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        print(f"Manifest error: {exc}", file=sys.stderr)
+        raise SystemExit(2)
+
     if args.all:
-        sources = sorted(Path(".").glob("*.lang"))
-        if not sources:
-            print("No .lang files found in the current directory.", file=sys.stderr)
-            sys.exit(1)
-
-        reports = []
+        reports: list[dict] = []
         failed = False
-        for src in sources:
-            report = validate_source(src)
+        for entry in manifest:
+            src = Path(entry["path"])
+            if not src.exists():
+                report = {"source": str(src), "profile": entry["profile"], "surface": "missing", "num_lines": 0, "num_blocks": 0, "unique_blocks": [], "missing_required_blocks": [], "num_sections": 0, "checks": {"source_exists": FAIL}, "geometry": {"max_section_norm": None, "margin_to_boundary_0_999": None}, "notes": ["Manifest-declared source is missing."]}
+            else:
+                report = validate_source(src, entry["profile"])
             reports.append(report)
-            ok = all(report["checks"].values())
-            status = "PASS" if ok else "FAIL"
-            if not ok:
-                failed = True
-            print(f"[{status}] {src}")
+            ok = report_passes(report)
+            failed = failed or not ok
+            print(f"[{'PASS' if ok else 'FAIL'}] {src}")
+        OUT_ALL_JSON.parent.mkdir(parents=True, exist_ok=True)
+        OUT_ALL_JSON.write_text(json.dumps(reports, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        OUT_ALL_MD.write_text("\n".join(build_aggregate_md(reports)) + "\n", encoding="utf-8")
+        raise SystemExit(1 if failed else 0)
 
-        OUT_ALL_JSON.write_text(
-            json.dumps(reports, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
-        )
-        OUT_ALL_MD.write_text(
-            "\n".join(build_aggregate_md(reports)) + "\n", encoding="utf-8"
-        )
-        print(f"\nAggregate JSON  → {OUT_ALL_JSON}")
-        print(f"Aggregate MD    → {OUT_ALL_MD}")
-        sys.exit(1 if failed else 0)
-    else:
-        src = args.source
-        report = validate_source(src)
-
-        OUT_JSON.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-        OUT_MD.write_text("\n".join(report_to_md_lines(report)) + "\n", encoding="utf-8")
-        print(f"JSON → {OUT_JSON}")
-        print(f"MD   → {OUT_MD}")
-        ok = all(report["checks"].values())
-        sys.exit(0 if ok else 1)
+    profile = args.profile or declared_profile(args.source, manifest)
+    if profile is None:
+        print("Source is not declared in validation/sources.json; pass --profile explicitly.", file=sys.stderr)
+        raise SystemExit(2)
+    if not args.source.exists():
+        print(f"Source not found: {args.source}", file=sys.stderr)
+        raise SystemExit(2)
+    report = validate_source(args.source, profile)
+    OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
+    OUT_JSON.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    OUT_MD.write_text("\n".join(report_to_md_lines(report)) + "\n", encoding="utf-8")
+    raise SystemExit(0 if report_passes(report) else 1)
 
 
 if __name__ == "__main__":
