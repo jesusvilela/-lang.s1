@@ -100,15 +100,17 @@ from what the current tooling produces — a committed report that the tooling
 would not reproduce is stale evidence, not evidence. Re-run the commands above
 and commit the result whenever a validated source or a tool changes.
 
-`tools/validate_typecast.py` now distinguishes:
+`tools/validate_typecast.py` reports four distinct statuses, so that an absent
+object can never read as a satisfied one:
 
 - `PASS` — the tested property is present and satisfied;
 - `FAIL` — the tested property is present or required and violated;
 - `NOT_APPLICABLE` — the file contains no object to which the property applies;
 - `NOT_TESTED` — the validator has no implemented test for that semantic level.
 
-Validation sources are declared in `validation/sources.json`. Unknown source
-surfaces fail explicitly instead of silently inheriting a profile from a filename.
+Each source is validated against the profile declared for it in
+`validation/sources.json`. Profiles are never inferred from filenames, and an
+undeclared or unknown surface fails explicitly rather than defaulting.
 
 These checks do **not** prove semantic correctness, mathematical theorems,
 physical realizability, or external scientific relevance.
