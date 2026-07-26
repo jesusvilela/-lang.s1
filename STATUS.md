@@ -33,9 +33,12 @@ These tags are not an automatic promotion ladder.
 
 | Gate | Current state | Requirement |
 |---|---|---|
-| Repository integrity | Improved | No merge markers, no broken canonical links, coherent identity |
+| Repository integrity | Enforced in CI | No merge markers, no broken canonical links, coherent identity |
 | Declared grammar/source set | Implemented for structural validator | `validation/sources.json` controls the validated set |
+| Declared sources exist | Enforced in CI | A manifest entry with no file on disk fails the build |
 | Non-vacuous validation | Implemented | Missing objects return `NOT_APPLICABLE`, not `PASS` |
+| Evidence artifact freshness | Enforced in CI | Committed `research/` reports must match current tooling output |
+| Tooling dependency pin | Implemented | `requirements.txt` pins the only third-party dependency (Pillow) |
 | Claim-to-artifact ledger | Initial version | Expand every influential claim in `CLAIMS.yaml` |
 | Minimal executable kernel | Open | Parser, AST, evidence checker, transport and round-trip semantics |
 | Formal traceability | Open | Pinned proof source, theorem name, toolchain, clean build |

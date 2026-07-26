@@ -46,7 +46,9 @@ or empirical interpretation has been independently verified.
 
 ## Canonical sources and experimental packs
 
-Historical and current language-family sources include:
+[`validation/sources.json`](validation/sources.json) is the authoritative list of
+sources under structural validation. Every entry must exist; a declared source
+that is missing fails the build rather than being skipped.
 
 - `LANG.v1.2.0.unified_geometry.lang`
 - `DIALECTS.v2.1.family.lang`
@@ -61,15 +63,42 @@ Historical and current language-family sources include:
 Version numbers belong to their named source or pack. A pack version is not
 implicitly a new version of the core language specification.
 
+### Undeclared bulk artifacts
+
+The repository also carries large generated `.lang` artifacts that are **not**
+in the validated set and carry **no structural evidence status**:
+
+- `principia_360_prime_orthogonal.lang` (~11 MB)
+- `principia_mathematica_full_N400.lang` (~8 MB)
+- `ncosmo_hypercomplex_unification.lang`
+- `principia_seed.lang`
+
+They are retained as research material. No check in this repository parses,
+validates, or reproduces them, and nothing in them should be read as evidence
+for any claim in `CLAIMS.yaml`.
+
 ## Validation
 
-Run the bounded structural checks with:
+Install the pinned tooling dependencies once, then run the bounded structural
+checks:
 
 ```bash
-python3 tools/validate_typecast.py --all
-python3 tools/verify_chomsky.py
+python3 -m pip install -r requirements.txt
+
 python3 -m unittest discover -s tests -p 'test_*.py'
+python3 tools/validate_typecast.py --all
+python3 tools/validate_typecast.py
+python3 tools/verify_chomsky.py
+python3 tools/stego_boot_banner.py --verify figures/slang_boot_banner.png
 ```
+
+Only `tools/stego_boot_banner.py` needs a third-party dependency (Pillow); the
+other tools are standard-library only.
+
+The generated reports under `research/` are committed, and CI fails if they drift
+from what the current tooling produces — a committed report that the tooling
+would not reproduce is stale evidence, not evidence. Re-run the commands above
+and commit the result whenever a validated source or a tool changes.
 
 `tools/validate_typecast.py` now distinguishes:
 
@@ -86,16 +115,23 @@ physical realizability, or external scientific relevance.
 
 ## Self-referential boot seed
 
-The banner contains an LSB-steganographic payload that can be recovered with:
+The banner contains an LSB-steganographic payload that can be recovered with
+(requires Pillow, see `requirements.txt`):
 
 ```bash
 python3 tools/stego_boot_banner.py --verify figures/slang_boot_banner.png
 ```
 
 This is currently classified as a **steganographic self-reconstruction witness**
-or quine-like fixed-point artifact. It is not, by itself, a formal proof of
+or quine-like fixed-point artifact — the accepted claim is `SLANG-BOOT-001`, and
+CI runs this decode on every build. It is not, by itself, a formal proof of
 Löb's theorem. Promotion to a Löb result would require a formal theory,
 provability predicate, derivability conditions, proposition, and checked proof.
+The earlier Löb reading is retired as `RETIRED-LOEB-001`.
+
+Note that the decoded payload is itself §-LANG source text and contains tokens
+such as `Löb` and `executable`. Those are strings inside the artifact, not
+findings about it.
 
 ## UTAI and sectional programmes
 
@@ -106,11 +142,13 @@ execution or proof authority merely from being expressible in §-LANG.
 
 ## Research documents
 
-- [`THESIS.md`](THESIS.md) — programme narrative and theorem targets
+- [`THESIS.md`](THESIS.md) — programme narrative and theorem targets (`S`/`H`)
 - [`VERIFICATION.md`](VERIFICATION.md) — verified and unverified boundaries
 - [`RUNTIME_CAPABILITIES.md`](RUNTIME_CAPABILITIES.md) — reported runtime surface
 - [`STATUS.md`](STATUS.md) — present publication and reproducibility status
 - [`CLAIMS.yaml`](CLAIMS.yaml) — claim-to-artifact ledger
+- [`SKILL.md`](SKILL.md) — operational workflow over the validated sources
+- [`validation/sources.json`](validation/sources.json) — authoritative validated source set
 
 ## Publication status
 

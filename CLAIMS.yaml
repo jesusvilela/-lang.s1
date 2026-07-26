@@ -40,9 +40,12 @@ claims:
     artifacts:
       - figures/slang_boot_banner.png
       - tools/stego_boot_banner.py
+      - requirements.txt
+      - .github/workflows/validate.yml
     forbidden_promotions:
       - Loeb theorem
       - formal provability result
+      - executability of tokens appearing in the decoded payload
 
   - id: SLANG-RUNTIME-001
     text: The documented v5 tokens have the stated executable semantics.

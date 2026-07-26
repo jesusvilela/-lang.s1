@@ -4,24 +4,28 @@ on:
   push:
     paths:
       - "**.lang"
-      - "tools/validate_typecast.py"
-      - "tools/verify_chomsky.py"
+      - "tools/**"
       - "tests/**"
       - "validation/**"
+      - "figures/**"
+      - "requirements.txt"
       - "CLAIMS.yaml"
       - "STATUS.md"
       - "README.md"
+      - "VERIFICATION.md"
       - ".github/workflows/validate.yml"
   pull_request:
     paths:
       - "**.lang"
-      - "tools/validate_typecast.py"
-      - "tools/verify_chomsky.py"
+      - "tools/**"
       - "tests/**"
       - "validation/**"
+      - "figures/**"
+      - "requirements.txt"
       - "CLAIMS.yaml"
       - "STATUS.md"
       - "README.md"
+      - "VERIFICATION.md"
       - ".github/workflows/validate.yml"
 
 permissions:
@@ -39,6 +43,9 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Install pinned tooling dependencies
+        run: python3 -m pip install --requirement requirements.txt
+
       - name: Reject unresolved merge markers in publication surfaces
         run: |
           if grep -R -n -E '^(<<<<<<<|=======|>>>>>>>)' README.md STATUS.md CLAIMS.yaml VERIFICATION.md; then
@@ -52,8 +59,25 @@ jobs:
       - name: Run structural validation from declared source manifest
         run: python3 tools/validate_typecast.py --all
 
+      - name: Run single-source structural validation
+        run: python3 tools/validate_typecast.py
+
       - name: Run Chomsky hierarchy evidence checks
         run: python3 tools/verify_chomsky.py
+
+      - name: Verify boot-banner self-reconstruction witness
+        run: python3 tools/stego_boot_banner.py --verify figures/slang_boot_banner.png
+
+      # The committed reports in research/ are cited as evidence artifacts by
+      # CLAIMS.yaml. A committed report that the current tooling would not
+      # reproduce is stale evidence, so treat drift as a failure.
+      - name: Reject stale committed evidence reports
+        run: |
+          if ! git diff --exit-code -- research/; then
+            echo "Committed reports in research/ do not match current tooling output."
+            echo "Re-run the validation commands in README.md and commit the result."
+            exit 1
+          fi
 
       - name: Upload validation reports
         if: always()

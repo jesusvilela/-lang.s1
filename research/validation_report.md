@@ -1,31 +1,21 @@
 # Validation and Typecast Report
 
-## Status
-- Source: `LANG.v2.5.tower.geom.lang`
-- Profile: `tower_geom`
-- Lines: 55
-- Blocks discovered: 8 (8 unique)
-- Section nodes discovered: 0
+> Structural validation only. PASS is not a semantic or mathematical proof.
+
+- Source: `LANG.v1.2.0.unified_geometry.lang`
+- Profile: `unified_geometry`
+- Surface: `legacy_block`
+- Lines: 411
+- Blocks: 22
+- Sections: 19
 
 ## Checks
-- ✅ `block_headers_present`
-- ✅ `section_vectors_dimension_8`
-- ✅ `section_norm_below_0_999`
-- ✅ `salience_positive`
-
-## Geometric Boundary
-- Max section norm: 0.0
-- Margin to invariant 0.999: 0.999
-
-## Typecast Map
-- `SOURCE` → `meta_binding`
-- `SORTS` → `tower_type_universe`
-- `AXIOMS` → `geometric_laws`
-- `TOWER_STRUCTURE` → `vertical_horizontal_transport_layout`
-- `INVARIANTS` → `stability_constraints`
-- `REDUCTION` → `tower_evolution_dynamics`
-- `OUTPUT` → `operational_contract`
-- `NOTES` → `semantic_interpretation_and_scope`
-
-## Postulate
-A fully sectional hyperbolic self-referential computer is admissible when section norms remain strictly interior to the Poincaré boundary and recursion is mediated by reversible transport over the bundle.
+- ✅ `declared_profile_known` — `PASS`
+- ✅ `surface_recognized` — `PASS`
+- ✅ `block_headers_present` — `PASS`
+- ✅ `section_vectors_dimension_8` — `PASS`
+- ✅ `section_norm_below_0_999` — `PASS`
+- ✅ `salience_positive` — `PASS`
+- ⚪ `semantic_correctness` — `NOT_TESTED`
+- ⚪ `mathematical_claims` — `NOT_TESTED`
+- ⚪ `empirical_claims` — `NOT_TESTED`

@@ -9,14 +9,24 @@
 Run:
 
 ```bash
+python3 -m pip install -r requirements.txt
+
 python3 -m unittest discover -s tests -p 'test_*.py'
 python3 tools/validate_typecast.py --all
+python3 tools/validate_typecast.py
 python3 tools/verify_chomsky.py
+python3 tools/stego_boot_banner.py --verify figures/slang_boot_banner.png
 ```
 
 The authoritative structural source set is declared in
-[`validation/sources.json`](validation/sources.json). Generated reports must be
-read together with the repository commit that produced them.
+[`validation/sources.json`](validation/sources.json). A declared source that is
+absent from the working tree fails the run; it is never skipped.
+
+Generated reports must be read together with the repository commit that produced
+them. The committed reports under `research/` are regenerated and diffed in CI,
+so a committed report that the current tooling would not reproduce fails the
+build. This makes the reports an artifact of the commit rather than a historical
+snapshot of an older validator.
 
 ### Structural statuses
 
