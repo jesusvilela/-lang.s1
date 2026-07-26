@@ -1,67 +1,92 @@
-# §-LANG runtime capabilities (v5)
+# §-LANG runtime capability surface (v5, reported)
 
-Which tokens in `.lang` / `.dialect.lang` / `.SelfCompressed.lang` files the
-reference runtime treats as *executable* (carry reduction semantics) vs
-*symbolic-only* (parsed and preserved, but have no geometric/categorical
-realisation yet).
+This document records the tokens that the v5 reference-runtime design treats as
+executable versus symbolic-only. It is a capability declaration, not by itself a
+reproducibility certificate.
 
-Pack authors can use this list to gauge how much of a new dialect the
-runtime will actually evaluate versus just surface as metadata.
+For publication-strength operational evidence, each executable claim still
+requires a pinned implementation path and commit, environment definition,
+black-box conformance cases, and clean execution logs. See `CLAIMS.yaml` and
+`STATUS.md`.
 
-## Executable in v5
+## Reported executable surface
 
-**§R-family rules** — full `§R1_` through `§R9_`.
+### §R-family rules
 
-**Canonical operators** — `Π_expand`, `Π_expire`, `§rho`/`ρ`, `decomp_path`,
-`expand_self`, `compress_D`, `round_trip`, `reconstruct`, `self_def`,
-`other_def`, `world_def`, `W_glue`, `Fix(Φ)`, `Phi`, `H_alpha`, `hyperbolize`,
-`Mobius`, `Poincare`, `substrate`, `prime`, `mutual`, `identity_law`.
+The design declares reduction behavior for `§R1_` through `§R9_`.
 
-**New in v5 — categorical reductions** (emit
-`runtime.reduction_applied` info diagnostics):
+### Canonical operators
 
-| Category   | Tokens                                         | Law applied |
-|------------|------------------------------------------------|-------------|
-| loeb       | `Löb`, `Loeb`, `□`, `Fix(Φ)`, `Knaster-Tarski` | Löb discharge `□(□P→P) ⊢ □P` / lfp–gfp witness |
-| pushout    | `pushout`, `⊔`, `colimit`                      | Colimit `(A ⊔ B)/~_f,g` on a cospan |
-| endofunctor| `endofunctor`, `F(id)`, `F∘G`                  | Identity + composition laws on endofunctors |
+The reported operator surface includes:
 
-## Still symbolic-only in v5
+`Π_expand`, `Π_expire`, `§rho`/`ρ`, `decomp_path`, `expand_self`,
+`compress_D`, `round_trip`, `reconstruct`, `self_def`, `other_def`,
+`world_def`, `W_glue`, `Fix(Φ)`, `Phi`, `H_alpha`, `hyperbolize`, `Mobius`,
+`Poincare`, `substrate`, `prime`, `mutual`, and `identity_law`.
 
-- `Selberg` — trace-formula / spectral side not yet wired.
-- `Mostow` — rigidity not yet realised geometrically.
+### Reported categorical reductions
 
-These still parse and validate; the runtime records
-`runtime.symbolic_only` diagnostics for each occurrence.
+| Category | Tokens | Intended diagnostic/law |
+|---|---|---|
+| fixed-point / provability-inspired | `Löb`, `Loeb`, `□`, `Fix(Φ)`, `Knaster-Tarski` | Emits a reduction diagnostic for the runtime's encoded rule |
+| pushout | `pushout`, `⊔`, `colimit` | Intended cospan/quotient-style reduction |
+| endofunctor | `endofunctor`, `F(id)`, `F∘G` | Intended identity and composition reductions |
 
-## Parser
+The use of a token named `Löb` does not establish Löb's theorem. The runtime rule
+must be evaluated as an implemented symbolic reduction unless linked to a formal
+theory and checked proof.
 
-The v5 parser fuses physical lines whose parentheses or quotes are
-unbalanced and whose tail is a continuation character (`(`, `{`, `,`).
-This lets patterns like
+## Reported symbolic-only surface
 
-```
+- `Selberg` — trace-formula or spectral semantics are not implemented here.
+- `Mostow` — geometric rigidity semantics are not implemented here.
+
+Symbolic-only tokens may be parsed and preserved while carrying no verified
+geometric, categorical, or theorem-level realization.
+
+## Parser behavior described by the v5 design
+
+The parser design fuses physical lines whose parentheses or quotes are
+unbalanced and whose tail is a continuation character such as `(`, `{`, or `,`.
+This allows structures such as:
+
+```text
 OUTPUT = CANON(§EMIT(§X{
   ...
 }))
 ```
 
-parse as a single logical assignment. Lines that merely contain
-free-form parens in natural-language text (e.g. `q ∈ (0,2]`) are left
-alone.
+to be represented as one logical assignment. Free-form parentheses in prose
+should remain unchanged.
 
-## Pack ingestion
+## Pack ingestion interface
 
-The CLI now accepts:
+The reported CLI interface accepts:
 
-- a single `.lang` file,
-- a directory (recursive scan),
-- a directory containing `manifest.json` (only the files declared in
-  `"files"` are parsed, in the declared order),
-- a `.zip` archive (extracted, then treated as a directory).
+- one `.lang` file;
+- a recursively scanned directory;
+- a directory with `manifest.json`, using only declared files in order;
+- a ZIP archive extracted and treated as a directory.
 
-Command:
+Reported command:
 
-```
+```bash
 slang_cli run-pack <path-or-zip> [--json]
 ```
+
+## Operational promotion gate
+
+A token may be labelled reproduced executable in this repository only after all
+of the following are attached to the claim ledger:
+
+1. implementation path and immutable commit;
+2. environment or dependency lock;
+3. known-answer inputs and expected outputs;
+4. malformed and negative controls;
+5. representation-equivalence tests;
+6. clean command and execution log;
+7. scope statement separating symbolic runtime semantics from external
+   mathematical semantics.
+
+Until that gate is crossed, the capability status is `A`—reported or externally
+dependent—not `P`.
