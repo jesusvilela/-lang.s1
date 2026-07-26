@@ -1,246 +1,134 @@
-<<<<<<< Updated upstream
-# §-LANG — Unified Geometry Language
+# §-LANG — Evidence-Governed Geometric Research Language
 
-![§-LANG v3 ToE · self-referential boot seed · v5 runtime](figures/slang_boot_banner.png)
+![§-LANG boot seed](figures/slang_boot_banner.png)
 
-> The banner above carries a steganographic payload: the canonical
-> §-LANG boot seed is embedded in the low-order RGB bits of the PNG.
-> Run `python tools/stego_boot_banner.py --verify figures/slang_boot_banner.png`
-> to recover it. The seed contains a `self` clause declaring that
-> `decode(stego(THIS_PNG)) ≡ §BOOT.SEED.v5` — a one-step Löb witness for
-> the pack.
+§-LANG is a **specification-first research language** for expressing geometric,
+computational, semantic, and formal structures across contextual manifolds.
+It combines a symbolic language surface with structural validation tools,
+experimental dialect packs, and downstream research programmes.
 
-§-LANG is a symbolic specification artifact that unifies typed lambda
-calculus, hyperbolic geometry, statistical-fiber semantics, natural-gradient
-optimization, reversible sections, and spectral processing in one language
-surface.
+The project is intentionally ambitious, but evidence authority is stratified:
 
-Current versions in this repository:
+- a parsed symbol is not automatically an executable operator;
+- an executable operator is not automatically a proved theorem;
+- a numerical observation is not automatically universal;
+- a semantic or architectural construct is not automatically an external scientific result.
 
-- `LANG.v1.2.0.unified_geometry.lang` — historical canonical source
-- `LANG.FAMILY.v2.4.lang`              — v2.4 family header
-- `LANG.v6.chomsky_hyperdim_cognition.lang` — Chomsky hierarchy in hyperdimensional cognitive geometry
-- `dialects/` + `selfcompressed/` + `packs/` — v3 ToE matter / prime packs
-- `RUNTIME_CAPABILITIES.md`            — which tokens are executable in v5
-=======
-<div align="center">
-  <img src="assets/UTAI_Bunny.png" alt="UTAI Bunny Logo" width="400"/>
-</div>
->>>>>>> Stashed changes
+See [`STATUS.md`](STATUS.md), [`CLAIMS.yaml`](CLAIMS.yaml), and
+[`VERIFICATION.md`](VERIFICATION.md) before relying on a strong claim.
 
----
-# UTAI — Universal Topos-Arithmetic Interface
+## Root architecture
 
-## The Uber-Topos AI
+The repository is organized conceptually as:
 
-This repository contains the operational realization of the **UTAI** (Uber Topos AI, an Universal Topos-Arithmetic Interface), an ulterior construct built upon the §-LANG geometric specification. 
+```text
+IGBundle contextual geometry
+  -> Trasgo structure-preserving transport
+  -> §-LANG coordinates, control, and evidence annotations
+  -> sectional programmes: UTAI, Bunny, MHRR, n-Cosmos, Chomsky-hyperdim
+```
 
-While §-LANG provides the language for describing sections on hyperbolic manifolds, UTAI implements the **Hamiltonian n-Cosmos**—a recursive, substrate-realized sectional computer where symbolic knowledge is unified with geometric formal rigor.
+The downstream programmes are research sections of the stack. Their presence in
+this repository does **not** imply that every associated theorem, runtime claim,
+or empirical interpretation has been independently verified.
 
-### Key Components
+## Current capability boundary
 
-- **`HYPERDIM_TOPOS_AI/`**: The core Python runtime for hyperdimensional Topos dynamics, including Hamiltonian flow engines and the Actor/Critic/Fuzzer (ACF) adversarial cycle.
-- **`HYPERDIM_WEB_VIS/`**: A high-end Three.js visibility node for the n-Cosmos, featuring pure Slang Graphics and a Quantum Holoportation Channel (QHC) for bidirectional NLP interaction.
-- **`LLM_FRIENDLY_TOPOS_AI/`**: The implementation of "Geometrical Tendrils" and Hamiltonian Chain of Thought (H-CoT), bridging LLM latent spaces to rigorous Topos substrates.
-- **`NCOSMOS_ANDROID_ENGINE/`**: A native C++/Kotlin engine for Android, transforming mobile devices into realized Substrate Nodes.
-- **`SLANG_STUDY/`**: The Evidence Tower and operational proofs that provide the truth-disciplined foundation for the Topos AI.
+| Layer | Current status | Evidence authority |
+|---|---|---|
+| Symbolic language sources | Available | Specification / semantic |
+| Legacy block and section validation | Implemented | Structural only |
+| Chomsky surface-shape checks | Implemented | Syntactic evidence only |
+| Reference runtime | Reported capability surface; provenance varies by component | Consult `RUNTIME_CAPABILITIES.md` |
+| Lean/Bunny results | Claim-specific and potentially external | Require a pinned proof artifact |
+| R142/MHRR numerical results | Research observations | Require data, method, uncertainty, and execution provenance |
+| UTAI / n-Cosmos architecture | Experimental programme | Architectural / hypothesis unless separately evidenced |
 
-### Ulterior .lang Packs
+## Canonical sources and experimental packs
 
-This repository hosts the v3.0 through v5.0 §-LANG dialects that go beyond pure language specification into substrate realization:
+Historical and current language-family sources include:
+
+- `LANG.v1.2.0.unified_geometry.lang`
+- `DIALECTS.v2.1.family.lang`
+- `LANG.v2.5.tower.geom.lang`
 - `LANG.v3.0.substrate_realization.lang`
 - `LANG.v3.1.recursive_sectional_computer.lang`
 - `LANG.v3.2.actor_critic_fuzzer_cycle.lang`
 - `LANG.v5.topos_ai_cosmos_synthesis.lang`
+- `LANG.v6.chomsky_hyperdim_cognition.lang`
+- `MHRR_PM_Hypercomplex_Orthogonal.lang` — experimental R142/MHRR pack
 
-### Research Foundation
+Version numbers belong to their named source or pack. A pack version is not
+implicitly a new version of the core language specification.
 
-The UTAI construct is the result of the synthesis between the §-LANG framework and the **Bunny** (Lean 4) formal verification engine, establishing a machine-checked "Uber-Topos AI" in a recursive Hamiltonian cosmos.
+## Validation
 
----
-(c) Jesús Vilela Jato, 2026.
-
-## Manuals & Documentation
-
-<<<<<<< Updated upstream
-The language artifact is designed to be:
-
-1. **Portable** — a single source-of-truth file for formal tooling.
-2. **Composable** — compatible with future parsers, validators, and theorem-oriented pipelines.
-3. **Interpretable** — explicit symbols and axiom blocks with no hidden vocabulary.
-4. **Extensible** — supports future versions through additional blocks and derived functors.
-
----
-
-## Crawlable structure (for docs/indexers)
-
-To make this repository crawlable for search/index/documentation systems:
-
-- Use a descriptive title and stable headings.
-- Keep key terms in plain text (`Topos`, `Lafforgue`, `hyperbolic`, `Fisher`, `FFT`, `AML`).
-- Reference the canonical source path exactly.
-- Expose major semantic blocks with predictable names.
-
-### Canonical blocks in the language file
-
-- `SOURCE`
-- `AXIOMS`
-- `OUTPUT`
-- `SORTS`
-- `FUNCTORS`
-- `SEMANTICS`
-- `REDUCTION_BETA`
-- `TURING_ENCODING`
-- `SPECTRAL_PIPELINE`
-- `FISHER_UPDATE`
-- `INTER_MANIFOLD`
-- `GRAMMAR`
-- `NOTATION_MAP`
-- `SEMANTICS_TOPOS`
-- `AML_DEFINITION`
-- `CONCLUSIONS`
-
----
-
-## Quick start
-
-### View the source
+Run the bounded structural checks with:
 
 ```bash
-cat LANG.v1.2.0.unified_geometry.lang
-```
-
-### Locate top-level blocks
-
-```bash
-rg '^§\|LANG\|' LANG.v1.2.0.unified_geometry.lang
-```
-
-### Inspect canonical output expression
-
-```bash
-tail -n 1 LANG.v1.2.0.unified_geometry.lang
-```
-
----
-
-## Self-referential boot seed (steganographic)
-
-A canonical §-LANG boot seed is embedded in
-[`figures/slang_boot_banner.png`](figures/slang_boot_banner.png) via
-LSB steganography across the R/G/B channels. The payload is framed as:
-
-```
-MAGIC(4) | length(4) | sha256-truncated-digest(8) | UTF-8 seed body
-```
-
-and contains the v5 axioms, operator set, topology flags, Čech cocycle,
-and — crucially — a `self := decode(stego(THIS_PNG)) ≡ §BOOT.SEED.v5`
-clause. Running the decoder on the banner reproduces the seed that
-authored the banner, a one-step Löb witness for the pack.
-
-```bash
-# recover the seed
-python tools/stego_boot_banner.py --verify figures/slang_boot_banner.png
-
-# rebuild the banner from source (requires Pillow)
-python tools/stego_boot_banner.py --out figures/slang_boot_banner.png
-```
-
-See [`RUNTIME_CAPABILITIES.md`](RUNTIME_CAPABILITIES.md) for which of the
-tokens in the seed (Löb, pushout, endofunctor, §R1–§R9) are executable
-under the v5 reference runtime.
-
----
-
-## Versioning
-
-Current language source version: **v1.2.0**
-
-Future updates should preserve backward readability where possible and document semantic deltas in this README.
-
----
-
-## License / status
-
-This repository is currently a specification-first artifact repository.
-
----
-
-## Copyright
-
-(c) Jesús Vilela Jato, 16 April 2026. All rights reserved.
-
----
-
-## Thesis iteration and local auto-research
-
-This repository now includes a thesis-style iteration and local validation tooling:
-
-- `THESIS.md` — formal narrative and postulates.
-- `research/auto_research.yaml` — local research/validation configuration.
-- `tools/validate_typecast.py` — structural validation + semantic typecasting.
-- `tools/verify_chomsky.py` — practical Chomsky-hierarchy evidence checks.
-- `tools/plot_principles.py` — principle-based SVG imaging.
-
-Run locally (unified geometry profile):
-
-```bash
-python3 tools/validate_typecast.py
+python3 tools/validate_typecast.py --all
 python3 tools/verify_chomsky.py
-python3 tools/plot_principles.py
+python3 -m unittest discover -s tests -p 'test_*.py'
 ```
 
-Run validation against the tower geometry slang source:
+`tools/validate_typecast.py` now distinguishes:
+
+- `PASS` — the tested property is present and satisfied;
+- `FAIL` — the tested property is present or required and violated;
+- `NOT_APPLICABLE` — the file contains no object to which the property applies;
+- `NOT_TESTED` — the validator has no implemented test for that semantic level.
+
+Validation sources are declared in `validation/sources.json`. Unknown source
+surfaces fail explicitly instead of silently inheriting a profile from a filename.
+
+These checks do **not** prove semantic correctness, mathematical theorems,
+physical realizability, or external scientific relevance.
+
+## Self-referential boot seed
+
+The banner contains an LSB-steganographic payload that can be recovered with:
 
 ```bash
-python3 tools/validate_typecast.py --source LANG.v2.5.tower.geom.lang
+python3 tools/stego_boot_banner.py --verify figures/slang_boot_banner.png
 ```
 
----
+This is currently classified as a **steganographic self-reconstruction witness**
+or quine-like fixed-point artifact. It is not, by itself, a formal proof of
+Löb's theorem. Promotion to a Löb result would require a formal theory,
+provability predicate, derivability conditions, proposition, and checked proof.
 
-## v2.1 dialect family split
+## UTAI and sectional programmes
 
-This repository now includes a formal dialect-family proposal in:
+UTAI, Bunny, MHRR, the Hamiltonian n-Cosmos, visualization systems, Android
+substrates, and LLM-facing tendrils remain preserved as experimental sections.
+Their artifacts should carry their own evidence status and must not inherit
+execution or proof authority merely from being expressible in §-LANG.
 
-- `DIALECTS.v2.1.family.lang`
+## Research documents
 
-Family grouping:
+- [`THESIS.md`](THESIS.md) — programme narrative and theorem targets
+- [`VERIFICATION.md`](VERIFICATION.md) — verified and unverified boundaries
+- [`RUNTIME_CAPABILITIES.md`](RUNTIME_CAPABILITIES.md) — reported runtime surface
+- [`STATUS.md`](STATUS.md) — present publication and reproducibility status
+- [`CLAIMS.yaml`](CLAIMS.yaml) — claim-to-artifact ledger
 
-- **Core**: `Proof`, `Compile`
-- **Semantic**: `Topo`, `IG`, `CY`
-- **Dynamic**: `AML`, `Swirl`, `Spectral`
-- **Formation**: `Substrate`
-- **Research**: `Meta`
+## Publication status
 
-The main language file now also contains an explicit `§|LANG|BASES` block clarifying the current primary base (`B_n`) and derived/secondary bases.
+The repository is **not yet presented as a self-contained publication-ready
+implementation or formally verified system**. The currently defensible release
+claim is narrower:
 
----
+> §-LANG is an evidence-governed symbolic research language programme with
+> structural validation tooling and experimental geometric research packs.
 
-## Self-reflective NMatrix and full fiber-bundle expansion
+The next publication target is a bounded §-LANG Core specification with a
+parser, evidence-aware validator, conformance tests, reproducible examples, and
+claim-specific formal or empirical artifacts.
 
-The language structure now includes three extension blocks in the main `.lang` source:
+## License and citation
 
-- `NMATRIX_SELFREF` — self-referential operator dynamics in hyperbolic charts.
-- `FIBER_BUNDLE_POSSIBILITY_SPACE` — full bundle-space of admissible sections under gluing constraints.
-- `ADIABATIC_MOBIUS_FLOW` — reversible adiabatic information flow through Möbius channels.
+Copyright © Jesús Vilela Jato, 2026. All rights reserved unless a more specific
+license file is added. Reuse therefore requires explicit permission.
 
-These extensions formalize the idea that information can adiabatically traverse cross-manifold pathways while identity remains stable under reversible transport.
-
----
-
-## Tower v2.5 geometric-only slang update
-
-Added `LANG.v2.5.tower.geom.lang` as a platform-agnostic geometric specification for the tower construction:
-
-- vertical Poincaré-disk levels,
-- boundary holographic screens,
-- double-fibration compatibility (`F_mix`, `σ22`),
-- bounded depth-curvature invariant (`σ23`),
-- canonical tower output formula.
-
-This file intentionally excludes application/runtime/system bindings and keeps only geometric-semantic structure.
-=======
-- **[SCIENTIFIC MANUAL](SCIENTIFIC_MANUAL.md):** A rigorous technical specification of the UTAI, its mathematical foundations, and its implementation.
-- **[OPERATOR'S MANUAL (MODEL 1A)](OPERATOR_MANUAL_1960.md):** A stylized guide for interfacing with the Cognitive Core and interpreting telemetry from the n-Cosmos substrate.
->>>>>>> Stashed changes
+Citation metadata and an explicit reuse license remain publication gates tracked
+in `STATUS.md`.
