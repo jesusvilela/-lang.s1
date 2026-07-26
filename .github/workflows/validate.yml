@@ -1,15 +1,21 @@
-name: §-LANG Structural Validation
+name: §-LANG Publication and Structural Validation
 
 on:
   push:
     paths:
       - "**.lang"
+      - "**.md"
+      - "CLAIMS.yaml"
+      - "tools/publication_gate.py"
       - "tools/validate_typecast.py"
       - "tools/verify_chomsky.py"
       - ".github/workflows/validate.yml"
   pull_request:
     paths:
       - "**.lang"
+      - "**.md"
+      - "CLAIMS.yaml"
+      - "tools/publication_gate.py"
       - "tools/validate_typecast.py"
       - "tools/verify_chomsky.py"
       - ".github/workflows/validate.yml"
@@ -19,18 +25,22 @@ permissions:
 
 jobs:
   validate:
-    name: Validate all .lang sources
+    name: Publication integrity and bounded structural checks
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          # The verification scripts use modern type annotations tested on 3.11.
           python-version: "3.11"
 
-      - name: Run structural validation (all .lang files)
+      - name: Run publication integrity gate
+        run: python3 tools/publication_gate.py
+
+      - name: Run legacy structural validation
         run: python3 tools/validate_typecast.py --all
 
       - name: Run Chomsky hierarchy evidence checks
@@ -42,6 +52,7 @@ jobs:
         with:
           name: validation-reports
           path: |
+            research/publication_gate.json
             research/validation_report_all.json
             research/validation_report_all.md
             research/validation_report.json
