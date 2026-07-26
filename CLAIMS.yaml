@@ -1,0 +1,67 @@
+schema_version: 1
+project: §-LANG
+status_vocabulary:
+  P: proved_or_definitionally_closed
+  A: assumed_axiomatized_conditional_or_external
+  M: measured_with_provenance_and_uncertainty
+  H: hypothesis_or_unverified_interpretation
+  S: semantic_architectural_or_design_language
+  R: retired_or_demoted
+promotion_rules:
+  PROVED: requires_theorem_name_proof_environment_and_immutable_artifact
+  EXECUTABLE: requires_live_entrypoint_and_passing_black_box_test
+  MEASURED: requires_raw_data_method_estimator_uncertainty_and_execution_record
+  UNIVERSAL: requires_explicit_quantified_domain_and_cross_domain_controls
+  CERTIFIED: requires_named_certifier_scope_and_certificate_artifact
+claims:
+  - id: SLANG-STRUCT-001
+    text: Historical §-LANG sources can be checked for expected block headers and bounded section-vector properties.
+    layer: L_syn
+    status: P
+    scope: Legacy profiles recognized by tools/validate_typecast.py only.
+    evidence: [tools/validate_typecast.py, VERIFICATION.md]
+    forbidden_promotions: [semantic correctness, theorem validity, runtime correctness]
+  - id: SLANG-GRAMMAR-001
+    text: The surface grammar has context-free-shaped productions and recursive witnesses.
+    layer: L_syn
+    status: P
+    scope: The bounded checks implemented by tools/verify_chomsky.py.
+    evidence: [tools/verify_chomsky.py, research/chomsky_verification_report.md]
+    forbidden_promotions: [full Type-0 semantic equivalence, Turing completeness of the complete language]
+  - id: SLANG-BOOT-001
+    text: The boot-banner payload can reconstruct the declared seed under the repository decoder.
+    layer: L_syn
+    status: P
+    evidence: [tools/stego_boot_banner.py, figures/slang_boot_banner.png]
+    forbidden_promotions: [Löb theorem proof, formal provability result]
+  - id: SLANG-RUNTIME-001
+    text: The declared reference runtime executes all operators listed in RUNTIME_CAPABILITIES.md.
+    layer: L_op
+    status: A
+    evidence: [RUNTIME_CAPABILITIES.md]
+    required_bridge: [pin live implementation entrypoints, add black-box conformance tests, record clean-checkout execution logs]
+  - id: UTAI-FORMAL-001
+    text: UTAI is a machine-checked Uber-Topos AI.
+    layer: L_form
+    status: H
+    evidence: [README.md]
+    required_bridge: [theorem inventory, pinned Lean project, clean lake build, explicit theorem-to-claim mapping]
+  - id: R142-RHO-001
+    text: Under the R142 experimental configuration, rho-star is approximately 0.135 plus or minus 0.003.
+    layer: L_op
+    status: H
+    evidence: [MHRR_PM_Hypercomplex_Orthogonal.lang]
+    required_bridge: [raw observations, generator and parameter-space declaration, estimator and uncertainty method, seeds and environment lock, execution record]
+    forbidden_promotions: [substrate universality, complexity lower bound]
+  - id: R142-COMPLEXITY-001
+    text: Positive-density clustered defects imply a computational complexity lower bound.
+    layer: L_sem
+    status: H
+    evidence: [MHRR_PM_Hypercomplex_Orthogonal.lang]
+    required_bridge: [formal problem definition, explicit reduction or lower-bound argument, matched controls, independent review]
+  - id: SLANG-PUBLICATION-001
+    text: The current repository is publication-ready as a self-contained formal, operational, and empirical artifact.
+    layer: L_gov
+    status: R
+    evidence: [STATUS.md, VERIFICATION.md]
+    retired_reason: The repository currently has bounded structural evidence but incomplete operational, formal, and empirical provenance chains.
