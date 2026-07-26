@@ -1,0 +1,110 @@
+schema_version: 1
+project: §-LANG
+notice: >-
+  Evidence tags are claim-specific. Presence in this repository does not promote
+  semantic language to executable, empirical, or formal authority.
+
+claims:
+  - id: SLANG-STRUCT-001
+    text: The declared legacy §-LANG sources satisfy their configured block-header constraints.
+    layer: L_syn
+    status: P
+    scope: Structural text checks only.
+    artifacts:
+      - validation/sources.json
+      - tools/validate_typecast.py
+      - research/validation_report_all.json
+    forbidden_promotions:
+      - semantic correctness
+      - runtime correctness
+      - mathematical proof
+
+  - id: SLANG-GEOM-001
+    text: Declared section vectors have dimension eight and lie below the configured Euclidean norm threshold where section vectors are present.
+    layer: L_syn
+    status: P
+    scope: Parsed §S section declarations only; NOT_APPLICABLE when absent.
+    artifacts:
+      - tools/validate_typecast.py
+      - research/validation_report_all.json
+    forbidden_promotions:
+      - validity of full Poincare geometry
+      - geodesic correctness
+      - physical realization
+
+  - id: SLANG-BOOT-001
+    text: The PNG boot banner can reproduce its embedded seed through the documented decoder.
+    layer: L_syn
+    status: P
+    scope: Steganographic self-reconstruction only.
+    artifacts:
+      - figures/slang_boot_banner.png
+      - tools/stego_boot_banner.py
+    forbidden_promotions:
+      - Loeb theorem
+      - formal provability result
+
+  - id: SLANG-RUNTIME-001
+    text: The documented v5 tokens have the stated executable semantics.
+    layer: L_op
+    status: A
+    scope: Reported capability surface pending a pinned implementation and clean conformance run.
+    artifacts:
+      - RUNTIME_CAPABILITIES.md
+    required_bridge:
+      - pin runtime implementation path and commit
+      - add black-box conformance cases
+      - publish clean execution logs
+
+  - id: UTAI-FORMAL-001
+    text: The complete UTAI architecture is machine checked.
+    layer: L_form
+    status: H
+    scope: No repository-wide proof claim is currently accepted.
+    artifacts:
+      - README.md
+      - VERIFICATION.md
+    required_bridge:
+      - pin proof repository and commit
+      - identify exact theorem names
+      - provide toolchain and clean build log
+
+  - id: R142-RHO-001
+    text: R142 reports rho-star approximately 0.135 plus or minus 0.003.
+    layer: L_op
+    status: H
+    scope: Reported observation; not yet accepted as a bounded measurement under this repository.
+    artifacts:
+      - MHRR_PM_Hypercomplex_Orthogonal.lang
+    required_bridge:
+      - raw data
+      - generator and estimator definitions
+      - seeds and parameter range
+      - uncertainty method
+      - environment and execution record
+    forbidden_promotions:
+      - universal constant
+      - substrate stability
+      - complexity lower bound
+
+  - id: R142-COMPLEXITY-001
+    text: Positive-density clustered defects imply a complexity lower bound.
+    layer: L_sem
+    status: H
+    scope: Open theorem target.
+    artifacts:
+      - MHRR_PM_Hypercomplex_Orthogonal.lang
+    forbidden_promotions:
+      - proved lower bound
+      - necessary condition
+
+retired_interpretations:
+  - id: RETIRED-LOEB-001
+    text: The boot banner alone is a one-step Loeb witness.
+    status: R
+    replacement: SLANG-BOOT-001
+
+  - id: RETIRED-PUB-001
+    text: The complete repository is publication-ready as a self-contained implemented and formally verified system.
+    status: R
+    replacement: The bounded §-LANG Core publication target in STATUS.md.
