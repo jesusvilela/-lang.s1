@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "scope": "Structural validation surfaces only; no semantic, theorem, runtime, or empirical promotion.",
+  "sources": [
+    {"path": "DIALECTS.v2.1.family.lang", "profile": "dialects"},
+    {"path": "LANG.v1.2.0.unified_geometry.lang", "profile": "unified_geometry"},
+    {"path": "LANG.v2.5.tower.geom.lang", "profile": "tower_geom"},
+    {"path": "LANG.v3.0.substrate_realization.lang", "profile": "substrate"},
+    {"path": "LANG.v3.1.recursive_sectional_computer.lang", "profile": "recursive_sectional"},
+    {"path": "LANG.v3.2.actor_critic_fuzzer_cycle.lang", "profile": "actor_critic"},
+    {"path": "LANG.v5.topos_ai_cosmos_synthesis.lang", "profile": "topos_ai"},
+    {"path": "LANG.v6.chomsky_hyperdim_cognition.lang", "profile": "chomsky_hyperdim"},
+    {"path": "MHRR_PM_Hypercomplex_Orthogonal.lang", "profile": "mhrr_pack_v1"}
+  ]
+}
