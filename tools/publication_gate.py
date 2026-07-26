@@ -11,11 +11,12 @@ import argparse
 import json
 import re
 import subprocess
-import sys
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 from pathlib import Path
 
-MERGE_MARKERS = ("<<<<<<<", "=======", ">>>>>>>")
+MERGE_MARKER_RE = re.compile(
+    r"^(?:<{7}(?:\s.*)?|={7}\s*|>{7}(?:\s.*)?)$", re.MULTILINE
+)
 MANDATORY_FILES = (
     "README.md",
     "STATUS.md",
@@ -86,16 +87,16 @@ def audit(root: Path) -> dict:
         text = read_text(path)
         if text is None:
             continue
-        for marker in MERGE_MARKERS:
-            if marker in text:
-                findings.append(
-                    Finding(
-                        "ERROR",
-                        "merge_marker",
-                        str(path.relative_to(root)),
-                        f"contains {marker}",
-                    )
+        marker = MERGE_MARKER_RE.search(text)
+        if marker:
+            findings.append(
+                Finding(
+                    "ERROR",
+                    "merge_marker",
+                    str(path.relative_to(root)),
+                    f"contains conflict line {marker.group(0)!r}",
                 )
+            )
 
     claims_path = root / "CLAIMS.yaml"
     claims_text = read_text(claims_path) or ""
