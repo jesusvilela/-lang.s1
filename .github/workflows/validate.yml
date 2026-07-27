@@ -1,6 +1,11 @@
 name: §-LANG Structural Validation
 
 on:
+  # Manual re-run. The push/pull_request triggers below are path-filtered, so a
+  # commit touching nothing they match produces no run at all — including an
+  # empty commit. This gives a way to re-request a run after an infrastructure
+  # failure without inventing a file change.
+  workflow_dispatch:
   push:
     paths:
       - "**.lang"
