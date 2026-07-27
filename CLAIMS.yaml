@@ -154,6 +154,63 @@ claims:
       - mesh coordinates are measured quantities
       - mesh size is evidence of capability
 
+  - id: PACK-GLUING-001
+    text: The n-Cosmos strata glue to a unified manifold.
+    layer: L_sem
+    status: H
+    scope: >-
+      Undetermined, not merely unproved. The pack asserts a gluing without
+      declaring the cover. Under a prime-indexed cover the seven strata are
+      pairwise disjoint (0 of 21 pairs overlap) and the gluing is vacuous; under
+      a depth-indexed cover every pair overlaps completely (21 of 21, Jaccard
+      1.0). The assertion has no determinate truth value until a cover is named.
+    artifacts:
+      - AUDIT.md
+      - tools/sheaf_coherence.py
+      - research/sheaf_coherence.json
+    required_bridge:
+      - declare the cover as an explicit §COVER header in the pack
+      - re-run H1 under the declared index only
+    forbidden_promotions:
+      - unified manifold as an established result
+      - Hegelian closure
+
+  - id: PACK-ADIABATIC-001
+    text: The n-Cosmos H(Q) sequences exhibit adiabatic slow variation.
+    layer: L_op
+    status: S
+    scope: >-
+      Promoted to M against a shuffled null, then retired by a preregistered
+      sorted-order null in the same round. Zero of seven strata beat the sorted
+      null and three tie it exactly, so the observed smoothness is fully
+      accounted for by the generator emitting a smooth function of depth. No gap
+      condition, adiabatic theorem, or ground state is demonstrated.
+    artifacts:
+      - AUDIT.md
+      - tools/sheaf_coherence.py
+      - tests/test_sheaf_coherence.py
+    forbidden_promotions:
+      - adiabatic ground state
+      - physical slow-variation result
+      - any restatement in a different vocabulary to rescue the claim
+
+  - id: PACK-BERRY-001
+    text: The Berry phase coordinate equals pi/2 as written with an equality sign.
+    layer: L_syn
+    status: R
+    scope: >-
+      Falsified at the pack's own stated precision. Writing 1.5708 implies 4
+      decimals, i.e. 5e-5; measured max deviations are 1.04e-4, 3.10e-3 and
+      3.30e-3 across the three packs. The approximate reading survives.
+    artifacts:
+      - AUDIT.md
+      - tools/sheaf_coherence.py
+      - research/sheaf_coherence.json
+    replacement: BERRY approximately equals pi/2, deviation up to 3.3e-3.
+    forbidden_promotions:
+      - exact equality
+      - substitution of pi/2 for BERRY in any derivation
+
   # ---------------------------------------------------------------------------
   # Imported from Polycosmic Hypercomplex Brain / Sigma-Infinity, Appendix B
   # (Jesus Vilela Jato, Madrid, July 2026). Statuses are the thesis's own.
@@ -248,6 +305,13 @@ claims:
       - universal constant
       - substrate stability
       - complexity lower bound
+    measured_round_1: >-
+      Consistent with its own tabulated series: mean S/n = 0.138333, sem =
+      0.002362, and the claimed centre 0.135 sits 1.41 sem from the mean, so the
+      stated +/- 0.003 is defensible as a standard error. Separately, zero
+      substrate axes are varied anywhere in the table, so the substrate-stability
+      adjective has no support at all. The estimator is never declared, so
+      whether 0.135 names the large-n asymptote or the mean over n is unpinned.
     known_divergence: >-
       The pack source text states "Measured constant: rho-star ~ 0.135 +/- 0.003
       (substrate-stable)". The ledger does not accept that wording. The pack is

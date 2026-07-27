@@ -15,6 +15,7 @@ on:
       - "figures/**"
       - "requirements.txt"
       - ".claude/skills/**"
+      - "AUDIT.md"
       - "CLAIMS.yaml"
       - "STATUS.md"
       - "README.md"
@@ -29,6 +30,7 @@ on:
       - "figures/**"
       - "requirements.txt"
       - ".claude/skills/**"
+      - "AUDIT.md"
       - "CLAIMS.yaml"
       - "STATUS.md"
       - "README.md"
@@ -84,6 +86,11 @@ jobs:
           python3 tools/mesh_sections.py principia_mathematica_full_N400.lang \
             --out research/mesh/principia_mathematica_full_N400.mesh.json
 
+      - name: Measure pack assertions (sheaf / adiabatic / Berry / rho-star)
+        run: |
+          python3 tools/sheaf_coherence.py research/mesh/*.mesh.json \
+            --out research/sheaf_coherence.json
+
       - name: Self-test the audit manifest validator
         run: |
           python3 .claude/skills/recursive-research-auditor/scripts/validate_audit_manifest.py \
@@ -113,3 +120,4 @@ jobs:
             research/chomsky_verification_report.json
             research/chomsky_verification_report.md
             research/mesh/*.mesh.json
+            research/sheaf_coherence.json
