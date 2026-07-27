@@ -9,6 +9,7 @@ on:
       - "validation/**"
       - "figures/**"
       - "requirements.txt"
+      - ".claude/skills/**"
       - "CLAIMS.yaml"
       - "STATUS.md"
       - "README.md"
@@ -22,6 +23,7 @@ on:
       - "validation/**"
       - "figures/**"
       - "requirements.txt"
+      - ".claude/skills/**"
       - "CLAIMS.yaml"
       - "STATUS.md"
       - "README.md"
@@ -68,6 +70,20 @@ jobs:
       - name: Verify boot-banner self-reconstruction witness
         run: python3 tools/stego_boot_banner.py --verify figures/slang_boot_banner.png
 
+      - name: Project declared packs into meshes
+        run: |
+          python3 tools/mesh_sections.py principia_360_prime_orthogonal.lang \
+            --out research/mesh/principia_360_prime_orthogonal.mesh.json
+          python3 tools/mesh_sections.py ncosmo_hypercomplex_unification.lang \
+            --out research/mesh/ncosmo_hypercomplex_unification.mesh.json
+          python3 tools/mesh_sections.py principia_mathematica_full_N400.lang \
+            --out research/mesh/principia_mathematica_full_N400.mesh.json
+
+      - name: Self-test the audit manifest validator
+        run: |
+          python3 .claude/skills/recursive-research-auditor/scripts/validate_audit_manifest.py \
+            .claude/skills/recursive-research-auditor/references/example-manifest.json
+
       # The committed reports in research/ are cited as evidence artifacts by
       # CLAIMS.yaml. A committed report that the current tooling would not
       # reproduce is stale evidence, so treat drift as a failure.
@@ -91,3 +107,4 @@ jobs:
             research/validation_report.md
             research/chomsky_verification_report.json
             research/chomsky_verification_report.md
+            research/mesh/*.mesh.json

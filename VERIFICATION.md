@@ -104,6 +104,33 @@ implemented system, or the behavior of an executable interpreter.
 | R142 universality or substrate stability | Requires raw data, methods, controls, uncertainty, and provenance |
 | Complexity lower bound from defect density | Open theorem target |
 
+## 4b. Mesh projection
+
+`tools/mesh_sections.py` re-encodes a declared pack's `§THEOREM` declarations as
+a section/link graph. It refuses any source not declared as a pack surface in
+`validation/sources.json`, and the emitted JSON carries its own scope statement
+and a `forbidden_readings` list.
+
+What projection establishes is only that the declaration tree was transcribed.
+A section is a declaration, a link is adjacency, and a coordinate is a value the
+pack states. `declared_verdict` records the turnstile token verbatim and is
+never converted into a status.
+
+Each pack is a **forest**: the five PM axioms at depth 1 are roots, so link
+count is `sections − roots`, not `sections − 1`. A regression test pins this so
+a future change cannot silently produce a single spanning tree.
+
+## 4c. External material
+
+Work originating outside this repository is held in [`CANDIDATES.md`](CANDIDATES.md)
+until its blocking defects are named and resolved. Citation attributions are
+checked against primary sources rather than against the candidate's own
+description of them — repeated self-review is not independent replication.
+
+The procedure is installed as a skill at
+`.claude/skills/recursive-research-auditor/`; its manifest validator is
+self-tested on every build.
+
 ## 5. Evidence governance
 
 Consult [`CLAIMS.yaml`](CLAIMS.yaml) for the current claim-to-artifact mapping and

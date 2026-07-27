@@ -177,6 +177,43 @@ and 3,875 `⊢ COMMIT` markers. **A `⊢` in a pack is a character the generator
 emitted, not a judgment a checker discharged.** See [`PACKS.md`](PACKS.md) — it
 documents each pack, its real structure, and the bridges each would need.
 
+### Meshes
+
+A declared pack projects into the section/link topology its declarations imply:
+
+```bash
+python3 tools/mesh_sections.py principia_360_prime_orthogonal.lang \
+  --out research/mesh/principia_360_prime_orthogonal.mesh.json
+```
+
+```mermaid
+flowchart LR
+    P["declared pack<br/>§THEOREM lines"] --> T["mesh_sections.py<br/>re-encode"]
+    T --> M["sections + links<br/>declaration tree"]
+    M -.->|"does NOT confer"| X["proved · inferred<br/>measured"]
+
+    classDef a fill:#12121a,stroke:#6b6b78,color:#e8e8ea
+    classDef b fill:#1a0f12,stroke:#7d3f4f,color:#ecd6dc
+    class P,T,M a
+    class X b
+```
+
+| Pack | Sections | Links | Depths | Primes |
+|---|---:|---:|---:|---:|
+| `principia_360_prime_orthogonal` | 1800 | 1795 | 360 | 360 |
+| `principia_mathematica_full_N400` | 2000 | 1995 | 400 | — |
+| `ncosmo_hypercomplex_unification` | 70 | 63 | 10 | 70 |
+
+Links are fewer than `sections − 1` because each pack is a **forest, not a
+tree** — the five PM axioms at depth 1 are roots with no parent, and the
+n-Cosmos pack roots once per cosmos level. A viewer expecting a single spanning
+tree will mis-draw these.
+
+A section is a declaration, a link is adjacency in the declaration tree, and the
+coordinates are values the pack states. Projection re-encodes; it never
+promotes. Only manifest-declared pack surfaces may be projected — the tool
+refuses anything else.
+
 ---
 
 ## The boot seed
@@ -208,6 +245,8 @@ strings inside the artifact, not findings about it.
 | [`CLAIMS.yaml`](CLAIMS.yaml) | claim → artifact ledger |
 | [`VERIFICATION.md`](VERIFICATION.md) | what is and is not verified |
 | [`PACKS.md`](PACKS.md) | the five generated packs |
+| [`MODULES.md`](MODULES.md) | Σ∞ module registry · notation · honest frontier |
+| [`CANDIDATES.md`](CANDIDATES.md) | external material evaluated but not imported |
 | [`RUNTIME_CAPABILITIES.md`](RUNTIME_CAPABILITIES.md) | reported runtime surface |
 | [`THESIS.md`](THESIS.md) | programme narrative · theorem targets (`S`/`H`) |
 | [`SKILL.md`](SKILL.md) | operational workflow |

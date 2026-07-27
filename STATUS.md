@@ -40,6 +40,9 @@ These tags are not an automatic promotion ladder.
 | Declared sources exist | Enforced in CI | A manifest entry with no file on disk fails the build |
 | Pack surfaces declared | Enforced in CI | All five packs are in the manifest; identity is bound to the profile |
 | Pack generators published | Open | No pack ships the program that produced it, so no pack is reproducible |
+| Mesh projection | Enforced in CI | Declared packs project to committed meshes; undeclared sources are refused |
+| External material gate | Implemented | Candidates are held in `CANDIDATES.md` with blocking defects named before import |
+| Independent-witness procedure | Installed | `.claude/skills/recursive-research-auditor`, manifest validator self-tested in CI |
 | Non-vacuous validation | Implemented | Missing objects return `NOT_APPLICABLE`, not `PASS` |
 | Evidence artifact freshness | Enforced in CI | Committed `research/` reports must match current tooling output |
 | Tooling dependency pin | Implemented | `requirements.txt` pins the only third-party dependency (Pillow) |

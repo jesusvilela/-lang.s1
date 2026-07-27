@@ -1,0 +1,1257 @@
+{
+  "schema_version": 1,
+  "source": "ncosmo_hypercomplex_unification.lang",
+  "profile": "ncosmo_unification_v3",
+  "evidence_scope": "Structural projection of declared pack text. Sections are declarations, not proved theorems. Links are declaration adjacency, not inference. Coordinates are values the pack states, not measurements reproduced here.",
+  "forbidden_readings": [
+    "a section is a verified theorem",
+    "a link is a discharged inference",
+    "the coordinates are measured quantities",
+    "mesh size is evidence of capability"
+  ],
+  "summary": {
+    "sections": 70,
+    "links": 63,
+    "distinct_depths": 10,
+    "distinct_primes": 70,
+    "prime_range": [
+      3,
+      353
+    ],
+    "cosmos_levels": 7,
+    "declared_verdicts": {
+      "COMMIT": 70
+    },
+    "sections_with_coordinates": 70,
+    "sections_with_hamiltonian": 70
+  },
+  "sections": [
+    {
+      "index": 0,
+      "id": "C1_D1",
+      "cosmos": 1,
+      "depth": 1,
+      "prime": 3,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5708
+      },
+      "hamiltonian_hq": 1e-06
+    },
+    {
+      "index": 1,
+      "id": "C1_D2",
+      "cosmos": 1,
+      "depth": 2,
+      "prime": 5,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5708
+      },
+      "hamiltonian_hq": 0.0
+    },
+    {
+      "index": 2,
+      "id": "C1_D3",
+      "cosmos": 1,
+      "depth": 3,
+      "prime": 7,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5708
+      },
+      "hamiltonian_hq": 1.9e-05
+    },
+    {
+      "index": 3,
+      "id": "C1_D4",
+      "cosmos": 1,
+      "depth": 4,
+      "prime": 11,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 8.6e-05
+    },
+    {
+      "index": 4,
+      "id": "C1_D5",
+      "cosmos": 1,
+      "depth": 5,
+      "prime": 13,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000194
+    },
+    {
+      "index": 5,
+      "id": "C1_D6",
+      "cosmos": 1,
+      "depth": 6,
+      "prime": 17,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000397
+    },
+    {
+      "index": 6,
+      "id": "C1_D7",
+      "cosmos": 1,
+      "depth": 7,
+      "prime": 19,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.0007
+    },
+    {
+      "index": 7,
+      "id": "C1_D8",
+      "cosmos": 1,
+      "depth": 8,
+      "prime": 23,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.001076
+    },
+    {
+      "index": 8,
+      "id": "C1_D9",
+      "cosmos": 1,
+      "depth": 9,
+      "prime": 29,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.001304
+    },
+    {
+      "index": 9,
+      "id": "C1_D10",
+      "cosmos": 1,
+      "depth": 10,
+      "prime": 31,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.001705
+    },
+    {
+      "index": 10,
+      "id": "C2_D1",
+      "cosmos": 2,
+      "depth": 1,
+      "prime": 37,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000162
+    },
+    {
+      "index": 11,
+      "id": "C2_D2",
+      "cosmos": 2,
+      "depth": 2,
+      "prime": 41,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000188
+    },
+    {
+      "index": 12,
+      "id": "C2_D3",
+      "cosmos": 2,
+      "depth": 3,
+      "prime": 43,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000224
+    },
+    {
+      "index": 13,
+      "id": "C2_D4",
+      "cosmos": 2,
+      "depth": 4,
+      "prime": 47,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000249
+    },
+    {
+      "index": 14,
+      "id": "C2_D5",
+      "cosmos": 2,
+      "depth": 5,
+      "prime": 53,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000262
+    },
+    {
+      "index": 15,
+      "id": "C2_D6",
+      "cosmos": 2,
+      "depth": 6,
+      "prime": 59,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000322
+    },
+    {
+      "index": 16,
+      "id": "C2_D7",
+      "cosmos": 2,
+      "depth": 7,
+      "prime": 61,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000333
+    },
+    {
+      "index": 17,
+      "id": "C2_D8",
+      "cosmos": 2,
+      "depth": 8,
+      "prime": 67,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000295
+    },
+    {
+      "index": 18,
+      "id": "C2_D9",
+      "cosmos": 2,
+      "depth": 9,
+      "prime": 71,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000292
+    },
+    {
+      "index": 19,
+      "id": "C2_D10",
+      "cosmos": 2,
+      "depth": 10,
+      "prime": 73,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000304
+    },
+    {
+      "index": 20,
+      "id": "C3_D1",
+      "cosmos": 3,
+      "depth": 1,
+      "prime": 79,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000282
+    },
+    {
+      "index": 21,
+      "id": "C3_D2",
+      "cosmos": 3,
+      "depth": 2,
+      "prime": 83,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000263
+    },
+    {
+      "index": 22,
+      "id": "C3_D3",
+      "cosmos": 3,
+      "depth": 3,
+      "prime": 89,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000273
+    },
+    {
+      "index": 23,
+      "id": "C3_D4",
+      "cosmos": 3,
+      "depth": 4,
+      "prime": 97,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000253
+    },
+    {
+      "index": 24,
+      "id": "C3_D5",
+      "cosmos": 3,
+      "depth": 5,
+      "prime": 101,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000243
+    },
+    {
+      "index": 25,
+      "id": "C3_D6",
+      "cosmos": 3,
+      "depth": 6,
+      "prime": 103,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000274
+    },
+    {
+      "index": 26,
+      "id": "C3_D7",
+      "cosmos": 3,
+      "depth": 7,
+      "prime": 107,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000258
+    },
+    {
+      "index": 27,
+      "id": "C3_D8",
+      "cosmos": 3,
+      "depth": 8,
+      "prime": 109,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000274
+    },
+    {
+      "index": 28,
+      "id": "C3_D9",
+      "cosmos": 3,
+      "depth": 9,
+      "prime": 113,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000238
+    },
+    {
+      "index": 29,
+      "id": "C3_D10",
+      "cosmos": 3,
+      "depth": 10,
+      "prime": 127,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000209
+    },
+    {
+      "index": 30,
+      "id": "C4_D1",
+      "cosmos": 4,
+      "depth": 1,
+      "prime": 131,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000272
+    },
+    {
+      "index": 31,
+      "id": "C4_D2",
+      "cosmos": 4,
+      "depth": 2,
+      "prime": 137,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000275
+    },
+    {
+      "index": 32,
+      "id": "C4_D3",
+      "cosmos": 4,
+      "depth": 3,
+      "prime": 139,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.0003
+    },
+    {
+      "index": 33,
+      "id": "C4_D4",
+      "cosmos": 4,
+      "depth": 4,
+      "prime": 149,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000277
+    },
+    {
+      "index": 34,
+      "id": "C4_D5",
+      "cosmos": 4,
+      "depth": 5,
+      "prime": 151,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000242
+    },
+    {
+      "index": 35,
+      "id": "C4_D6",
+      "cosmos": 4,
+      "depth": 6,
+      "prime": 157,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000247
+    },
+    {
+      "index": 36,
+      "id": "C4_D7",
+      "cosmos": 4,
+      "depth": 7,
+      "prime": 163,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000258
+    },
+    {
+      "index": 37,
+      "id": "C4_D8",
+      "cosmos": 4,
+      "depth": 8,
+      "prime": 167,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.00025
+    },
+    {
+      "index": 38,
+      "id": "C4_D9",
+      "cosmos": 4,
+      "depth": 9,
+      "prime": 173,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.00023
+    },
+    {
+      "index": 39,
+      "id": "C4_D10",
+      "cosmos": 4,
+      "depth": 10,
+      "prime": 179,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000227
+    },
+    {
+      "index": 40,
+      "id": "C5_D1",
+      "cosmos": 5,
+      "depth": 1,
+      "prime": 181,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000275
+    },
+    {
+      "index": 41,
+      "id": "C5_D2",
+      "cosmos": 5,
+      "depth": 2,
+      "prime": 191,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000261
+    },
+    {
+      "index": 42,
+      "id": "C5_D3",
+      "cosmos": 5,
+      "depth": 3,
+      "prime": 193,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000257
+    },
+    {
+      "index": 43,
+      "id": "C5_D4",
+      "cosmos": 5,
+      "depth": 4,
+      "prime": 197,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000273
+    },
+    {
+      "index": 44,
+      "id": "C5_D5",
+      "cosmos": 5,
+      "depth": 5,
+      "prime": 199,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000247
+    },
+    {
+      "index": 45,
+      "id": "C5_D6",
+      "cosmos": 5,
+      "depth": 6,
+      "prime": 211,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000257
+    },
+    {
+      "index": 46,
+      "id": "C5_D7",
+      "cosmos": 5,
+      "depth": 7,
+      "prime": 223,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000233
+    },
+    {
+      "index": 47,
+      "id": "C5_D8",
+      "cosmos": 5,
+      "depth": 8,
+      "prime": 227,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000224
+    },
+    {
+      "index": 48,
+      "id": "C5_D9",
+      "cosmos": 5,
+      "depth": 9,
+      "prime": 229,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000237
+    },
+    {
+      "index": 49,
+      "id": "C5_D10",
+      "cosmos": 5,
+      "depth": 10,
+      "prime": 233,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000203
+    },
+    {
+      "index": 50,
+      "id": "C6_D1",
+      "cosmos": 6,
+      "depth": 1,
+      "prime": 239,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000229
+    },
+    {
+      "index": 51,
+      "id": "C6_D2",
+      "cosmos": 6,
+      "depth": 2,
+      "prime": 241,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000206
+    },
+    {
+      "index": 52,
+      "id": "C6_D3",
+      "cosmos": 6,
+      "depth": 3,
+      "prime": 251,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000217
+    },
+    {
+      "index": 53,
+      "id": "C6_D4",
+      "cosmos": 6,
+      "depth": 4,
+      "prime": 257,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000199
+    },
+    {
+      "index": 54,
+      "id": "C6_D5",
+      "cosmos": 6,
+      "depth": 5,
+      "prime": 263,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000191
+    },
+    {
+      "index": 55,
+      "id": "C6_D6",
+      "cosmos": 6,
+      "depth": 6,
+      "prime": 269,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000179
+    },
+    {
+      "index": 56,
+      "id": "C6_D7",
+      "cosmos": 6,
+      "depth": 7,
+      "prime": 271,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000155
+    },
+    {
+      "index": 57,
+      "id": "C6_D8",
+      "cosmos": 6,
+      "depth": 8,
+      "prime": 277,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000134
+    },
+    {
+      "index": 58,
+      "id": "C6_D9",
+      "cosmos": 6,
+      "depth": 9,
+      "prime": 281,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000119
+    },
+    {
+      "index": 59,
+      "id": "C6_D10",
+      "cosmos": 6,
+      "depth": 10,
+      "prime": 283,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 8.5e-05
+    },
+    {
+      "index": 60,
+      "id": "C7_D1",
+      "cosmos": 7,
+      "depth": 1,
+      "prime": 293,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000167
+    },
+    {
+      "index": 61,
+      "id": "C7_D2",
+      "cosmos": 7,
+      "depth": 2,
+      "prime": 307,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000164
+    },
+    {
+      "index": 62,
+      "id": "C7_D3",
+      "cosmos": 7,
+      "depth": 3,
+      "prime": 311,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000156
+    },
+    {
+      "index": 63,
+      "id": "C7_D4",
+      "cosmos": 7,
+      "depth": 4,
+      "prime": 313,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.00014
+    },
+    {
+      "index": 64,
+      "id": "C7_D5",
+      "cosmos": 7,
+      "depth": 5,
+      "prime": 317,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000142
+    },
+    {
+      "index": 65,
+      "id": "C7_D6",
+      "cosmos": 7,
+      "depth": 6,
+      "prime": 331,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000149
+    },
+    {
+      "index": 66,
+      "id": "C7_D7",
+      "cosmos": 7,
+      "depth": 7,
+      "prime": 337,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.00015
+    },
+    {
+      "index": 67,
+      "id": "C7_D8",
+      "cosmos": 7,
+      "depth": 8,
+      "prime": 347,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000129
+    },
+    {
+      "index": 68,
+      "id": "C7_D9",
+      "cosmos": 7,
+      "depth": 9,
+      "prime": 349,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 0.000102
+    },
+    {
+      "index": 69,
+      "id": "C7_D10",
+      "cosmos": 7,
+      "depth": 10,
+      "prime": 353,
+      "declared_verdict": "COMMIT",
+      "coordinates": {
+        "cp": 1.0,
+        "berry": 1.5709
+      },
+      "hamiltonian_hq": 9.4e-05
+    }
+  ],
+  "links": [
+    {
+      "source": 0,
+      "target": 1,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 7,
+      "target": 8,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 8,
+      "target": 9,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 10,
+      "target": 11,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 11,
+      "target": 12,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 12,
+      "target": 13,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 13,
+      "target": 14,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 14,
+      "target": 15,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 15,
+      "target": 16,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 16,
+      "target": 17,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 17,
+      "target": 18,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 18,
+      "target": 19,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 20,
+      "target": 21,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 21,
+      "target": 22,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 22,
+      "target": 23,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 23,
+      "target": 24,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 24,
+      "target": 25,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 25,
+      "target": 26,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 26,
+      "target": 27,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 27,
+      "target": 28,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 28,
+      "target": 29,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 30,
+      "target": 31,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 31,
+      "target": 32,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 32,
+      "target": 33,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 33,
+      "target": 34,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 34,
+      "target": 35,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 35,
+      "target": 36,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 36,
+      "target": 37,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 37,
+      "target": 38,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 38,
+      "target": 39,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 40,
+      "target": 41,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 41,
+      "target": 42,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 42,
+      "target": 43,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 43,
+      "target": 44,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 44,
+      "target": 45,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 45,
+      "target": 46,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 46,
+      "target": 47,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 47,
+      "target": 48,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 48,
+      "target": 49,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 50,
+      "target": 51,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 51,
+      "target": 52,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 52,
+      "target": 53,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 53,
+      "target": 54,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 54,
+      "target": 55,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 55,
+      "target": 56,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 56,
+      "target": 57,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 57,
+      "target": 58,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 58,
+      "target": 59,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 60,
+      "target": 61,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 61,
+      "target": 62,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 62,
+      "target": 63,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 63,
+      "target": 64,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 64,
+      "target": 65,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 65,
+      "target": 66,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 66,
+      "target": 67,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 67,
+      "target": 68,
+      "kind": "declaration_adjacency"
+    },
+    {
+      "source": 68,
+      "target": 69,
+      "kind": "declaration_adjacency"
+    }
+  ]
+}
