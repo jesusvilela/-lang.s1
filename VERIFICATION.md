@@ -9,14 +9,24 @@
 Run:
 
 ```bash
+python3 -m pip install -r requirements.txt
+
 python3 -m unittest discover -s tests -p 'test_*.py'
 python3 tools/validate_typecast.py --all
+python3 tools/validate_typecast.py
 python3 tools/verify_chomsky.py
+python3 tools/stego_boot_banner.py --verify figures/slang_boot_banner.png
 ```
 
 The authoritative structural source set is declared in
-[`validation/sources.json`](validation/sources.json). Generated reports must be
-read together with the repository commit that produced them.
+[`validation/sources.json`](validation/sources.json). A declared source that is
+absent from the working tree fails the run; it is never skipped.
+
+Generated reports must be read together with the repository commit that produced
+them. The committed reports under `research/` are regenerated and diffed in CI,
+so a committed report that the current tooling would not reproduce fails the
+build. This makes the reports an artifact of the commit rather than a historical
+snapshot of an older validator.
 
 ### Structural statuses
 
@@ -36,11 +46,19 @@ For declared legacy profiles the validator checks:
 - Euclidean norm below the configured `0.999` boundary for present vectors;
 - positive salience for present vectors.
 
-### Experimental pack checks
+### Pack surface checks
 
-The current `mhrr_pack_v1` structural profile checks only that explicit `§PACK`
-and `§VERSION` headers exist. Its semantic, mathematical, runtime, and empirical
-claims remain `NOT_TESTED` by this validator.
+Five packs are declared with `pack`-surface profiles. For each, the validator
+checks that explicit `§PACK` and `§VERSION` headers exist, and that the declared
+`§PACK` identity matches the profile it was declared under — so one pack file
+cannot silently stand in for another. Their semantic, mathematical, runtime, and
+empirical claims remain `NOT_TESTED`.
+
+The validator also tallies `§THEOREM` lines, `§AXIOM` lines, and `⊢ COMMIT`
+markers per source. These are reported under `declarations`, deliberately
+separate from `checks`: they are counts of text, and counting a `§THEOREM` line
+is not checking a theorem. A turnstile in a pack is a character a generator
+emitted, not a judgment a checker discharged. See [`PACKS.md`](PACKS.md).
 
 Unknown profiles fail explicitly. Profiles are not inferred from filenames.
 
@@ -51,9 +69,13 @@ current correction:
 
 1. absent sections return `NOT_APPLICABLE`, not vacuous `PASS`;
 2. unknown profiles fail rather than defaulting silently;
-3. experimental packs require explicit surface headers;
+3. packs require explicit surface headers;
 4. pack recognition does not depend on the filename;
-5. present vectors are actually checked.
+5. present vectors are actually checked;
+6. a well-formed pack whose identity does not match its declared profile fails;
+7. a matching pack identity passes, and legacy block profiles report the
+   identity check as `NOT_APPLICABLE` rather than borrowing it;
+8. theorem tallies are recorded as declarations and never appear as checks.
 
 These tests are correlated repository evidence, not independent replication.
 
@@ -81,6 +103,33 @@ implemented system, or the behavior of an executable interpreter.
 | Complete UTAI or n-Cosmos machine verification | Requires pinned theorem sources and clean builds |
 | R142 universality or substrate stability | Requires raw data, methods, controls, uncertainty, and provenance |
 | Complexity lower bound from defect density | Open theorem target |
+
+## 4b. Mesh projection
+
+`tools/mesh_sections.py` re-encodes a declared pack's `§THEOREM` declarations as
+a section/link graph. It refuses any source not declared as a pack surface in
+`validation/sources.json`, and the emitted JSON carries its own scope statement
+and a `forbidden_readings` list.
+
+What projection establishes is only that the declaration tree was transcribed.
+A section is a declaration, a link is adjacency, and a coordinate is a value the
+pack states. `declared_verdict` records the turnstile token verbatim and is
+never converted into a status.
+
+Each pack is a **forest**: the five PM axioms at depth 1 are roots, so link
+count is `sections − roots`, not `sections − 1`. A regression test pins this so
+a future change cannot silently produce a single spanning tree.
+
+## 4c. External material
+
+Work originating outside this repository is held in [`CANDIDATES.md`](CANDIDATES.md)
+until its blocking defects are named and resolved. Citation attributions are
+checked against primary sources rather than against the candidate's own
+description of them — repeated self-review is not independent replication.
+
+The procedure is installed as a skill at
+`.claude/skills/recursive-research-auditor/`; its manifest validator is
+self-tested on every build.
 
 ## 5. Evidence governance
 

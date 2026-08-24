@@ -40,9 +40,87 @@ claims:
     artifacts:
       - figures/slang_boot_banner.png
       - tools/stego_boot_banner.py
+      - requirements.txt
+      - .github/workflows/validate.yml
     forbidden_promotions:
       - Loeb theorem
       - formal provability result
+      - executability of tokens appearing in the decoded payload
+
+  - id: SLANG-PACK-001
+    text: Each declared pack presents explicit §PACK and §VERSION headers whose declared pack identity matches its declared validation profile.
+    layer: L_syn
+    status: P
+    scope: >-
+      Header presence and pack-identity binding only. Establishes that a declared
+      pack file is the pack it claims to be, and nothing about its contents.
+    artifacts:
+      - validation/sources.json
+      - tools/validate_typecast.py
+      - tests/test_validate_typecast.py
+      - research/validation_report_all.json
+    forbidden_promotions:
+      - soundness of any deduction tree in a pack
+      - proof status of any §THEOREM line
+      - the turnstile marker as a discharged judgment
+      - semantic or empirical content of pack coordinates
+
+  - id: PACK-THEOREM-001
+    text: The declared packs contain 3871 §THEOREM lines and 3875 turnstile COMMIT markers.
+    layer: L_syn
+    status: P
+    scope: >-
+      A tally of lines matching a surface pattern, reproduced by the validator on
+      every build. It counts text. It checks nothing about what the text asserts.
+    artifacts:
+      - tools/validate_typecast.py
+      - research/validation_report_all.json
+      - PACKS.md
+    forbidden_promotions:
+      - number of proved theorems
+      - number of verified deductions
+      - evidence that Principia Mathematica was reconstructed
+
+  - id: PACK-NUMERICS-001
+    text: Pack-reported quantities such as Mind Hamiltonian H(Q), CP, BERRY, and TELOS describe the modelled system.
+    layer: L_op
+    status: H
+    scope: >-
+      Emitted numbers with no generator, seed, estimator, or uncertainty method
+      published in this repository. Not reproducible here, therefore not M.
+    artifacts:
+      - ncosmo_hypercomplex_unification.lang
+      - principia_mathematica_full_N400.lang
+      - principia_360_prime_orthogonal.lang
+      - PACKS.md
+    required_bridge:
+      - publish the generator that produced each pack
+      - raw data, seeds, and parameter ranges
+      - estimator and uncertainty method
+      - matched nulls and execution environment
+    forbidden_promotions:
+      - measured constant
+      - adiabatic ground state as a physical finding
+      - Hegelian closure or unification as an established result
+
+  - id: PACK-SHIELD-001
+    text: Coprime basis projection over 360 distinct primes shields the deduction tree against Loeb/Curry self-reference.
+    layer: L_sem
+    status: H
+    scope: >-
+      The 360-prime construction is verified present; that it shields anything is
+      asserted by the pack version string and not tested. No adversarial attack
+      was run against it.
+    artifacts:
+      - principia_360_prime_orthogonal.lang
+      - PACKS.md
+    required_bridge:
+      - state the self-reference attack being defended against
+      - construct an attack that could fail the shield
+      - publish the run and its outcome
+    forbidden_promotions:
+      - proved consistency
+      - paradox freedom
 
   - id: SLANG-RUNTIME-001
     text: The documented v5 tokens have the stated executable semantics.
@@ -55,6 +133,147 @@ claims:
       - pin runtime implementation path and commit
       - add black-box conformance cases
       - publish clean execution logs
+
+  - id: SLANG-MESH-001
+    text: A declared pack projects to a section/link mesh reproducing the declaration tree it contains.
+    layer: L_syn
+    status: P
+    scope: >-
+      Re-encoding of pack text into a graph. Sections are declarations, links are
+      declaration adjacency, coordinates are values the pack states. Only
+      manifest-declared pack surfaces may be projected.
+    artifacts:
+      - tools/mesh_sections.py
+      - tests/test_mesh_sections.py
+      - research/mesh/principia_360_prime_orthogonal.mesh.json
+      - research/mesh/ncosmo_hypercomplex_unification.mesh.json
+      - research/mesh/principia_mathematica_full_N400.mesh.json
+    forbidden_promotions:
+      - a mesh section is a verified theorem
+      - a mesh link is a discharged inference
+      - mesh coordinates are measured quantities
+      - mesh size is evidence of capability
+
+  - id: PACK-GLUING-001
+    text: The n-Cosmos strata glue to a unified manifold.
+    layer: L_sem
+    status: H
+    scope: >-
+      Undetermined, not merely unproved. The pack asserts a gluing without
+      declaring the cover. Under a prime-indexed cover the seven strata are
+      pairwise disjoint (0 of 21 pairs overlap) and the gluing is vacuous; under
+      a depth-indexed cover every pair overlaps completely (21 of 21, Jaccard
+      1.0). The assertion has no determinate truth value until a cover is named.
+    artifacts:
+      - AUDIT.md
+      - tools/sheaf_coherence.py
+      - research/sheaf_coherence.json
+    required_bridge:
+      - declare the cover as an explicit §COVER header in the pack
+      - re-run H1 under the declared index only
+    forbidden_promotions:
+      - unified manifold as an established result
+      - Hegelian closure
+
+  - id: PACK-ADIABATIC-001
+    text: The n-Cosmos H(Q) sequences exhibit adiabatic slow variation.
+    layer: L_op
+    status: S
+    scope: >-
+      Promoted to M against a shuffled null, then retired by a preregistered
+      sorted-order null in the same round. Zero of seven strata beat the sorted
+      null and three tie it exactly, so the observed smoothness is fully
+      accounted for by the generator emitting a smooth function of depth. No gap
+      condition, adiabatic theorem, or ground state is demonstrated.
+    artifacts:
+      - AUDIT.md
+      - tools/sheaf_coherence.py
+      - tests/test_sheaf_coherence.py
+    forbidden_promotions:
+      - adiabatic ground state
+      - physical slow-variation result
+      - any restatement in a different vocabulary to rescue the claim
+
+  - id: PACK-BERRY-001
+    text: The Berry phase coordinate equals pi/2 as written with an equality sign.
+    layer: L_syn
+    status: R
+    scope: >-
+      Falsified at the pack's own stated precision. Writing 1.5708 implies 4
+      decimals, i.e. 5e-5; measured max deviations are 1.04e-4, 3.10e-3 and
+      3.30e-3 across the three packs. The approximate reading survives.
+    artifacts:
+      - AUDIT.md
+      - tools/sheaf_coherence.py
+      - research/sheaf_coherence.json
+    replacement: BERRY approximately equals pi/2, deviation up to 3.3e-3.
+    forbidden_promotions:
+      - exact equality
+      - substitution of pi/2 for BERRY in any derivation
+
+  # ---------------------------------------------------------------------------
+  # Imported from Polycosmic Hypercomplex Brain / Sigma-Infinity, Appendix B
+  # (Jesus Vilela Jato, Madrid, July 2026). Statuses are the thesis's own.
+  # ---------------------------------------------------------------------------
+
+  - id: SIGMA-OBSERVABILITY-001
+    text: Hypercomplex algebra is useful as an observability and operator language.
+    layer: L_sem
+    status: H
+    scope: >-
+      The thesis records this as M/H and as the strongest surviving reading after
+      Atlas correction. Held at H in this repository because no measurement under
+      this repository's M criteria is attached here.
+    artifacts:
+      - MODULES.md
+    required_bridge:
+      - typed operator with a stated observable
+      - matched-null control
+      - uncertainty method and execution provenance
+    forbidden_promotions:
+      - improved asymptotic complexity
+      - demonstrated hierarchy of solver power
+
+  - id: SIGMA-ARCH-001
+    text: Sigma-Infinity is a falsifiable architecture specification.
+    layer: L_sem
+    status: H
+    scope: Becomes M only after implementation and controlled experiments.
+    artifacts:
+      - MODULES.md
+    required_bridge:
+      - minimal typed dynamical system implementation
+      - preregistered rounds with kill conditions
+      - controlled experiments with matched nulls
+
+  - id: SIGMA-VISIBILITY-001
+    text: The depth-indexed visibility field g_r(alpha) may exhibit critical alpha-scaling.
+    layer: L_op
+    status: H
+    scope: >-
+      Open. Requires larger n and a finite-size collapse. The object is scalar and
+      single-scale in the tested regime.
+    artifacts:
+      - MODULES.md
+    required_bridge:
+      - larger n
+      - finite-size collapse analysis
+    forbidden_promotions:
+      - hypercomplex volumetric field
+
+  - id: SIGMA-MODULES-001
+    text: The fourteen Sigma-Infinity modules are architectural specifications, not implementations.
+    layer: L_sem
+    status: S
+    scope: >-
+      Registry only. No module in the registry is implemented in this repository.
+      The two P-rooted modules transport a real theorem as inspiration only.
+    artifacts:
+      - MODULES.md
+    forbidden_promotions:
+      - implemented module
+      - transported theorem
+      - evidence of sentience from the eight qualities
 
   - id: UTAI-FORMAL-001
     text: The complete UTAI architecture is machine checked.
@@ -86,6 +305,18 @@ claims:
       - universal constant
       - substrate stability
       - complexity lower bound
+    measured_round_1: >-
+      Consistent with its own tabulated series: mean S/n = 0.138333, sem =
+      0.002362, and the claimed centre 0.135 sits 1.41 sem from the mean, so the
+      stated +/- 0.003 is defensible as a standard error. Separately, zero
+      substrate axes are varied anywhere in the table, so the substrate-stability
+      adjective has no support at all. The estimator is never declared, so
+      whether 0.135 names the large-n asymptote or the mean over n is unpinned.
+    known_divergence: >-
+      The pack source text states "Measured constant: rho-star ~ 0.135 +/- 0.003
+      (substrate-stable)". The ledger does not accept that wording. The pack is
+      left as generated to preserve provenance; where pack text and this ledger
+      disagree, this ledger governs.
 
   - id: R142-COMPLEXITY-001
     text: Positive-density clustered defects imply a complexity lower bound.
@@ -108,3 +339,43 @@ retired_interpretations:
     text: The complete repository is publication-ready as a self-contained implemented and formally verified system.
     status: R
     replacement: The bounded §-LANG Core publication target in STATUS.md.
+
+  # Imported from Sigma-Infinity Appendix B.
+  - id: RETIRED-COMPLEXITY-001
+    text: Hypercomplex algebra improves asymptotic complexity.
+    status: R
+    replacement: >-
+      No surviving proof or controlled scaling result. Retain only as an open
+      hypothesis if newly preregistered.
+
+  - id: RETIRED-SENTIENCE-001
+    text: The eight mind qualities are evidence of sentience.
+    status: R
+    replacement: >-
+      Explicitly rejected. They are engineering state variables and couplings.
+
+  - id: RETIRED-HOPF-001
+    text: Intrinsic Hopf curvature vanishes at SGS.
+    status: R
+    replacement: >-
+      Earlier projection artifact; the intrinsic homogeneous-curvature correction
+      supersedes it.
+
+  - id: RETIRED-VISIBILITY-001
+    text: g_r(alpha) is a hypercomplex volumetric field.
+    status: R
+    replacement: SIGMA-VISIBILITY-001
+
+  - id: RETIRED-MHRR-001
+    text: MHRR is implemented and proved.
+    status: R
+    replacement: >-
+      Conceptual target. The minimal typed dynamical system remains open.
+
+  - id: RETIRED-THEOREM-TRANSPORT-001
+    text: Picard-Lefschetz/Stokes and Hecke-Mahler transcendence results transfer to cognition.
+    status: R
+    replacement: >-
+      Only routing inspiration and a sparse-defect diagnostic are used. The
+      theorems do not travel with the architectural metaphor.
+

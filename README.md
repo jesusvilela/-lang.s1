@@ -1,134 +1,284 @@
-# §-LANG — Evidence-Governed Geometric Research Language
+# §-LANG
 
 ![§-LANG boot seed](figures/slang_boot_banner.png)
 
-§-LANG is a **specification-first research language** for expressing geometric,
-computational, semantic, and formal structures across contextual manifolds.
-It combines a symbolic language surface with structural validation tools,
-experimental dialect packs, and downstream research programmes.
+A specification-first research language for geometric, computational, and
+formal structure over contextual manifolds.
 
-The project is intentionally ambitious, but evidence authority is stratified:
+Built on one rule.
 
-- a parsed symbol is not automatically an executable operator;
-- an executable operator is not automatically a proved theorem;
-- a numerical observation is not automatically universal;
-- a semantic or architectural construct is not automatically an external scientific result.
+---
 
-See [`STATUS.md`](STATUS.md), [`CLAIMS.yaml`](CLAIMS.yaml), and
-[`VERIFICATION.md`](VERIFICATION.md) before relying on a strong claim.
+## 間 — the gap
 
-## Root architecture
+Between what a system says and what it has shown, there is a gap.
 
-The repository is organized conceptually as:
+Most research code closes it quietly. This one keeps it open, names it, and
+puts it under test.
 
-```text
-IGBundle contextual geometry
-  -> Trasgo structure-preserving transport
-  -> §-LANG coordinates, control, and evidence annotations
-  -> sectional programmes: UTAI, Bunny, MHRR, n-Cosmos, Chomsky-hyperdim
+```mermaid
+flowchart LR
+    A["parsed<br/>symbol"] -.->|"needs a bridge"| B["executable<br/>operator"]
+    B -.->|"needs a bridge"| C["proved<br/>theorem"]
+    D["single<br/>observation"] -.->|"needs a bridge"| E["universal<br/>constant"]
+
+    classDef n fill:#0b0b0c,stroke:#5a5a5e,stroke-width:1px,color:#e8e8ea
+    class A,B,C,D,E n
 ```
 
-The downstream programmes are research sections of the stack. Their presence in
-this repository does **not** imply that every associated theorem, runtime claim,
-or empirical interpretation has been independently verified.
+Every dotted arrow is a promotion someone has to earn. None of them fire on
+their own.
 
-## Current capability boundary
+A symbol that parses is not an operator that runs.
+An operator that runs is not a theorem that holds.
+One measurement is not a constant.
+An architecture is not a result.
 
-| Layer | Current status | Evidence authority |
+Everything below follows from that.
+
+---
+
+## Layers
+
+```mermaid
+flowchart TD
+    IG["IGBundle<br/>contextual geometry"]
+    TR["Trasgo<br/>structure-preserving transport"]
+    SL["§-LANG<br/>coordinates · control · evidence annotations"]
+
+    IG --> TR --> SL
+
+    SL --> P1["UTAI"]
+    SL --> P2["Bunny"]
+    SL --> P3["MHRR"]
+    SL --> P4["n-Cosmos"]
+    SL --> P5["Chomsky-<br/>hyperdim"]
+
+    classDef core fill:#12121a,stroke:#6b6b78,stroke-width:1px,color:#e8e8ea
+    classDef prog fill:#0b0b0c,stroke:#44444a,stroke-width:1px,color:#b9b9c0
+    class IG,TR,SL core
+    class P1,P2,P3,P4,P5 prog
+```
+
+The programmes are sections of the stack, not conclusions of it. Being
+expressible in §-LANG grants an artifact no authority.
+
+---
+
+## What holds, and how far
+
+```mermaid
+flowchart LR
+    subgraph CHECKED["checked here"]
+        direction TB
+        S1["structural surface<br/>PASS"]
+        S2["syntactic shape<br/>PASS"]
+        S3["boot-seed round-trip<br/>PASS"]
+    end
+
+    subgraph OPEN["not checked here"]
+        direction TB
+        O1["semantics"]
+        O2["theorems"]
+        O3["measurements"]
+        O4["physical realizability"]
+    end
+
+    CHECKED -.->|"requires a bridge"| OPEN
+
+    classDef ok fill:#0f1a12,stroke:#3f7d55,stroke-width:1px,color:#d6ecdc
+    classDef no fill:#1a0f12,stroke:#7d3f4f,stroke-width:1px,color:#ecd6dc
+    class S1,S2,S3 ok
+    class O1,O2,O3,O4 no
+```
+
+| Layer | State | Authority |
 |---|---|---|
-| Symbolic language sources | Available | Specification / semantic |
-| Legacy block and section validation | Implemented | Structural only |
-| Chomsky surface-shape checks | Implemented | Syntactic evidence only |
-| Reference runtime | Reported capability surface; provenance varies by component | Consult `RUNTIME_CAPABILITIES.md` |
-| Lean/Bunny results | Claim-specific and potentially external | Require a pinned proof artifact |
-| R142/MHRR numerical results | Research observations | Require data, method, uncertainty, and execution provenance |
-| UTAI / n-Cosmos architecture | Experimental programme | Architectural / hypothesis unless separately evidenced |
+| Symbolic language sources | available | specification / semantic |
+| Block and section validation | implemented | structural only |
+| Chomsky surface-shape checks | implemented | syntactic only |
+| Pack surfaces | implemented | header + identity only |
+| Reference runtime | reported surface | see [`RUNTIME_CAPABILITIES.md`](RUNTIME_CAPABILITIES.md) |
+| Lean / Bunny results | external | needs a pinned proof artifact |
+| R142 / MHRR numerics | observations | needs data, method, uncertainty, provenance |
+| UTAI / n-Cosmos | programme | architectural unless separately evidenced |
 
-## Canonical sources and experimental packs
+---
 
-Historical and current language-family sources include:
-
-- `LANG.v1.2.0.unified_geometry.lang`
-- `DIALECTS.v2.1.family.lang`
-- `LANG.v2.5.tower.geom.lang`
-- `LANG.v3.0.substrate_realization.lang`
-- `LANG.v3.1.recursive_sectional_computer.lang`
-- `LANG.v3.2.actor_critic_fuzzer_cycle.lang`
-- `LANG.v5.topos_ai_cosmos_synthesis.lang`
-- `LANG.v6.chomsky_hyperdim_cognition.lang`
-- `MHRR_PM_Hypercomplex_Orthogonal.lang` — experimental R142/MHRR pack
-
-Version numbers belong to their named source or pack. A pack version is not
-implicitly a new version of the core language specification.
-
-## Validation
-
-Run the bounded structural checks with:
+## Run it
 
 ```bash
-python3 tools/validate_typecast.py --all
-python3 tools/verify_chomsky.py
+python3 -m pip install -r requirements.txt
+
 python3 -m unittest discover -s tests -p 'test_*.py'
+python3 tools/validate_typecast.py --all
+python3 tools/validate_typecast.py
+python3 tools/verify_chomsky.py
+python3 tools/stego_boot_banner.py --verify figures/slang_boot_banner.png
 ```
 
-`tools/validate_typecast.py` now distinguishes:
+Pillow is the only third-party dependency, needed by the banner tool alone.
+Everything else is standard library.
 
-- `PASS` — the tested property is present and satisfied;
-- `FAIL` — the tested property is present or required and violated;
-- `NOT_APPLICABLE` — the file contains no object to which the property applies;
-- `NOT_TESTED` — the validator has no implemented test for that semantic level.
+### Four statuses, not two
 
-Validation sources are declared in `validation/sources.json`. Unknown source
-surfaces fail explicitly instead of silently inheriting a profile from a filename.
+```mermaid
+flowchart LR
+    Q{"is the tested<br/>object present?"}
+    Q -->|no| NA["NOT_APPLICABLE<br/>absence — never a pass"]
+    Q -->|yes| R{"does it satisfy<br/>the predicate?"}
+    R -->|yes| P["PASS"]
+    R -->|no| F["FAIL"]
+    Q -->|"no test exists"| NT["NOT_TESTED<br/>silence, stated"]
 
-These checks do **not** prove semantic correctness, mathematical theorems,
-physical realizability, or external scientific relevance.
+    classDef d fill:#12121a,stroke:#6b6b78,color:#e8e8ea
+    classDef p fill:#0f1a12,stroke:#3f7d55,color:#d6ecdc
+    classDef f fill:#1a0f12,stroke:#7d3f4f,color:#ecd6dc
+    classDef q fill:#0b0b0c,stroke:#44444a,color:#b9b9c0
+    class Q,R d
+    class P p
+    class F f
+    class NA,NT q
+```
 
-## Self-referential boot seed
+An empty file passing every check is the failure mode this design exists to
+prevent. Absence reports as absence.
 
-The banner contains an LSB-steganographic payload that can be recovered with:
+Each source is validated against the profile declared for it in
+[`validation/sources.json`](validation/sources.json). Profiles are never
+inferred from filenames; an undeclared surface fails rather than defaulting, a
+declared source that is missing fails rather than being skipped, and a pack
+cannot stand in for another pack — its declared `§PACK` identity is bound to its
+profile.
+
+The reports under `research/` are committed and diffed in CI. A committed report
+the tooling would not reproduce is not evidence.
+
+---
+
+## Sources
+
+Thirteen sources, all declared, all validated.
+
+**Language family** — `LANG.v1.2.0.unified_geometry` · `DIALECTS.v2.1.family` ·
+`LANG.v2.5.tower.geom` · `LANG.v3.0.substrate_realization` ·
+`LANG.v3.1.recursive_sectional_computer` · `LANG.v3.2.actor_critic_fuzzer_cycle` ·
+`LANG.v5.topos_ai_cosmos_synthesis` · `LANG.v6.chomsky_hyperdim_cognition`
+
+**Packs** — `MHRR_PM_Hypercomplex_Orthogonal` · `principia_seed` ·
+`principia_mathematica_full_N400` · `principia_360_prime_orthogonal` ·
+`ncosmo_hypercomplex_unification`
+
+A version belongs to its named source. A pack version is not a new version of
+the core language.
+
+The packs are generator output totalling ~19 MB, 3,871 `§THEOREM` declarations
+and 3,875 `⊢ COMMIT` markers. **A `⊢` in a pack is a character the generator
+emitted, not a judgment a checker discharged.** See [`PACKS.md`](PACKS.md) — it
+documents each pack, its real structure, and the bridges each would need.
+
+### Meshes
+
+A declared pack projects into the section/link topology its declarations imply:
+
+```bash
+python3 tools/mesh_sections.py principia_360_prime_orthogonal.lang \
+  --out research/mesh/principia_360_prime_orthogonal.mesh.json
+```
+
+```mermaid
+flowchart LR
+    P["declared pack<br/>§THEOREM lines"] --> T["mesh_sections.py<br/>re-encode"]
+    T --> M["sections + links<br/>declaration tree"]
+    M -.->|"does NOT confer"| X["proved · inferred<br/>measured"]
+
+    classDef a fill:#12121a,stroke:#6b6b78,color:#e8e8ea
+    classDef b fill:#1a0f12,stroke:#7d3f4f,color:#ecd6dc
+    class P,T,M a
+    class X b
+```
+
+| Pack | Sections | Links | Depths | Primes |
+|---|---:|---:|---:|---:|
+| `principia_360_prime_orthogonal` | 1800 | 1795 | 360 | 360 |
+| `principia_mathematica_full_N400` | 2000 | 1995 | 400 | — |
+| `ncosmo_hypercomplex_unification` | 70 | 63 | 10 | 70 |
+
+Links are fewer than `sections − 1` because each pack is a **forest, not a
+tree** — the five PM axioms at depth 1 are roots with no parent, and the
+n-Cosmos pack roots once per cosmos level. A viewer expecting a single spanning
+tree will mis-draw these.
+
+A section is a declaration, a link is adjacency in the declaration tree, and the
+coordinates are values the pack states. Projection re-encodes; it never
+promotes. Only manifest-declared pack surfaces may be projected — the tool
+refuses anything else.
+
+---
+
+## The boot seed
+
+The banner carries an LSB-steganographic payload of its own source seed:
 
 ```bash
 python3 tools/stego_boot_banner.py --verify figures/slang_boot_banner.png
 ```
 
-This is currently classified as a **steganographic self-reconstruction witness**
-or quine-like fixed-point artifact. It is not, by itself, a formal proof of
-Löb's theorem. Promotion to a Löb result would require a formal theory,
-provability predicate, derivability conditions, proposition, and checked proof.
+CI runs this decode on every build. It is a **steganographic
+self-reconstruction witness** — a quine-like fixed point over encode/decode,
+accepted as `SLANG-BOOT-001`.
 
-## UTAI and sectional programmes
+It is not a proof of Löb's theorem. That reading is retired as
+`RETIRED-LOEB-001`; promotion would need a formal theory, a provability
+predicate, the derivability conditions, a proposition, and a checked proof.
 
-UTAI, Bunny, MHRR, the Hamiltonian n-Cosmos, visualization systems, Android
-substrates, and LLM-facing tendrils remain preserved as experimental sections.
-Their artifacts should carry their own evidence status and must not inherit
-execution or proof authority merely from being expressible in §-LANG.
+The decoded payload contains the tokens `Löb` and `executable`. Those are
+strings inside the artifact, not findings about it.
 
-## Research documents
+---
 
-- [`THESIS.md`](THESIS.md) — programme narrative and theorem targets
-- [`VERIFICATION.md`](VERIFICATION.md) — verified and unverified boundaries
-- [`RUNTIME_CAPABILITIES.md`](RUNTIME_CAPABILITIES.md) — reported runtime surface
-- [`STATUS.md`](STATUS.md) — present publication and reproducibility status
-- [`CLAIMS.yaml`](CLAIMS.yaml) — claim-to-artifact ledger
+## Documents
 
-## Publication status
+| | |
+|---|---|
+| [`STATUS.md`](STATUS.md) | publication gates · evidence tags · stop rule |
+| [`CLAIMS.yaml`](CLAIMS.yaml) | claim → artifact ledger |
+| [`VERIFICATION.md`](VERIFICATION.md) | what is and is not verified |
+| [`PACKS.md`](PACKS.md) | the five generated packs |
+| [`MODULES.md`](MODULES.md) | Σ∞ module registry · notation · honest frontier |
+| [`CANDIDATES.md`](CANDIDATES.md) | external material evaluated but not imported |
+| [`RUNTIME_CAPABILITIES.md`](RUNTIME_CAPABILITIES.md) | reported runtime surface |
+| [`THESIS.md`](THESIS.md) | programme narrative · theorem targets (`S`/`H`) |
+| [`SKILL.md`](SKILL.md) | operational workflow |
+| [`validation/sources.json`](validation/sources.json) | the validated set |
 
-The repository is **not yet presented as a self-contained publication-ready
-implementation or formally verified system**. The currently defensible release
-claim is narrower:
+Evidence tags: `P` proved · `A` assumed · `M` measured · `H` hypothesis ·
+`S` semantic · `R` retired. Defined in [`STATUS.md`](STATUS.md). Not a ladder.
+
+---
+
+## Where this stands
+
+Not a self-contained publication-ready implementation. Not a formally verified
+system. The defensible claim is narrower, and it is the one being made:
 
 > §-LANG is an evidence-governed symbolic research language programme with
 > structural validation tooling and experimental geometric research packs.
 
-The next publication target is a bounded §-LANG Core specification with a
-parser, evidence-aware validator, conformance tests, reproducible examples, and
+Next target: a bounded §-LANG Core — grammar, independent parser, minimal
+evaluator with known-answer and metamorphic tests, conformance suite, and
 claim-specific formal or empirical artifacts.
 
-## License and citation
+For contributors, the shape of a useful contribution is narrow and specific:
+close a bridge in [`CLAIMS.yaml`](CLAIMS.yaml), or write the checker that makes
+a `⊢` mean something.
 
-Copyright © Jesús Vilela Jato, 2026. All rights reserved unless a more specific
-license file is added. Reuse therefore requires explicit permission.
+---
 
-Citation metadata and an explicit reuse license remain publication gates tracked
-in `STATUS.md`.
+## License
+
+Copyright © Jesús Vilela Jato, 2026. All rights reserved.
+
+**No reuse license is currently granted.** Reuse requires explicit permission.
+An explicit license and `CITATION.cff` are open publication gates tracked in
+[`STATUS.md`](STATUS.md).

@@ -15,6 +15,8 @@ This repository is not presently claimed to be:
 - a self-contained machine-checked proof of UTAI or the full n-Cosmos;
 - an independent verification of external Lean/Bunny artifacts;
 - a proof that the boot banner satisfies Löb's theorem;
+- a verification of any `§THEOREM` line or `⊢ COMMIT` marker in any pack;
+- a reproduction of pack-reported numerics such as `H(Q)`, `CP`, or `BERRY`;
 - a reproducible confirmation that R142 constants are universal or substrate-stable;
 - a proof of a complexity lower bound from positive defect density.
 
@@ -33,9 +35,17 @@ These tags are not an automatic promotion ladder.
 
 | Gate | Current state | Requirement |
 |---|---|---|
-| Repository integrity | Improved | No merge markers, no broken canonical links, coherent identity |
+| Repository integrity | Enforced in CI | No merge markers, no broken canonical links, coherent identity |
 | Declared grammar/source set | Implemented for structural validator | `validation/sources.json` controls the validated set |
+| Declared sources exist | Enforced in CI | A manifest entry with no file on disk fails the build |
+| Pack surfaces declared | Enforced in CI | All five packs are in the manifest; identity is bound to the profile |
+| Pack generators published | Open | No pack ships the program that produced it, so no pack is reproducible |
+| Mesh projection | Enforced in CI | Declared packs project to committed meshes; undeclared sources are refused |
+| External material gate | Implemented | Candidates are held in `CANDIDATES.md` with blocking defects named before import |
+| Independent-witness procedure | Installed | `.claude/skills/recursive-research-auditor`, manifest validator self-tested in CI |
 | Non-vacuous validation | Implemented | Missing objects return `NOT_APPLICABLE`, not `PASS` |
+| Evidence artifact freshness | Enforced in CI | Committed `research/` reports must match current tooling output |
+| Tooling dependency pin | Implemented | `requirements.txt` pins the only third-party dependency (Pillow) |
 | Claim-to-artifact ledger | Initial version | Expand every influential claim in `CLAIMS.yaml` |
 | Minimal executable kernel | Open | Parser, AST, evidence checker, transport and round-trip semantics |
 | Formal traceability | Open | Pinned proof source, theorem name, toolchain, clean build |
