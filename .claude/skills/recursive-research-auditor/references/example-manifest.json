@@ -1,0 +1,82 @@
+{
+  "task_id": "demo-1",
+  "claim": {
+    "text": "The new implementation preserves the declared invariant.",
+    "scope": "Synthetic benchmark only",
+    "status_before": "H",
+    "assumptions": ["Deterministic runtime"],
+    "forbidden_promotions": ["Do not infer production reliability"]
+  },
+  "specification": {
+    "intended_object": "A reversible transform",
+    "invariants": ["decode(encode(x)) = x"],
+    "known_answer_cases": ["empty input", "single element"]
+  },
+  "implementation": {
+    "artifact": "src/model.py",
+    "commit": "abc123",
+    "environment": "Python 3.12",
+    "live_entrypoint": "model.run",
+    "representation": "canonical JSON"
+  },
+  "metric": {
+    "name": "round_trip_error",
+    "type": "distribution",
+    "units": "absolute error",
+    "direction": "lower_is_better",
+    "raw_before_clipping": true,
+    "semantic_invariance_claimed": true,
+    "equivalence_attacks": ["key order permutation", "encode/decode round trip"]
+  },
+  "tests": {
+    "black_box": ["public API cases"],
+    "structural": ["live path coverage"],
+    "property_based": ["round trip over generated inputs"],
+    "metamorphic": ["key reordering preserves result"],
+    "fuzzing": ["malformed input fuzzing"],
+    "historical": ["regression fixture 17"]
+  },
+  "controls": {
+    "matched_baselines": ["previous implementation"],
+    "negative_controls": ["intentionally lossy codec"],
+    "compute_parity": "same hardware and timeout",
+    "parameter_parity": "not applicable: no learned parameters",
+    "sampling_parity": "same generated inputs",
+    "data_access_parity": "same fixtures"
+  },
+  "preregistration": {
+    "prediction": "zero error on all valid inputs",
+    "primary_metric": "round_trip_error distribution",
+    "uncertainty_method": "exact property plus generated sample count",
+    "kill_condition": "any valid counterexample",
+    "stop_condition": "stop architectural expansion until the counterexample is resolved or the claim is retired",
+    "promotion_rule": "H to M after independent rerun; P only after proof"
+  },
+  "evidence": {
+    "primary_sources": ["formal specification"],
+    "execution_records": ["ci/run-42"],
+    "independent_witnesses": [
+      {"name": "reference codec", "origin": "separately authored implementation", "artifact": "ref/codec.py"}
+    ],
+    "claim_to_artifact_map": ["invariant claim -> property test and reference codec"]
+  },
+  "round_trip": {
+    "edges": [
+      {"from": "requirement", "to": "formal specification", "preserved": ["reversibility"], "transformed": [], "lost": [], "remainder": []},
+      {"from": "formal specification", "to": "representation", "preserved": ["reversibility"], "transformed": ["objects to JSON"], "lost": [], "remainder": []},
+      {"from": "representation", "to": "implementation", "preserved": ["schema"], "transformed": [], "lost": [], "remainder": []},
+      {"from": "implementation", "to": "tests", "preserved": ["public behavior"], "transformed": ["inputs to generated cases"], "lost": [], "remainder": []},
+      {"from": "tests", "to": "measurement", "preserved": ["counterexamples"], "transformed": ["errors to distribution"], "lost": [], "remainder": []},
+      {"from": "measurement", "to": "interpretation", "preserved": ["scope"], "transformed": [], "lost": [], "remainder": ["finite generated domain"]},
+      {"from": "interpretation", "to": "requirement", "preserved": ["synthetic scope"], "transformed": [], "lost": [], "remainder": ["production behavior"]}
+    ]
+  },
+  "result": {
+    "observed": "No failures in the frozen generated domain",
+    "effect_size": "not applicable: exact pass/fail property",
+    "uncertainty": "finite generator coverage; independent reference agrees",
+    "status_after": "M",
+    "retired_claims": [],
+    "active_remainder": ["production-scale behavior"]
+  }
+}

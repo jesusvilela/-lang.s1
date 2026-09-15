@@ -1,38 +1,58 @@
 {
-  "source": "LANG.v2.5.tower.geom.lang",
-  "profile": "tower_geom",
-  "num_lines": 55,
-  "num_blocks": 8,
+  "source": "LANG.v1.2.0.unified_geometry.lang",
+  "profile": "unified_geometry",
+  "surface": "legacy_block",
+  "pack": null,
+  "expected_pack": null,
+  "version": null,
+  "num_lines": 411,
+  "num_blocks": 22,
   "unique_blocks": [
+    "ADIABATIC_MOBIUS_FLOW",
+    "AML_DEFINITION",
     "AXIOMS",
-    "INVARIANTS",
-    "NOTES",
+    "BASES",
+    "COMPARISON",
+    "CONCLUSIONS",
+    "EXAMPLE_BETA",
+    "FIBER_BUNDLE_POSSIBILITY_SPACE",
+    "FISHER_UPDATE",
+    "FUNCTORS",
+    "GRAMMAR",
+    "INTER_MANIFOLD",
+    "NMATRIX_SELFREF",
+    "NOTATION_MAP",
     "OUTPUT",
-    "REDUCTION",
+    "REDUCTION_BETA",
+    "SEMANTICS",
+    "SEMANTICS_TOPOS",
     "SORTS",
     "SOURCE",
-    "TOWER_STRUCTURE"
+    "SPECTRAL_PIPELINE",
+    "TURING_ENCODING"
   ],
   "missing_required_blocks": [],
-  "num_sections": 0,
+  "num_sections": 19,
   "checks": {
-    "block_headers_present": true,
-    "section_vectors_dimension_8": true,
-    "section_norm_below_0_999": true,
-    "salience_positive": true
+    "declared_profile_known": "PASS",
+    "surface_recognized": "PASS",
+    "pack_identity_matches_profile": "NOT_APPLICABLE",
+    "block_headers_present": "PASS",
+    "section_vectors_dimension_8": "PASS",
+    "section_norm_below_0_999": "PASS",
+    "salience_positive": "PASS",
+    "semantic_correctness": "NOT_TESTED",
+    "mathematical_claims": "NOT_TESTED",
+    "empirical_claims": "NOT_TESTED"
   },
   "geometry": {
-    "max_section_norm": 0.0,
-    "margin_to_boundary_0_999": 0.999
+    "max_section_norm": 0.683667,
+    "margin_to_boundary_0_999": 0.315333
   },
-  "typecast": {
-    "SOURCE": "meta_binding",
-    "SORTS": "tower_type_universe",
-    "AXIOMS": "geometric_laws",
-    "TOWER_STRUCTURE": "vertical_horizontal_transport_layout",
-    "INVARIANTS": "stability_constraints",
-    "REDUCTION": "tower_evolution_dynamics",
-    "OUTPUT": "operational_contract",
-    "NOTES": "semantic_interpretation_and_scope"
-  }
+  "declarations": {
+    "theorem_declarations": 0,
+    "axiom_declarations": 0,
+    "commit_markers": 0
+  },
+  "notes": []
 }

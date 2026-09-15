@@ -1,125 +1,155 @@
 # §-LANG Practical Verification
 
-> **Truth-discipline notice:**  
-> This document carefully distinguishes *syntactic/structural* checks
-> (machine-executable, reproducible) from *semantic* and *theoretical* claims
-> (not yet machine-verified). Read each section header.
+> **Truth-discipline notice:** this document distinguishes structural checks,
+> operational reproduction, empirical measurement, and formal proof. Evidence
+> from one category must not be promoted into another without an explicit bridge.
 
----
+## 1. Reproducible structural checks
 
-## 1. What is practically verified
-
-The following checks are **fully reproducible** by running one command:
+Run:
 
 ```bash
+python3 -m pip install -r requirements.txt
+
+python3 -m unittest discover -s tests -p 'test_*.py'
 python3 tools/validate_typecast.py --all
-python3 tools/verify_chomsky.py
-```
-
-### 1.1 Checks performed (structural / parser-level)
-
-| Check | Description |
-|-------|-------------|
-| `block_headers_present` | Every required `§\|LANG\|<BLOCK>{` header is found in the file. |
-| `section_vectors_dimension_8` | All `§S{...}` section-point vectors have exactly 8 components (matching the claimed 8-dimensional hyperbolic embedding space). |
-| `section_norm_below_0_999` | All section-point Euclidean norms satisfy `‖x‖ < 0.999`, staying strictly inside the Poincaré unit-ball boundary. |
-| `salience_positive` | All `sal=` values are positive reals. |
-
-### 1.2 Results (as of last run)
-
-All 8 `.lang` source files **pass** all structural checks:
-
-| File | Profile | Blocks | Sections | Status |
-|------|---------|--------|----------|--------|
-| `DIALECTS.v2.1.family.lang` | `dialects` | 3 | 0 | ✅ |
-| `LANG.v1.2.0.unified_geometry.lang` | `unified_geometry` | 22 | 19 | ✅ |
-| `LANG.v2.5.tower.geom.lang` | `tower_geom` | 8 | 0 | ✅ |
-| `LANG.v3.0.substrate_realization.lang` | `substrate` | 7 | 0 | ✅ |
-| `LANG.v3.1.recursive_sectional_computer.lang` | `recursive_sectional` | 7 | 0 | ✅ |
-| `LANG.v3.2.actor_critic_fuzzer_cycle.lang` | `actor_critic` | 6 | 0 | ✅ |
-| `LANG.v5.topos_ai_cosmos_synthesis.lang` | `topos_ai` | 7 | 0 | ✅ |
-| `LANG.v6.chomsky_hyperdim_cognition.lang` | `chomsky_hyperdim` | 11 | 5 | ✅ |
-
-Full per-file reports: [`research/validation_report_all.md`](research/validation_report_all.md)  
-Machine-readable JSON: [`research/validation_report_all.json`](research/validation_report_all.json)
-
-### 1.3 Single-file validation
-
-```bash
-# default (unified_geometry profile)
 python3 tools/validate_typecast.py
-
-# explicit source
-python3 tools/validate_typecast.py --source LANG.v2.5.tower.geom.lang
-python3 tools/validate_typecast.py --source LANG.v3.1.recursive_sectional_computer.lang
+python3 tools/verify_chomsky.py
+python3 tools/stego_boot_banner.py --verify figures/slang_boot_banner.png
 ```
 
-### 1.4 Automated CI
+The authoritative structural source set is declared in
+[`validation/sources.json`](validation/sources.json). A declared source that is
+absent from the working tree fails the run; it is never skipped.
 
-A GitHub Actions workflow (`.github/workflows/validate.yml`) runs these checks
-automatically on every push or pull request that touches a `.lang` file or the
-validation tooling. Validation reports are uploaded as CI artifacts.
+Generated reports must be read together with the repository commit that produced
+them. The committed reports under `research/` are regenerated and diffed in CI,
+so a committed report that the current tooling would not reproduce fails the
+build. This makes the reports an artifact of the commit rather than a historical
+snapshot of an older validator.
 
-### 1.5 Chomsky hierarchy evidence checks
+### Structural statuses
 
-`tools/verify_chomsky.py` performs practical checks against the declared
-`GRAMMAR` block in `LANG.v1.2.0.unified_geometry.lang`:
+| Status | Meaning |
+|---|---|
+| `PASS` | The tested object exists and satisfies the implemented structural predicate. |
+| `FAIL` | A required or present tested object violates the predicate. |
+| `NOT_APPLICABLE` | No object of that type exists in the source. This is not a pass. |
+| `NOT_TESTED` | The validator does not implement a test for that semantic level. |
 
-| Check | Description |
-|-------|-------------|
-| `grammar_block_present` | Confirms the unified source declares a `GRAMMAR` block. |
-| `productions_extracted` | Extracts production-like `lhs = rhs` rules from the block. |
-| `surface_grammar_is_context_free_shape` | Confirms every extracted production has a single nonterminal-like left-hand side, the syntactic shape required for a Type-2/context-free grammar. |
-| `surface_grammar_has_nonregular_recursion_evidence` | Finds recursive/nested productions such as `term = §.(term)` and `term = term term`, which are evidence the surface grammar is not merely Type-3/regular. |
-| `recursive_witnesses_parse` | Runs a small recursive recognizer on nested witness terms `§.(a)`, `§.(§.(a))`, ... up to depth 6. |
-| `semantic_type0_markers_present` | Confirms symbolic markers for λ, `fix`, `TURING_ENCODING`, and the declared computability claim are present. This is evidence only, not a semantic proof. |
+### Legacy block-source checks
 
-Full report: [`research/chomsky_verification_report.md`](research/chomsky_verification_report.md)  
-Machine-readable JSON: [`research/chomsky_verification_report.json`](research/chomsky_verification_report.json)
+For declared legacy profiles the validator checks:
 
----
+- required `§|LANG|<BLOCK>{` headers;
+- eight components in each parsed `§S{...}` vector;
+- Euclidean norm below the configured `0.999` boundary for present vectors;
+- positive salience for present vectors.
 
-## 2. What is NOT verified by these checks
+### Pack surface checks
 
-The structural checks above are **parser-only / symbolic-only**. They do not verify:
+Five packs are declared with `pack`-surface profiles. For each, the validator
+checks that explicit `§PACK` and `§VERSION` headers exist, and that the declared
+`§PACK` identity matches the profile it was declared under — so one pack file
+cannot silently stand in for another. Their semantic, mathematical, runtime, and
+empirical claims remain `NOT_TESTED`.
 
-| Claim type | Status |
-|-----------|--------|
-| Semantic correctness of `fix`, λ-calculus, and Turing-encoding blocks | ❌ Not machine-verified — no executable interpreter exists in this repository. |
-| Mathematical theorems (Hamiltonian conservation, symplectic closure, Mostow rigidity, Selberg trace formula) | ❌ Not machine-verified — stated as postulates; no proof assistant or checker is present. |
-| Sheaf gluing constraints and topos-classifier consistency | ❌ Structural check confirms the block headers exist, but does not evaluate their content. |
-| Self-reference and prime-other (`§'`) mutual resonance | ❌ Semantic concept described in natural language; no executable test. |
-| LLM-induced meta-semantic negotiation and expansion | ❌ Inherently not statically verifiable; depends on external, open-ended LLM interaction. |
-| Hyperbolic embedding validity beyond norm bounds | ❌ Only ‖x‖ < 0.999 is checked; actual Poincaré-disk/geodesic geometry is not evaluated. |
-| Chomsky-hierarchy placement of the semantic layer | ⚠️ Symbolic markers are checked by `tools/verify_chomsky.py`, but Type-0 semantic equivalence is not machine-proven. |
+The validator also tallies `§THEOREM` lines, `§AXIOM` lines, and `⊢ COMMIT`
+markers per source. These are reported under `declarations`, deliberately
+separate from `checks`: they are counts of text, and counting a `§THEOREM` line
+is not checking a theorem. A turnstile in a pack is a character a generator
+emitted, not a judgment a checker discharged. See [`PACKS.md`](PACKS.md).
 
----
+Unknown profiles fail explicitly. Profiles are not inferred from filenames.
 
-## 3. Chomsky hierarchy summary (informational, not proven here)
+## 2. Regression and representation tests
 
-| Layer | Classification | Basis |
-|-------|---------------|-------|
-| Lexical tokens | Type-3 Regular | Token patterns are regular expressions. |
-| Surface `.lang` syntax | Type-2 Context-Free | Block/section nesting requires a stack (CFG). |
-| Typed/scoped §-LANG | At least Type-1 | Binding correctness, arity, invariant checks are beyond CFG. |
-| Executable semantics with `fix` and Turing encoding | Type-0 Recursively Enumerable | λ-calculus + fixpoint + claimed Turing completeness. |
-| LLM-induced meta-semantics | Meta-formal / oracle-like | Not capturable in the classical Chomsky hierarchy. |
+`tests/test_validate_typecast.py` covers the audit defects that motivated the
+current correction:
 
-This table summarises the classification discussed in the repository conversation.
-`tools/verify_chomsky.py` now provides practical evidence for the lexical and
-surface-syntax rows, and marker evidence for the semantic row. It remains **not**
-a formal proof of the complete language semantics.
+1. absent sections return `NOT_APPLICABLE`, not vacuous `PASS`;
+2. unknown profiles fail rather than defaulting silently;
+3. packs require explicit surface headers;
+4. pack recognition does not depend on the filename;
+5. present vectors are actually checked;
+6. a well-formed pack whose identity does not match its declared profile fails;
+7. a matching pack identity passes, and legacy block profiles report the
+   identity check as `NOT_APPLICABLE` rather than borrowing it;
+8. theorem tallies are recorded as declarations and never appear as checks.
 
----
+These tests are correlated repository evidence, not independent replication.
 
-## 4. How to add more verification
+## 3. Chomsky hierarchy evidence checks
 
-To strengthen the checks beyond structural validation:
+`tools/verify_chomsky.py` provides practical evidence for lexical and surface
+syntax properties in the declared historical source. It checks grammar-block
+presence, production extraction, context-free surface shape, recursive witness
+parsing, and the presence of markers associated with richer semantics.
 
-1. **Interpreter / reducer** — implement a β-reduction evaluator for the
-   `REDUCTION_BETA` block and add a test suite of known normal forms.
-2. **Proof assistant** — encode axioms in Lean/Coq/Agda and attempt type-check.
-3. **Grammar parser** — extract the `GRAMMAR` block and build a PEG/ANTLR parser;
-   run example terms from `EXAMPLE_BETA` through it.
-4. **Geometric unit tests** — add more `§S{...}` section points to v3.x files and
-   verify norm invariants are preserved under claimed transformations.
+It does **not** prove semantic Type-0 equivalence, Turing completeness of the
+implemented system, or the behavior of an executable interpreter.
+
+## 4. What is not verified here
+
+| Claim type | Current status |
+|---|---|
+| Semantic correctness of `fix`, lambda-calculus, or Turing blocks | Not verified by structural tooling |
+| Complete runtime behavior of documented operators | Requires pinned implementation and black-box conformance logs |
+| Hamiltonian conservation, symplectic closure, Mostow rigidity, Selberg trace formula | Requires exact proof artifacts or bounded numerical experiments |
+| Sheaf gluing and topos-classifier consistency | Header presence only where applicable |
+| Self-reference and prime-other mutual resonance | Semantic/research construct unless operationalized |
+| LLM-induced meta-semantic negotiation | External open-ended interaction; not statically verified |
+| Full Poincare or geodesic geometry | Norm-bound checks only |
+| Complete UTAI or n-Cosmos machine verification | Requires pinned theorem sources and clean builds |
+| R142 universality or substrate stability | Requires raw data, methods, controls, uncertainty, and provenance |
+| Complexity lower bound from defect density | Open theorem target |
+
+## 4b. Mesh projection
+
+`tools/mesh_sections.py` re-encodes a declared pack's `§THEOREM` declarations as
+a section/link graph. It refuses any source not declared as a pack surface in
+`validation/sources.json`, and the emitted JSON carries its own scope statement
+and a `forbidden_readings` list.
+
+What projection establishes is only that the declaration tree was transcribed.
+A section is a declaration, a link is adjacency, and a coordinate is a value the
+pack states. `declared_verdict` records the turnstile token verbatim and is
+never converted into a status.
+
+Each pack is a **forest**: the five PM axioms at depth 1 are roots, so link
+count is `sections − roots`, not `sections − 1`. A regression test pins this so
+a future change cannot silently produce a single spanning tree.
+
+## 4c. External material
+
+Work originating outside this repository is held in [`CANDIDATES.md`](CANDIDATES.md)
+until its blocking defects are named and resolved. Citation attributions are
+checked against primary sources rather than against the candidate's own
+description of them — repeated self-review is not independent replication.
+
+The procedure is installed as a skill at
+`.claude/skills/recursive-research-auditor/`; its manifest validator is
+self-tested on every build.
+
+## 5. Evidence governance
+
+Consult [`CLAIMS.yaml`](CLAIMS.yaml) for the current claim-to-artifact mapping and
+[`STATUS.md`](STATUS.md) for publication gates. In particular:
+
+- `P` is reserved for exact, artifact-backed statements;
+- `M` requires data, controls, uncertainty, and execution provenance;
+- `A` marks assumptions, surrogates, or external dependencies;
+- `H` marks hypotheses and theorem targets;
+- `S` marks semantic or architectural language;
+- `R` preserves retired interpretations and their replacements.
+
+## 6. Next verification steps
+
+1. Publish a grammar and independent parser for a bounded §-LANG Core.
+2. Implement a minimal evaluator with known-answer and metamorphic tests.
+3. Pin every Lean/Bunny claim to repository, commit, theorem, toolchain, and log.
+4. Reconstruct R142 with raw data, seeds, estimator, uncertainty, and matched nulls.
+5. Add an independent witness not authored from the same specification narrative.
+
+Passing the current workflow supports only the claim that the declared structural
+surfaces satisfy their implemented structural predicates.

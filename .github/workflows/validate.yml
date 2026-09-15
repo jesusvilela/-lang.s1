@@ -1,17 +1,40 @@
 name: §-LANG Structural Validation
 
 on:
+  # Manual re-run. The push/pull_request triggers below are path-filtered, so a
+  # commit touching nothing they match produces no run at all — including an
+  # empty commit. This gives a way to re-request a run after an infrastructure
+  # failure without inventing a file change.
+  workflow_dispatch:
   push:
     paths:
       - "**.lang"
-      - "tools/validate_typecast.py"
-      - "tools/verify_chomsky.py"
+      - "tools/**"
+      - "tests/**"
+      - "validation/**"
+      - "figures/**"
+      - "requirements.txt"
+      - ".claude/skills/**"
+      - "AUDIT.md"
+      - "CLAIMS.yaml"
+      - "STATUS.md"
+      - "README.md"
+      - "VERIFICATION.md"
       - ".github/workflows/validate.yml"
   pull_request:
     paths:
       - "**.lang"
-      - "tools/validate_typecast.py"
-      - "tools/verify_chomsky.py"
+      - "tools/**"
+      - "tests/**"
+      - "validation/**"
+      - "figures/**"
+      - "requirements.txt"
+      - ".claude/skills/**"
+      - "AUDIT.md"
+      - "CLAIMS.yaml"
+      - "STATUS.md"
+      - "README.md"
+      - "VERIFICATION.md"
       - ".github/workflows/validate.yml"
 
 permissions:
@@ -19,7 +42,7 @@ permissions:
 
 jobs:
   validate:
-    name: Validate all .lang sources
+    name: Validate declared §-LANG sources
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,14 +50,62 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          # The verification scripts use modern type annotations tested on 3.11.
           python-version: "3.11"
 
-      - name: Run structural validation (all .lang files)
+      - name: Install pinned tooling dependencies
+        run: python3 -m pip install --requirement requirements.txt
+
+      - name: Reject unresolved merge markers in publication surfaces
+        run: |
+          if grep -R -n -E '^(<<<<<<<|=======|>>>>>>>)' README.md STATUS.md CLAIMS.yaml VERIFICATION.md; then
+            echo "Unresolved merge marker detected"
+            exit 1
+          fi
+
+      - name: Run validator regression tests
+        run: python3 -m unittest discover -s tests -p 'test_*.py'
+
+      - name: Run structural validation from declared source manifest
         run: python3 tools/validate_typecast.py --all
+
+      - name: Run single-source structural validation
+        run: python3 tools/validate_typecast.py
 
       - name: Run Chomsky hierarchy evidence checks
         run: python3 tools/verify_chomsky.py
+
+      - name: Verify boot-banner self-reconstruction witness
+        run: python3 tools/stego_boot_banner.py --verify figures/slang_boot_banner.png
+
+      - name: Project declared packs into meshes
+        run: |
+          python3 tools/mesh_sections.py principia_360_prime_orthogonal.lang \
+            --out research/mesh/principia_360_prime_orthogonal.mesh.json
+          python3 tools/mesh_sections.py ncosmo_hypercomplex_unification.lang \
+            --out research/mesh/ncosmo_hypercomplex_unification.mesh.json
+          python3 tools/mesh_sections.py principia_mathematica_full_N400.lang \
+            --out research/mesh/principia_mathematica_full_N400.mesh.json
+
+      - name: Measure pack assertions (sheaf / adiabatic / Berry / rho-star)
+        run: |
+          python3 tools/sheaf_coherence.py research/mesh/*.mesh.json \
+            --out research/sheaf_coherence.json
+
+      - name: Self-test the audit manifest validator
+        run: |
+          python3 .claude/skills/recursive-research-auditor/scripts/validate_audit_manifest.py \
+            .claude/skills/recursive-research-auditor/references/example-manifest.json
+
+      # The committed reports in research/ are cited as evidence artifacts by
+      # CLAIMS.yaml. A committed report that the current tooling would not
+      # reproduce is stale evidence, so treat drift as a failure.
+      - name: Reject stale committed evidence reports
+        run: |
+          if ! git diff --exit-code -- research/; then
+            echo "Committed reports in research/ do not match current tooling output."
+            echo "Re-run the validation commands in README.md and commit the result."
+            exit 1
+          fi
 
       - name: Upload validation reports
         if: always()
@@ -48,3 +119,5 @@ jobs:
             research/validation_report.md
             research/chomsky_verification_report.json
             research/chomsky_verification_report.md
+            research/mesh/*.mesh.json
+            research/sheaf_coherence.json

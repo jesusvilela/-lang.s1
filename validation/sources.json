@@ -1,6 +1,10 @@
 {
   "schema_version": 1,
   "scope": "Structural validation surfaces only; no semantic, theorem, runtime, or empirical promotion.",
+  "surfaces": {
+    "legacy_block": "Requires the named §|LANG|<BLOCK>{ headers listed in the profile.",
+    "pack": "Requires explicit §PACK and §VERSION headers, and binds the declared pack identity to the profile."
+  },
   "sources": [
     {"path": "DIALECTS.v2.1.family.lang", "profile": "dialects"},
     {"path": "LANG.v1.2.0.unified_geometry.lang", "profile": "unified_geometry"},
@@ -10,6 +14,10 @@
     {"path": "LANG.v3.2.actor_critic_fuzzer_cycle.lang", "profile": "actor_critic"},
     {"path": "LANG.v5.topos_ai_cosmos_synthesis.lang", "profile": "topos_ai"},
     {"path": "LANG.v6.chomsky_hyperdim_cognition.lang", "profile": "chomsky_hyperdim"},
-    {"path": "MHRR_PM_Hypercomplex_Orthogonal.lang", "profile": "mhrr_pack_v1"}
+    {"path": "MHRR_PM_Hypercomplex_Orthogonal.lang", "profile": "mhrr_pack_v1"},
+    {"path": "principia_seed.lang", "profile": "principia_seed_v1"},
+    {"path": "principia_mathematica_full_N400.lang", "profile": "principia_n400_v1"},
+    {"path": "principia_360_prime_orthogonal.lang", "profile": "principia_360_prime_v2"},
+    {"path": "ncosmo_hypercomplex_unification.lang", "profile": "ncosmo_unification_v3"}
   ]
 }

@@ -1,0 +1,9 @@
+# Dependencies for the §-LANG tooling in tools/.
+#
+# Scope: these pins make the structural and witness checks reproducible. They
+# carry no semantic, mathematical, or empirical authority of their own.
+#
+# Needed only by tools/stego_boot_banner.py (encode/verify the boot banner).
+# tools/validate_typecast.py, tools/verify_chomsky.py, and tools/plot_principles.py
+# are standard-library only.
+Pillow>=11,<13

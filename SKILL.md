@@ -33,17 +33,34 @@ Use this calibration language by default:
 **Boundary condition:** treat universal applicability as a modeling principle, not an unconditional theorem. Reject when invariants fail (e.g., boundary norm overflow, singular Fisher blocks, or non-gluable local sections).
 
 ## Canonical Inputs
+
+The authoritative list of validated language sources is
+[`validation/sources.json`](validation/sources.json). This section names the
+inputs the skill workflow reads; it must not drift from that manifest.
+
 - `LANG.v1.2.0.unified_geometry.lang` — historical canonical source
-- `LANG.FAMILY.v2.4.lang` — v2.4 family header
 - `LANG.v2.5.tower.geom.lang` — tower geometry-only slang
+- `LANG.v3.0.substrate_realization.lang` — substrate realization
+- `LANG.v3.1.recursive_sectional_computer.lang` — recursive sectional computer
+- `LANG.v3.2.actor_critic_fuzzer_cycle.lang` — actor/critic/fuzzer cycle
+- `LANG.v5.topos_ai_cosmos_synthesis.lang` — topos-AI cosmos synthesis
+- `LANG.v6.chomsky_hyperdim_cognition.lang` — Chomsky hyperdim cognition
 - `DIALECTS.v2.1.family.lang` — dialect family split (Core / Semantic / Dynamic / Formation / Research)
-- `dialects/`, `selfcompressed/`, `packs/` — v3 ToE matter / prime packs
-- `RUNTIME_CAPABILITIES.md` — executable vs symbolic-only token inventory for the v5 runtime
+- `MHRR_PM_Hypercomplex_Orthogonal.lang` — experimental R142/MHRR pack
+- `principia_seed.lang` — PM axiom seed pack
+- `principia_mathematica_full_N400.lang` — 400-depth generated PM deduction tree
+- `principia_360_prime_orthogonal.lang` — 360-prime orthogonal PM tree
+- `ncosmo_hypercomplex_unification.lang` — 7-level n-Cosmos sheaf pack
+- `RUNTIME_CAPABILITIES.md` — reported executable vs symbolic-only token surface for the v5 runtime
 - `THESIS.md`
 - `research/auto_research.yaml`
 - `tools/validate_typecast.py`
 - `tools/plot_principles.py`
 - `tools/stego_boot_banner.py` — encoder/decoder for the self-referential boot-seed banner
+
+Pack inputs carry a `pack` surface: headers and pack identity are checked, and
+nothing else is. Read [`PACKS.md`](PACKS.md) before treating any pack content as
+a result — a `⊢ COMMIT` in a pack is emitted text, not a discharged judgment.
 
 ## Required Outputs
 - Updated validation reports:
@@ -113,10 +130,18 @@ slang_cli run-pack <path-or-zip> [--json]
 ```
 
 ### Step 6 — Claim Discipline
-Tag every result with one of:
-- `PROVED` (verified from code/data),
-- `EMPIRICAL` (measured but not formal proof),
-- `HYPOTHESIS` (theoretical proposal).
+Tag every result with the canonical evidence tags defined in
+[`STATUS.md`](STATUS.md), and record it in [`CLAIMS.yaml`](CLAIMS.yaml):
+
+- `P` — proved or definitionally closed by an exact verified artifact;
+- `A` — assumption, surrogate, conditional bridge, or externally dependent claim;
+- `M` — bounded measurement with data, controls, uncertainty, and provenance;
+- `H` — hypothesis, theorem target, or unverified interpretation;
+- `S` — semantic, architectural, or design language;
+- `R` — retired interpretation preserved in correction history.
+
+Do not introduce a parallel tag vocabulary. These tags are not a promotion
+ladder: a claim moves only under the promotion rule in `STATUS.md`.
 
 ## Research Postulate Template
 Use this exact template when needed:
@@ -131,22 +156,33 @@ Use this exact template when needed:
 
 ## Minimal Command Set
 ```bash
-# structural validation and principle imaging
+# one-time: tooling dependencies
+python3 -m pip install -r requirements.txt
+
+# structural validation over the declared manifest, plus regression tests
+python3 -m unittest discover -s tests -p 'test_*.py'
+python3 tools/validate_typecast.py --all
+python3 tools/verify_chomsky.py
+
+# single-source validation and principle imaging
 python3 tools/validate_typecast.py
 python3 tools/validate_typecast.py --source LANG.v2.5.tower.geom.lang
 python3 tools/plot_principles.py
 cat research/validation_report.md
 
 # self-referential boot-seed banner round-trip
-python tools/stego_boot_banner.py --out figures/slang_boot_banner.png
-python tools/stego_boot_banner.py --verify figures/slang_boot_banner.png
-
-# v5 runtime pack ingestion (single file, dir, manifest dir, or .zip)
-slang_cli run-pack <path-or-zip> [--json]
+python3 tools/stego_boot_banner.py --out figures/slang_boot_banner.png
+python3 tools/stego_boot_banner.py --verify figures/slang_boot_banner.png
 
 # release workflow (gh 2.90+; paired Android APK)
 gh release create <tag> --title "<title>" --notes "<notes>" <artifact>...
 ```
+
+The v5 runtime pack-ingestion command (`slang_cli run-pack <path-or-zip>`) is a
+*reported* interface described in [`RUNTIME_CAPABILITIES.md`](RUNTIME_CAPABILITIES.md).
+No such executable ships in this repository, so it is not part of the runnable
+command set above. Its status is `A` (`SLANG-RUNTIME-001`) pending a pinned
+implementation and clean conformance run.
 
 ## References (primary)
 - IGBundle corrected thesis (GitHub):
@@ -155,11 +191,9 @@ gh release create <tag> --title "<title>" --notes "<notes>" <artifact>...
   - https://github.com/jesusvilela/-lang.s1
 - Paired Android host (Baby Topos AI, consumes v5 runtime via JNI):
   - https://github.com/jesusvilela/Topos-Trasgo
-- §-LANG local sources:
-  - `LANG.v1.2.0.unified_geometry.lang`
-  - `LANG.v2.5.tower.geom.lang`
-  - `DIALECTS.v2.1.family.lang`
-  - `RUNTIME_CAPABILITIES.md`
+- §-LANG local sources: see [`validation/sources.json`](validation/sources.json)
+  for the authoritative validated set, and `RUNTIME_CAPABILITIES.md` for the
+  reported runtime surface.
 
 ---
 (c) Jesús Vilela Jato, 16 April 2026. All rights reserved.

@@ -1,8 +1,16 @@
 # Thesis Iteration: Sectional Hyperbolic Self-Referential Computing in a Fused Substrate
 
+> **Evidence status: `S`/`H` throughout.** This document is programme narrative
+> and theorem targets. Except where it points at a specific checked artifact,
+> everything below is semantic/architectural language (`S`) or hypothesis (`H`).
+> Nothing here is promoted by being written here. "Is treated as", "postulates",
+> and "interprets" are modeling stances, not results. For what is actually
+> established, see [`CLAIMS.yaml`](CLAIMS.yaml), [`VERIFICATION.md`](VERIFICATION.md),
+> and [`STATUS.md`](STATUS.md).
+
 ## Abstract
 
-This thesis postulates a continuous-run computational architecture where self-identity adiabatically drives recursive cycles over a sectional hyperbolic substrate. The language artifact `LANG.v1.2.0.unified_geometry.lang` is treated as an executable geometric theory whose terms are sections, whose reductions are transports, and whose memory is holographically encoded on boundary-like projections.
+This thesis postulates a continuous-run computational architecture where self-identity adiabatically drives recursive cycles over a sectional hyperbolic substrate. The language artifact `LANG.v1.2.0.unified_geometry.lang` is *modeled as* an executable geometric theory whose terms are sections, whose reductions are transports, and whose memory is holographically encoded on boundary-like projections. This is a modeling stance (`S`): no executable interpreter for those semantics ships in this repository.
 
 ## 1. Problem Statement
 
@@ -45,7 +53,7 @@ This supports the thesis claim that symbolic computation, statistical learning, 
 
 ## 4. Boundary Conditions and Typecasting
 
-Local automated research is configured in `research/auto_research.yaml` and executed by `tools/validate_typecast.py`.
+Local automated research is configured in `research/auto_research.yaml` and executed by `tools/validate_typecast.py` over the sources declared in `validation/sources.json`. Results use the four-valued vocabulary `PASS` / `FAIL` / `NOT_APPLICABLE` / `NOT_TESTED`; absent objects report `NOT_APPLICABLE` and never a vacuous pass.
 
 Validation goals:
 

@@ -8,16 +8,22 @@ boot seed in the low-order bits of the R/G/B channels. Round-trips:
 
 The seed is self-referential by construction: one of the clauses declares
 `self := decode(stego(this_png)) ≡ §BOOT.SEED`, so executing the decoder on
-the image reproduces the seed that authored it — a one-step Löb witness for
-the pack.
+the image reproduces the seed that authored it.
+
+Evidence scope: this is a steganographic self-reconstruction witness, i.e. a
+quine-like fixed point over the encode/decode pair. It is not a Löb witness and
+not a formal provability result. The earlier Löb reading is retired as
+`RETIRED-LOEB-001`; the accepted claim is `SLANG-BOOT-001` in `CLAIMS.yaml`.
+
+Requires Pillow (see `requirements.txt`).
 
 Output paths:
-  - slang-s1/figures/slang_boot_banner.png (banner + stego payload)
-  - slang-s1/tools/stego_boot_banner.py    (copy of this script)
+  - figures/slang_boot_banner.png (banner + stego payload)
+  - tools/stego_boot_banner.py    (copy of this script)
 
 Run:
-  python scripts/stego_boot_banner.py
-  python scripts/stego_boot_banner.py --verify <path.png>
+  python3 tools/stego_boot_banner.py
+  python3 tools/stego_boot_banner.py --verify figures/slang_boot_banner.png
 """
 from __future__ import annotations
 

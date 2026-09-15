@@ -1,0 +1,299 @@
+[
+  {
+    "source": "ncosmo_hypercomplex_unification.lang",
+    "sections": 70,
+    "h1_gluing": {
+      "by_prime": {
+        "index": "prime",
+        "strata_count": 7,
+        "pair_count": 21,
+        "nonempty_overlap_pairs": 0,
+        "cover_is_pairwise_disjoint": true,
+        "mean_jaccard": 0.0
+      },
+      "by_depth": {
+        "index": "depth",
+        "strata_count": 7,
+        "pair_count": 21,
+        "nonempty_overlap_pairs": 21,
+        "cover_is_pairwise_disjoint": false,
+        "mean_jaccard": 1.0
+      },
+      "readings_disagree": true,
+      "verdict": "UNDETERMINED_COVER",
+      "note": "The pack asserts a gluing without declaring the cover it glues over. Until the cover is declared the assertion has no determinate truth value."
+    },
+    "h2_adiabatic": {
+      "trials": 2000,
+      "seed": 142,
+      "null_model": "within-stratum shuffle: identical value multiset, ordering destroyed",
+      "alpha_uncorrected": 0.05,
+      "alpha_bonferroni": 0.007143,
+      "per_stratum": [
+        {
+          "stratum": 1,
+          "n": 10,
+          "observed_max_step": 0.0004009999999999999,
+          "null_median_max_step": 0.001686,
+          "p_null_at_least_as_smooth": 0.0,
+          "sorted_null_max_step": 0.0004009999999999999,
+          "beats_sorted_null": false,
+          "is_monotone": false,
+          "range": 0.001705,
+          "survives_uncorrected": true,
+          "survives_bonferroni": true
+        },
+        {
+          "stratum": 2,
+          "n": 10,
+          "observed_max_step": 5.9999999999999995e-05,
+          "null_median_max_step": 0.00014500000000000003,
+          "p_null_at_least_as_smooth": 0.0,
+          "sorted_null_max_step": 3.600000000000001e-05,
+          "beats_sorted_null": false,
+          "is_monotone": false,
+          "range": 0.000171,
+          "survives_uncorrected": true,
+          "survives_bonferroni": true
+        },
+        {
+          "stratum": 3,
+          "n": 10,
+          "observed_max_step": 3.599999999999998e-05,
+          "null_median_max_step": 6.499999999999998e-05,
+          "p_null_at_least_as_smooth": 0.046,
+          "sorted_null_max_step": 2.9e-05,
+          "beats_sorted_null": false,
+          "is_monotone": false,
+          "range": 7.300000000000001e-05,
+          "survives_uncorrected": true,
+          "survives_bonferroni": false
+        },
+        {
+          "stratum": 4,
+          "n": 10,
+          "observed_max_step": 3.500000000000001e-05,
+          "null_median_max_step": 5.799999999999997e-05,
+          "p_null_at_least_as_smooth": 0.0375,
+          "sorted_null_max_step": 2.2999999999999963e-05,
+          "beats_sorted_null": false,
+          "is_monotone": false,
+          "range": 7.299999999999999e-05,
+          "survives_uncorrected": true,
+          "survives_bonferroni": false
+        },
+        {
+          "stratum": 5,
+          "n": 10,
+          "observed_max_step": 3.3999999999999986e-05,
+          "null_median_max_step": 5.8e-05,
+          "p_null_at_least_as_smooth": 0.017,
+          "sorted_null_max_step": 2.0999999999999995e-05,
+          "beats_sorted_null": false,
+          "is_monotone": false,
+          "range": 7.200000000000002e-05,
+          "survives_uncorrected": true,
+          "survives_bonferroni": false
+        },
+        {
+          "stratum": 6,
+          "n": 10,
+          "observed_max_step": 3.4e-05,
+          "null_median_max_step": 0.00012099999999999999,
+          "p_null_at_least_as_smooth": 0.0,
+          "sorted_null_max_step": 3.4e-05,
+          "beats_sorted_null": false,
+          "is_monotone": false,
+          "range": 0.000144,
+          "survives_uncorrected": true,
+          "survives_bonferroni": true
+        },
+        {
+          "stratum": 7,
+          "n": 10,
+          "observed_max_step": 2.6999999999999992e-05,
+          "null_median_max_step": 6.5e-05,
+          "p_null_at_least_as_smooth": 0.001,
+          "sorted_null_max_step": 2.6999999999999992e-05,
+          "beats_sorted_null": false,
+          "is_monotone": false,
+          "range": 7.3e-05,
+          "survives_uncorrected": true,
+          "survives_bonferroni": true
+        }
+      ],
+      "strata_tested": 7,
+      "strata_smoother_uncorrected": 7,
+      "strata_smoother_bonferroni": 4,
+      "strata_monotone": 0,
+      "strata_beating_sorted_null": 0,
+      "verdict": "RETIRED_MONOTONICITY",
+      "scope": "Supports only that the declaration ordering is smoother than a reordering of the same values. Establishes no gap condition, no adiabatic theorem, and no ground state."
+    },
+    "h3_berry": {
+      "n": 70,
+      "target_pi_over_2": 1.5707963268,
+      "max_abs_deviation": 0.00010367320510340505,
+      "mean_abs_deviation": 9.938749081769123e-05,
+      "stated_precision": 5e-05,
+      "within_stated_precision": false,
+      "verdict": "APPROXIMATE_ONLY"
+    },
+    "h4_rho_star": {
+      "points": 7,
+      "n_values": [
+        8,
+        12,
+        16,
+        20,
+        32,
+        48,
+        64
+      ],
+      "mean_ratio": 0.138333,
+      "sample_sd": 0.00625,
+      "sem": 0.002362,
+      "claimed": {
+        "centre": 0.135,
+        "uncertainty": 0.003
+      },
+      "offset_from_claim_in_sem": 1.41,
+      "uncertainty_consistent_with_sem": true,
+      "central_value_consistent": true,
+      "substrate_axes_varied": 0,
+      "estimator_declared": false,
+      "verdict_value": "CONSISTENT",
+      "verdict_substrate_stability": "UNSUPPORTED",
+      "note": "The central value and uncertainty are consistent with the pack's own series: sem is close to the stated uncertainty and the claimed centre sits under 2 sem from the mean. Separately, no substrate is varied anywhere in the table, so 'substrate-stable' has no support at all. The estimator (asymptotic value vs mean over n) is never declared, so which quantity 0.135 names is unpinned."
+    },
+    "evidence_scope": "Consistency of a pack's own numbers with the pack's own adjectives. Not a measurement of any modelled system, and not a proof of anything."
+  },
+  {
+    "source": "principia_360_prime_orthogonal.lang",
+    "sections": 1800,
+    "h1_gluing": {
+      "verdict": "NOT_APPLICABLE",
+      "by_prime": {
+        "index": "prime",
+        "strata_count": 0,
+        "pair_count": 0,
+        "nonempty_overlap_pairs": 0,
+        "cover_is_pairwise_disjoint": false,
+        "mean_jaccard": null
+      },
+      "by_depth": {
+        "index": "depth",
+        "strata_count": 0,
+        "pair_count": 0,
+        "nonempty_overlap_pairs": 0,
+        "cover_is_pairwise_disjoint": false,
+        "mean_jaccard": null
+      }
+    },
+    "h2_adiabatic": {
+      "verdict": "NOT_APPLICABLE",
+      "reason": "no H(Q) values present"
+    },
+    "h3_berry": {
+      "n": 1800,
+      "target_pi_over_2": 1.5707963268,
+      "max_abs_deviation": 0.0031036732051035187,
+      "mean_abs_deviation": 0.0021211405543913858,
+      "stated_precision": 5e-05,
+      "within_stated_precision": false,
+      "verdict": "APPROXIMATE_ONLY"
+    },
+    "h4_rho_star": {
+      "points": 7,
+      "n_values": [
+        8,
+        12,
+        16,
+        20,
+        32,
+        48,
+        64
+      ],
+      "mean_ratio": 0.138333,
+      "sample_sd": 0.00625,
+      "sem": 0.002362,
+      "claimed": {
+        "centre": 0.135,
+        "uncertainty": 0.003
+      },
+      "offset_from_claim_in_sem": 1.41,
+      "uncertainty_consistent_with_sem": true,
+      "central_value_consistent": true,
+      "substrate_axes_varied": 0,
+      "estimator_declared": false,
+      "verdict_value": "CONSISTENT",
+      "verdict_substrate_stability": "UNSUPPORTED",
+      "note": "The central value and uncertainty are consistent with the pack's own series: sem is close to the stated uncertainty and the claimed centre sits under 2 sem from the mean. Separately, no substrate is varied anywhere in the table, so 'substrate-stable' has no support at all. The estimator (asymptotic value vs mean over n) is never declared, so which quantity 0.135 names is unpinned."
+    },
+    "evidence_scope": "Consistency of a pack's own numbers with the pack's own adjectives. Not a measurement of any modelled system, and not a proof of anything."
+  },
+  {
+    "source": "principia_mathematica_full_N400.lang",
+    "sections": 2000,
+    "h1_gluing": {
+      "verdict": "NOT_APPLICABLE",
+      "by_prime": {
+        "index": "prime",
+        "strata_count": 0,
+        "pair_count": 0,
+        "nonempty_overlap_pairs": 0,
+        "cover_is_pairwise_disjoint": false,
+        "mean_jaccard": null
+      },
+      "by_depth": {
+        "index": "depth",
+        "strata_count": 0,
+        "pair_count": 0,
+        "nonempty_overlap_pairs": 0,
+        "cover_is_pairwise_disjoint": false,
+        "mean_jaccard": null
+      }
+    },
+    "h2_adiabatic": {
+      "verdict": "NOT_APPLICABLE",
+      "reason": "no H(Q) values present"
+    },
+    "h3_berry": {
+      "n": 2000,
+      "target_pi_over_2": 1.5707963268,
+      "max_abs_deviation": 0.0033036732051034967,
+      "mean_abs_deviation": 0.0010412187731857812,
+      "stated_precision": 5e-05,
+      "within_stated_precision": false,
+      "verdict": "APPROXIMATE_ONLY"
+    },
+    "h4_rho_star": {
+      "points": 7,
+      "n_values": [
+        8,
+        12,
+        16,
+        20,
+        32,
+        48,
+        64
+      ],
+      "mean_ratio": 0.138333,
+      "sample_sd": 0.00625,
+      "sem": 0.002362,
+      "claimed": {
+        "centre": 0.135,
+        "uncertainty": 0.003
+      },
+      "offset_from_claim_in_sem": 1.41,
+      "uncertainty_consistent_with_sem": true,
+      "central_value_consistent": true,
+      "substrate_axes_varied": 0,
+      "estimator_declared": false,
+      "verdict_value": "CONSISTENT",
+      "verdict_substrate_stability": "UNSUPPORTED",
+      "note": "The central value and uncertainty are consistent with the pack's own series: sem is close to the stated uncertainty and the claimed centre sits under 2 sem from the mean. Separately, no substrate is varied anywhere in the table, so 'substrate-stable' has no support at all. The estimator (asymptotic value vs mean over n) is never declared, so which quantity 0.135 names is unpinned."
+    },
+    "evidence_scope": "Consistency of a pack's own numbers with the pack's own adjectives. Not a measurement of any modelled system, and not a proof of anything."
+  }
+]
