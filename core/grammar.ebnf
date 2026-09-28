@@ -25,7 +25,7 @@ literal        = number | string | "true" | "false" | "null" ;
 evidence-tag   = "P" | "A" | "M" | "H" | "S" | "R" ;
 
 identifier     = letter-or-underscore , { letter | digit | "_" } ;
-evidence-id    = letter | digit | "_" | "." | "-" ,
+evidence-id    = ( letter | digit | "_" | "." | "-" ) ,
                  { letter | digit | "_" | "." | "-" } ;
 
 (* Strings use JSON double-quoted string syntax.
