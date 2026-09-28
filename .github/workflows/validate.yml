@@ -16,6 +16,11 @@ on:
       - "validation/**"
       - "figures/**"
       - "requirements.txt"
+      - "LICENSE"
+      - "COPYRIGHT"
+      - "CITATION.cff"
+      - "CONTRIBUTING.md"
+      - "SKILL.md"
       - ".claude/skills/**"
       - "AUDIT.md"
       - "CLAIMS.yaml"
@@ -33,6 +38,11 @@ on:
       - "validation/**"
       - "figures/**"
       - "requirements.txt"
+      - "LICENSE"
+      - "COPYRIGHT"
+      - "CITATION.cff"
+      - "CONTRIBUTING.md"
+      - "SKILL.md"
       - ".claude/skills/**"
       - "AUDIT.md"
       - "CLAIMS.yaml"
@@ -61,8 +71,23 @@ jobs:
 
       - name: Reject unresolved merge markers in publication surfaces
         run: |
-          if grep -R -n -E '^(<<<<<<<|=======|>>>>>>>)' README.md STATUS.md CLAIMS.yaml VERIFICATION.md; then
+          if grep -R -n -E '^(<<<<<<<|=======|>>>>>>>)' README.md STATUS.md CLAIMS.yaml VERIFICATION.md SKILL.md CONTRIBUTING.md CITATION.cff COPYRIGHT; then
             echo "Unresolved merge marker detected"
+            exit 1
+          fi
+
+      - name: Reject publication claim and license regressions
+        run: |
+          if grep -n -F 'one-step Löb witness' README.md STATUS.md VERIFICATION.md SKILL.md; then
+            echo "Retired Löb-witness interpretation reintroduced"
+            exit 1
+          fi
+          if grep -n -F 'Executable in the v5 reference runtime' README.md STATUS.md VERIFICATION.md SKILL.md; then
+            echo "Unreproduced v5 runtime promoted to executable"
+            exit 1
+          fi
+          if grep -n -F 'All rights reserved' README.md STATUS.md VERIFICATION.md SKILL.md CONTRIBUTING.md COPYRIGHT; then
+            echo "Stale pre-Apache license language detected"
             exit 1
           fi
 
