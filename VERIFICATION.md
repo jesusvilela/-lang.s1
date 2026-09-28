@@ -95,6 +95,12 @@ the bounded Core behaved as its local specification requires. It does not
 validate the historical v5 runtime, generated packs, theorem markers, or
 geometric semantics.
 
+**Current execution status (2026-09-28):** the latest GitHub Actions attempts
+terminated before any workflow step was assigned, including one explicit
+rerun. That is an infrastructure/runner failure, not a successful or failed
+validation run. Until one clean Python 3.11 unit-test + conformance execution
+completes, `SLANG-CORE-EXEC-001` remains `A`, not `P`.
+
 ## 4. Chomsky hierarchy evidence checks
 
 `tools/verify_chomsky.py` provides practical evidence for lexical and surface
