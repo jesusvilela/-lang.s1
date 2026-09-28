@@ -134,6 +134,47 @@ claims:
       - add black-box conformance cases
       - publish clean execution logs
 
+  - id: SLANG-CORE-SYNTAX-001
+    text: The bounded S1 Core has an explicit grammar and repository-local parser for that grammar.
+    layer: L_syn
+    status: P
+    scope: Bounded S1 Core only; historical §-LANG sources and packs are outside this parser surface.
+    artifacts:
+      - core/grammar.ebnf
+      - slang_core/core.py
+      - tests/test_slang_core.py
+    forbidden_promotions:
+      - completeness of the historical §-LANG grammar
+      - semantic correctness of geometric or theorem-level constructs
+
+  - id: SLANG-CORE-EXEC-001
+    text: The bounded S1 Core evaluates its declared operators and canonical programs according to its local semantic contract.
+    layer: L_op
+    status: P
+    scope: >-
+      Repository-local operational claim only. Covers the operators and statements
+      named in core/README.md and the conformance manifest; it does not reproduce
+      the historical v5 runtime.
+    artifacts:
+      - slang_core/core.py
+      - slang_core/conformance.py
+      - core/conformance.json
+      - core/examples/01_bindings.s1
+      - core/examples/02_strings.s1
+      - core/examples/03_lists.s1
+      - core/examples/04_canon.s1
+      - core/examples/05_evidence.s1
+      - core/examples/06_negative_assertion.s1
+      - core/examples/07_no_assertion.s1
+      - tests/test_slang_core.py
+      - .github/workflows/validate.yml
+    forbidden_promotions:
+      - theorem validation
+      - geometric semantics
+      - execution of generated packs
+      - equivalence to the documented v5 runtime
+      - truth of claims merely because a P/A/M/H/S/R annotation parses
+
   - id: SLANG-MESH-001
     text: A declared pack projects to a section/link mesh reproducing the declaration tree it contains.
     layer: L_syn
