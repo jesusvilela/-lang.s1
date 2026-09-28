@@ -1,16 +1,19 @@
 (* §-LANG S1 Core — bounded, line-oriented grammar.
-   Source text is UTF-8. A physical line is either blank, a full-line // comment,
-   or one statement. Inline comments are outside S1 Core.
 
-   Canonical S1 uses ASCII space/tab as horizontal whitespace. Implementations
-   may accept additional whitespace as an extension, but conformance does not
-   depend on it. The final physical line need not end with a newline. *)
+   Source text is UTF-8. Before applying the grammar:
+   1. split the source into physical lines;
+   2. trim ASCII space/tab at both ends of each line;
+   3. discard blank lines and lines whose first two retained characters are //;
+   4. require at least one retained line;
+   5. parse exactly one statement from each retained line.
 
-program        = { line } ;
-line           = blank-line | comment-line | statement-line ;
-blank-line     = [ hspace ] , [ newline ] ;
-comment-line   = [ hspace ] , "//" , ? any code points except CR or LF ? , [ newline ] ;
-statement-line = [ hspace ] , statement , [ hspace ] , [ newline ] ;
+   Inline comments are outside S1 Core. Canonical S1 uses ASCII space/tab as
+   horizontal whitespace. Implementations may accept additional whitespace as
+   an extension, but conformance does not depend on it. *)
+
+program        = statement , { retained-line-break , statement } ;
+retained-line-break
+               = ? boundary between retained physical lines after preprocessing ? ;
 
 statement      = let-statement
                | emit-statement
@@ -44,7 +47,6 @@ evidence-id-char = letter | digit | "_" | "." | "-" ;
 
 hspace         = { " " | "\t" } ;
 hspace1        = ( " " | "\t" ) , hspace ;
-newline        = "\n" | "\r\n" | "\r" ;
 
 letter         = ? ASCII A-Z or a-z ? ;
 digit          = ? ASCII 0-9 ? ;
