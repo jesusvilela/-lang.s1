@@ -41,6 +41,27 @@ An architecture is not a result.
 
 Everything below follows from that.
 
+### S1 in 60 seconds
+
+The bounded Core is intentionally small:
+
+```text
+§let x = 7
+§let y = mul(x, 6)
+§emit y
+§assert y == 42
+```
+
+From the repository root, with Python 3.11:
+
+```bash
+python3 -m slang_core core/examples/01_bindings.s1 --json
+python3 -m slang_core.conformance --json
+```
+
+The reference Core is version `0.1.0`; **S1** names the language profile, not a
+claim that the broader research-language family is version 1.0 or complete.
+
 ---
 
 ## Layers
@@ -273,6 +294,8 @@ strings inside the artifact, not findings about it.
 | [`RUNTIME_CAPABILITIES.md`](RUNTIME_CAPABILITIES.md) | reported runtime surface |
 | [`THESIS.md`](THESIS.md) | programme narrative · theorem targets (`S`/`H`) |
 | [`SKILL.md`](SKILL.md) | operational workflow |
+| [`CONTRIBUTING.md`](CONTRIBUTING.md) | contribution + independent implementation contract |
+| [`CITATION.cff`](CITATION.cff) | canonical citation metadata |
 | [`validation/sources.json`](validation/sources.json) | the validated set |
 
 Evidence tags: `P` proved · `A` assumed · `M` measured · `H` hypothesis ·
