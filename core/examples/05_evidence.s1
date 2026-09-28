@@ -1,0 +1,3 @@
+§evidence CORE-S1-EXAMPLE [S] "Parsing an evidence annotation preserves metadata; it does not validate the claim."
+§emit identity("annotation-preserved")
+§assert identity("annotation-preserved") == "annotation-preserved"
