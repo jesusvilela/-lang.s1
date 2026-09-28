@@ -1,0 +1,5 @@
+// Binding and arithmetic
+§let x = 7
+§let y = mul(x, 6)
+§emit y
+§assert y == 42

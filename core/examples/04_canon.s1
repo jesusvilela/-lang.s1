@@ -1,0 +1,3 @@
+§let xs = list("b", "a")
+§emit canon(xs)
+§assert canon(xs) == "[\"b\",\"a\"]"

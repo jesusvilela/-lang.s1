@@ -11,6 +11,8 @@ on:
       - "**.lang"
       - "tools/**"
       - "tests/**"
+      - "slang_core/**"
+      - "core/**"
       - "validation/**"
       - "figures/**"
       - "requirements.txt"
@@ -26,6 +28,8 @@ on:
       - "**.lang"
       - "tools/**"
       - "tests/**"
+      - "slang_core/**"
+      - "core/**"
       - "validation/**"
       - "figures/**"
       - "requirements.txt"
@@ -64,6 +68,9 @@ jobs:
 
       - name: Run validator regression tests
         run: python3 -m unittest discover -s tests -p 'test_*.py'
+
+      - name: Run bounded S1 Core conformance
+        run: python3 -m slang_core.conformance --json
 
       - name: Run structural validation from declared source manifest
         run: python3 tools/validate_typecast.py --all

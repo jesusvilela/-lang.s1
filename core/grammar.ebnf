@@ -1,0 +1,33 @@
+(* §-LANG S1 Core — bounded grammar.
+   Full-line // comments and blank lines are ignored before parsing. *)
+
+program        = statement , { statement } ;
+
+statement      = let-statement
+               | emit-statement
+               | assert-statement
+               | evidence-statement ;
+
+let-statement  = "§let" , identifier , "=" , expression ;
+emit-statement = "§emit" , expression ;
+assert-statement
+               = "§assert" , expression , "==" , expression ;
+evidence-statement
+               = "§evidence" , evidence-id , "[" , evidence-tag , "]" , string ;
+
+expression     = literal
+               | identifier
+               | call ;
+
+call           = identifier , "(" , [ expression , { "," , expression } ] , ")" ;
+
+literal        = number | string | "true" | "false" | "null" ;
+evidence-tag   = "P" | "A" | "M" | "H" | "S" | "R" ;
+
+identifier     = letter-or-underscore , { letter | digit | "_" } ;
+evidence-id    = ( letter | digit | "_" | "." | "-" ) ,
+                 { letter | digit | "_" | "." | "-" } ;
+
+(* Strings use JSON double-quoted string syntax.
+   Numbers are signed decimal integers or decimal fractions; exponent notation
+   is intentionally outside S1 Core. *)

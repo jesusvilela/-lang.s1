@@ -1,17 +1,18 @@
 # §-LANG Status
 
-Last status correction: 2026-07-26.
+Last status correction: 2026-09-28.
 
 ## Current defensible claim
 
-§-LANG is an evidence-governed symbolic research language programme with
-structural validation tooling and experimental geometric research packs.
+§-LANG S1 is an evidence-governed research-language programme with a bounded
+executable kernel, structural validation tooling, and experimental geometric
+research packs.
 
 ## Not currently claimed
 
 This repository is not presently claimed to be:
 
-- a complete executable implementation of all §-LANG constructs;
+- a complete executable implementation of all §-LANG constructs beyond the bounded S1 Core;
 - a self-contained machine-checked proof of UTAI or the full n-Cosmos;
 - an independent verification of external Lean/Bunny artifacts;
 - a proof that the boot banner satisfies Löb's theorem;
@@ -47,7 +48,7 @@ These tags are not an automatic promotion ladder.
 | Evidence artifact freshness | Enforced in CI | Committed `research/` reports must match current tooling output |
 | Tooling dependency pin | Implemented | `requirements.txt` pins the only third-party dependency (Pillow) |
 | Claim-to-artifact ledger | Initial version | Expand every influential claim in `CLAIMS.yaml` |
-| Minimal executable kernel | Open | Parser, AST, evidence checker, transport and round-trip semantics |
+| Minimal executable kernel | Implemented for S1 Core | Grammar, parser, evaluator, canonical cases, JSON results, conformance; full historical runtime remains open |
 | Formal traceability | Open | Pinned proof source, theorem name, toolchain, clean build |
 | Empirical reproducibility | Open | Raw data, scripts, seeds, uncertainty and environment |
 | Independent witness | Open | Clean-room parser, external proof build, or independent reproduction |

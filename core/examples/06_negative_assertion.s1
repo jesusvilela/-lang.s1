@@ -1,0 +1,2 @@
+§emit add(20, 22)
+§assert add(20, 22) == 41
