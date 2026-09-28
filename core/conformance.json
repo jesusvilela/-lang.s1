@@ -1,0 +1,78 @@
+{
+  "schema": "slang.s1.conformance.manifest.v1",
+  "cases": [
+    {
+      "id": "bindings-arithmetic",
+      "file": "core/examples/01_bindings.s1",
+      "expected_program_status": "PASS",
+      "expected_emissions": [
+        42
+      ],
+      "expected_evidence_count": 0
+    },
+    {
+      "id": "strings",
+      "file": "core/examples/02_strings.s1",
+      "expected_program_status": "PASS",
+      "expected_emissions": [
+        "§-LANG"
+      ],
+      "expected_evidence_count": 0
+    },
+    {
+      "id": "lists",
+      "file": "core/examples/03_lists.s1",
+      "expected_program_status": "PASS",
+      "expected_emissions": [
+        4
+      ],
+      "expected_evidence_count": 0
+    },
+    {
+      "id": "canonical-json",
+      "file": "core/examples/04_canon.s1",
+      "expected_program_status": "PASS",
+      "expected_emissions": [
+        "[\"b\",\"a\"]"
+      ],
+      "expected_evidence_count": 0
+    },
+    {
+      "id": "evidence-metadata",
+      "file": "core/examples/05_evidence.s1",
+      "expected_program_status": "PASS",
+      "expected_emissions": [
+        "annotation-preserved"
+      ],
+      "expected_evidence_count": 1
+    },
+    {
+      "id": "negative-assertion",
+      "file": "core/examples/06_negative_assertion.s1",
+      "expected_program_status": "FAIL",
+      "expected_emissions": [
+        42
+      ],
+      "expected_evidence_count": 0
+    },
+    {
+      "id": "no-assertion",
+      "file": "core/examples/07_no_assertion.s1",
+      "expected_program_status": "NOT_TESTED",
+      "expected_emissions": [
+        "research-alpha"
+      ],
+      "expected_evidence_count": 0
+    },
+    {
+      "id": "historical-v5-runtime",
+      "tested": false,
+      "reason": "Historical v5 operator semantics are documented but not implemented by S1 Core."
+    },
+    {
+      "id": "generated-pack-execution",
+      "applicable": false,
+      "reason": "Generated research packs are explicitly outside the bounded S1 Core execution surface."
+    }
+  ]
+}
