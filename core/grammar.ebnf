@@ -1,33 +1,57 @@
-(* §-LANG S1 Core — bounded grammar.
-   Full-line // comments and blank lines are ignored before parsing. *)
+(* §-LANG S1 Core — bounded, line-oriented grammar.
+   Source text is UTF-8. A physical line is either blank, a full-line // comment,
+   or one statement. Inline comments are outside S1 Core.
 
-program        = statement , { statement } ;
+   Canonical S1 uses ASCII space/tab as horizontal whitespace. Implementations
+   may accept additional whitespace as an extension, but conformance does not
+   depend on it. The final physical line need not end with a newline. *)
+
+program        = { line } ;
+line           = blank-line | comment-line | statement-line ;
+blank-line     = [ hspace ] , [ newline ] ;
+comment-line   = [ hspace ] , "//" , ? any code points except CR or LF ? , [ newline ] ;
+statement-line = [ hspace ] , statement , [ hspace ] , [ newline ] ;
 
 statement      = let-statement
                | emit-statement
                | assert-statement
                | evidence-statement ;
 
-let-statement  = "§let" , identifier , "=" , expression ;
-emit-statement = "§emit" , expression ;
+let-statement  = "§let" , hspace1 , identifier , hspace , "=" , hspace , expression ;
+emit-statement = "§emit" , hspace1 , expression ;
 assert-statement
-               = "§assert" , expression , "==" , expression ;
+               = "§assert" , hspace1 , expression , hspace , "==" , hspace , expression ;
 evidence-statement
-               = "§evidence" , evidence-id , "[" , evidence-tag , "]" , string ;
+               = "§evidence" , hspace1 , evidence-id , hspace1 ,
+                 "[" , evidence-tag , "]" , hspace1 , string ;
 
 expression     = literal
                | identifier
                | call ;
 
-call           = identifier , "(" , [ expression , { "," , expression } ] , ")" ;
+call           = identifier , hspace , "(" , hspace ,
+                 [ expression , { hspace , "," , hspace , expression } ] ,
+                 hspace , ")" ;
 
 literal        = number | string | "true" | "false" | "null" ;
 evidence-tag   = "P" | "A" | "M" | "H" | "S" | "R" ;
 
 identifier     = letter-or-underscore , { letter | digit | "_" } ;
-evidence-id    = ( letter | digit | "_" | "." | "-" ) ,
-                 { letter | digit | "_" | "." | "-" } ;
+evidence-id    = evidence-id-char , { evidence-id-char } ;
 
-(* Strings use JSON double-quoted string syntax.
-   Numbers are signed decimal integers or decimal fractions; exponent notation
-   is intentionally outside S1 Core. *)
+letter-or-underscore = letter | "_" ;
+evidence-id-char = letter | digit | "_" | "." | "-" ;
+
+hspace         = { " " | "\t" } ;
+hspace1        = ( " " | "\t" ) , hspace ;
+newline        = "\n" | "\r\n" | "\r" ;
+
+letter         = ? ASCII A-Z or a-z ? ;
+digit          = ? ASCII 0-9 ? ;
+string         = ? JSON double-quoted string literal ? ;
+
+integer-part   = digit , { digit } ;
+fraction       = "." , { digit } ;
+number         = [ "-" ] ,
+                 ( integer-part , [ fraction ]
+                 | "." , digit , { digit } ) ;
