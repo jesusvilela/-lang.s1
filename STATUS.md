@@ -52,8 +52,12 @@ These tags are not an automatic promotion ladder.
 | Formal traceability | Open | Pinned proof source, theorem name, toolchain, clean build |
 | Empirical reproducibility | Open | Raw data, scripts, seeds, uncertainty and environment |
 | Independent witness | Open | Clean-room parser, external proof build, or independent reproduction |
-| Citation metadata | Open | Add `CITATION.cff` once canonical title/authors/version are frozen |
+| Citation metadata | Closed | `CITATION.cff` identifies §-LANG S1 / reference Core 0.1.0 |
 | Reuse license | Closed | Apache License 2.0 applies repository-wide unless a file states otherwise |
+| CI execution | Blocked externally | Latest GitHub Actions attempts terminate before any step is assigned; require one clean run before launch |
+| GitHub About metadata | Open | Replace the legacy “unified geometric theory” repository description with the bounded S1 research-alpha description |
+| Public visibility | Deferred by author | Switch to public only after launch copy is frozen; then immediately re-run CI |
+| First public tag | Open | Tag the exact green public commit used for the S1 alpha announcement |
 
 ## Stop rule
 
