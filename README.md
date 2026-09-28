@@ -309,10 +309,19 @@ a `⊢` mean something.
 
 ## License
 
-Copyright © Jesús Vilela Jato, 2026. All rights reserved.
+Copyright © Jesús Vilela Jato, 2026.
 
-**No reuse license is currently granted.** Reuse requires explicit permission.
-Making this repository publicly readable would therefore publish a research
-artifact, not create an open-source language project. An explicit license and
-`CITATION.cff` remain publication/adoption gates tracked in
-[`STATUS.md`](STATUS.md).
+§-LANG S1 is licensed under the **Apache License 2.0**. This applies to the
+specification, bounded reference Core, validation/conformance tooling, and
+repository documentation unless a file states otherwise.
+
+You may use, implement, modify, and redistribute the work — including for
+commercial purposes — subject to the terms of [`LICENSE`](LICENSE).
+
+The license choice is intentionally adoption-oriented: independent §-LANG
+implementations do not need to derive from this Python reference Core.
+Conformance is a property of behavior against the published S1 contract, not of
+implementation ancestry.
+
+The Apache-2.0 license does not itself grant rights to project names or
+trademarks beyond the license's stated terms.
