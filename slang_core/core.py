@@ -61,7 +61,7 @@ _TOKEN = re.compile(
 
 
 def _tokenize(text: str) -> list[tuple[str, str]]:
-    text = text.strip()
+    text = text.strip(" \\t")
     if not text:
         raise CoreSyntaxError("empty expression")
     out: list[tuple[str, str]] = []
@@ -181,7 +181,7 @@ def parse_program(source: str) -> list[Statement]:
     statements: list[Statement] = []
 
     for line_no, raw in enumerate(source.splitlines(), start=1):
-        line = raw.strip()
+        line = raw.strip(" \\t\\r\\n")
         if not line or line.startswith("//"):
             continue
 
