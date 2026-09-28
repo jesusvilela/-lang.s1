@@ -53,7 +53,7 @@ These tags are not an automatic promotion ladder.
 | Empirical reproducibility | Open | Raw data, scripts, seeds, uncertainty and environment |
 | Independent witness | Open | Clean-room parser, external proof build, or independent reproduction |
 | Citation metadata | Open | Add `CITATION.cff` once canonical title/authors/version are frozen |
-| Reuse license | Open | Author must select an explicit license; all rights currently reserved |
+| Reuse license | Closed | Apache License 2.0 applies repository-wide unless a file states otherwise |
 
 ## Stop rule
 
