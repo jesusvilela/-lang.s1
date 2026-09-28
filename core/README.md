@@ -21,7 +21,7 @@ Implemented here:
 - literal, binding, emission, equality-assertion, and evidence-annotation statements;
 - a closed operator set: `add`, `sub`, `mul`, `div`, `neg`, `concat`,
   `list`, `len`, `identity`, `canon`;
-- six canonical programs, including a negative control and a no-assertion case;
+- seven canonical programs, including a negative control and a no-assertion case;
 - one manifest-driven conformance command;
 - machine-readable JSON results.
 
@@ -38,6 +38,8 @@ A parsed `§evidence` statement is metadata. It preserves a claim identifier,
 evidence tag, and text; it does not validate the claim.
 
 ## Run
+
+Reference environment: Python 3.11. Run from the repository root.
 
 ```bash
 python3 -m slang_core core/examples/01_bindings.s1 --json

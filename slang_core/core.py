@@ -48,7 +48,7 @@ class Statement:
 
 
 _TOKEN = re.compile(
-    r"""\s*(?:
+    r"""[ \t]*(?:
         (?P<number>-?(?:\d+(?:\.\d*)?|\.\d+))
       | (?P<string>"(?:\\.|[^"\\])*")
       | (?P<ident>[A-Za-z_][A-Za-z0-9_]*)
@@ -61,7 +61,7 @@ _TOKEN = re.compile(
 
 
 def _tokenize(text: str) -> list[tuple[str, str]]:
-    text = text.strip()
+    text = text.strip(" \t")
     if not text:
         raise CoreSyntaxError("empty expression")
     out: list[tuple[str, str]] = []
@@ -181,30 +181,32 @@ def parse_program(source: str) -> list[Statement]:
     statements: list[Statement] = []
 
     for line_no, raw in enumerate(source.splitlines(), start=1):
-        line = raw.strip()
+        line = raw.strip(" \t\r\n")
         if not line or line.startswith("//"):
             continue
 
-        match = re.fullmatch(r"§let\s+([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.+)", line)
+        match = re.fullmatch(r"§let[ \t]+([A-Za-z_][A-Za-z0-9_]*)[ \t]*=[ \t]*(.+)", line)
         if match:
             statements.append(
                 Statement("let", line_no, name=match.group(1), expr=parse_expr(match.group(2)))
             )
             continue
 
-        if line.startswith("§emit "):
-            statements.append(Statement("emit", line_no, expr=parse_expr(line[6:].strip())))
+        match = re.fullmatch(r"§emit[ \t]+(.+)", line)
+        if match:
+            statements.append(Statement("emit", line_no, expr=parse_expr(match.group(1))))
             continue
 
-        if line.startswith("§assert "):
-            left, right = _split_top_level_equality(line[8:].strip())
+        match = re.fullmatch(r"§assert[ \t]+(.+)", line)
+        if match:
+            left, right = _split_top_level_equality(match.group(1))
             statements.append(
                 Statement("assert", line_no, left=parse_expr(left), right=parse_expr(right))
             )
             continue
 
         match = re.fullmatch(
-            r"§evidence\s+([A-Za-z0-9_.-]+)\s+\[([PAMHSR])\]\s+(.+)",
+            r"§evidence[ \t]+([A-Za-z0-9_.-]+)[ \t]+\[([PAMHSR])\][ \t]+(.+)",
             line,
         )
         if match:

@@ -40,6 +40,11 @@ class SlangCoreTests(unittest.TestCase):
             result["evidence"],
         )
 
+    def test_horizontal_tab_separators_are_part_of_s1(self):
+        result = run_source("§let\tx\t=\t7\n§emit\tx\n§assert\tx\t==\t7")
+        self.assertEqual("PASS", result["status"])
+        self.assertEqual([7], result["emissions"])
+
     def test_unknown_operator_fails_at_runtime(self):
         with self.assertRaises(CoreRuntimeError):
             run_source("§emit Mostow(1)")

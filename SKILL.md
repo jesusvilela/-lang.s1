@@ -51,7 +51,10 @@ inputs the skill workflow reads; it must not drift from that manifest.
 - `principia_mathematica_full_N400.lang` — 400-depth generated PM deduction tree
 - `principia_360_prime_orthogonal.lang` — 360-prime orthogonal PM tree
 - `ncosmo_hypercomplex_unification.lang` — 7-level n-Cosmos sheaf pack
-- `RUNTIME_CAPABILITIES.md` — reported executable vs symbolic-only token surface for the v5 runtime
+- `core/grammar.ebnf` — normative bounded S1 Core grammar
+- `core/conformance.json` — public S1 Core conformance manifest
+- `slang_core/` — repository-local bounded reference parser/evaluator
+- `RUNTIME_CAPABILITIES.md` — reported historical v5 capability surface; not reproduced by the S1 Core
 - `THESIS.md`
 - `research/auto_research.yaml`
 - `tools/validate_typecast.py`
@@ -93,20 +96,23 @@ Check at minimum:
 If any check fails, set verdict `BLOCK` and report exact failing labels.
 
 ### Step 3 — Geometric-Computational Interpretation
-Interpret reductions as transport laws:
-- beta-like substitution is curvature-aware transport,
-- fixpoint recursion models self-referential cycles,
-- Fisher natural gradients govern intrinsic adaptation,
-- sheaf-like compatibility enforces coherent global sections.
+Interpret the historical reductions as semantic or architectural proposals unless
+a claim-specific executable or formal bridge is attached:
+- beta-like substitution may be read as curvature-aware transport;
+- fixpoint recursion models self-referential cycles;
+- Fisher natural gradients describe an intended intrinsic update;
+- sheaf-like compatibility describes a local-to-global coherence target.
 
-Executable in the v5 reference runtime (emit `runtime.reduction_applied`):
-- full `§R1_…§R9_` rule family,
-- canonical operators (`Π_expand`, `Π_expire`, `§rho`, `Fix(Φ)`, `W_glue`, …),
-- **Löb / Knaster–Tarski** — `□(□P → P) ⊢ □P`,
-- **Pushout** — colimit `(A ⊔ B) / ~_f,g` on a cospan,
-- **Endofunctor** — identity and composition laws on `F`.
+The historical v5 design **reports** reductions for `§R1_…§R9_`, canonical
+operators such as `Π_expand`, `Π_expire`, `§rho`, `Fix(Φ)`, and
+`W_glue`, plus provability-inspired, pushout, and endofunctor reductions.
+Those claims remain `A` in this repository under `SLANG-RUNTIME-001` because
+the pinned v5 implementation and clean black-box conformance logs do not ship
+here. Do not emit `runtime.reduction_applied` as reproduced evidence from this
+repository.
 
-Still symbolic-only in v5 (emit `runtime.symbolic_only`): `Selberg`, `Mostow`.
+`Selberg` and `Mostow` remain reported symbolic-only tokens. A token name is
+not a theorem or geometric realization.
 
 ### Step 4 — Imaging and Self-Reference
 Render the principle-based plot (Poincaré disk, projected section nodes,
@@ -115,19 +121,25 @@ salience encoding, Möbius transfer ribbon, holographic memory annotation).
 Additionally, rebuild and verify the self-referential boot-seed banner:
 - encode — `python tools/stego_boot_banner.py --out figures/slang_boot_banner.png`
 - decode — `python tools/stego_boot_banner.py --verify figures/slang_boot_banner.png`
-- accept only when `decode(stego(THIS_PNG)) ≡ §BOOT.SEED.v5` (one-step Löb witness).
+- accept only when the documented decoder reconstructs the embedded seed exactly.
+
+This is the steganographic self-reconstruction witness `SLANG-BOOT-001`. It is
+not a Löb theorem witness; that interpretation is retired as
+`RETIRED-LOEB-001`.
 
 ### Step 5 — Pack Ingestion
-When a dialect ships as a directory or archive:
-- a single `.lang` file → parse directly,
-- a directory → recursive scan,
-- a directory with `manifest.json` → parse only files declared in `"files"`, in declared order,
-- a `.zip` archive → extract then treat as a directory.
+The historical v5 design reports support for a single `.lang` file, recursive
+directories, manifest-ordered directories, and ZIP archives.
 
-Drive it from the reference runtime:
+The reported interface is:
+
 ```
 slang_cli run-pack <path-or-zip> [--json]
 ```
+
+No `slang_cli` executable ships in this repository. Treat this interface as
+`A` until a pinned implementation and conformance run are attached. The
+runnable S1 Core does not execute generated research packs.
 
 ### Step 6 — Claim Discipline
 Tag every result with the canonical evidence tags defined in
@@ -161,6 +173,7 @@ python3 -m pip install -r requirements.txt
 
 # structural validation over the declared manifest, plus regression tests
 python3 -m unittest discover -s tests -p 'test_*.py'
+python3 -m slang_core.conformance --json
 python3 tools/validate_typecast.py --all
 python3 tools/verify_chomsky.py
 
@@ -196,4 +209,7 @@ implementation and clean conformance run.
   reported runtime surface.
 
 ---
-(c) Jesús Vilela Jato, 16 April 2026. All rights reserved.
+
+Copyright © Jesús Vilela Jato, 2026.
+
+Licensed under the Apache License, Version 2.0. See [`LICENSE`](LICENSE).

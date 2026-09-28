@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use, implement, or discuss §-LANG S1, please cite this repository."
+title: "§-LANG S1: Sectional Language, Research Alpha"
+type: software
+authors:
+  - family-names: "Vilela Jato"
+    given-names: "Jesús"
+version: "0.1.0"
+license: Apache-2.0
+repository-code: "https://github.com/jesusvilela/-lang.s1"
+abstract: >-
+  An evidence-governed research-language programme with a bounded executable
+  Core, explicit conformance outcomes, structural validation tooling, and
+  experimental geometric research packs. S1 is a research alpha, not a
+  complete implementation of the historical §-LANG surface.
+keywords:
+  - programming-languages
+  - language-design
+  - research-software
+  - conformance
+  - evidence-governance
