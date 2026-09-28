@@ -1,9 +1,14 @@
-# §-LANG
+# §-LANG S1 — Sectional Language, Research Alpha
 
 ![§-LANG boot seed](figures/slang_boot_banner.png)
 
 A specification-first research language for geometric, computational, and
 formal structure over contextual manifolds.
+
+**S1 is the first bounded public section of the language family, not version 1
+of a finished programming language.** The repository combines a small executable
+Core with a larger research programme whose claims remain separately typed and
+governed.
 
 Built on one rule.
 
@@ -63,6 +68,20 @@ flowchart TD
 The programmes are sections of the stack, not conclusions of it. Being
 expressible in §-LANG grants an artifact no authority.
 
+### Public ontology
+
+```text
+§-LANG
+├── Core          bounded executable semantics
+├── Annotation    evidence / provenance / claim status
+├── Geometry      sectional / contextual coordinates
+├── Packs         generated research corpora
+└── Research      hypotheses · measurements · theorem targets
+```
+
+The executable boundary is deliberately narrow. See [`core/README.md`](core/README.md)
+and [`core/grammar.ebnf`](core/grammar.ebnf).
+
 ---
 
 ## What holds, and how far
@@ -94,6 +113,8 @@ flowchart LR
 
 | Layer | State | Authority |
 |---|---|---|
+| S1 Core grammar / parser / evaluator | implemented | bounded executable semantics only |
+| S1 Core conformance | implemented | known-answer / negative / status behavior |
 | Symbolic language sources | available | specification / semantic |
 | Block and section validation | implemented | structural only |
 | Chomsky surface-shape checks | implemented | syntactic only |
@@ -111,6 +132,8 @@ flowchart LR
 python3 -m pip install -r requirements.txt
 
 python3 -m unittest discover -s tests -p 'test_*.py'
+python3 -m slang_core core/examples/01_bindings.s1 --json
+python3 -m slang_core.conformance --json
 python3 tools/validate_typecast.py --all
 python3 tools/validate_typecast.py
 python3 tools/verify_chomsky.py
@@ -259,15 +282,24 @@ Evidence tags: `P` proved · `A` assumed · `M` measured · `H` hypothesis ·
 
 ## Where this stands
 
-Not a self-contained publication-ready implementation. Not a formally verified
-system. The defensible claim is narrower, and it is the one being made:
+**Research Alpha.** S1 now contains a bounded executable Core: an explicit
+grammar, repository-local parser, minimal evaluator, canonical programs,
+regression tests, a conformance command, and a machine-readable result format.
+That Core does **not** implement the full historical §-LANG surface.
 
-> §-LANG is an evidence-governed symbolic research language programme with
-> structural validation tooling and experimental geometric research packs.
+The defensible claim is:
 
-Next target: a bounded §-LANG Core — grammar, independent parser, minimal
-evaluator with known-answer and metamorphic tests, conformance suite, and
-claim-specific formal or empirical artifacts.
+> §-LANG S1 is an evidence-governed research-language programme with a bounded
+> executable kernel, structural validation tooling, and experimental geometric
+> research packs.
+
+What does **not** exist yet: stable semantics for the full language family, a
+complete v5 runtime reproduction, a formal proof kernel, theorem validation,
+production guarantees, or execution semantics for the generated packs.
+
+The next bridge is no longer “make anything executable.” It is to expand the
+Core only through claim-specific semantics backed by conformance cases,
+metamorphic tests, or formal/empirical artifacts.
 
 For contributors, the shape of a useful contribution is narrow and specific:
 close a bridge in [`CLAIMS.yaml`](CLAIMS.yaml), or write the checker that makes
@@ -280,5 +312,7 @@ a `⊢` mean something.
 Copyright © Jesús Vilela Jato, 2026. All rights reserved.
 
 **No reuse license is currently granted.** Reuse requires explicit permission.
-An explicit license and `CITATION.cff` are open publication gates tracked in
+Making this repository publicly readable would therefore publish a research
+artifact, not create an open-source language project. An explicit license and
+`CITATION.cff` remain publication/adoption gates tracked in
 [`STATUS.md`](STATUS.md).
