@@ -150,13 +150,15 @@ claims:
   - id: SLANG-CORE-EXEC-001
     text: The bounded S1 Core evaluates its declared operators and canonical programs according to its local semantic contract.
     layer: L_op
-    status: A
+    status: P
     scope: >-
-      Repository-local operational claim only. The implementation and correlated
-      tests are present, but the latest GitHub Actions attempts terminated before
-      executing any step. Covers only the operators and statements named in
-      core/README.md and the conformance manifest; it does not reproduce the
-      historical v5 runtime.
+      Repository-local operational claim only. Clean unit-test and conformance
+      run on Python 3.11 at commit 1f6f3cdd02221aeced83e7a7c087a9fb9715226b:
+      https://github.com/jesusvilela/-lang.s1/actions/runs/36396821919
+      (`python3 -m unittest discover -s tests -p 'test_*.py'` and
+      `python3 -m slang_core.conformance --json`). Covers only the operators and
+      statements named in core/README.md and the conformance manifest; it does
+      not reproduce the historical v5 runtime.
     artifacts:
       - slang_core/core.py
       - slang_core/conformance.py
@@ -170,9 +172,6 @@ claims:
       - core/examples/07_no_assertion.s1
       - tests/test_slang_core.py
       - .github/workflows/validate.yml
-    required_bridge:
-      - one clean unit-test and conformance run in the declared Python 3.11 environment
-      - preserve the exact command and run URL or immutable execution artifact
     forbidden_promotions:
       - theorem validation
       - geometric semantics
